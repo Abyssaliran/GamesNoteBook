@@ -3,6 +3,10 @@ package chess;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * @author Romanov_V_Y
+ * Класс для доступа к уникальным изображениям.
+ */
 public class ChessImages {
 	public static Image iconChessNotebook;
 
