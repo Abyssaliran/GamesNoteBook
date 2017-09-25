@@ -6,6 +6,10 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
+/**
+ * @author Romanov_V_Y
+ * Шахматная доска.
+ */
 public class ChessBoard extends Canvas implements PaintListener {
 	public ChessBoard(Composite composite, int style) {
 		super(composite, style);
