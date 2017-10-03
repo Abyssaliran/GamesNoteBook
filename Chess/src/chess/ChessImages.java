@@ -10,6 +10,8 @@ import org.eclipse.swt.widgets.Display;
 public class ChessImages {
 	public static Image iconChessNotebook;
 
+	public static Image iconChinaChess;
+
 	public static Image imageKingWhite;
 	public static Image imageQueenWhite;
 	public static Image imageBishopWhite;
@@ -40,5 +42,7 @@ public class ChessImages {
 		imageKnightWhite = new Image(display, ChessImages.class.getResourceAsStream("wKnightZurich.gif"));
 		imageRookWhite   = new Image(display, ChessImages.class.getResourceAsStream("wRookZurich.gif"));
 		imagePawnWhite   = new Image(display, ChessImages.class.getResourceAsStream("wPawnZurich.gif"));
+
+		iconChinaChess = new Image(display, ChessImages.class.getResourceAsStream("ChinaChess.png"));
 	} // load
 } // class ChessImages

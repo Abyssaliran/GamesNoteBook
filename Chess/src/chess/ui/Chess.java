@@ -12,9 +12,10 @@ import chess.ChessImages;
 
 /**
  * 
- * @author Romanov
- * Шахматный блокнот.
- * Зпись партии и сохранение ее в файл.
+ * @author Romanov V.Y.
+ * 
+ * Блокнот настольных игр.
+ * Запись партии и сохранение ее в файл.
  */
 public class Chess {
 	public static void main(String[] args) {
@@ -24,7 +25,7 @@ public class Chess {
 		final Shell shell = new Shell(display);
 		
 		shell.setSize(600, 600);
-		shell.setText("Chess Notepad");
+		shell.setText("Games Notebook");
 		shell.setImage(ChessImages.iconChessNotebook);
 		
 		FillLayout layout = new FillLayout();
@@ -32,13 +33,8 @@ public class Chess {
 		
 		TabFolder gamesFolder = new TabFolder(shell, SWT.TOP);
 		
-		Image chessImage = new Image(display, ChessImages.imageKnightBlack
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem chessItem = new TabItem(gamesFolder, SWT.NONE);
-		chessItem.setText("Шахматы");
-		chessItem.setControl(new ChessBoard(gamesFolder, SWT.NONE));
-		chessItem.setImage(chessImage);
+		addChessTab(display, gamesFolder);
+		addChinaChessTab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -46,5 +42,25 @@ public class Chess {
 				display.sleep();
 		}
 		display.dispose();
-	} // main
-} // class Chess
+	} 
+
+	private static void addChinaChessTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, ChessImages.iconChinaChess
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Сянци");
+		tabItem.setControl(new ChessBoard(gamesFolder, SWT.NONE));
+		tabItem.setImage(tabImage);
+	}
+
+	private static void addChessTab(final Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, ChessImages.imageKnightBlack
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Шахматы");
+		tabItem.setControl(new ChessBoard(gamesFolder, SWT.NONE));
+		tabItem.setImage(tabImage);
+	}
+} 

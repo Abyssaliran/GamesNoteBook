@@ -1,6 +1,5 @@
 package chess.ui;
 
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
