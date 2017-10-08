@@ -11,11 +11,12 @@ import org.eclipse.swt.widgets.TabItem;
 import chess.ChessImages;
 
 /**
+ * <b>Блокнот настольных игр.</b></br></br>
  * 
- * @author Romanov V.Y.
+ * Запись и просмотр партии.
+ * Сохранение партии в файл и чтение из файла.
  * 
- * Блокнот настольных игр.
- * Запись партии и сохранение ее в файл.
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Chess {
 	public static void main(String[] args) {
@@ -50,7 +51,7 @@ public class Chess {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Сянци");
-		tabItem.setControl(new ChessBoard(gamesFolder, SWT.NONE));
+		tabItem.setControl( new ChinaChessBoard(gamesFolder, SWT.NONE) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -60,7 +61,7 @@ public class Chess {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Шахматы");
-		tabItem.setControl(new ChessBoard(gamesFolder, SWT.NONE));
+		tabItem.setControl( new ChessBoard(gamesFolder, SWT.NONE) );
 		tabItem.setImage(tabImage);
 	}
 } 
