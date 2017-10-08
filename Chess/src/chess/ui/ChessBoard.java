@@ -10,8 +10,6 @@ import org.eclipse.swt.widgets.Composite;
 public class ChessBoard extends GameBoard {
 	public ChessBoard(Composite composite, int style) {
 		super(composite, style);
-
-		addPaintListener(this);
 	}
 
 	void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {

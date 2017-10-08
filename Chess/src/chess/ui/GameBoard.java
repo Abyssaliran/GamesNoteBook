@@ -7,13 +7,18 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
+/**
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ *
+ */
 public abstract class GameBoard extends Canvas implements PaintListener  {
-
 	private int nV = 8;
 	private int nH = 8;
 
 	public GameBoard(Composite parent, int style) {
 		super(parent, style);
+
+		addPaintListener(this);
 	}
 
 	@Override
