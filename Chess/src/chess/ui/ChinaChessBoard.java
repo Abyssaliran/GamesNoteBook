@@ -11,5 +11,6 @@ public class ChinaChessBoard extends GameBoard {
 
 	@Override
 	void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
+		// TODO отрисовать клетки доски китайских шахмат.
 	}
 }
