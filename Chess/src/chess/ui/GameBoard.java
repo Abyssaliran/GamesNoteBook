@@ -12,8 +12,8 @@ import org.eclipse.swt.widgets.Composite;
  *
  */
 public abstract class GameBoard extends Canvas implements PaintListener  {
-	private int nV = 8;
-	private int nH = 8;
+	protected int nV = 8;
+	protected int nH = 8;
 
 	public GameBoard(Composite parent, int style) {
 		super(parent, style);
