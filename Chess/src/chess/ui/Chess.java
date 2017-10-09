@@ -51,7 +51,7 @@ public class Chess {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Сянци");
-		tabItem.setControl( new ChinaChessBoard(gamesFolder, SWT.NONE) );
+		tabItem.setControl( new ChinaChessBoardWithCastle(gamesFolder, SWT.NONE) );
 		tabItem.setImage(tabImage);
 	}
 
