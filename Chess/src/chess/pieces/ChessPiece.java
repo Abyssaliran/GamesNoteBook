@@ -1,4 +1,8 @@
-package game.core;
+package chess.pieces;
+
+import game.core.Piece;
+import game.core.PieceColor;
+import game.core.Square;
 
 /**
  * Базовый класс для всех шахматных фигур.
