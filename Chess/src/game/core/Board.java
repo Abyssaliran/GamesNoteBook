@@ -15,8 +15,28 @@ public class Board {
 	 */
 	public int nH;
 	
+	/**
+	 * Клетки доски.
+	 */
+	private Square[][] squares;
+	
 	public Board(int nV, int nH) {
 		this.nV = nV;
 		this.nH = nH;
+		
+		squares = new Square[nV][nH];
+		for (int v = 0; v < nV; v++)
+			for (int h = 0; h < nH; h++)
+				squares[v][h] = new Square(this, v, h);
+		}
+	
+	/** 
+	 * Вернуть клетку доски
+	 * @param v вертикаль клетки
+	 * @param h горихонталь клетки
+	 * @return клетка с задаными вертикалью и горизонталью.
+	 */
+	public Square getSquare(int v, int h) {
+		return squares[v][h];
 	}
 }
