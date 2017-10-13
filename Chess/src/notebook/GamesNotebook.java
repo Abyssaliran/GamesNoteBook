@@ -9,8 +9,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import chess.ChessImages;
-import chess.ui.ChessBoard;
 import chess.ui.ChinaChessBoardWithCastle;
+import game.ui.EuropeBoard;
 
 /**
  * <b>Блокнот настольных игр.</b></br></br>
@@ -75,7 +75,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Шахматы");
-		tabItem.setControl( new ChessBoard(gamesFolder, SWT.NONE) );
+		tabItem.setControl( new EuropeBoard(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 } 

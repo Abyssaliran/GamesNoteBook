@@ -1,19 +1,23 @@
-package chess.ui;
+package game.ui;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
-import game.ui.GameBoard;
-
 /**
- * @author Romanov_V_Y Шахматная доска.
+ * Европейская доска с двухцветными клетками.
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class ChessBoard extends GameBoard {
-	public ChessBoard(Composite composite, int style) {
-		super(composite, style);
+public class EuropeBoard extends GameBoard {
+	public EuropeBoard(Composite composite) {
+		super(composite, SWT.NONE);
 	}
 
+	/* (non-Javadoc)
+	 * @see game.ui.GameBoard#drawSquare(int, int, org.eclipse.swt.graphics.GC, int, int)
+	 */
 	public void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
 		boolean isWhiteSquare = ((v + h) % 2 == 0);
 		Color squareColor = isWhiteSquare 
