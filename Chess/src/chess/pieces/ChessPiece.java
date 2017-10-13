@@ -13,8 +13,9 @@ abstract
 public class ChessPiece extends Piece {
 	PieceColor color;
 	
-	public ChessPiece(Square square) {
+	public ChessPiece(Square square, PieceColor color) {
 		super(square);
+		this.color = color;
 	}
 
 	@Override

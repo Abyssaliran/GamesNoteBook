@@ -3,6 +3,8 @@
  */
 package game.core;
 
+import org.eclipse.swt.graphics.Image;
+
 /**
  * Фигура стоящая на клетке доски.
  * Абстрактный базовый класс для всех фигур всех игр.
@@ -41,4 +43,9 @@ public class Piece {
 	 * @return вернуть цвет фигуры.
 	 */
 	abstract public PieceColor getColor();
+
+	/**
+	 * @return вернуть bзображение фигуры.
+	 */
+	abstract public Image getImage();
 }
