@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
+import chess.Chess;
 import chess.ui.images.ChessImages;
 import game.core.Board;
 import game.ui.AsiaBoardWithCastle;
@@ -73,8 +74,8 @@ public class GamesNotebook {
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
 	private static void addChessTab(final Display display, TabFolder gamesFolder) {
-		Board board = new Board(8, 8);
-
+		Board board = Chess.getInitBoard();
+		
 		Image tabImage = new Image(display, ChessImages.imageKnightBlack
 				.getImageData().scaledTo(20, 20));
 		
