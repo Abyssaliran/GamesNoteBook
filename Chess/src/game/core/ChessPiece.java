@@ -7,7 +7,26 @@ package game.core;
  */
 abstract
 public class ChessPiece extends Piece {
+	PieceColor color;
+	
 	public ChessPiece(Square square) {
 		super(square);
+	}
+
+	@Override
+	public boolean isCorrectMove(Square... squares) {
+		Square target = squares[0];
+		
+		if (target.isEmpty()) 
+			return true;
+		
+		// Если идем на клетку, занятую фигурой 
+		// того же цвета, то ход не корректен.
+		return color != target.getPiece().getColor();
+	}
+
+	@Override
+	public PieceColor getColor() {
+		return color;
 	}
 }
