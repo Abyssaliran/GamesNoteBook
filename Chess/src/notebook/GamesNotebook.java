@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
-import chess.ChessImages;
+import chess.ui.images.ChessImages;
 import game.ui.AsiaBoardWithCastle;
 import game.ui.EuropeBoard;
 

@@ -1,4 +1,4 @@
-package chess;
+package chess.ui.images;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
