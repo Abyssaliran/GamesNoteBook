@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import chess.ui.images.ChessImages;
+import game.core.Board;
 import game.ui.AsiaBoardWithCastle;
 import game.ui.EuropeBoard;
 
@@ -54,12 +55,14 @@ public class GamesNotebook {
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
 	private static void addChinaChessTab(Display display, TabFolder gamesFolder) {
+		Board board = new Board(9, 8);
+		
 		Image tabImage = new Image(display, ChessImages.iconChinaChess
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Сянци");
-		tabItem.setControl( new AsiaBoardWithCastle(gamesFolder) );
+		tabItem.setControl( new AsiaBoardWithCastle(gamesFolder, board) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -70,12 +73,14 @@ public class GamesNotebook {
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
 	private static void addChessTab(final Display display, TabFolder gamesFolder) {
+		Board board = new Board(8, 8);
+
 		Image tabImage = new Image(display, ChessImages.imageKnightBlack
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Шахматы");
-		tabItem.setControl( new EuropeBoard(gamesFolder) );
+		tabItem.setControl( new EuropeBoard(gamesFolder, board) );
 		tabItem.setImage(tabImage);
 	}
 } 

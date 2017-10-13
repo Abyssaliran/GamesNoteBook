@@ -3,10 +3,12 @@ package game.ui;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
+import game.core.Board;
+
 public class AsiaBoardWithCastle extends AsiaBoard {
 
-	public AsiaBoardWithCastle(Composite parent) {
-		super(parent);
+	public AsiaBoardWithCastle(Composite parent, Board board) {
+		super(parent, board);
 	}
 
 	@Override

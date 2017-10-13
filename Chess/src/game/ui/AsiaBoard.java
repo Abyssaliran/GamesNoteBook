@@ -1,9 +1,10 @@
 package game.ui;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
+
+import game.core.Board;
 
 /**
  * Доска для азиатских игр. 
@@ -12,10 +13,10 @@ import org.eclipse.swt.widgets.Composite;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class AsiaBoard extends GameBoard {
-	final Color colorYellow = new Color(null, 255, 255,0);
+	private static final Color colorYellow = new Color(null, 255, 255,0);
 
-	public AsiaBoard(Composite parent) {
-		super(parent, SWT.NONE);
+	public AsiaBoard(Composite parent, Board board) {
+		super(parent, board);
 	}
 
 	@Override
@@ -29,11 +30,10 @@ public class AsiaBoard extends GameBoard {
 		int x = v * squareWidth  + dv;
 		int y = h * squareHeight + dh;
 
-		if (v !=       0) gc.drawLine(x, y, x - dv, y);
-		if (v !=    nV-1) gc.drawLine(x, y, x + dv, y);
+		if (v !=          0) gc.drawLine(x, y, x - dv, y);
+		if (v != board.nV-1) gc.drawLine(x, y, x + dv, y);
 
-
-		if (h !=       0) gc.drawLine(x, y, x, y - dh);
-		if (h !=    nH-1) gc.drawLine(x, y, x, y + dh);
-}
+		if (h !=          0) gc.drawLine(x, y, x, y - dh);
+		if (h != board.nH-1) gc.drawLine(x, y, x, y + dh);
+	}
 }

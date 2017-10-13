@@ -1,9 +1,10 @@
 package game.ui;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
+
+import game.core.Board;
 
 /**
  * Европейская доска с двухцветными клетками.
@@ -14,8 +15,8 @@ public class EuropeBoard extends GameBoard {
 	private static final Color colorWhite = new Color(null, 255, 255, 255);
 	private static final Color colorGreen = new Color(null,   0, 192,   0);
 
-	public EuropeBoard(Composite composite) {
-		super(composite, SWT.NONE);
+	public EuropeBoard(Composite composite, Board board) {
+		super(composite, board);
 	}
 
 	/* (non-Javadoc)
