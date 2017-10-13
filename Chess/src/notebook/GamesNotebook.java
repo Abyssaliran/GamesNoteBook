@@ -1,4 +1,4 @@
-package chess.ui;
+package notebook;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -9,16 +9,18 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import chess.ChessImages;
+import chess.ui.ChessBoard;
+import chess.ui.ChinaChessBoardWithCastle;
 
 /**
  * <b>Блокнот настольных игр.</b></br></br>
  * 
- * Запись и просмотр партии.
+ * Запись и просмотр партии в настольной игре.
  * Сохранение партии в файл и чтение из файла.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Chess {
+public class GamesNotebook {
 	public static void main(String[] args) {
 		final Display display = new Display();
 		ChessImages.load(display);
@@ -45,6 +47,12 @@ public class Chess {
 		display.dispose();
 	} 
 
+	/**
+	 * Инициализируем закладку для китайских шахмат.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
 	private static void addChinaChessTab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, ChessImages.iconChinaChess
 				.getImageData().scaledTo(20, 20));
@@ -55,6 +63,12 @@ public class Chess {
 		tabItem.setImage(tabImage);
 	}
 
+	/**
+	 * Инициализируем закладку для европейских шахмат.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
 	private static void addChessTab(final Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, ChessImages.imageKnightBlack
 				.getImageData().scaledTo(20, 20));
