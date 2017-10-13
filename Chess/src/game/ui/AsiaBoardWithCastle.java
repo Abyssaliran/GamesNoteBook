@@ -10,8 +10,8 @@ public class AsiaBoardWithCastle extends AsiaBoard {
 	}
 
 	@Override
-	public void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
-		super.drawSquare(squareWidth, squareHeight, gc, v, h);
+	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
+		super.drawSquare(gc, v, h, squareWidth, squareHeight);
 		
 //		if ((6 > h) && (h > 3)) return;
 		

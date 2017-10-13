@@ -21,7 +21,7 @@ public class EuropeBoard extends GameBoard {
 	/* (non-Javadoc)
 	 * @see game.ui.GameBoard#drawSquare(int, int, org.eclipse.swt.graphics.GC, int, int)
 	 */
-	public void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
+	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
 		boolean isWhiteSquare = ((v + h) % 2 == 0);
 		Color squareColor = isWhiteSquare ? colorWhite : colorGreen;
 

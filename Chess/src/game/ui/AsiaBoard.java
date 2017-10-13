@@ -19,7 +19,7 @@ public class AsiaBoard extends GameBoard {
 	}
 
 	@Override
-	public void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
+	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
 		gc.setBackground( colorYellow );
 		gc.fillRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
 	

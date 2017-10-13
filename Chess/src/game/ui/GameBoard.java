@@ -31,12 +31,12 @@ public abstract class GameBoard extends Canvas implements PaintListener  {
 		GC gc = e.gc;
 		for (int v = 0; v < nV; v++) {
 			for (int h = 0; h < nH; h++)  
-				drawSquare(squareWidth, squareHeight, gc, v, h);
+				drawSquare(gc, v, h, squareWidth, squareHeight);
 		}
 	
 		e.gc.drawRectangle(0, 0, clientArea.width - 1, clientArea.height - 1);
 	}
 
 	abstract 
-	public void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h);
+	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight);
 }
