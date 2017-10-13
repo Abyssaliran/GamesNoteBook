@@ -11,6 +11,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class EuropeBoard extends GameBoard {
+	private static final Color colorWhite = new Color(null, 255, 255, 255);
+	private static final Color colorGreen = new Color(null,   0, 192,   0);
+
 	public EuropeBoard(Composite composite) {
 		super(composite, SWT.NONE);
 	}
@@ -20,14 +23,12 @@ public class EuropeBoard extends GameBoard {
 	 */
 	public void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
 		boolean isWhiteSquare = ((v + h) % 2 == 0);
-		Color squareColor = isWhiteSquare 
-				                 ? new Color(null, 255, 255, 255) 
-		                         : new Color(null,   0, 192,   0);
-		
-		 gc.setBackground(squareColor);
-		 gc.fillRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
+		Color squareColor = isWhiteSquare ? colorWhite : colorGreen;
 
-		 gc.setForeground(new Color(null, 0, 0, 0));
-		 gc.drawRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
+		gc.setBackground(squareColor);
+		gc.fillRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
+
+		gc.setForeground(new Color(null, 0, 0, 0));
+		gc.drawRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
 	}
 }
