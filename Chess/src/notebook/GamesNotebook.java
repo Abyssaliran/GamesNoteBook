@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import chess.ChessImages;
-import chess.ui.ChinaChessBoardWithCastle;
+import game.ui.AsiaBoardWithCastle;
 import game.ui.EuropeBoard;
 
 /**
@@ -59,7 +59,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Сянци");
-		tabItem.setControl( new ChinaChessBoardWithCastle(gamesFolder, SWT.NONE) );
+		tabItem.setControl( new AsiaBoardWithCastle(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 

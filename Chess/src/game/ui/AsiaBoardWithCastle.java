@@ -1,12 +1,12 @@
-package chess.ui;
+package game.ui;
 
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
-public class ChinaChessBoardWithCastle extends ChinaChessBoard {
+public class AsiaBoardWithCastle extends AsiaBoard {
 
-	public ChinaChessBoardWithCastle(Composite parent, int style) {
-		super(parent, style);
+	public AsiaBoardWithCastle(Composite parent) {
+		super(parent);
 	}
 
 	@Override
