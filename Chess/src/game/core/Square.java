@@ -20,6 +20,11 @@ public class Square {
 	 * Доска на которой расположена клетка.
 	 */
 	private Board board;
+
+	/**
+	 * Фигура которая, возможно, стоит на клетке.
+	 */
+	private Piece piece;
 	
 	protected Square(Board board, int v, int h) {
 		this.v = v;
@@ -32,6 +37,28 @@ public class Square {
 	 */
 	public Board getBoard() {
 		return board;
+	}
+
+	/**
+	 * Поставить на клетку фигуру.
+	 * @param piece какую фигуру постаить.
+	 */
+	public void setPiece(Piece piece) {
+		this.piece = piece;		
+	}
+
+	/**
+	 * @return стоит ли на клетке фигура?
+	 */
+	public boolean isEmpty() {
+		return piece == null;		
+	}
+	
+	/**
+	 * @return фигура которая стоит на клетке.
+	 */
+	public Piece getPiece() {
+		return piece;		
 	}
 }
 
