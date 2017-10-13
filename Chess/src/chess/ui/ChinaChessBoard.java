@@ -4,6 +4,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
+import game.ui.GameBoard;
+
 public class ChinaChessBoard extends GameBoard {
 
 	public ChinaChessBoard(Composite parent, int style) {
@@ -11,7 +13,7 @@ public class ChinaChessBoard extends GameBoard {
 	}
 
 	@Override
-	void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
+	public void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
 		// TODO отрисовать клетки доски китайских шахмат.
 		gc.setBackground(new Color(null, 255, 255,0) );
 		gc.fillRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);

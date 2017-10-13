@@ -4,6 +4,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
+import game.ui.GameBoard;
+
 /**
  * @author Romanov_V_Y Шахматная доска.
  */
@@ -12,7 +14,7 @@ public class ChessBoard extends GameBoard {
 		super(composite, style);
 	}
 
-	void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
+	public void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
 		boolean isWhiteSquare = ((v + h) % 2 == 0);
 		Color squareColor = isWhiteSquare 
 				                 ? new Color(null, 255, 255, 255) 

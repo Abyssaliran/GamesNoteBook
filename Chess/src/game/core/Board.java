@@ -1,4 +1,4 @@
-package chess.ui;
+package game.core;
 
 public class Board {
 

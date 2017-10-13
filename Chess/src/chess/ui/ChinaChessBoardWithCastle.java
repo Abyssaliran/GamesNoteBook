@@ -10,7 +10,7 @@ public class ChinaChessBoardWithCastle extends ChinaChessBoard {
 	}
 
 	@Override
-	void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
+	public void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h) {
 		super.drawSquare(squareWidth, squareHeight, gc, v, h);
 		
 //		if ((6 > h) && (h > 3)) return;

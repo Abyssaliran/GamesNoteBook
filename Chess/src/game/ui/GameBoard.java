@@ -1,4 +1,4 @@
-package chess.ui;
+package game.ui;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -37,5 +37,6 @@ public abstract class GameBoard extends Canvas implements PaintListener  {
 		e.gc.drawRectangle(0, 0, clientArea.width - 1, clientArea.height - 1);
 	}
 
-	abstract void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h);
+	abstract 
+	public void drawSquare(int squareWidth, int squareHeight, GC gc, int v, int h);
 }
