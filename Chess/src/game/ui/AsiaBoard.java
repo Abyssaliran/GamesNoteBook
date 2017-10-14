@@ -12,7 +12,7 @@ import game.core.Board;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class AsiaBoard extends GameBoard {
+public abstract class AsiaBoard extends GameBoard {
 	private static final Color colorYellow = new Color(null, 255, 255,0);
 
 	public AsiaBoard(Composite parent, Board board) {

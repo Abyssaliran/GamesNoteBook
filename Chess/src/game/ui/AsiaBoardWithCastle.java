@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import game.core.Board;
 
-public class AsiaBoardWithCastle extends AsiaBoard {
+public abstract class AsiaBoardWithCastle extends AsiaBoard {
 
 	public AsiaBoardWithCastle(Composite parent, Board board) {
 		super(parent, board);

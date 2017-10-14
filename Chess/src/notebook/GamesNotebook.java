@@ -8,12 +8,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
-import chess.Chess;
+import chess.ui.ChessBoardPanel;
 import chess.ui.images.ChessImages;
+import chinachess.ui.ChinaChessBoardPanel;
 import chinachess.ui.images.ChinaChessImages;
-import game.core.Board;
-import game.ui.AsiaBoardWithCastle;
-import game.ui.EuropeBoard;
 import notebook.ui.images.NotebookImages;
 
 /**
@@ -57,14 +55,12 @@ public class GamesNotebook {
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
 	private static void addChinaChessTab(Display display, TabFolder gamesFolder) {
-		Board board = new Board(9, 8);
-		
 		Image tabImage = new Image(display, ChinaChessImages.iconChinaChess
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Сянци");
-		tabItem.setControl( new AsiaBoardWithCastle(gamesFolder, board) );
+		tabItem.setControl( new ChinaChessBoardPanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -75,14 +71,12 @@ public class GamesNotebook {
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
 	private static void addChessTab(final Display display, TabFolder gamesFolder) {
-		Board board = Chess.getInitBoard();
-		
 		Image tabImage = new Image(display, ChessImages.icoChess
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Шахматы");
-		tabItem.setControl( new EuropeBoard(gamesFolder, board) );
+		tabItem.setControl( new ChessBoardPanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 } 

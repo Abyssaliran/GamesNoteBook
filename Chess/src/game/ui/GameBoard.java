@@ -65,13 +65,22 @@ public abstract class GameBoard extends Canvas implements PaintListener  {
 		int x = v * squareWidth  + dx;
 		int y = h * squareHeight + dy;
 		
-		Image image = piece.getImage();
+		Image image = getPieceImage(piece);
 		Rectangle bounds = image.getBounds();
 		gc.drawImage(image, 
 				0, 0, bounds.width, bounds.height, 
 				x, y, squareWidth - 2*dx, squareHeight - 2*dy);
 
 	}
+
+	/**
+	 * Выдать изображение для заданной фигуры.
+	 * 
+	 * @param piece
+	 * @return
+	 */
+	abstract 
+	public Image getPieceImage(Piece piece);
 
 	/**
 	 * @param gc графический контекст в котором рисуется клетка доски.

@@ -11,7 +11,7 @@ import game.core.Board;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class EuropeBoard extends GameBoard {
+public abstract class EuropeBoard extends GameBoard {
 	private static final Color colorWhite = new Color(null, 255, 255, 255);
 	private static final Color colorGreen = new Color(null,   0, 192,   0);
 
