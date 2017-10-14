@@ -3,8 +3,6 @@
  */
 package game.core;
 
-import org.eclipse.swt.graphics.Image;
-
 /**
  * Фигура стоящая на клетке доски.
  * Абстрактный базовый класс для всех фигур всех игр.
@@ -14,15 +12,29 @@ import org.eclipse.swt.graphics.Image;
 abstract
 public class Piece {
 	/**
+	 * Цвет фигуры.
+	 */
+	PieceColor color;
+
+	/**
 	 * Клетка на которой стоит фигура.
 	 */
 	public Square square;
 	
-	public Piece(Square square) {
+	public Piece(Square square, PieceColor color) {
 		this.square = square;
+		this.color = color;
+		
 		square.setPiece(this);
 	}
 	
+	/**
+	 * @return вернуть цвет фигуры.
+	 */
+	public PieceColor getColor() {
+		return color;
+	}
+
 	/**
 	 * Является ли корректным ход фигурой для заданой последовательности клеток?
 	 * @param squares - последтвательность клеток через которые перемещается фигура.
@@ -38,14 +50,4 @@ public class Piece {
 	 * @return экжемпляр класса реализующего интерфейс <b>Move</b>.
 	 */
 	abstract public Move makeMove(Square ...squares);
-
-	/**
-	 * @return вернуть цвет фигуры.
-	 */
-	abstract public PieceColor getColor();
-
-	/**
-	 * @return вернуть bзображение фигуры.
-	 */
-	abstract public Image getImage();
 }

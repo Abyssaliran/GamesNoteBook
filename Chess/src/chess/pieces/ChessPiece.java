@@ -11,11 +11,8 @@ import game.core.Square;
  */
 abstract
 public class ChessPiece extends Piece {
-	PieceColor color;
-	
 	public ChessPiece(Square square, PieceColor color) {
-		super(square);
-		this.color = color;
+		super(square, color);
 	}
 
 	@Override
@@ -27,11 +24,6 @@ public class ChessPiece extends Piece {
 		
 		// Если идем на клетку, занятую фигурой 
 		// того же цвета, то ход не корректен.
-		return color != target.getPiece().getColor();
-	}
-
-	@Override
-	public PieceColor getColor() {
-		return color;
+		return getColor() != target.getPiece().getColor();
 	}
 }

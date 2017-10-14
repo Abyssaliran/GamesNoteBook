@@ -5,12 +5,12 @@ import game.core.PieceColor;
 import game.core.Square;
 
 /**
- * Класс представляющий на доске пешку европейских шахмат.
+ * Класс представляет шахматного короля.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Pawn extends ChessPiece {
-	public Pawn(Square square, PieceColor color) {
+public class Queen extends ChessPiece {
+	public Queen(Square square, PieceColor color) {
 		super(square, color);
 	}
 
@@ -23,7 +23,7 @@ public class Pawn extends ChessPiece {
 		
 		return true;
 	}
-
+	
 	@Override
 	public Move makeMove(Square... squares) {
 		// TODO Auto-generated method stub
