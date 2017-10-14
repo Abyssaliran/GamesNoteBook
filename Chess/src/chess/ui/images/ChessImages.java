@@ -4,14 +4,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
 /**
- * @author Romanov_V_Y
- * Класс для доступа к уникальным изображениям.
+ * Класс для доступа к уникальным изображениям шахматных фигур.
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class ChessImages {
-	public static Image iconChessNotebook;
-
-	public static Image iconChinaChess;
-
+	public static Image icoChess;
+	
 	public static Image imageKingWhite;
 	public static Image imageQueenWhite;
 	public static Image imageBishopWhite;
@@ -26,9 +25,11 @@ public class ChessImages {
 	public static Image imageRookBlack;
 	public static Image imagePawnBlack;
 
-	public static void load(final Display display) {
-		iconChessNotebook = new Image(display, ChessImages.class.getResourceAsStream("ChessNoteBook.ico"));
+	static {
+		load( Display.getCurrent() );
+	}
 
+	private static void load(final Display display) {
 		imageKingBlack   = new Image(display, ChessImages.class.getResourceAsStream("bKingZurich.gif"));
 		imageQueenBlack  = new Image(display, ChessImages.class.getResourceAsStream("bQueenZurich.gif"));
 		imageBishopBlack = new Image(display, ChessImages.class.getResourceAsStream("bBishopZurich.gif"));
@@ -43,6 +44,6 @@ public class ChessImages {
 		imageRookWhite   = new Image(display, ChessImages.class.getResourceAsStream("wRookZurich.gif"));
 		imagePawnWhite   = new Image(display, ChessImages.class.getResourceAsStream("wPawnZurich.gif"));
 
-		iconChinaChess = new Image(display, ChessImages.class.getResourceAsStream("ChinaChess.png"));
-	} // load
-} // class ChessImages
+		icoChess = imageKnightBlack;
+	}  
+} 

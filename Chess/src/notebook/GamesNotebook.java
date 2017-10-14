@@ -10,9 +10,11 @@ import org.eclipse.swt.widgets.TabItem;
 
 import chess.Chess;
 import chess.ui.images.ChessImages;
+import chinachess.ui.images.ChinaChessImages;
 import game.core.Board;
 import game.ui.AsiaBoardWithCastle;
 import game.ui.EuropeBoard;
+import notebook.ui.images.NotebookImages;
 
 /**
  * <b>Блокнот настольных игр.</b></br></br>
@@ -25,13 +27,12 @@ import game.ui.EuropeBoard;
 public class GamesNotebook {
 	public static void main(String[] args) {
 		final Display display = new Display();
-		ChessImages.load(display);
 		
 		final Shell shell = new Shell(display);
 		
 		shell.setSize(600, 600);
 		shell.setText("Games Notebook");
-		shell.setImage(ChessImages.iconChessNotebook);
+		shell.setImage(NotebookImages.iconNotebook);
 		
 		FillLayout layout = new FillLayout();
 		shell.setLayout(layout);
@@ -58,7 +59,7 @@ public class GamesNotebook {
 	private static void addChinaChessTab(Display display, TabFolder gamesFolder) {
 		Board board = new Board(9, 8);
 		
-		Image tabImage = new Image(display, ChessImages.iconChinaChess
+		Image tabImage = new Image(display, ChinaChessImages.iconChinaChess
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
@@ -76,7 +77,7 @@ public class GamesNotebook {
 	private static void addChessTab(final Display display, TabFolder gamesFolder) {
 		Board board = Chess.getInitBoard();
 		
-		Image tabImage = new Image(display, ChessImages.imageKnightBlack
+		Image tabImage = new Image(display, ChessImages.icoChess
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
