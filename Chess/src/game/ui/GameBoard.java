@@ -30,12 +30,15 @@ public abstract class GameBoard extends Canvas implements PaintListener  {
 
 	@Override
 	public void paintControl(PaintEvent e) {
+		GC gc = e.gc;
+
 		Rectangle clientArea = getClientArea();
 	
+		drawBackground(gc, clientArea);
+
 		int squareWidth  = getClientArea().width  / board.nV;
 		int squareHeight = getClientArea().height / board.nH;
 	
-		GC gc = e.gc;
 		for (int v = 0; v < board.nV; v++) {
 			for (int h = 0; h < board.nH; h++)  {
 				drawSquare(gc, v, h, squareWidth, squareHeight);
@@ -45,18 +48,17 @@ public abstract class GameBoard extends Canvas implements PaintListener  {
 					drawPiece(gc, piece, v, h, squareWidth, squareHeight);
 			}
 		}
-	
-		e.gc.drawRectangle(0, 0, clientArea.width - 1, clientArea.height - 1);
 	}
 
 	/**
 	 * Отрисовать фигуру стоящую на клетке доски.
-	 * @param gc
-	 * @param piece
-	 * @param v
-	 * @param h
-	 * @param squareWidth
-	 * @param squareHeight
+	 * 
+	 * @param gc - графический контекст для рисования клетки
+	 * @param piece - рисуемая фигура
+	 * @param v - вертикаль клетки
+	 * @param h - горизонталь клетки
+	 * @param squareWidth - ширина клетки
+	 * @param squareHeight - высота клетки
 	 */
 	private void drawPiece(GC gc, Piece piece, int v, int h, int squareWidth, int squareHeight) {
 		int dx = squareWidth  /8;
@@ -70,11 +72,19 @@ public abstract class GameBoard extends Canvas implements PaintListener  {
 		gc.drawImage(image, 
 				0, 0, bounds.width, bounds.height, 
 				x, y, squareWidth - 2*dx, squareHeight - 2*dy);
-
 	}
 
 	/**
-	 * Выдать изображение для заданной фигуры.
+	 * Отрисовать фон для доски.
+	 * 
+	 * @param gc - графический контекст для рисования фона доски.
+	 * @param area - область для рисования фона доски.
+	 */
+	abstract
+	protected void drawBackground(GC gc, Rectangle area);
+
+	/**
+	 * Выдать изображение для заданной фигуры клетке доски.
 	 * 
 	 * @param piece
 	 * @return

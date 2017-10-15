@@ -1,10 +1,11 @@
 package game.ui;
 
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import game.core.Board;
+import game.ui.images.GameImages;
 
 /**
  * Доска для азиатских игр. 
@@ -13,17 +14,21 @@ import game.core.Board;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public abstract class AsiaBoard extends GameBoard {
-	private static final Color colorYellow = new Color(null, 255, 255,0);
-
 	public AsiaBoard(Composite parent, Board board) {
 		super(parent, board);
 	}
 
 	@Override
+	protected void drawBackground(GC gc, Rectangle area) {
+		Rectangle bounds = GameImages.woodLight.getBounds();
+		
+		gc.drawImage(GameImages.woodLight, 
+				0, 0, bounds .width, bounds.height, 
+				area.x, area.y, area.width, area.height);
+	}
+
+	@Override
 	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
-		gc.setBackground( colorYellow );
-		gc.fillRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
-	
 		int dv = squareWidth/2;
 		int dh = squareHeight/2;
 		
