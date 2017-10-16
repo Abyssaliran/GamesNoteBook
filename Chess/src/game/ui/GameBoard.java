@@ -43,9 +43,7 @@ public abstract class GameBoard extends Canvas implements PaintListener  {
 			for (int h = 0; h < board.nH; h++)  {
 				drawSquare(gc, v, h, squareWidth, squareHeight);
 				
-				Piece piece = board.getSquare(v, h).getPiece();
-				if (piece != null)
-					drawPiece(gc, piece, v, h, squareWidth, squareHeight);
+				drawPiece (gc, v, h, squareWidth, squareHeight);
 			}
 		}
 	}
@@ -54,13 +52,15 @@ public abstract class GameBoard extends Canvas implements PaintListener  {
 	 * Отрисовать фигуру стоящую на клетке доски.
 	 * 
 	 * @param gc - графический контекст для рисования клетки
-	 * @param piece - рисуемая фигура
 	 * @param v - вертикаль клетки
 	 * @param h - горизонталь клетки
 	 * @param squareWidth - ширина клетки
 	 * @param squareHeight - высота клетки
 	 */
-	private void drawPiece(GC gc, Piece piece, int v, int h, int squareWidth, int squareHeight) {
+	private void drawPiece(GC gc, int v, int h, int squareWidth, int squareHeight) {
+		Piece piece = board.getSquare(v, h).getPiece();
+		if (piece == null) return;
+
 		int dx = squareWidth  /8;
 		int dy = squareHeight /8;
 		
