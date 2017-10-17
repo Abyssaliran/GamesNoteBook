@@ -24,10 +24,10 @@ public abstract class AsiaBoardWithCastle extends AsiaBoard {
 			int x = v * squareWidth  + dv;
 			int y = h * squareHeight + dh;
 			
-			gc.drawLine(x, y, x - dv, y - dh);
-			gc.drawLine(x, y, x + dv, y + dh);
-			gc.drawLine(x, y, x - dv, y + dh);
-			gc.drawLine(x, y, x + dv, y - dh);
+			gc.drawLine(x, y, x - squareWidth, y - squareHeight);
+			gc.drawLine(x, y, x + squareWidth, y + squareHeight);
+			gc.drawLine(x, y, x - squareWidth, y + squareHeight);
+			gc.drawLine(x, y, x + squareWidth, y - squareHeight);
 		}
 		
 	}
