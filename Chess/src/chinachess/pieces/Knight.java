@@ -10,13 +10,13 @@ import game.core.Square;
  * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
  *
  */
-public class Chariot extends ChinaChessPiece {
+public class Knight extends ChinaChessPiece {
 
 	/**
 	 * @param square
 	 * @param color
 	 */
-	public Chariot(Square square, PieceColor color) {
+	public Knight(Square square, PieceColor color) {
 		super(square, color);
 		// TODO Auto-generated constructor stub
 	}

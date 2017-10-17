@@ -10,9 +10,9 @@ import game.core.Square;
  * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
  *
  */
-public class Elephant extends ChinaChessPiece {
+public class Guardian extends ChinaChessPiece {
 
-	public Elephant(Square square, PieceColor color) {
+	public Guardian(Square square, PieceColor color) {
 		super(square, color);
 		// TODO Auto-generated constructor stub
 	}
