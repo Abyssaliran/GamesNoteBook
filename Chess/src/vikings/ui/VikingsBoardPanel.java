@@ -53,5 +53,7 @@ public class VikingsBoardPanel extends GameBoard {
 	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
 		gc.setForeground(LINE_COLOR);
 		gc.drawRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
+		
+		// TODO Vikings Дорисовать особые клетки доски: трон короля в центре и угловые клетки 
 	}
 }
