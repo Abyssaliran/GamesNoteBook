@@ -17,6 +17,8 @@ import chinachess.ui.images.ChinaChessImages;
 import notebook.ui.images.NotebookImages;
 import vikings.ui.VikingsBoardPanel;
 import vikings.ui.images.VikingImages;
+import tamerlan.ui.TamerlanChessBoardPanel;
+import tamerlan.ui.images.TamerlanChessImages;
 
 /**
  * <b>Блокнот настольных игр.</b></br></br>
@@ -46,6 +48,7 @@ public class GamesNotebook {
 		addChinaChessTab(display, gamesFolder);
 		addViking9Tab(display, gamesFolder);
 		addViking11Tab(display, gamesFolder);
+		addTamerlanChessTab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -54,6 +57,16 @@ public class GamesNotebook {
 		}
 		display.dispose();
 	} 
+
+	private static void addTamerlanChessTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, TamerlanChessImages.iconTamerlanChess
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Тамерлан");
+		tabItem.setControl( new TamerlanChessBoardPanel(gamesFolder) );
+		tabItem.setImage(tabImage);
+	}
 
 	/**
 	 * Инициализируем закладку для шашек.
