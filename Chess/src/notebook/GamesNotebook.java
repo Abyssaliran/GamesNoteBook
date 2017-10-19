@@ -15,6 +15,8 @@ import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessBoardPanel;
 import chinachess.ui.images.ChinaChessImages;
 import notebook.ui.images.NotebookImages;
+import vikings.ui.VikingsBoardPanel;
+import vikings.ui.images.VikingImages;
 
 /**
  * <b>Блокнот настольных игр.</b></br></br>
@@ -42,6 +44,8 @@ public class GamesNotebook {
 		addChessTab(display, gamesFolder);
 		addCheckersTab(display, gamesFolder);
 		addChinaChessTab(display, gamesFolder);
+		addViking9Tab(display, gamesFolder);
+		addViking11Tab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -96,6 +100,38 @@ public class GamesNotebook {
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Шахматы");
 		tabItem.setControl( new ChessBoardPanel(gamesFolder) );
+		tabItem.setImage(tabImage);
+	}
+
+	/**
+	 * Инициализируем закладку для игры Викинги на доске 9х9.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
+	private static void addViking9Tab(final Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, VikingImages.icoVikings9
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Викинги-9");
+		tabItem.setControl( new VikingsBoardPanel(gamesFolder, 9) );
+		tabItem.setImage(tabImage);
+	}
+
+	/**
+	 * Инициализируем закладку для игры Викинги на доске 11х11.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
+	private static void addViking11Tab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, VikingImages.icoVikings11
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Викинги-11");
+		tabItem.setControl( new VikingsBoardPanel(gamesFolder, 11) );
 		tabItem.setImage(tabImage);
 	}
 } 
