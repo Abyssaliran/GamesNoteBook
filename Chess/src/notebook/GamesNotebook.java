@@ -8,13 +8,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
-import checkers.ui.CheckersBoardPanel;
-import checkers.ui.images.CheckersImages;
 import chess.ui.ChessBoardPanel;
 import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessBoardPanel;
 import chinachess.ui.images.ChinaChessImages;
 import notebook.ui.images.NotebookImages;
+import tamerlan.ui.TamerlanChessBoardPanel;
+import tamerlan.ui.images.TamerlanChessImages;
 
 /**
  * <b>Блокнот настольных игр.</b></br></br>
@@ -42,6 +42,7 @@ public class GamesNotebook {
 		addChessTab(display, gamesFolder);
 		addCheckersTab(display, gamesFolder);
 		addChinaChessTab(display, gamesFolder);
+		addTamerlanChessTab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -51,6 +52,16 @@ public class GamesNotebook {
 		display.dispose();
 	} 
 
+	private static void addTamerlanChessTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, TamerlanChessImages.iconTamerlanChess
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Тамерлан");
+		tabItem.setControl( new TamerlanChessBoardPanel(gamesFolder) );
+		tabItem.setImage(tabImage);
+	}
+
 	/**
 	 * Инициализируем закладку для шашек.
 	 * 
@@ -58,12 +69,12 @@ public class GamesNotebook {
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
 	private static void addCheckersTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, CheckersImages.iconCheсkers
+		Image tabImage = new Image(display, ChinaChessImages.iconChinaChess
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
-		tabItem.setText("Шашки");
-		tabItem.setControl( new CheckersBoardPanel(gamesFolder) );
+		tabItem.setText("Сянци");
+		tabItem.setControl( new ChinaChessBoardPanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 
