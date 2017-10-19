@@ -56,6 +56,8 @@ public class TamerlanChessBoardPanel extends EuropeBoard {
 		blacks.put(Bishop.class, TamerlanChessImages.imageBishopBlack);
 		blacks.put(Queen.class,  TamerlanChessImages.imageQueenBlack);
 		blacks.put(King.class,   TamerlanChessImages.imageKingBlack);
+		
+		// TODO Добавить в карту изображений фигуры Vizir и WarMachine.		
 	}
 
 	public TamerlanChessBoardPanel(Composite composite) {

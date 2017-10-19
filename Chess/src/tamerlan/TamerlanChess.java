@@ -13,6 +13,8 @@ public class TamerlanChess {
 
 	public static Board getInitBoard() {
 		Board board = new Board(10, 10);
+		
+		// TODO Tamerlan Расставить фигуры Vizir и WarMachine 
 
 		return board;
 	}
