@@ -14,6 +14,8 @@ import chess.ui.ChessBoardPanel;
 import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessBoardPanel;
 import chinachess.ui.images.ChinaChessImages;
+import go.ui.GoBoardPanel;
+import go.ui.images.GoImages;
 import notebook.ui.images.NotebookImages;
 import reversi.ui.ReversiBoardPanel;
 import reversi.ui.images.ReversiImages;
@@ -53,6 +55,7 @@ public class GamesNotebook {
 		addTamerlanChessTab(display, gamesFolder);
 		addReversiTab(display, gamesFolder);
 		addReversiHoleTab(display, gamesFolder);
+		addGoTab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -182,6 +185,23 @@ public class GamesNotebook {
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Реверси Х");
 		tabItem.setControl( new ReversiBoardPanel(gamesFolder, 1) );
+		tabItem.setImage(tabImage);
+	}
+
+	/**
+	 * Инициализируем закладку для игры Го 
+	 * со случайными отверсиями на доске.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
+	private static void addGoTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, GoImages.icoGo
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Го");
+		tabItem.setControl( new GoBoardPanel(gamesFolder, 0) );
 		tabItem.setImage(tabImage);
 	}
 } 
