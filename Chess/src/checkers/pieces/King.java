@@ -4,7 +4,6 @@
 package checkers.pieces;
 
 import game.core.Move;
-import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 
@@ -13,15 +12,19 @@ import game.core.Square;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class King extends Piece {
+public class King extends CheckersPiece {
 	public King(Square square, PieceColor color) {
 		super(square, color);
 	}
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
-		// TODO Auto-generated method stub
-		return false;
+		// Пока используем только умалчиваемую проверку
+		// выполняемую в базовом классе.
+		if (!super.isCorrectMove(squares))
+			return false;
+		
+		return true;
 	}
 
 	@Override
