@@ -1,6 +1,5 @@
 package checkers.pieces;
 
-import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
@@ -22,6 +21,6 @@ public class CheckersPiece extends Piece {
 		// В шашках нельзя ходить на поле занятое фигурой любого цвета.
 		Square target = squares[0];
 		
-		return !target.isEmpty();
+		return target.isEmpty();
 	}
 }
