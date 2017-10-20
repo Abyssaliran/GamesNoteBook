@@ -34,7 +34,14 @@ public class Piece {
 	public PieceColor getColor() {
 		return color;
 	}
-
+	
+	/**
+	 * @return задать цвет фигуры.
+	 */
+	public void getColor(PieceColor color) {
+		this.color = color;
+	}
+	
 	/**
 	 * Является ли корректным ход фигурой для заданой последовательности клеток?
 	 * @param squares - последтвательность клеток через которые перемещается фигура.
