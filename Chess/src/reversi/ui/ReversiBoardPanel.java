@@ -32,5 +32,4 @@ public class ReversiBoardPanel extends GreenBoard {
 		
 		return null;
 	}
-
 }
