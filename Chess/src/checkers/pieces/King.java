@@ -24,13 +24,25 @@ public class King extends CheckersPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		Square source = squares[0];
+		Square target = squares[1];
+		
+		// TODO Checkers Сделать проверку правильности хода
+		// из клетки source в клетку target.
+
 		return true;
 	}
 
 	@Override
 	public Move makeMove(Square... squares) {
-		// TODO Auto-generated method stub
-		return null;
+		Move move = null;
+		// TODO Checkers Создать ход шашек
+		// if (...)
+		//    move = new SimpleMove(isPromotion, source, target);
+		// else
+		//    move = new Capture(isPromotion, captured, source, target);
+		// move.doMove();
+		return move;
 	}
 
 }
