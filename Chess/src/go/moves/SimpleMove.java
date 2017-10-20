@@ -10,11 +10,11 @@ import game.core.Move;
 public class SimpleMove implements Move {
 	@Override
 	public void doMove() {
-		// TODO Auto-generated method stub
+		// TODO Go реализовать выполнение хода.
 	}
 
 	@Override
 	public void undoMove() {
-		// TODO Auto-generated method stub
+		// TODO Go реализовать отмену хода.
 	}
 }
