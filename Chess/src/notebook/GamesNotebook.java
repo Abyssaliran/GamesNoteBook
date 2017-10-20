@@ -15,6 +15,8 @@ import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessBoardPanel;
 import chinachess.ui.images.ChinaChessImages;
 import notebook.ui.images.NotebookImages;
+import reversi.ui.ReversiBoardPanel;
+import reversi.ui.images.ReversiImages;
 import vikings.ui.VikingsBoardPanel;
 import vikings.ui.images.VikingImages;
 import tamerlan.ui.TamerlanChessBoardPanel;
@@ -49,6 +51,8 @@ public class GamesNotebook {
 		addViking9Tab(display, gamesFolder);
 		addViking11Tab(display, gamesFolder);
 		addTamerlanChessTab(display, gamesFolder);
+		addReversiTab(display, gamesFolder);
+		addReversiHoleTab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -145,6 +149,39 @@ public class GamesNotebook {
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Викинги-11");
 		tabItem.setControl( new VikingsBoardPanel(gamesFolder, 11) );
+		tabItem.setImage(tabImage);
+	}
+
+	/**
+	 * Инициализируем закладку для игры Реверси.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
+	private static void addReversiTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, ReversiImages.icoReversi
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Реверси");
+		tabItem.setControl( new ReversiBoardPanel(gamesFolder, 0) );
+		tabItem.setImage(tabImage);
+	}
+
+	/**
+	 * Инициализируем закладку для игры Реверси 
+	 * со случайными отверсиями на доске.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
+	private static void addReversiHoleTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, ReversiImages.icoReversiX
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Реверси Х");
+		tabItem.setControl( new ReversiBoardPanel(gamesFolder, 1) );
 		tabItem.setImage(tabImage);
 	}
 } 
