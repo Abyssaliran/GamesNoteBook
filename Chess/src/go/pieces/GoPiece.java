@@ -44,7 +44,7 @@ public class GoPiece extends Piece {
 	 * @return
 	 */
 	public boolean hasDame() {
-		// TODO Go Реализовать правило.
+		// TODO Go Реализовать проверку правила Dame.
 		return true;
 	}
 }
