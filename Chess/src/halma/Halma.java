@@ -16,6 +16,8 @@ public class Halma {
 	public static Board getInitBoard(int boardSize) {
 		Board board = new Board(boardSize, boardSize);
 
+		// TODO Halma Расставить фигуры на доске.
+		
 		new Stone( board.getSquare(0, 0), PieceColor.WHITE);
 		new Stone( board.getSquare(boardSize - 1, boardSize - 1), PieceColor.BLACK);
 
