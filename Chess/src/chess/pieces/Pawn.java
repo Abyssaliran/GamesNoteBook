@@ -1,5 +1,6 @@
 package chess.pieces;
 
+import chess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -23,10 +24,9 @@ public class Pawn extends ChessPiece {
 		
 		return true;
 	}
-
+	
 	@Override
 	public Move makeMove(Square... squares) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleMove(squares);
 	}
 }
