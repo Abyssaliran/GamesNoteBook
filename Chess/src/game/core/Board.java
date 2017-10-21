@@ -50,4 +50,21 @@ public class Board extends Observable {
 	public Square getSquare(int v, int h) {
 		return squares[v][h];
 	}
+
+	/**
+	 * Проверка выхода за границы доски.
+	 * 
+	 * @param v - вертикаль
+	 * @param h - горизонталь
+	 * @return на доске или нет
+	 */
+	public boolean onBoard(int v, int h) {
+		if (v < 0) return false;
+		if (h < 0) return false;
+		
+		if (v > nV-1) return false;
+		if (h > nH-1) return false;
+		
+		return true;
+	}
 }
