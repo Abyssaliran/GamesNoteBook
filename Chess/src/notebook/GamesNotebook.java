@@ -8,6 +8,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
+import checkers.ui.CheckersBoardPanel;
+import checkers.ui.images.CheckersImages;
 import chess.ui.ChessBoardPanel;
 import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessBoardPanel;
@@ -69,12 +71,12 @@ public class GamesNotebook {
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
 	private static void addCheckersTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, ChinaChessImages.iconChinaChess
+		Image tabImage = new Image(display, CheckersImages.iconCheсkers
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
-		tabItem.setText("Сянци");
-		tabItem.setControl( new ChinaChessBoardPanel(gamesFolder) );
+		tabItem.setText("Шашки");
+		tabItem.setControl( new CheckersBoardPanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 
