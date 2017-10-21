@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.ui.GreenBoard;
 import game.ui.listners.PutPieceListener;
 import reversi.Reversi;
 import reversi.pieces.Hole;
