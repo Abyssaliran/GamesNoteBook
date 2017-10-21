@@ -18,4 +18,12 @@ public class History {
 	 * Список ходов сделанных на доске.
 	 */
 	List<Move> moves = new ArrayList<>();
+
+	/**
+	 * Добавить ход в историю игрыs.
+	 * @param move
+	 */
+	public void addMove(Move move) {
+		moves.add(move);		
+	}
 }

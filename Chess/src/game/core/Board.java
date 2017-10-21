@@ -1,11 +1,13 @@
 package game.core;
 
+import java.util.Observable;
+
 /**
  * Доска для расстановки фигур.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Board {
+public class Board extends Observable {
 	/**
 	 * Количество вертикалей на доске.
 	 */
@@ -20,6 +22,11 @@ public class Board {
 	 */
 	private Square[][] squares;
 	
+	/**
+	 * История партии (последовательность ходов).
+	 */
+	public History history = new History();
+	
 	public Board(int nV, int nH) {
 		this.nV = nV;
 		this.nH = nH;
@@ -29,7 +36,11 @@ public class Board {
 			for (int h = 0; h < nH; h++)
 				squares[v][h] = new Square(this, v, h);
 		}
-	
+
+	public void setChanged() {
+		super.setChanged();
+	}
+
 	/** 
 	 * Вернуть клетку доски
 	 * @param v вертикаль клетки
