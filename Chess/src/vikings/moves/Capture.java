@@ -1,14 +1,13 @@
-package chess.moves;
+package vikings.moves;
 
 import game.core.Square;
 
 /**
- * Ход европейских шахмат - перемещение фигуры на клетку 
- * с захватом фигуры противника.
+ * Ход с захватом фигуры противника.
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Capture extends SimpleMove implements ICapture {
+public class Capture extends SimpleMove {
 	public Capture(Square[] squares) {
 		super(squares);
 	}
@@ -23,15 +22,11 @@ public class Capture extends SimpleMove implements ICapture {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
 	public void removePiece() {
 		// TODO Auto-generated method stub
-		
 	}
 
-	@Override
 	public void restotePiece() {
 		// TODO Auto-generated method stub
-		
 	}
 }

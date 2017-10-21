@@ -20,12 +20,12 @@ public enum Dirs {
 	/**
 	 * Смещение по вертикали.
 	 */
-	int dv;
+	public int dv;
 	
 	/**
 	 * Смещение по горизонтали.
 	 */
-	int dh;
+	public int dh;
 	
 	/**
 	 * @param dv - смещение по вертикали.

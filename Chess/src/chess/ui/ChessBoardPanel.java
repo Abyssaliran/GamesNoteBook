@@ -20,6 +20,7 @@ import chess.ui.images.ChessImages;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
+import game.ui.listners.MovePieceListener;
 
 /**
  * Панель для отрисовки шахматных фигур на доске.
@@ -33,11 +34,15 @@ public class ChessBoardPanel extends EuropeBoard {
 	private static Map<PieceColor, Map<Class<? extends Piece>, Image>> pieceImages;
 
 	static {
+		whites = new HashMap<>();
+		blacks = new HashMap<>();
+
 		pieceImages = new HashMap<>();
+		pieceImages.put(PieceColor.WHITE, whites);
+		pieceImages.put(PieceColor.BLACK, blacks);
 
 		// Инициализируем карту изображений белых фигур.
 		//
-		whites = new HashMap<>();
 		whites.put(Pawn.class,   ChessImages.imagePawnWhite);
 		whites.put(Rook.class,   ChessImages.imageRookWhite);
 		whites.put(Knight.class, ChessImages.imageKnightWhite);
@@ -45,28 +50,34 @@ public class ChessBoardPanel extends EuropeBoard {
 		whites.put(Queen.class,  ChessImages.imageQueenWhite);
 		whites.put(King.class,   ChessImages.imageKingWhite);
 		
-		pieceImages.put(PieceColor.WHITE, whites);
-		
 		// Инициализируем карту изображений черных фигур.
 		//
-		blacks = new HashMap<>();
 		blacks.put(Pawn.class,   ChessImages.imagePawnBlack);
 		blacks.put(Rook.class,   ChessImages.imageRookBlack);
 		blacks.put(Knight.class, ChessImages.imageKnightBlack);
 		blacks.put(Bishop.class, ChessImages.imageBishopBlack);
 		blacks.put(Queen.class,  ChessImages.imageQueenBlack);
 		blacks.put(King.class,   ChessImages.imageKingBlack);
-		
-		pieceImages.put(PieceColor.BLACK, blacks);
 	}
 
 	public ChessBoardPanel(Composite composite) {
 		super(composite, Chess.getInitBoard());
+		
+		listener = new MovePieceListener(this) {
+			@Override
+			public Image getPieceImage(Piece piece, PieceColor color) {
+				return ChessBoardPanel.this.getPieceImage(piece, color);
+			}
+		};
+	}
+
+	protected Image getPieceImage(Piece piece, PieceColor color) {
+		return pieceImages
+				.get(color)
+				.get( piece.getClass() );
 	}
 
 	public Image getPieceImage(Piece piece) {
-		return pieceImages
-				.get( piece.getColor() )
-				.get( piece.getClass() );
+		return getPieceImage(piece, piece.getColor());
 	}
 }

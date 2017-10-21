@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
-
+import game.ui.listners.MovePieceListener;
 import tamerlan.TamerlanChess;
 import tamerlan.pieces.Bishop;
 import tamerlan.pieces.Giraffe;
@@ -69,12 +69,22 @@ public class TamerlanChessBoardPanel extends EuropeBoard {
 
 	public TamerlanChessBoardPanel(Composite composite) {
 		super(composite, TamerlanChess.getInitBoard());
+		
+		listener = new MovePieceListener(this) {
+			@Override
+			public Image getPieceImage(Piece piece, PieceColor color) {
+				return TamerlanChessBoardPanel.this.getPieceImage(piece, color);
+			}
+		};
 	}
 
 	public Image getPieceImage(Piece piece) {
-		return pieceImages
-				.get( piece.getColor() )
-				.get( piece.getClass() );
+		return getPieceImage(piece, piece.getColor());
 	}
 
+	private Image getPieceImage(Piece piece, PieceColor color) {
+		return pieceImages
+				.get(color)
+				.get( piece.getClass() );
+	}
 }

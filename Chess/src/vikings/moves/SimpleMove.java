@@ -1,11 +1,11 @@
-package tamerlan.move;
+package vikings.moves;
 
 import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
 
 /**
- * Простой ход шахмат тамерлана - перемещение фигуры на пустую клетку.
+ * Простой ход викингов - перемещение фигуры на пустую клетку.
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
