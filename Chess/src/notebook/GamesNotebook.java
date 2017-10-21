@@ -203,7 +203,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Го");
-		tabItem.setControl( new GoBoardPanel(gamesFolder, 0) );
+		tabItem.setControl( new GoBoardPanel(gamesFolder, 10) );
 		tabItem.setImage(tabImage);
 	}
 
