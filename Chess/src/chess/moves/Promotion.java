@@ -1,5 +1,7 @@
 package chess.moves;
 
+import game.core.Square;
+
 /**
  * Ход европейских шахмат - преврашение пешки на последней горизонтали
  * в новую фигуру с возможным взятием фигуры противника.
@@ -7,6 +9,10 @@ package chess.moves;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Promotion extends SimpleMove implements ICapture {
+
+	public Promotion(Square[] squares) {
+		super(squares);
+	}
 
 	@Override
 	public void doMove() {
