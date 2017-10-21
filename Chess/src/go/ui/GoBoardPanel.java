@@ -21,7 +21,7 @@ public class GoBoardPanel extends AsiaBoard {
 	public GoBoardPanel(Composite parent, int boardSize) {
 		super(parent, Go.getInitBoard(boardSize, boardSize));
 		
-		listner = new PutPieceListener(this) {
+		listener = new PutPieceListener(this) {
 			@Override
 			public Image getPieceImage(Piece piece, PieceColor color) {
 				return GoBoardPanel.this.getPieceImage(piece, color);

@@ -28,7 +28,7 @@ public class ReversiBoardPanel extends GreenBoard {
 	public ReversiBoardPanel(Composite composite, int nHoles) {
 		super(composite, Reversi.getInitBoard(nHoles));
 		
-		listner = new PutPieceListener(this) {
+		listener = new PutPieceListener(this) {
 			@Override
 			public Image getPieceImage(Piece piece, PieceColor color) {
 				return ReversiBoardPanel.this.getPieceImage(piece, color);
