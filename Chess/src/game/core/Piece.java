@@ -43,6 +43,13 @@ public class Piece {
 	}
 	
 	/**
+	 * Удалить фигуру с доски. 
+	 */
+	public void remove() {
+		square.piece = null;
+		square = null;
+	}
+	/**
 	 * Переместить фигуру на указанную клетку. 
 	 * @param target - куда переместить.
 	 */
