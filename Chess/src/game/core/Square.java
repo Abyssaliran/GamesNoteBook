@@ -24,7 +24,7 @@ public class Square {
 	/**
 	 * Фигура которая, возможно, стоит на клетке.
 	 */
-	private Piece piece;
+	Piece piece;
 	
 	protected Square(Board board, int v, int h) {
 		this.v = v;
@@ -44,7 +44,8 @@ public class Square {
 	 * @param piece какую фигуру постаить.
 	 */
 	public void setPiece(Piece piece) {
-		this.piece = piece;		
+		this.piece = piece;
+		piece.square = this;
 	}
 
 	/**
@@ -59,6 +60,13 @@ public class Square {
 	 */
 	public Piece getPiece() {
 		return piece;		
+	}
+
+	/**
+	 * Удалить фигуру с клетки.
+	 */
+	public void removePiece() {
+		piece = null;		
 	}
 }
 
