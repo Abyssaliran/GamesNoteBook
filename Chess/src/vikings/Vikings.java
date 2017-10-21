@@ -1,7 +1,10 @@
 package vikings;
 
 import game.core.Board;
+import game.core.LineDirs;
 import game.core.PieceColor;
+import game.core.Square;
+import vikings.pieces.Viking;
 import vikings.pieces.Сyning;
 
 /**
@@ -50,8 +53,31 @@ public class Vikings {
 	private static Board initBoard9() {
 		Board board = new Board(9, 9);
 		
-		new Сyning(board.getSquare(4, 4), PieceColor.WHITE);
+		int c = 4;
+		
+		new Сyning(board.getSquare(c, c), PieceColor.WHITE);
+		
+		for(LineDirs dir : LineDirs.ALL) 
+			for (int k = 1; k < 3; k++) {
+				Square square = board.getSquare(c + k * dir.dv, c + k * dir.dh);
+				new Viking(square, PieceColor.WHITE);
+			}
+
+		for(LineDirs dir : LineDirs.ALL)  
+			setBlack(board, c + 4 * dir.dv, c + 4 * dir.dh);
 		
 		return board ;
+	}
+
+	private static void setBlack(Board board, int v, int h) {
+		Square square = board.getSquare(v, h);
+		new Viking(square, PieceColor.BLACK);
+		
+		for(LineDirs dir : LineDirs.ALL) {
+			if (board.onBoard(v + dir.dv, h + dir.dh)) {
+				square = board.getSquare(v + dir.dv, h + dir.dh);
+				new Viking(square, PieceColor.BLACK);
+			}
+		}
 	}
 }
