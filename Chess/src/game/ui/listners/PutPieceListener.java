@@ -19,7 +19,7 @@ public class PutPieceListener implements IGameListner {
 	/**
 	 * Цвет текущего хода.
 	 */
-	private PieceColor moveColor;
+	private PieceColor moveColor = PieceColor.WHITE;
 	
 	/**
 	 * Доска на которой присходят изменения.
@@ -52,10 +52,13 @@ public class PutPieceListener implements IGameListner {
 		
 		Piece piece = getPiece(mouseSquare, moveColor);
 		
-		if (!piece.isCorrectMove(mouseSquare))
+		if (!piece.isCorrectMove(mouseSquare)) {
+			piece.remove();
 			return;
+		}
 
 		Move move = piece.makeMove(mouseSquare);
+		move.doMove();
 		board.history.addMove(move);
 		
 		moveColor = getOponentColor(moveColor);
