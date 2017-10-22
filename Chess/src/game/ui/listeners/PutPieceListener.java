@@ -1,4 +1,4 @@
-package game.ui.listners;
+package game.ui.listeners;
 
 import org.eclipse.swt.graphics.Image;
 

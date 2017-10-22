@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Display;
 import game.core.Board;
 import game.core.Piece;
 import game.core.Square;
-import game.ui.listners.IGameListner;
+import game.ui.listeners.IGameListner;
 
 /**
  * Базовый класс для отрисовки досок всех настольных игр.

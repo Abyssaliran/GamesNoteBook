@@ -1,4 +1,4 @@
-package game.ui.listners;
+package game.ui.listeners;
 
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
@@ -55,11 +55,10 @@ public class MovePieceListener implements IGameListner {
 		if (selectedPiece.getColor() != moveColor)
 			return;
 		
-		savedCursor = panel.getCursor();
-		
 		selectedSquare = mouseSquare;
-		mouseSquare.removePiece();
+		selectedSquare.removePiece();
 		
+		savedCursor = panel.getCursor();
 		panel.imageToCursor( getPieceImage(selectedPiece, moveColor) );
 	    
 		board.setBoardChanged();
@@ -82,9 +81,7 @@ public class MovePieceListener implements IGameListner {
 			
 			// TODO Реализовать запрос фигуры для превращения пешки.
 
-			moveColor = (moveColor == PieceColor.WHITE 
-							? PieceColor.BLACK 
-							: PieceColor.WHITE);
+			moveColor = getOponentColor();
 		}
 
 		selectedPiece = null;
@@ -94,6 +91,11 @@ public class MovePieceListener implements IGameListner {
 
 		board.setBoardChanged();
 		panel.redraw();
+	}
+
+	private PieceColor getOponentColor() {
+		return moveColor == PieceColor.WHITE 
+					? PieceColor.BLACK : PieceColor.WHITE;
 	}
 	
 	/**

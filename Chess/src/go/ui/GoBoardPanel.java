@@ -7,7 +7,7 @@ import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 import game.ui.AsiaBoard;
-import game.ui.listners.PutPieceListener;
+import game.ui.listeners.PutPieceListener;
 import go.Go;
 import go.ui.images.GoImages;
 import reversi.pieces.Stone;

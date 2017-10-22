@@ -6,8 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.GreenBoard;
-import game.ui.listners.MovePieceListener;
-
+import game.ui.listeners.MovePieceListener;
 import vikings.Vikings;
 import vikings.pieces.Viking;
 import vikings.pieces.Сyning;

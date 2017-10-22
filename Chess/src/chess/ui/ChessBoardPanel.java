@@ -20,7 +20,7 @@ import chess.ui.images.ChessImages;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
-import game.ui.listners.MovePieceListener;
+import game.ui.listeners.MovePieceListener;
 
 /**
  * Панель для отрисовки шахматных фигур на доске.

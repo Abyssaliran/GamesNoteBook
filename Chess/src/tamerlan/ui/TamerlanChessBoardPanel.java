@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
-import game.ui.listners.MovePieceListener;
+import game.ui.listeners.MovePieceListener;
 import tamerlan.TamerlanChess;
 import tamerlan.pieces.Bishop;
 import tamerlan.pieces.Giraffe;
