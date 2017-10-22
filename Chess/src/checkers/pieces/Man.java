@@ -6,6 +6,7 @@ package checkers.pieces;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
+import halma.moves.HalmaMove;
 
 /**
  * Простая фигура в шашках.
@@ -29,7 +30,6 @@ public class Man extends CheckersPiece {
 
 	@Override
 	public Move makeMove(Square... squares) {
-		// TODO Auto-generated method stub
-		return null;
+		return new HalmaMove(squares);
 	}
 }
