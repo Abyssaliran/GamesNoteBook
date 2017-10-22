@@ -43,7 +43,7 @@ public class GameBoard extends Canvas
 		addMouseListener(this);
 		board.addObserver(this);
 		
-		board.setChanged();
+		board.setBoardChanged();
 	}
 	
 	@Override

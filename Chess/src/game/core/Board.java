@@ -37,7 +37,7 @@ public class Board extends Observable {
 				squares[v][h] = new Square(this, v, h);
 		}
 
-	public void setChanged() {
+	public void setBoardChanged() {
 		super.setChanged();
 	}
 

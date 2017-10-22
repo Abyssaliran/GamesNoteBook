@@ -62,7 +62,7 @@ public class MovePieceListener implements IGameListner {
 		
 		panel.imageToCursor( getPieceImage(selectedPiece, moveColor) );
 	    
-		board.setChanged();
+		board.setBoardChanged();
 		panel.redraw();
 	}
 	
@@ -92,7 +92,7 @@ public class MovePieceListener implements IGameListner {
 		
 		panel.setCursor(savedCursor);
 
-		board.setChanged();
+		board.setBoardChanged();
 		panel.redraw();
 	}
 	
