@@ -17,7 +17,12 @@ public class Halma {
 		Board board = new Board(boardSize, boardSize);
 
 		new Stone( board.getSquare(0, 0), PieceColor.WHITE);
+		new Stone( board.getSquare(1, 0), PieceColor.WHITE);
+		new Stone( board.getSquare(0, 1), PieceColor.WHITE);
+		
 		new Stone( board.getSquare(boardSize - 1, boardSize - 1), PieceColor.BLACK);
+		new Stone( board.getSquare(boardSize - 2, boardSize - 1), PieceColor.BLACK);
+		new Stone( board.getSquare(boardSize - 1, boardSize - 2), PieceColor.BLACK);
 
 		return board;
 	}

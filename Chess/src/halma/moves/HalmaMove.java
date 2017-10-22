@@ -1,8 +1,7 @@
 package halma.moves;
 
-import java.util.List;
-
 import game.core.Move;
+import game.core.Piece;
 import game.core.Square;
 
 /**
@@ -14,34 +13,34 @@ import game.core.Square;
  */
 public class HalmaMove implements Move {
 	/**
-	 * Клетка куда поставлена фигура.
+	 * Какая фигура перемещается.
 	 */
-	Square target;
+	private Piece piece;
 	
 	/**
-	 * Клетки на которых стоят захваченные в плен вражеские фигуры.
-	 * Эти фигуры меняют цвет и воюют на нашей стороне.
+	 * Откуда перемещается.
 	 */
-	List<Square> captured;
-
+	private Square source;
+	
 	/**
-	 * Создать ход игры в реверси.
-	 * 
-	 * @param target - клетка на которую идет фигура
-	 * @param captured - клетки на которых стоят захваченные (снимаемые).
+	 * Куда перемещается.
 	 */
-	public HalmaMove(Square target, List<Square> captured) {
-		this.target = target;
-		this.captured = captured;
+	private Square target;
+
+	public HalmaMove(Square... squares) {
+		source = squares[0];
+		target = squares[1];
+		
+		piece = source.getPiece();
 	}
 
 	@Override
 	public void doMove() {
-		// TODO Auto-generated method stub
+		piece.moveTo(target);
 	}
 
 	@Override
 	public void undoMove() {
-		// TODO Auto-generated method stub
+		piece.moveTo(source);
 	}
 }
