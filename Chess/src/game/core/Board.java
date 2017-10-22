@@ -44,7 +44,7 @@ public class Board extends Observable {
 	/** 
 	 * Вернуть клетку доски
 	 * @param v вертикаль клетки
-	 * @param h горихонталь клетки
+	 * @param h горизонталь клетки
 	 * @return клетка с задаными вертикалью и горизонталью.
 	 */
 	public Square getSquare(int v, int h) {
