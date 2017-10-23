@@ -23,7 +23,7 @@ public class Board extends Observable {
 	private Square[][] squares;
 	
 	/**
-	 * История партии (последовательность ходов).
+	 * История партии (последовательность ходов игры).
 	 */
 	public History history = new History();
 	
@@ -37,26 +37,35 @@ public class Board extends Observable {
 				squares[v][h] = new Square(this, v, h);
 		}
 
+	/**
+	 * Уведомить обозревателей доски (классы реализующие интерфейс Observable)
+	 * что на доске произошли изменения.
+	 * 
+	 * @see java.util.Observable
+	 * @see java.util.Observer
+	 */
 	public void setBoardChanged() {
+		// Вызвать protected метод базового класса - Observer.
 		super.setChanged();
 	}
 
 	/** 
 	 * Вернуть клетку доски
-	 * @param v вертикаль клетки
-	 * @param h горизонталь клетки
-	 * @return клетка с задаными вертикалью и горизонталью.
+	 * 
+	 * @param v - вертикаль клетки.
+	 * @param h - горизонталь клетки.
+	 * @return - клетка с задаными вертикалью и горизонталью.
 	 */
 	public Square getSquare(int v, int h) {
 		return squares[v][h];
 	}
 
 	/**
-	 * Проверка выхода за границы доски.
+	 * Проверка выхода координат клетки за границы доски.
 	 * 
-	 * @param v - вертикаль
-	 * @param h - горизонталь
-	 * @return на доске или нет
+	 * @param v - вертикаль клетки
+	 * @param h - горизонталь клетки
+	 * @return - есть ли клетка с такими координатами на доске.
 	 */
 	public boolean onBoard(int v, int h) {
 		if (v < 0) return false;
@@ -66,5 +75,30 @@ public class Board extends Observable {
 		if (h > nH-1) return false;
 		
 		return true;
+	}
+
+	/**
+	 * @return - ширина доски
+	 */
+	public int getWidth() {
+		return nV;
+	}
+
+	/**
+	 * @return - высота доски
+	 */
+	public int getHeight() {
+		return nH;
+	}
+
+	/**
+	 * Пуста ли клетка с заданными координатами?
+	 * 
+	 * @param v - вертикаль
+	 * @param h - горизонталь
+	 * @return
+	 */
+	public boolean isEmpty(int v, int h) {
+		return getSquare(v, h).isEmpty();
 	}
 }
