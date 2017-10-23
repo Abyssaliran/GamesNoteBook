@@ -31,11 +31,11 @@ public class Capture extends SimpleMove {
 	
 	@Override
 	public void doMove() {
-		// TODO Auto-generated method stub
+		// TODO Checkers Сделать ход на доске, переставив фигуры 
 	}
 
 	@Override
 	public void undoMove() {
-		// TODO Auto-generated method stub
+		// TODO Checkers Вернуть фигуры в исходное состояние
 	}
 }
