@@ -1,0 +1,1 @@
+INDEX VERSION 1.130+/Users/elenaefimova/Documents/Studies/Java_MSU/java2017_practicum/.metadata/.plugins/org.eclipse.jdt.core

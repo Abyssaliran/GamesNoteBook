@@ -14,6 +14,7 @@ import game.core.Square;
 public class Capture extends SimpleMove {
 	/**
 	 * Захваченая фигура.
+	 * dddds
 	 */
 	CheckersPiece captured;
 
