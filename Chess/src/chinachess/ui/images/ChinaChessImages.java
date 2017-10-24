@@ -54,8 +54,8 @@ public class ChinaChessImages {
 		imageGunWhite    = new Image(display, ChinaChessImages.class.getResourceAsStream("wGun.png"));
 		imageGunBlack    = new Image(display, ChinaChessImages.class.getResourceAsStream("bGun.png"));
 
-		imageBishopWhite = new Image(display, ChinaChessImages.class.getResourceAsStream("wBishop.png"));
-		imageBishopBlack = new Image(display, ChinaChessImages.class.getResourceAsStream("bBishop.png"));
+		imageBishopWhite = new Image(display, ChinaChessImages.class.getResourceAsStream("bBishop.png"));
+		imageBishopBlack = new Image(display, ChinaChessImages.class.getResourceAsStream("wBishop.png"));
 
 		imageKnightWhite = new Image(display, ChinaChessImages.class.getResourceAsStream("wKnight.png"));
 		imageKnightBlack = new Image(display, ChinaChessImages.class.getResourceAsStream("bKnight.png"));

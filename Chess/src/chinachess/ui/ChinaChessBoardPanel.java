@@ -10,6 +10,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import chinachess.pieces.Bishop;
+import chinachess.pieces.Guardian;
 import chinachess.pieces.King;
 import chinachess.pieces.Knight;
 import chinachess.pieces.Pawn;
@@ -41,6 +42,7 @@ public class ChinaChessBoardPanel extends AsiaBoardWithCastle {
 		whites.put(Bishop.class, ChinaChessImages.imageBishopWhite);
 		whites.put(Gun.class,  	 ChinaChessImages.imageGunWhite);
 		whites.put(King.class,   ChinaChessImages.imageKingWhite);
+		whites.put(Guardian.class, ChinaChessImages.imageGuardWhite);
 		
 		pieceImages.put(PieceColor.WHITE, whites);
 		
@@ -53,6 +55,7 @@ public class ChinaChessBoardPanel extends AsiaBoardWithCastle {
 		blacks.put(Bishop.class, ChinaChessImages.imageBishopBlack);
 		blacks.put(Gun.class,    ChinaChessImages.imageGunBlack);
 		blacks.put(King.class,   ChinaChessImages.imageKingBlack);
+		blacks.put(Guardian.class, ChinaChessImages.imageGuardBlack);
 		
 		pieceImages.put(PieceColor.BLACK, blacks);
 	}
