@@ -24,7 +24,7 @@ public class ReversiMove implements Move {
 	 */
 	List<Square> captured;
 
-	private Object piece;
+	private Piece piece;
 
 	/**
 	 * Создать ход игры в реверси.
