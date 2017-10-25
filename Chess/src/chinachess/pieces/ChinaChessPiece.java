@@ -1,10 +1,10 @@
 package chinachess.pieces;
 
-import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 
+abstract
 public class ChinaChessPiece extends Piece {
 	public ChinaChessPiece(Square square, PieceColor color) {
 		super(square, color);
@@ -13,14 +13,13 @@ public class ChinaChessPiece extends Piece {
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
-		// TODO Auto-generated method stub
-		return false;
+		Square target = squares[0];
+		
+		if (target.isEmpty()) 
+			return true;
+		
+		// Если идем на клетку, занятую фигурой 
+		// того же цвета, то ход не корректен.
+		return getColor() != target.getPiece().getColor();
 	}
-
-	@Override
-	public Move makeMove(Square... squares) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
