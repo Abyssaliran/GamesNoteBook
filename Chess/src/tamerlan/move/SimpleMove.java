@@ -13,7 +13,7 @@ public class SimpleMove implements Move {
 	/**
 	 * Какая фигура перемещается.
 	 */
-	private Piece piece;
+	protected Piece piece;
 	
 	/**
 	 * Откуда перемещается.
@@ -23,12 +23,13 @@ public class SimpleMove implements Move {
 	/**
 	 * Куда перемещается.
 	 */
-	private Square target;
+	protected Square target;
 
+	Square[] _squares;
 	public SimpleMove(Square[] squares) {
 		source = squares[0];
 		target = squares[1];
-		
+
 		piece = source.getPiece();
 	}
 
