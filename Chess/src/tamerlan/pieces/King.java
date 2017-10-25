@@ -22,11 +22,16 @@ public class King extends TamerlanPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		// TODO Утаев - проверить правильность хода королем.
+		
 		return true;
 	}
 	
 	@Override
 	public Move makeMove(Square... squares) {
+		// TODO Утаев - если это захват фигуры противника,
+		// то вернуть ход-захват фигуры new Capture();
+		
 		return new SimpleMove(squares);
 	}
 }

@@ -20,6 +20,13 @@ public class TamerlanPiece extends Piece {
 	public boolean isCorrectMove(Square... squares) {
 		Square target = squares[0];
 		
+		// Если идем на клетку, для хранения захваченых 
+		// фигур, то ход не корректен.
+		int nH = target.getHNumber(); 
+		if (nH == 1 || nH == 2 || nH == 13 || nH == 14) {
+			return false;
+		}
+		
 		if (target.isEmpty()) 
 			return true;
 		

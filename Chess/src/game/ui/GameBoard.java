@@ -34,7 +34,7 @@ public class GameBoard extends Canvas
     public Board board;
 
 	public GameBoard(Composite parent, Board board) {
-		super(parent, SWT.NONE);
+		super(parent, SWT.NONE | SWT.DOUBLE_BUFFERED);
 		
 		this.board = board;
 
