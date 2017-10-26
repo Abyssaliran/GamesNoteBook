@@ -1,5 +1,6 @@
 package chinachess.pieces;
 
+import chess.moves.Capture;
 import chess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
@@ -23,6 +24,11 @@ public class King extends ChinaChessPiece{
 
 	@Override
 	public Move makeMove(Square... squares) {
+		Square target = squares[1];
+		
+		if (!target.isEmpty())
+			return new Capture(squares);
+		
 		return new SimpleMove(squares);
 	}
 }
