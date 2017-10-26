@@ -1,5 +1,6 @@
 package chinachess.moves;
 
+import game.core.Piece;
 import game.core.Square;
 
 /**
@@ -9,17 +10,25 @@ import game.core.Square;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Capture extends SimpleMove {
+	private Square capturedSquare;
+	private Piece  capturedPiece;
+
 	public Capture(Square[] squares) {
 		super(squares);
+		
+		capturedSquare = squares[1];
+		 capturedPiece = capturedSquare.getPiece();
 	}
 
 	@Override
 	public void doMove() {
-		// TODO Auto-generated method stub
+		capturedPiece.remove();
+		super.doMove();
 	}
 
 	@Override
 	public void undoMove() {
-		// TODO Auto-generated method stub
+		super.undoMove();
+		capturedSquare.setPiece(capturedPiece);
 	}
 }
