@@ -4,8 +4,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Cursor;
@@ -42,6 +45,31 @@ public class GameBoard extends Canvas
 		
 		addMouseListener(this);
 		board.addObserver(this);
+		
+		// !Что бы доска получала фокус добавим слушателя клавиатуры.
+		// После этого доска начнет получать события от колеса мыши.
+		addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}
+		});
+		
+		// Добавим слушателя колеса мыши.
+		addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseScrolled(MouseEvent e) {
+				if (e.count > 0)
+					board.history.toPrevMove();
+				else board.history.toNextMove();
+				
+				board.setBoardChanged();
+			}
+		});
+
 		
 		board.setBoardChanged();
 	}

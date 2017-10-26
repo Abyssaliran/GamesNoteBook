@@ -25,7 +25,7 @@ public class Board extends Observable {
 	/**
 	 * История партии (последовательность ходов игры).
 	 */
-	public History history = new History();
+	public History history = new History(this);
 	
 	public Board(int nV, int nH) {
 		this.nV = nV;
@@ -47,6 +47,7 @@ public class Board extends Observable {
 	public void setBoardChanged() {
 		// Вызвать protected метод базового класса - Observer.
 		super.setChanged();
+		super.notifyObservers();
 	}
 
 	/** 
