@@ -26,6 +26,8 @@ public class Bishop extends ChinaChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		// TODO Дмитрив - сделать проверку правильности хода фигурой.
+		
 		return true;
 	}
 
