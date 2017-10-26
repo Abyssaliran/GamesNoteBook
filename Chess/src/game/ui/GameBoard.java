@@ -91,13 +91,13 @@ public class GameBoard extends Canvas
 		int squareWidth  = getSquareWidth();
 		int squareHeight = getSquareHeight();
 	
-		for (int v = 0; v < board.nV; v++) {
-			for (int h = 0; h < board.nH; h++)  {
+		for (int v = 0; v < board.nV; v++)
+			for (int h = 0; h < board.nH; h++)
 				drawSquare(gc, v, h, squareWidth, squareHeight);
-				
-				drawPiece (gc, v, h, squareWidth, squareHeight);
-			}
-		}
+
+		for (int v = 0; v < board.nV; v++)
+			for (int h = 0; h < board.nH; h++)
+				drawPiece(gc, v, h, squareWidth, squareHeight);
 	}
 
 	/**
