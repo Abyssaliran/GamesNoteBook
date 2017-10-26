@@ -1,7 +1,5 @@
 package tamerlan.move;
 
-import java.lang.annotation.Target;
-
 import chess.moves.ICapture;
 import game.core.PieceColor;
 import game.core.Square;
