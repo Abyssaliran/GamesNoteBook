@@ -4,6 +4,7 @@
 package checkers.moves;
 
 import game.core.Move;
+import game.core.Piece;
 import game.core.Square;
 
 /**
@@ -13,12 +14,12 @@ import game.core.Square;
  */
 public class SimpleMove implements Move {
 	/**
-	 * Откуда пошла клетка.
+	 * Откуда пошла фигура.
 	 */
 	protected Square source;
 	
 	/**
-	 * Куда пошла клетка.
+	 * Куда пошла фигура.
 	 */
 	protected Square target;
 	
@@ -26,12 +27,19 @@ public class SimpleMove implements Move {
 	 * Бало ли превращение шащки в дамку?
 	 */
 	protected boolean isPromotion;
+
+	/**
+	 * Какая фигура пошла.
+	 */
+	private Piece piece;
 	
 	public SimpleMove(boolean isPromotion, Square ... squares) {
 		this.isPromotion = isPromotion;
 		
 		source = squares[0];
 		target = squares[1];
+		
+		piece = source.getPiece();
 	}
 	
 	@Override
@@ -47,7 +55,7 @@ public class SimpleMove implements Move {
 		if (isPromotion)
 			removeKing();
 
-		// TODO Auto-generated method stub
+		piece.moveTo(target);
 	}
 
 	private void putKing() {

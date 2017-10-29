@@ -1,4 +1,4 @@
-package reversi.ui;
+package game.ui;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;

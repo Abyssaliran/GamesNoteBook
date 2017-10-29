@@ -1,14 +1,12 @@
 package vikings.ui;
 
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import game.core.Piece;
 import game.core.PieceColor;
-import game.ui.GameBoard;
+import game.ui.GreenBoard;
+import game.ui.listeners.MovePieceListener;
 import vikings.Vikings;
 import vikings.pieces.Viking;
 import vikings.pieces.Сyning;
@@ -20,38 +18,34 @@ import vikings.ui.images.VikingImages;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class VikingsBoardPanel extends GameBoard {
-	private static final Color LINE_COLOR = new Color(null, 0,   0, 0);
-	private static final Color FILL_COLOR = new Color(null, 0, 192, 0);
-
+public class VikingsBoardPanel extends GreenBoard {
 	public VikingsBoardPanel(Composite parent, int boardSize) {
 		super(parent, Vikings.getInitBoard(boardSize));
+		
+		listener = new MovePieceListener(this) {
+			@Override
+			public Image getPieceImage(Piece piece, PieceColor color) {
+				return VikingsBoardPanel.this.getPieceImage(piece, color);
+			}
+		};
 	}
 
 	@Override
 	public Image getPieceImage(Piece piece) {
+		return getPieceImage(piece, piece.getColor());
+	}
+
+	private Image getPieceImage(Piece piece, PieceColor color) {
 		if (piece instanceof Viking)
-			return piece.getColor() == PieceColor.WHITE 
+			return color == PieceColor.WHITE 
 				? VikingImages.imageVikingWhite
 				: VikingImages.imageVikingBlack;
 		
 		if (piece instanceof Сyning)
-			return piece.getColor() == PieceColor.WHITE 
+			return color == PieceColor.WHITE 
 				? VikingImages.imageСyningWhite
 				: VikingImages.imageСyningBlack;
-
+		
 		return null;
-	}
-
-	@Override
-	protected void drawBackground(GC gc, Rectangle area) {
-		gc.setBackground(FILL_COLOR);
-		gc.fillRectangle(area);
-	}
-
-	@Override
-	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
-		gc.setForeground(LINE_COLOR);
-		gc.drawRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
 	}
 }

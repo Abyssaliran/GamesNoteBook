@@ -43,6 +43,24 @@ public class Piece {
 	}
 	
 	/**
+	 * Удалить фигуру с доски. 
+	 */
+	public void remove() {
+		square.piece = null;
+		square = null;
+	}
+	/**
+	 * Переместить фигуру на указанную клетку. 
+	 * @param target - куда переместить.
+	 */
+	public void moveTo(Square target) {
+		square.piece = null;
+		
+		target.piece = this;
+		square = target;
+	}
+
+	/**
 	 * Является ли корректным ход фигурой для заданой последовательности клеток?
 	 * @param squares - последтвательность клеток через которые перемещается фигура.
 	 * @return корректен ход или нет.

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package go.ui;
 
 import org.eclipse.swt.graphics.Image;
@@ -8,9 +5,11 @@ import org.eclipse.swt.widgets.Composite;
 
 import game.core.Piece;
 import game.core.PieceColor;
+import game.core.Square;
 import game.ui.AsiaBoard;
-
+import game.ui.listeners.PutPieceListener;
 import go.Go;
+import go.pieces.GoPiece;
 import go.ui.images.GoImages;
 
 /**
@@ -21,6 +20,24 @@ import go.ui.images.GoImages;
 public class GoBoardPanel extends AsiaBoard {
 	public GoBoardPanel(Composite parent, int boardSize) {
 		super(parent, Go.getInitBoard(boardSize, boardSize));
+		
+		listener = new PutPieceListener(this) {
+			@Override
+			public Image getPieceImage(Piece piece, PieceColor color) {
+				return GoBoardPanel.this.getPieceImage(piece, color);
+			}
+
+			@Override
+			public Piece getPiece(Square square, PieceColor color) {
+				return new GoPiece(square, color);
+			}
+		};
+	}
+
+	protected Image getPieceImage(Piece piece, PieceColor color) {
+		return color == PieceColor.WHITE 
+				? GoImages.imageStoneWhite
+				: GoImages.imageStoneBlack;
 	}
 
 	/*
@@ -30,8 +47,6 @@ public class GoBoardPanel extends AsiaBoard {
 	 */
 	@Override
 	public Image getPieceImage(Piece piece) {
-		return piece.getColor() == PieceColor.WHITE 
-				? GoImages.imageStoneWhite
-				: GoImages.imageStoneBlack;
+		return getPieceImage(piece, piece.getColor());
 	}
 }

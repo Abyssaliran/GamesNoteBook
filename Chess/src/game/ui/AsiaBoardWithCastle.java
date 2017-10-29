@@ -17,17 +17,17 @@ public abstract class AsiaBoardWithCastle extends AsiaBoard {
 		
 //		if ((6 > h) && (h > 3)) return;
 		
-		if ((v == 4) && ((h == 1) || (h == 6)) ) {
+		if ((v == 4) && ((h == 1) || (h == 7)) ) {
 			int dv = squareWidth/2;
 			int dh = squareHeight/2;
 			
 			int x = v * squareWidth  + dv;
 			int y = h * squareHeight + dh;
 			
-			gc.drawLine(x, y, x - dv, y - dh);
-			gc.drawLine(x, y, x + dv, y + dh);
-			gc.drawLine(x, y, x - dv, y + dh);
-			gc.drawLine(x, y, x + dv, y - dh);
+			gc.drawLine(x, y, x - squareWidth, y - squareHeight);
+			gc.drawLine(x, y, x + squareWidth, y + squareHeight);
+			gc.drawLine(x, y, x - squareWidth, y + squareHeight);
+			gc.drawLine(x, y, x + squareWidth, y - squareHeight);
 		}
 		
 	}

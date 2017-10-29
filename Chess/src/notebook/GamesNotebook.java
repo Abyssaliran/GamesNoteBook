@@ -16,6 +16,8 @@ import chinachess.ui.ChinaChessBoardPanel;
 import chinachess.ui.images.ChinaChessImages;
 import go.ui.GoBoardPanel;
 import go.ui.images.GoImages;
+import halma.ui.HalmaBoardPanel;
+import halma.ui.images.HalmaImages;
 import notebook.ui.images.NotebookImages;
 import reversi.ui.ReversiBoardPanel;
 import reversi.ui.images.ReversiImages;
@@ -56,6 +58,7 @@ public class GamesNotebook {
 		addReversiTab(display, gamesFolder);
 		addReversiHoleTab(display, gamesFolder);
 		addGoTab(display, gamesFolder);
+		addHalmaTab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -189,8 +192,7 @@ public class GamesNotebook {
 	}
 
 	/**
-	 * Инициализируем закладку для игры Го 
-	 * со случайными отверсиями на доске.
+	 * Инициализируем закладку для игры Го. 
 	 * 
 	 * @param display - монитор на котором рисуется закладки.
 	 * @param gamesFolder - контейнер для добавления закладки.
@@ -202,6 +204,23 @@ public class GamesNotebook {
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Го");
 		tabItem.setControl( new GoBoardPanel(gamesFolder, 10) );
+		tabItem.setImage(tabImage);
+	}
+
+	/**
+	 * Инициализируем закладку для игры Халма 
+	 * со случайными отверсиями на доске.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
+	private static void addHalmaTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, HalmaImages.icoHalma
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Халма");
+		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 8) );
 		tabItem.setImage(tabImage);
 	}
 } 
