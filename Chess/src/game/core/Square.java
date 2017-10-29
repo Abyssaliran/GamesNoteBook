@@ -1,18 +1,20 @@
 package game.core;
 
 /**
- * Клетка на доске настольных игр.
+ * Клетка на доске для настольных игр.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Square {
+	private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+
 	/**
-	 * Вертикаль клетки
+	 * Вертикаль клетки.
 	 */
 	public int v;
 
 	/**
-	 * Горизонталь клетки
+	 * Горизонталь клетки.
 	 */
 	public int h;
 
@@ -24,8 +26,15 @@ public class Square {
 	/**
 	 * Фигура которая, возможно, стоит на клетке.
 	 */
-	private Piece piece;
+	Piece piece;
 	
+	/**
+	 * Создать клетку на доске.
+	 * 
+	 * @param board - доска где расположена клетка.
+	 * @param v - вертикаль клетки.
+	 * @param h - горизонталь клетки.
+	 */
 	protected Square(Board board, int v, int h) {
 		this.v = v;
 		this.h = h;
@@ -33,32 +42,184 @@ public class Square {
 	}
 
 	/**
-	 * @return доска на которой стоит клетка.
+	 * Поставить на клетку фигуру.
+	 * 
+	 * @param piece -  какую фигуру поставить.
+	 */
+	public void setPiece(Piece piece) {
+		this.piece = piece;
+		piece.square = this;
+	}
+
+	/**
+	 * @return - фигура которая стоит на клетке.
+	 */
+	public Piece getPiece() {
+		return piece;		
+	}
+
+	/**
+	 * Удалить фигуру с клетки.
+	 */
+	public void removePiece() {
+		piece = null;		
+	}
+	
+	/**
+	 * Вернуть букву для вертикали доски. 
+	 * 
+	 * @return - буква для обозначения вертикали (a..z)
+	 */
+	public String getVLetter() {
+		return ALPHABET.substring(v, v+1);
+	}
+
+	/**
+	 * Выдать номер горизонтали клетки.
+	 * Клетки нумеруются синизу вверх.
+	 * 
+	 * @return - номер горизонтали клетки
+	 */
+	public int getHNumber() {
+		return board.getHeight() - h;
+	}
+
+	/**
+	 * Получить доску клетки.
+	 * 
+	 * @return - доска на которой находится клетка
 	 */
 	public Board getBoard() {
 		return board;
 	}
 
 	/**
-	 * Поставить на клетку фигуру.
-	 * @param piece какую фигуру постаить.
-	 */
-	public void setPiece(Piece piece) {
-		this.piece = piece;		
-	}
-
-	/**
-	 * @return стоит ли на клетке фигура?
+	 * Пустая ли клетка?
+	 * 
+	 * @return
 	 */
 	public boolean isEmpty() {
-		return piece == null;		
+		return piece == null;
+	}
+
+	/**
+	 * Пустые ли клетки на диагонали между текущей клеткой и клеткой <b>s</b>?
+	 * 
+	 * @param s - вторая клетка для сравнения.
+	 * @return - пустые ли клетки на диагонали между текущей клеткой и клеткой <b>s</b>.
+	 */
+	public boolean isEmptyDiagonal(Square s) {
+		if (!isDiagonal(s))
+			return false;
+		
+		int n = Math.abs(v - s.v);
+		int dv = (v < s.v) ? 1 : -1;
+		int dh = (h < s.h) ? 1 : -1;
+		
+		for (int k = 1; k <= n-1; k++)
+			if (!board.isEmpty(v + dv*k, h + dh*k))
+				return false;
+
+		return true;
+	}
+
+	/**
+	 * Проходит ли диагональ между текущей клеткой и клеткой <b>s</b>?
+	 * 
+	 * @param s - вторая клетка.
+	 * @return - расположены ли две клетки на диагонали.
+	 */
+	public boolean isDiagonal(Square s) {
+		return Math.abs(h - s.h) == Math.abs(v - s.v);
+	}
+
+	/**
+	 * Пустая ли горизонталь из текущей клетки в клетку <b>s</b>?
+	 *  
+	 * @param s - вторая клетка.
+	 * @return - пустая ли горизонталь из текущей клетки в клетку <b>s</b>?
+	 */
+	public boolean isEmptyVertical(Square s) {
+		if (!isVertical(s))
+			return false;
+		
+		int min = Math.min(h, s.h);
+		int max = Math.max(h, s.h);
+		
+		for (int k = min+1; k < max; k++)
+			if (!board.isEmpty(v, k))
+				return false;
+				
+		return true;
+	}
+
+	/**
+	 * Проходит ли вертикаль из текущей клетки в клетку <b>s</b>?
+	 *  
+	 * @param s - вторая клетка.
+	 * @return - проходит ли вертикаль из текущей клетки в клетку <b>s</b>?
+	 */
+	public boolean isVertical(Square s) {
+		return v == s.v;
+	}
+
+	/**
+	 * Пустая ли горизонталь из текущей клетки в клетку <b>s</b>?
+	 *  
+	 * @param s - вторая клетка.
+	 * @return - пустая ли горизонталь из текущей клетки в клетку <b>s</b>?
+	 */
+	public boolean isEmptyHorizontal(Square s) {
+		if (!isHorizontal(s))
+			return false;
+		
+		int min = Math.min(v, s.v);
+		int max = Math.max(v, s.v);
+		
+		for (int k = min+1; k < max; k++)
+			if (!board.isEmpty(k, h))
+				return false;
+
+		return true;
+	}
+
+	/**
+	 * Проходит ли горизонталь из текущей клетки в клетку <b>s</b>?
+	 *  
+	 * @param s - вторая клетка.
+	 * @return - проходит ли горизонталь из текущей клетки в клетку <b>s</b>?
+	 */
+	public boolean isHorizontal(Square s) {
+		return h == s.h;
+	}
+
+	/**
+	 * Близко ли текущая клетка к клетке <b>s</b>?
+	 * 
+	 * @param s - вторая клетка.
+	 * @return - близко ли текущая клетка к клетке <b>s</b>.
+	 */
+	public boolean isNear(Square s) {
+		return 	(Math.abs(h - s.h) <= 1) &&
+				(Math.abs(v - s.v) <= 1);
+	}
+
+	/**
+	 * Переместить фигуру с текущей клетки на клетку <b>target</b>.
+	 * 
+	 * @param target - 
+	 *            на какую клетку переместить фигуру с текущей клетки.
+	 */
+	public void movePieceTo(Square target) {
+		// Переставили фигуру с текущей клетки на клетку target.
+		target.setPiece(piece);
+		
+		// Очистили текущую клетку.
+		piece = null;
 	}
 	
-	/**
-	 * @return фигура которая стоит на клетке.
-	 */
-	public Piece getPiece() {
-		return piece;		
+	@Override
+	public String toString() {
+		return getVLetter() + getHNumber();
 	}
 }
-

@@ -14,9 +14,17 @@ import chess.ui.ChessBoardPanel;
 import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessBoardPanel;
 import chinachess.ui.images.ChinaChessImages;
+import go.ui.GoBoardPanel;
+import go.ui.images.GoImages;
+import halma.ui.HalmaBoardPanel;
+import halma.ui.images.HalmaImages;
 import notebook.ui.images.NotebookImages;
+import reversi.ui.ReversiBoardPanel;
+import reversi.ui.images.ReversiImages;
 import vikings.ui.VikingsBoardPanel;
 import vikings.ui.images.VikingImages;
+import tamerlan.ui.TamerlanChessBoardPanel;
+import tamerlan.ui.images.TamerlanChessImages;
 
 /**
  * <b>Блокнот настольных игр.</b></br></br>
@@ -46,6 +54,11 @@ public class GamesNotebook {
 		addChinaChessTab(display, gamesFolder);
 		addViking9Tab(display, gamesFolder);
 		addViking11Tab(display, gamesFolder);
+		addTamerlanChessTab(display, gamesFolder);
+		addReversiTab(display, gamesFolder);
+		addReversiHoleTab(display, gamesFolder);
+		addGoTab(display, gamesFolder);
+		addHalmaTab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -54,6 +67,16 @@ public class GamesNotebook {
 		}
 		display.dispose();
 	} 
+
+	private static void addTamerlanChessTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, TamerlanChessImages.iconTamerlanChess
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Тамерлан");
+		tabItem.setControl( new TamerlanChessBoardPanel(gamesFolder) );
+		tabItem.setImage(tabImage);
+	}
 
 	/**
 	 * Инициализируем закладку для шашек.
@@ -132,6 +155,72 @@ public class GamesNotebook {
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Викинги-11");
 		tabItem.setControl( new VikingsBoardPanel(gamesFolder, 11) );
+		tabItem.setImage(tabImage);
+	}
+
+	/**
+	 * Инициализируем закладку для игры Реверси.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
+	private static void addReversiTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, ReversiImages.icoReversi
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Реверси");
+		tabItem.setControl( new ReversiBoardPanel(gamesFolder, 0) );
+		tabItem.setImage(tabImage);
+	}
+
+	/**
+	 * Инициализируем закладку для игры Реверси 
+	 * со случайными отверсиями на доске.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
+	private static void addReversiHoleTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, ReversiImages.icoReversiX
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Реверси Х");
+		tabItem.setControl( new ReversiBoardPanel(gamesFolder, 1) );
+		tabItem.setImage(tabImage);
+	}
+
+	/**
+	 * Инициализируем закладку для игры Го. 
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
+	private static void addGoTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, GoImages.icoGo
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Го");
+		tabItem.setControl( new GoBoardPanel(gamesFolder, 10) );
+		tabItem.setImage(tabImage);
+	}
+
+	/**
+	 * Инициализируем закладку для игры Халма 
+	 * со случайными отверсиями на доске.
+	 * 
+	 * @param display - монитор на котором рисуется закладки.
+	 * @param gamesFolder - контейнер для добавления закладки.
+	 */
+	private static void addHalmaTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, HalmaImages.icoHalma
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Халма");
+		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 8) );
 		tabItem.setImage(tabImage);
 	}
 } 

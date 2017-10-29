@@ -3,6 +3,7 @@ package vikings.pieces;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
+import vikings.moves.SimpleMove;
 
 /**
  * Фигура - король Викингов.
@@ -16,7 +17,11 @@ public class Сyning extends VikingsPiece {
 
 	@Override
 	public Move makeMove(Square... squares) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleMove(squares);
+	}
+
+	@Override
+	public boolean isCorrectMove(Square... squares) {
+		return true;
 	}
 }

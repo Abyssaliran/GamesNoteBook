@@ -34,6 +34,31 @@ public class Piece {
 	public PieceColor getColor() {
 		return color;
 	}
+	
+	/**
+	 * @return задать цвет фигуры.
+	 */
+	public void getColor(PieceColor color) {
+		this.color = color;
+	}
+	
+	/**
+	 * Удалить фигуру с доски. 
+	 */
+	public void remove() {
+		square.piece = null;
+		square = null;
+	}
+	/**
+	 * Переместить фигуру на указанную клетку. 
+	 * @param target - куда переместить.
+	 */
+	public void moveTo(Square target) {
+		square.piece = null;
+		
+		target.piece = this;
+		square = target;
+	}
 
 	/**
 	 * Является ли корректным ход фигурой для заданой последовательности клеток?

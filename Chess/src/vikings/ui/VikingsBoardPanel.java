@@ -3,12 +3,12 @@ package vikings.ui;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import game.core.Piece;
 import game.core.PieceColor;
-import game.ui.GameBoard;
+import game.ui.GreenBoard;
+import game.ui.listeners.MovePieceListener;
 import vikings.Vikings;
 import vikings.pieces.Viking;
 import vikings.pieces.Сyning;
@@ -20,63 +20,60 @@ import vikings.ui.images.VikingImages;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class VikingsBoardPanel extends GameBoard {
-	private static final Color LINE_COLOR = new Color(null, 0,   0, 0);
-	private static final Color FILL_COLOR = new Color(null, 220, 134, 21);
+public class VikingsBoardPanel extends GreenBoard {
+	private static final Color COLOR = new Color(null, 0,   255, 0);
 
 	public VikingsBoardPanel(Composite parent, int boardSize) {
 		super(parent, Vikings.getInitBoard(boardSize));
+		
+		listener = new MovePieceListener(this) {
+			@Override
+			public Image getPieceImage(Piece piece, PieceColor color) {
+				return VikingsBoardPanel.this.getPieceImage(piece, color);
+			}
+		};
 	}
 
 	@Override
 	public Image getPieceImage(Piece piece) {
+		return getPieceImage(piece, piece.getColor());
+	}
+
+	private Image getPieceImage(Piece piece, PieceColor color) {
 		if (piece instanceof Viking)
-			return piece.getColor() == PieceColor.WHITE 
+			return color == PieceColor.WHITE 
 				? VikingImages.imageVikingWhite
 				: VikingImages.imageVikingBlack;
 		
 		if (piece instanceof Сyning)
-			return piece.getColor() == PieceColor.WHITE 
+			return color == PieceColor.WHITE 
 				? VikingImages.imageСyningWhite
 				: VikingImages.imageСyningBlack;
-
+		
 		return null;
 	}
 
 	@Override
-	protected void drawBackground(GC gc, Rectangle area) {
-		gc.setBackground(FILL_COLOR);
-		gc.fillRectangle(area);
+	public void drawSquare(GC gc, int v, int h, int sw, int sh) {
+		super.drawSquare(gc, v, h, sw, sh);
+	
+		int h1 = 0;           
+		int v1 = 0;
+		int hc = board.nH/2; 
+		int vc = board.nV/2;
+		int h2 = board.nH-1;
+		int v2 = board.nV-1;
+		
+		gc.setBackground(COLOR);
+		drawMark(gc, v1, h1, sw, sh);
+		drawMark(gc, v1, h2, sw, sh);
+		drawMark(gc, v2, h1, sw, sh);
+		drawMark(gc, v2, h2, sw, sh);
+		
+		drawMark(gc, vc, hc, sw, sh);
 	}
 
-	@Override
-	
-	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
-		gc.setForeground(LINE_COLOR);
-		gc.drawRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
-	
-		//TODO Vikings Дорисовать особые клетки доски: трон короля в центре и угловые клетки
-		/*	Нарисовал клетки в углах и середине доски.
-		 * 	Возможно это не самый оптимальный способ, но решение пришло только такое.
-		 * 	Спасибо за обратную связь, уверен что существует более качественное решение.
-		 * 	Какие задания можно еще выполнить?
-		 * 
-		 */	
-		
-		gc.drawLine(0, 0, squareWidth, squareHeight);
-		gc.drawLine(0, squareHeight, squareWidth, 0);
-		
-		gc.drawLine((board.nV-1)*squareWidth, 0, board.nV*squareWidth, squareHeight);
-		gc.drawLine(board.nV*squareWidth, 0, (board.nV-1)*squareWidth, squareHeight);
-		
-		gc.drawLine(0, (board.nH-1)*squareHeight, squareWidth, board.nH*squareHeight);
-		gc.drawLine(0, board.nH*squareHeight, squareWidth, (board.nH-1)*squareHeight);
-		
-		gc.drawLine((board.nH-1)*squareWidth,(board.nV-1)*squareHeight,board.nH*squareWidth,board.nV*squareHeight);
-		gc.drawLine((board.nH-1)*squareWidth,board.nV*squareHeight,board.nH*squareWidth,(board.nV-1)*squareHeight);
-		
-		gc.drawLine((board.nH/2)*squareWidth,(board.nV/2)*squareHeight,(board.nH/2)*squareWidth+squareWidth,(board.nV/2)*squareHeight+squareHeight);
-		gc.drawLine((board.nH/2)*squareWidth,(board.nV/2)*squareHeight+squareHeight,(board.nH/2)*squareWidth+squareWidth,(board.nV/2)*squareHeight);
-		
+	private void drawMark(GC gc, int v, int h, int sw, int sh) {
+		gc.fillGradientRectangle(1+v*sw, 1+h*sh, sw-1, sh-1, true);
 	}
 }
