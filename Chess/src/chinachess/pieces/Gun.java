@@ -31,7 +31,20 @@ public class Gun extends ChinaChessPiece {
 			return false;
 		
 		// TODO Дмитрив - сделать проверку правильности хода фигурой.
-		
+		//пушка ходит как шахматный ферзь. Соответственно, 
+		//можно делать либо ход по вертикали, либо по горизонтали.
+		Square target = squares[0];
+		if (target.v > square.v) {
+			if (target.h != square.h) {
+				return false;
+			}
+		}
+		if (target.h > square.h) {
+			if (target.v != square.v) {
+				return false;
+			}
+		}
+	
 		return true;
 	}
 
