@@ -1,9 +1,9 @@
 package vikings.pieces;
 
-import vikings.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
+import vikings.moves.SimpleMove;
 
 /**
  * Фигура - викинг.
@@ -22,6 +22,17 @@ public class Viking extends VikingsPiece {
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
-		return true;
+		if (!super.isCorrectMove(squares))
+			return false;
+		
+		Square target = squares[0];
+		
+		if (square.isEmptyVertical(target))
+			return true;
+		
+		if (square.isEmptyHorizontal(target))
+			return true;
+		
+		return false;
 	}
 }
