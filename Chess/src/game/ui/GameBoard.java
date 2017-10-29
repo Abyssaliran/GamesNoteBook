@@ -1,9 +1,9 @@
 package game.ui;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -38,7 +38,7 @@ abstract
 public class GameBoard extends Canvas 
 	implements PaintListener, MouseListener, MouseMoveListener, Observer  
 {
-    private static final Color PROMPT_COLOR = new Color(null, 0, 192, 0);
+    private static final Color PROMPT_COLOR = new Color(null, 255, 0, 0);
     
 	public Board board;
 
@@ -158,6 +158,9 @@ public class GameBoard extends Canvas
 		int selectedV = e.x / squareW;
 		int selectedH = e.y / squareH;
 		
+		if (!board.onBoard(selectedV, selectedH))
+			return null;
+		
 		return board.getSquare(selectedV, selectedH);
 	}
 	
@@ -226,14 +229,16 @@ public class GameBoard extends Canvas
 	public void mouseDown(MouseEvent e) {
 		Square s = getSquare(e);
 		
-		listener.mouseDown(s, e.button);
+		if (s != null)
+			listener.mouseDown(s, e.button);
 	}
 
 	@Override
 	public void mouseUp(MouseEvent e) {
 		Square s = getSquare(e);
 		
-		listener.mouseUp(s, e.button);
+		if (s != null)
+			listener.mouseUp(s, e.button);
 	}
 
 	@Override
@@ -242,21 +247,26 @@ public class GameBoard extends Canvas
 	@Override
 	public void mouseMove(MouseEvent e) {
 		Square s = getSquare(e);
-		mouseMove(s);
+		
+		if (s != null)
+			mouseMove(s);
 	}
 
 	/**
 	 * Поля на которые допустим ход фигурой под мышкой.
 	 * Используется для подсказки допустимых ходов.
 	 */
-	private Set<Square> prompted = new HashSet<>();
+	private List<Square> prompted = new ArrayList<>();
 	
 	private void mouseMove(Square underMouse) {
 		prompted.clear();
 		
 		Piece underMousePiece = underMouse.getPiece();
-		if (underMousePiece == null)
+		if (underMousePiece == null) {
+			update();
+			redraw();
 			return;
+		}
 				
 		for (int v = 0; v < board.nV; v++)
 			for (int h = 0; h < board.nH; h++) {
@@ -265,11 +275,22 @@ public class GameBoard extends Canvas
 					prompted.add(square);
 			}
 		
-		if (!prompted.isEmpty())
 			update();
+			redraw();
 	}
 	
+	/**
+	 * Нарисовать подсказку для клетки на которую может фигура
+	 * находящаяся под мышкой.
+	 * 
+	 * @param gc - графический контекст для отрисовки подсказки.
+	 * @param squareWidth - ширина клетки.
+	 * @param squareHeight - высота клетки.
+	 */
 	void drawPrompt(GC gc, int squareWidth, int squareHeight) {
+		if (prompted.isEmpty())
+			return;
+		
 		gc.setLineWidth(3);
 		gc.setForeground(PROMPT_COLOR);
 		for (Square s : prompted)  
