@@ -23,7 +23,16 @@ public class Knight extends ChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		Square target = squares[0];
+		
+		int dh = Math.abs(target .h - square.h);
+		int dv = Math.abs(target .v - square.v);
+		
+		if ((dh == 1 && dv == 2)|| 
+		    (dh == 2 && dv == 1) )
+			return true;
+		
+		return false;
 	}
 	
 	@Override

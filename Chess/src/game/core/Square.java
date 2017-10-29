@@ -129,7 +129,7 @@ public class Square {
 	 * @param s - вторая клетка.
 	 * @return - расположены ли две клетки на диагонали.
 	 */
-	private boolean isDiagonal(Square s) {
+	public boolean isDiagonal(Square s) {
 		return Math.abs(h - s.h) == Math.abs(v - s.v);
 	}
 
@@ -189,7 +189,7 @@ public class Square {
 	 * @param s - вторая клетка.
 	 * @return - проходит ли горизонталь из текущей клетки в клетку <b>s</b>?
 	 */
-	private boolean isHorizontal(Square s) {
+	public boolean isHorizontal(Square s) {
 		return h == s.h;
 	}
 

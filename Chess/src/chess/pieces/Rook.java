@@ -23,7 +23,15 @@ public class Rook extends ChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		Square target = squares[0];
+		
+		if (square.isEmptyVertical(target))
+			return true;
+		
+		if (square.isEmptyHorizontal(target))
+			return true;
+
+		return false;
 	}
 	
 	@Override
