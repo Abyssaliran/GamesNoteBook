@@ -4,6 +4,7 @@ import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import go.moves.SimpleMove;
 
 /**
  * Фигура для игры в <a href="https://ru.wikipedia.org/wiki/%D0%93%D0%BE">Го</a>
@@ -31,7 +32,7 @@ public class GoPiece extends Piece {
 	public Move makeMove(Square... squares) {
 		Move move = null;
 		// TODO Go Реализовать создание и выпонение хода.
-		// move = new SimpleMove();
+		 move = new SimpleMove();
 		// move = new Capture();
 		// move.doMove();
 		return move ;
