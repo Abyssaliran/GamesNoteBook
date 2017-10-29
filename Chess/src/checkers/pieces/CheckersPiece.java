@@ -19,8 +19,10 @@ public class CheckersPiece extends Piece {
 	@Override
 	public boolean isCorrectMove(Square... squares) {
 		// В шашках нельзя ходить на поле занятое фигурой любого цвета.
+		
 		Square target = squares[0];
 		
 		return target.isEmpty();
+		
 	}
 }

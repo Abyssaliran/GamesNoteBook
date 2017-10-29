@@ -35,4 +35,12 @@ public enum Dirs {
 		this.dv = dv;
 		this.dh = dh;
 	}
+	
+	public int getDv() {
+		return dv;
+	}
+	
+	public int getDh() {
+		return dh;
+	}
 }
