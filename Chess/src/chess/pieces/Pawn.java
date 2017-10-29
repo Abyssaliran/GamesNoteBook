@@ -23,7 +23,25 @@ public class Pawn extends ChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		Square target = squares[0];
+		
+		if (square.v != target.v)
+			return false;
+		
+		int dh = (getColor() == PieceColor.WHITE) 
+				? square.h - target.h 
+				: target.h - square.h;
+		
+		boolean isStartPosition = 
+					(getColor() == PieceColor.WHITE) 
+						? square.h == 6 : square.h == 1;  
+		
+		int upper = isStartPosition ? 2 : 1;
+		
+		if ((1 <= dh) && (dh <= upper))
+			return true;
+		
+		return false;
 	}
 	
 	@Override

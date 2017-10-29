@@ -23,7 +23,11 @@ public class King extends ChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		Square target = squares[0];
+		if (square.isNear(target))		
+			return true;
+		
+		return false;
 	}
 	
 	@Override
