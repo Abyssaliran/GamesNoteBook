@@ -22,7 +22,7 @@ import vikings.ui.images.VikingImages;
  */
 public class VikingsBoardPanel extends GameBoard {
 	private static final Color LINE_COLOR = new Color(null, 0,   0, 0);
-	private static final Color FILL_COLOR = new Color(null, 0, 192, 0);
+	private static final Color FILL_COLOR = new Color(null, 220, 134, 21);
 
 	public VikingsBoardPanel(Composite parent, int boardSize) {
 		super(parent, Vikings.getInitBoard(boardSize));
@@ -50,10 +50,32 @@ public class VikingsBoardPanel extends GameBoard {
 	}
 
 	@Override
+	
 	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
 		gc.setForeground(LINE_COLOR);
 		gc.drawRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
+	
+		//TODO Vikings Дорисовать особые клетки доски: трон короля в центре и угловые клетки
+		/*	Нарисовал клетки в углах и середине доски.
+		 * 	Возможно это не самый оптимальный способ, но решение пришло только такое.
+		 * 	Спасибо за обратную связь, уверен что существует более качественное решение.
+		 * 	Какие задания можно еще выполнить?
+		 */	
 		
-		// TODO Vikings Дорисовать особые клетки доски: трон короля в центре и угловые клетки 
+		gc.drawLine(0, 0, squareWidth, squareHeight);
+		gc.drawLine(0, squareHeight, squareWidth, 0);
+		
+		gc.drawLine((board.nV-1)*squareWidth, 0, board.nV*squareWidth, squareHeight);
+		gc.drawLine(board.nV*squareWidth, 0, (board.nV-1)*squareWidth, squareHeight);
+		
+		gc.drawLine(0, (board.nH-1)*squareHeight, squareWidth, board.nH*squareHeight);
+		gc.drawLine(0, board.nH*squareHeight, squareWidth, (board.nH-1)*squareHeight);
+		
+		gc.drawLine((board.nH-1)*squareWidth,(board.nV-1)*squareHeight,board.nH*squareWidth,board.nV*squareHeight);
+		gc.drawLine((board.nH-1)*squareWidth,board.nV*squareHeight,board.nH*squareWidth,(board.nV-1)*squareHeight);
+		
+		gc.drawLine((board.nH/2)*squareWidth,(board.nV/2)*squareHeight,(board.nH/2)*squareWidth+squareWidth,(board.nV/2)*squareHeight+squareHeight);
+		gc.drawLine((board.nH/2)*squareWidth,(board.nV/2)*squareHeight+squareHeight,(board.nH/2)*squareWidth+squareWidth,(board.nV/2)*squareHeight);
+		
 	}
 }
