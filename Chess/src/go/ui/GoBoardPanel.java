@@ -9,8 +9,8 @@ import game.core.Square;
 import game.ui.AsiaBoard;
 import game.ui.listeners.PutPieceListener;
 import go.Go;
+import go.pieces.GoPiece;
 import go.ui.images.GoImages;
-import reversi.pieces.Stone;
 
 /**
  * Панель для игры <a href="https://ru.wikipedia.org/wiki/%D0%93%D0%BE">Го</a>
@@ -29,7 +29,7 @@ public class GoBoardPanel extends AsiaBoard {
 
 			@Override
 			public Piece getPiece(Square square, PieceColor color) {
-				return new Stone(square, color);
+				return new GoPiece(square, color);
 			}
 		};
 	}
