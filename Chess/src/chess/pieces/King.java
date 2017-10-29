@@ -1,5 +1,7 @@
 package chess.pieces;
 
+import chess.moves.Capture;
+import chess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -26,7 +28,11 @@ public class King extends ChessPiece {
 	
 	@Override
 	public Move makeMove(Square... squares) {
-		// TODO Auto-generated method stub
-		return null;
+		Square target = squares[1];
+		
+		if (!target.isEmpty())
+			return new Capture(squares);
+		
+		return new SimpleMove(squares);
 	}
 }

@@ -23,6 +23,8 @@ public class Stone extends Piece {
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
+		Square target = squares[0];
+		
 		return true;
 	}
 
@@ -32,7 +34,7 @@ public class Stone extends Piece {
 		
 		List<Square> captured = collectCaptured(target);
 		
-		return new ReversiMove(target, captured);
+		return new ReversiMove(this, target, captured);
 	}
 
 	/**

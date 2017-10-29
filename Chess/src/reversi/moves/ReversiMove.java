@@ -3,6 +3,7 @@ package reversi.moves;
 import java.util.List;
 
 import game.core.Move;
+import game.core.Piece;
 import game.core.Square;
 
 /**
@@ -23,24 +24,34 @@ public class ReversiMove implements Move {
 	 */
 	List<Square> captured;
 
+	private Piece piece;
+
 	/**
 	 * Создать ход игры в реверси.
 	 * 
 	 * @param target - клетка на которую идет фигура
-	 * @param captured - клетки на которых стоят захваченные (снимаемые).
+	 * @param captured - клетки на которых стоят захваченные (перекрашеные).
 	 */
-	public ReversiMove(Square target, List<Square> captured) {
+	public ReversiMove(Piece piece, Square target, List<Square> captured) {
 		this.target = target;
 		this.captured = captured;
+		
+		this.piece = piece;
 	}
 
 	@Override
 	public void doMove() {
-		// TODO Auto-generated method stub
+		// TODO Задорожная - реализовать выполнение хода реверси:
+		// 1. поставить на поле target фигуру piece.
+		// 2. перекрасить фигуры стоящие на клетках captured 
+		//    в противоположный цвет.
 	}
 
 	@Override
 	public void undoMove() {
-		// TODO Auto-generated method stub
+		// TODO Задорожная - реализовать выполнение хода реверси:
+		// 1. убрать с поля target фигуру.
+		// 2. перекрасить фигуры стоящие на клетках captured 
+		//    в противоположный цвет.
 	}
 }

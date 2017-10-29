@@ -20,8 +20,8 @@ public class GoPiece extends Piece {
 	 */
 	@Override
 	public boolean isCorrectMove(Square... squares) {
-		// TODO Auto-generated method stub
-		return false;
+		// TODO Go Реализовать проверку правильности хода.
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -29,8 +29,12 @@ public class GoPiece extends Piece {
 	 */
 	@Override
 	public Move makeMove(Square... squares) {
-		// TODO Auto-generated method stub
-		return null;
+		Move move = null;
+		// TODO Go Реализовать создание и выпонение хода.
+		// move = new SimpleMove();
+		// move = new Capture();
+		// move.doMove();
+		return move ;
 	}
 	
 	/**
@@ -40,6 +44,7 @@ public class GoPiece extends Piece {
 	 * @return
 	 */
 	public boolean hasDame() {
+		// TODO Go Реализовать проверку правила Dame.
 		return true;
 	}
 }
