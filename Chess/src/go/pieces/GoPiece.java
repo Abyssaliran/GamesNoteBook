@@ -1,9 +1,13 @@
 package go.pieces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import go.moves.Capture;
 import go.moves.SimpleMove;
 
 /**
@@ -30,14 +34,22 @@ public class GoPiece extends Piece {
 	 */
 	@Override
 	public Move makeMove(Square... squares) {
+		Square target = squares[0];
+		
 		Move move = null;
-		// TODO Go Реализовать создание и выпонение хода.
-		 move = new SimpleMove();
-		// move = new Capture();
-		// move.doMove();
+		// TODO Go Реализовать создание и выполнение хода.
+		move = new SimpleMove(squares);
+
+//		List<Square> captured = collectCaptured(squares);
+//		move = new Capture(target, captured);
 		return move ;
 	}
 	
+	List<Square> collectCaptured(Square[] squares) {
+		List<Square> captured = new ArrayList<>();
+		return captured ;
+	}
+
 	/**
 	 * Может ли фигура "дышать"?
 	 * Есть ли у нее или у соседних своих клеток пустая 
