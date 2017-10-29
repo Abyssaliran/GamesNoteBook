@@ -1,16 +1,20 @@
 package game.ui;
 
+import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -32,9 +36,11 @@ import game.ui.listeners.IGameListner;
  */
 abstract
 public class GameBoard extends Canvas 
-	implements PaintListener, MouseListener, Observer  
+	implements PaintListener, MouseListener, MouseMoveListener, Observer  
 {
-    public Board board;
+    private static final Color PROMPT_COLOR = new Color(null, 0, 192, 0);
+    
+	public Board board;
 
 	public GameBoard(Composite parent, Board board) {
 		super(parent, SWT.NONE | SWT.DOUBLE_BUFFERED);
@@ -44,6 +50,8 @@ public class GameBoard extends Canvas
 		addPaintListener(this);
 		
 		addMouseListener(this);
+		addMouseMoveListener(this);
+		
 		board.addObserver(this);
 		
 		// !Что бы доска получала фокус добавим слушателя клавиатуры.
@@ -98,6 +106,8 @@ public class GameBoard extends Canvas
 		for (int v = 0; v < board.nV; v++)
 			for (int h = 0; h < board.nH; h++)
 				drawPiece(gc, v, h, squareWidth, squareHeight);
+		
+		drawPrompt(gc, squareWidth, squareHeight);
 	}
 
 	/**
@@ -228,4 +238,41 @@ public class GameBoard extends Canvas
 
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {}
+
+	@Override
+	public void mouseMove(MouseEvent e) {
+		Square s = getSquare(e);
+		mouseMove(s);
+	}
+
+	/**
+	 * Поля на которые допустим ход фигурой под мышкой.
+	 * Используется для подсказки допустимых ходов.
+	 */
+	private Set<Square> prompted = new HashSet<>();
+	
+	private void mouseMove(Square underMouse) {
+		prompted.clear();
+		
+		Piece underMousePiece = underMouse.getPiece();
+		if (underMousePiece == null)
+			return;
+				
+		for (int v = 0; v < board.nV; v++)
+			for (int h = 0; h < board.nH; h++) {
+				Square square = board.getSquare(v, h);
+				if (underMousePiece.isCorrectMove(square))
+					prompted.add(square);
+			}
+		
+		if (!prompted.isEmpty())
+			update();
+	}
+	
+	void drawPrompt(GC gc, int squareWidth, int squareHeight) {
+		gc.setLineWidth(3);
+		gc.setForeground(PROMPT_COLOR);
+		for (Square s : prompted)  
+			gc.drawRectangle(s.v * squareWidth, s.h * squareHeight, squareWidth, squareHeight);
+	}
 }
