@@ -36,11 +36,11 @@ public class Capture implements Move {
 
 	@Override
 	public void doMove() {
-		// TODO Auto-generated method stub
+		// TODO Go реализовать выполнение хода и захват фигур.
 	}
 
 	@Override
 	public void undoMove() {
-		// TODO Auto-generated method stub
+		// TODO Go реализовать отмену хода и возврат фигур.
 	}
 }

@@ -16,6 +16,39 @@ public abstract class VikingsPiece extends Piece {
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
+		Square target = squares[0];
+		
+		return target.isEmpty();
+	}
+	
+	static 
+	public boolean isTron(Square s) {
+		if (s.v != s.getBoard().nV/2)
+			return false;
+		
+		if (s.h != s.getBoard().nH/2)
+			return false;
+		
 		return true;
+	}
+	
+	static 
+	public boolean isExit(Square s) {
+		int nv = s.getBoard().nV-1;
+		int nh = s.getBoard().nH-1;
+
+		if ((s.v == 0) && (s.h == 0)) 
+			return true;
+		
+		if ((s.v == 0) && (s.h == nh)) 
+			return true;
+		
+		if ((s.v == nv) && (s.h == 0)) 
+			return true;
+		
+		if ((s.v == nv) && (s.h == nh)) 
+			return true;
+
+		return false;
 	}
 }

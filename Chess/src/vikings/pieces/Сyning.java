@@ -22,6 +22,17 @@ public class Сyning extends VikingsPiece {
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
-		return true;
+		if (!super.isCorrectMove(squares))
+			return false;
+		
+		Square target = squares[0];
+		
+		if (square.isEmptyVertical(target))
+			return true;
+		
+		if (square.isEmptyHorizontal(target))
+			return true;
+		
+		return false;
 	}
 }

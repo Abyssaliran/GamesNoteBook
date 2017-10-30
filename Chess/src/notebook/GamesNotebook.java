@@ -58,7 +58,9 @@ public class GamesNotebook {
 		addReversiTab(display, gamesFolder);
 		addReversiHoleTab(display, gamesFolder);
 		addGoTab(display, gamesFolder);
-		addHalmaTab(display, gamesFolder);
+		addHalma8x8Tab(display, gamesFolder);
+		addHalma10x10Tab(display, gamesFolder);
+		addHalma16x16Tab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -214,13 +216,32 @@ public class GamesNotebook {
 	 * @param display - монитор на котором рисуется закладки.
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
-	private static void addHalmaTab(Display display, TabFolder gamesFolder) {
+	private static void addHalma8x8Tab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, HalmaImages.icoHalma
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
-		tabItem.setText("Халма");
+		tabItem.setText("Халма 8x8");
 		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 8) );
 		tabItem.setImage(tabImage);
 	}
+	private static void addHalma10x10Tab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, HalmaImages.icoHalma
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Халма 10x10");
+		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 10) );
+		tabItem.setImage(tabImage);
+	}
+	private static void addHalma16x16Tab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, HalmaImages.icoHalma
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Халма 16x16");
+		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 16) );
+		tabItem.setImage(tabImage);
+	}
+	
 } 
