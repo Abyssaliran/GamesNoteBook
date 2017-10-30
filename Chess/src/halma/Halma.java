@@ -1,5 +1,7 @@
 package halma;
 
+import chess.pieces.Pawn;
+import chess.pieces.Rook;
 import game.core.Board;
 import game.core.PieceColor;
 import halma.pieces.Stone;
@@ -13,14 +15,63 @@ import halma.pieces.Stone;
  */
 public class Halma {
 
-	public static Board getInitBoard(int boardSize) {
-		Board board = new Board(boardSize, boardSize);
-
-		// TODO Halma Расставить фигуры на доске.
+	private static final short   allowableBoardSizeNumb = 3;
+	private static final short[] allowableBoardSize = {8, 10, 16};
+	
+	/**
+	 * Creates game board with proper sizes allowable for the Game.
+	 * @return Board with allocated figures
+	 */
+	private static Board initializeParticularBoard(short boardSize) {
 		
-		new Stone( board.getSquare(0, 0), PieceColor.WHITE);
-		new Stone( board.getSquare(boardSize - 1, boardSize - 1), PieceColor.BLACK);
-
+		Board board = new Board(boardSize, boardSize);
+		
+		// Add Common Corner
+		for (short i = 0; i < 4; ++i) {
+			for (short j = 0; j < 4 - i; ++j) {
+				new Stone( board.getSquare(i, j), PieceColor.WHITE);
+				new Stone( board.getSquare(boardSize - i - 1, boardSize - j - 1), PieceColor.BLACK);				
+			}
+		}
+		// Add extra diagonal
+		if (allowableBoardSize[1] <= boardSize) {
+			for (short i = 0; i < 5; ++i) {
+				new Stone( board.getSquare(i, 4 - i), PieceColor.WHITE);
+				new Stone( board.getSquare(boardSize - i - 1, boardSize - 5 + i), PieceColor.BLACK);
+			}			
+		}
+		// Add short diagonal
+		if (allowableBoardSize[2] == boardSize) {
+			for (short i = 0; i < 4; ++i) {
+				new Stone( board.getSquare(i + 1, 4 - i), PieceColor.WHITE);
+				new Stone( board.getSquare(boardSize - i - 2, boardSize - 5 + i), PieceColor.BLACK);				
+			}						
+		}
 		return board;
+	}	
+	
+	/**
+	 * is used when wrong board size is passed on input
+	 * @param boardSize
+	 * @return  empty non-initialized board
+	 */
+	private static Board emptyBoard(int boardSize) {
+		
+		// TO DO:
+		// Throw an exception or say about wrong board sizes
+		
+		return new Board(boardSize, boardSize);	// null	
+	} 
+	
+	public static Board getInitBoard(int boardSize) {
+		
+		// Initialize board of the proper format
+		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz) {
+			if (allowableBoardSize[ind_sz] == boardSize) {
+				return Halma.initializeParticularBoard(allowableBoardSize[ind_sz]);
+			}
+		}
+		return Halma.emptyBoard(boardSize);
 	}
 }
+
