@@ -6,6 +6,13 @@ import chinachess.pieces.*;
 import game.core.Board;
 import game.core.PieceColor;
 
+/**
+ * Игра <a href=
+ * "https://ru.wikipedia.org/wiki/%D0%A1%D1%8F%D0%BD%D1%86%D0%B8">
+ * Китайские шахматы</a>
+ * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
+ *
+ */
 public class ChinaChess {
 	public static Board getInitBoard() {
 		Board board = new Board(9, 9);

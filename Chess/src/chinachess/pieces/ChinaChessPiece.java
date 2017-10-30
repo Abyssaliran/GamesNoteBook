@@ -4,6 +4,12 @@ import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 
+/**
+ * Фигура в игре <a href="https://ru.wikipedia.org/wiki/%D0%A1%D1%8F%D0%BD%D1%86%D0%B8">
+ * Китайские шахматы</a>
+ * 
+ * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
+ */
 abstract
 public class ChinaChessPiece extends Piece {
 	public ChinaChessPiece(Square square, PieceColor color) {

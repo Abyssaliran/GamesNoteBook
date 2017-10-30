@@ -10,11 +10,12 @@ import game.core.PieceColor;
 import game.core.Square;
 
 /**
+ * Пушка в игре <a href="https://ru.wikipedia.org/wiki/%D0%A1%D1%8F%D0%BD%D1%86%D0%B8">
+ * Китайские шахматы</a>
+ * 
  * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
- *
  */
 public class Gun extends ChinaChessPiece {
-
 	/**
 	 * @param square
 	 * @param color
