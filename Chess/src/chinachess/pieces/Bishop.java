@@ -10,8 +10,10 @@ import game.core.PieceColor;
 import game.core.Square;
 
 /**
+ * Слон в игре <a href="https://ru.wikipedia.org/wiki/%D0%A1%D1%8F%D0%BD%D1%86%D0%B8">
+ * Китайские шахматы</a>
+ * 
  * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
- *
  */
 public class Bishop extends ChinaChessPiece {
 
@@ -25,6 +27,8 @@ public class Bishop extends ChinaChessPiece {
 		// выполняемую в базовом классе.
 		if (!super.isCorrectMove(squares))
 			return false;
+		
+		// TODO Дмитрив - сделать проверку правильности хода фигурой.
 		
 		return true;
 	}

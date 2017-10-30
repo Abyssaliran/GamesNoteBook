@@ -10,11 +10,12 @@ import game.core.PieceColor;
 import game.core.Square;
 
 /**
+ * Пушка в игре <a href="https://ru.wikipedia.org/wiki/%D0%A1%D1%8F%D0%BD%D1%86%D0%B8">
+ * Китайские шахматы</a>
+ * 
  * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
- *
  */
 public class Gun extends ChinaChessPiece {
-
 	/**
 	 * @param square
 	 * @param color
@@ -30,6 +31,21 @@ public class Gun extends ChinaChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		// TODO Дмитрив - сделать проверку правильности хода фигурой.
+		//пушка ходит как шахматный ферзь. Соответственно, 
+		//можно делать либо ход по вертикали, либо по горизонтали.
+		Square target = squares[0];
+		if (target.v > square.v) {
+			if (target.h != square.h) {
+				return false;
+			}
+		}
+		if (target.h > square.h) {
+			if (target.v != square.v) {
+				return false;
+			}
+		}
+	
 		return true;
 	}
 

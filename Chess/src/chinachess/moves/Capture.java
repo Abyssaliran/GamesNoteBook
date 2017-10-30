@@ -6,8 +6,10 @@ import game.core.Square;
 /**
  * Ход китайских шахматах - перемещение фигуры на клетку 
  * с захватом фигуры противника.
- *  
- * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ * Игра <a href="https://ru.wikipedia.org/wiki/%D0%A1%D1%8F%D0%BD%D1%86%D0%B8">
+ * Китайские шахматы</a>
+ * 
+ * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
  */
 public class Capture extends SimpleMove {
 	private Square capturedSquare;
