@@ -26,7 +26,7 @@ public class Man extends CheckersPiece {
 			return false;
 
 		Square source = square;     // клетка где уже стоит фигура.
-		Square target = squares[1]; // клетка куда хочет пойти фигура.
+		Square target = squares[0]; // клетка куда хочет пойти фигура.
 		
 		// Вычислим смещение фигуры.
 		boolean isBlack = getColor() == PieceColor.BLACK;
@@ -43,7 +43,8 @@ public class Man extends CheckersPiece {
 		
 		// Теперь у нас ход диагональный.
 		if (Math.abs(dh) == 1) {
-			// Смещение на 1 клетку по диагонали - это простой ход без захвата.
+			// Смещение на 1 клетку по диагонали 
+			// - это простой ход без захвата.
 			
 			// Проверяем не хочет ли фигура пойти назад.
 			// Если да, то ход неправильный.
@@ -58,6 +59,30 @@ public class Man extends CheckersPiece {
 			// Все проверки фигура прошла. Ход правильный.
 			return true;						
 		}
+		else 
+		if (Math.abs(dh) == 2) {
+			// Ход на две клетки - это простой ход с захватом.
+			
+			// Смотрим клетку, через которую перепрыгнули.
+			int capturedH = (source.h + target.h) / 2;
+			int capturedV = (source.v + target.v) / 2;
+			
+		    Board board = square.getBoard();
+			Square capturedSquare = board.getSquare(capturedV, capturedH);
+		    
+			Piece captured = capturedSquare.getPiece();
+			
+			// Перепрыгнули через пустую клетку.
+			if (captured == null)
+				return false; 
+			
+			// Перепрыгнули через фигуру того же цвета.
+			if (getColor() == captured.getColor())
+				return false;
+			
+			// Все проверки фигура прошла. Ход правильный.
+			return true;						
+		}
 		
 		return false;
 	}
@@ -65,9 +90,6 @@ public class Man extends CheckersPiece {
 	@Override
 	public Move makeMove(Square... squares) {
 		Move move = null;
-		
-		// TODO Checkers Создать ход шашек
-		// Просьба проверить.
 		
 		Square source = squares[0];
 		Square target = squares[1];	
@@ -83,15 +105,21 @@ public class Man extends CheckersPiece {
 		    move = new SimpleMove(isPromotion , source, target);
 		}
 		else {
-			int capturedH = (source.h - target.h) / 2;
-			int capturedV = (source.v - target.v) / 2;
+			int capturedH = (source.h + target.h) / 2;
+			int capturedV = (source.v + target.v) / 2;
 			
 		    Board board = square.getBoard();
 			Square capturedSquare = board.getSquare(capturedV, capturedH);
 		    
-			Piece captured = capturedSquare.getPiece();
-			move = new Capture(isPromotion, captured, source, target);
+			Piece capturedPiece = capturedSquare.getPiece();
+			
+			move = new Capture(isPromotion, capturedPiece, source, target);
 		}
 		return move;
+	}
+	
+	@Override
+	public String toString() {
+		return "Man" + square;
 	}
 }

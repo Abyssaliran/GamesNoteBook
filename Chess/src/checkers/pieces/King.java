@@ -44,4 +44,9 @@ public class King extends CheckersPiece {
 		// move.doMove();
 		return move;
 	}
+	
+	@Override
+	public String toString() {
+		return "King" + square;
+	}
 }

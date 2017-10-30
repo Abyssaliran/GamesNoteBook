@@ -16,9 +16,11 @@ public class Capture extends SimpleMove {
 	 * Захваченая фигура.
 	 */
 	Piece captured;
+	private Square capturedSquare;
 
 	/**
 	 * Создание хода представляющего взятие одной фигуры.
+	 * 
 	 * @param isPromotion - было ли превращение в дамку.
 	 * @param captured - захваченная фигура. 
 	 * @param squares - откуда и куда пошла фигура.
@@ -27,15 +29,23 @@ public class Capture extends SimpleMove {
 		super(isPromotion, squares);
 		
 		this.captured = captured;
+		capturedSquare = captured.square;
 	}
 	
 	@Override
 	public void doMove() {
-		// TODO Checkers Сделать ход на доске, переставив фигуры 
+		captured.remove();
+		super.doMove();
 	}
 
 	@Override
 	public void undoMove() {
-		// TODO Checkers Вернуть фигуры в исходное состояние
+		capturedSquare.setPiece(captured);
+		super.undoMove();
+	}
+	
+	@Override
+	public String toString() {
+		return "" + source + "x" + target;
 	}
 }

@@ -17,12 +17,12 @@ public class SimpleMove implements Move {
 	 * Откуда пошла фигура.
 	 */
 	protected Square source;
-	
+
 	/**
 	 * Куда пошла фигура.
 	 */
 	protected Square target;
-	
+
 	/**
 	 * Бало ли превращение шащки в дамку?
 	 */
@@ -32,37 +32,52 @@ public class SimpleMove implements Move {
 	 * Какая фигура пошла.
 	 */
 	private Piece piece;
-	
-	public SimpleMove(boolean isPromotion, Square ... squares) {
+
+	public SimpleMove(boolean isPromotion, Square... squares) {
 		this.isPromotion = isPromotion;
-		
+
 		source = squares[0];
 		target = squares[1];
-		
+
 		piece = source.getPiece();
 	}
-	
+
 	@Override
 	public void doMove() {
-		// TODO Auto-generated method stub
+		piece.moveTo(target);
 		
 		if (isPromotion)
-			putKing();
+			putKing(target);
 	}
 
 	@Override
 	public void undoMove() {
 		if (isPromotion)
-			removeKing();
-
-		piece.moveTo(target);
+			removeKing(target);
+		
+		piece.moveTo(source);
 	}
 
-	private void putKing() {
+	/**
+	 * Заменить на поле s простую шашку на дамку.
+	 * 
+	 * @param s
+	 */
+	private void putKing(Square s) {
 		// TODO Auto-generated method stub
 	}
 
-	private void removeKing() {
+	/**
+	 * Заменить на поле s  на дамку простую шашку.
+	 * 
+	 * @param s
+	 */
+	private void removeKing(Square s) {
 		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public String toString() {
+		return "" + piece + "-" + target;
 	}
 }
