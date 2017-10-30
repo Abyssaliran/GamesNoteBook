@@ -3,7 +3,7 @@
  */
 package checkers.moves;
 
-import checkers.pieces.CheckersPiece;
+import game.core.Piece;
 import game.core.Square;
 
 /**
@@ -14,9 +14,8 @@ import game.core.Square;
 public class Capture extends SimpleMove {
 	/**
 	 * Захваченая фигура.
-	 * dddds
 	 */
-	CheckersPiece captured;
+	Piece captured;
 
 	/**
 	 * Создание хода представляющего взятие одной фигуры.
@@ -24,7 +23,7 @@ public class Capture extends SimpleMove {
 	 * @param captured - захваченная фигура. 
 	 * @param squares - откуда и куда пошла фигура.
 	 */
-	public Capture(boolean isPromotion, CheckersPiece captured, Square... squares) {
+	public Capture(boolean isPromotion, Piece captured, Square... squares) {
 		super(isPromotion, squares);
 		
 		this.captured = captured;
