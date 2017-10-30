@@ -6,7 +6,6 @@ package checkers.pieces;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
-import halma.moves.HalmaMove;
 
 /**
  * Дамка в шашках.
@@ -25,11 +24,24 @@ public class King extends CheckersPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		Square source = squares[0];
+		Square target = squares[1];
+		
+		// TODO Checkers Сделать проверку правильности хода
+		// из клетки source в клетку target.
+
 		return true;
 	}
 
 	@Override
 	public Move makeMove(Square... squares) {
-		return new HalmaMove(squares);
+		Move move = null;
+		// TODO Checkers Создать ход шашек
+		// if (...)
+		//    move = new SimpleMove(isPromotion, source, target);
+		// else
+		//    move = new Capture(isPromotion, captured, source, target);
+		// move.doMove();
+		return move;
 	}
 }
