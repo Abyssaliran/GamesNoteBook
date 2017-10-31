@@ -50,6 +50,11 @@ public class ReversiBoardPanel extends GreenBoard {
 			public Piece getPiece(Square square, PieceColor color) {
 				return new Stone(square, color);
 			}
+
+			@Override
+			public Image getPieceImage(Piece piece, PieceColor color) {
+				return ReversiBoardPanel.this.getPieceImage(piece, color);
+			}
 		};
 	}
 
