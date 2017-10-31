@@ -28,6 +28,8 @@ import game.core.Board;
 import game.core.Piece;
 import game.core.Square;
 import game.ui.listeners.IGameListner;
+import game.ui.listeners.IMouseMoveListener;
+import game.ui.listeners.PieceMovePromptListener;
 
 /**
  * Базовый класс для отрисовки досок всех настольных игр.
@@ -58,12 +60,10 @@ public class GameBoard extends Canvas
 		// После этого доска начнет получать события от колеса мыши.
 		addKeyListener(new KeyListener() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-			}
+			public void keyPressed(KeyEvent e) {}
 
 			@Override
-			public void keyReleased(KeyEvent e) {
-			}
+			public void keyReleased(KeyEvent e) {}
 		});
 		
 		// Добавим слушателя колеса мыши.
@@ -78,7 +78,6 @@ public class GameBoard extends Canvas
 			}
 		});
 
-		
 		board.setBoardChanged();
 	}
 	
@@ -107,7 +106,7 @@ public class GameBoard extends Canvas
 			for (int h = 0; h < board.nH; h++)
 				drawPiece(gc, v, h, squareWidth, squareHeight);
 		
-		drawPrompt(gc, squareWidth, squareHeight);
+		drawSquaresPrompt(gc, squareWidth, squareHeight);
 	}
 
 	/**
@@ -220,6 +219,10 @@ public class GameBoard extends Canvas
 	abstract 
 	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight);
 
+	// ------------------------------------------------------
+	// ------ Обработка событий нажатия на кнопки мыши ------
+	// ------------------------------------------------------
+
 	/**
 	 * Слушатель нажатий мыши над клетками доски.
 	 */
@@ -240,60 +243,51 @@ public class GameBoard extends Canvas
 		if (s != null)
 			listener.mouseUp(s, e.button);
 	}
-
+	
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {}
+	
+	// ------------------------------------------------
+	// ------ Обработка событий перемещения мыши ------
+	// ------------------------------------------------
+	
+	/**
+	 * Клетки на которые допустим очередной ход фигурой.
+	 * Используется для отрисовки на доске подсказки 
+	 * всех допустимых ходов для этой фигуры.
+	 */
+	public List<Square> prompted = new ArrayList<>();
+	
+	/**
+	 * Слушатель события перемещения мыши.
+	 */
+	protected IMouseMoveListener mouseMoveListener 
+					= new PieceMovePromptListener(this, prompted);
 
 	@Override
 	public void mouseMove(MouseEvent e) {
 		Square s = getSquare(e);
 		
 		if (s != null)
-			mouseMove(s);
-	}
-
-	/**
-	 * Поля на которые допустим ход фигурой под мышкой.
-	 * Используется для подсказки допустимых ходов.
-	 */
-	private List<Square> prompted = new ArrayList<>();
-	
-	private void mouseMove(Square underMouse) {
-		prompted.clear();
-		
-		Piece underMousePiece = underMouse.getPiece();
-		if (underMousePiece == null) {
-			update();
-			redraw();
-			return;
-		}
-				
-		for (int v = 0; v < board.nV; v++)
-			for (int h = 0; h < board.nH; h++) {
-				Square square = board.getSquare(v, h);
-				if (underMousePiece.isCorrectMove(square))
-					prompted.add(square);
-			}
-		
-			update();
-			redraw();
+			mouseMoveListener.mouseMove(s);
 	}
 	
 	/**
-	 * Нарисовать подсказку для клетки на которую может фигура
-	 * находящаяся под мышкой.
+	 * Нарисовать подсказку для клеток на которые может 
+	 * сделать очередной ход фигура.
 	 * 
 	 * @param gc - графический контекст для отрисовки подсказки.
-	 * @param squareWidth - ширина клетки.
-	 * @param squareHeight - высота клетки.
+	 * @param sw - ширина клетки.
+	 * @param sh - высота клетки.
 	 */
-	void drawPrompt(GC gc, int squareWidth, int squareHeight) {
+	void drawSquaresPrompt(GC gc, int sw, int sh) {
 		if (prompted.isEmpty())
 			return;
 		
 		gc.setLineWidth(3);
 		gc.setForeground(PROMPT_COLOR);
+		
 		for (Square s : prompted)  
-			gc.drawRectangle(s.v * squareWidth, s.h * squareHeight, squareWidth, squareHeight);
+			gc.drawRectangle(s.v * sw, s.h * sh, sw, sh);
 	}
 }
