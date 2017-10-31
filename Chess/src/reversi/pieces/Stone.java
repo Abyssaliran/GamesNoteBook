@@ -3,6 +3,8 @@ package reversi.pieces;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.core.Board;
+import game.core.Dirs;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -25,7 +27,44 @@ public class Stone extends Piece {
 	public boolean isCorrectMove(Square... squares) {
 		Square target = squares[0];
 		
+		if (!hasEnemy(target))
+			return false;
+		
 		return true;
+	}
+
+	/**
+	 * Будут ли у фигуры враги (фигуры противоположного цвета),
+	 * если ее поставить на клетку target. 
+	 * 
+	 * Если врагов нет, захватывать некого, и такой ход в реверси недопустим.
+	 * 
+	 * @param target - проверяемая клетка.
+	 * @return - есть ли враги при постановке фигуры на эту клетку.
+	 */
+	private boolean hasEnemy(Square target) {
+		Board board = target.getBoard();
+		
+		int tv = target.v;
+		int th = target.h;
+
+		// Цикл по всем 8-и направлениям.
+		for (Dirs d : Dirs.ALL) {
+			int v = tv + d.dv;
+			int h = th + d.dh;
+			
+			if (!board.onBoard(v, h))
+				continue; // Рядом клетки нет, Вышли за пределы доски.
+			
+			Piece p = board.getSquare(v, h).getPiece();
+			if (p == null)
+				continue; // Рядом пустая клетка.
+			
+			if (getColor() != p.getColor())
+				return true; // Нашли рядом вражескую фигуру.	
+		}
+		
+		return false; // Не нашли рядом вражескую фигуру.
 	}
 
 	@Override

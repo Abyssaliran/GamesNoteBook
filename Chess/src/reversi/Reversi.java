@@ -3,6 +3,7 @@ package reversi;
 import game.core.Board;
 import game.core.PieceColor;
 import reversi.pieces.Hole;
+import reversi.pieces.Stone;
 
 /**
  * Игра 
@@ -19,6 +20,12 @@ public class Reversi {
 	 */
 	public static Board getInitBoard(int nHoles) {
 		Board board = new Board(8, 8);
+		
+		new Stone( board.getSquare(3, 3), PieceColor.BLACK);
+		new Stone( board.getSquare(4, 4), PieceColor.BLACK);
+		
+		new Stone( board.getSquare(3, 4), PieceColor.WHITE);
+		new Stone( board.getSquare(4, 3), PieceColor.WHITE);
 		
 		if (nHoles != 0) {
 			int randomV = (int) (8 * Math.random());

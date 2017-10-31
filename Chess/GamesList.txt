@@ -5,6 +5,9 @@
 2. Реверси
 Платонова Светлана
 Задорожная Дарья
+Правила: https://ru.wikipedia.org/wiki/%D0%A0%D0%B5%D0%B2%D0%B5%D1%80%D1%81%D0%B8
+Играть: http://www.brainfitness4u.com/reversi/
+Учебник: http://othello.gomel.by/stepanov/
 
 3. Халма
 Лицарев Михаил

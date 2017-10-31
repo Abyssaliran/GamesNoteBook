@@ -8,6 +8,7 @@ import game.core.PieceColor;
 import game.core.Square;
 import game.ui.GreenBoard;
 import game.ui.listeners.PutPieceListener;
+import game.ui.listeners.PutPiecePromptListener;
 import reversi.Reversi;
 import reversi.pieces.Hole;
 import reversi.pieces.Stone;
@@ -29,6 +30,7 @@ public class ReversiBoardPanel extends GreenBoard {
 	public ReversiBoardPanel(Composite composite, int nHoles) {
 		super(composite, Reversi.getInitBoard(nHoles));
 		
+		// Слушатель мыши для постановки новой фигуры на доску.
 		listener = new PutPieceListener(this) {
 			@Override
 			public Image getPieceImage(Piece piece, PieceColor color) {
@@ -38,6 +40,20 @@ public class ReversiBoardPanel extends GreenBoard {
 			@Override
 			public Piece getPiece(Square square, PieceColor color) {
 				return new Stone(square, color);
+			}
+		};
+		
+		// Слушатель мыши для выдачи подсказки - можно ли ставить фигуру 
+		// клетку на доски.
+		mouseMoveListener = new PutPiecePromptListener(this) {
+			@Override
+			public Piece getPiece(Square square, PieceColor color) {
+				return new Stone(square, color);
+			}
+
+			@Override
+			public Image getPieceImage(Piece piece, PieceColor color) {
+				return ReversiBoardPanel.this.getPieceImage(piece, color);
 			}
 		};
 	}

@@ -21,10 +21,10 @@ public class MovePieceListener implements IGameListner {
 	private Square selectedSquare;
 	private Cursor savedCursor;
 
-	/**
-	 * Цвет текущего хода.
-	 */
-	private PieceColor moveColor = PieceColor.WHITE;
+//	/**
+//	 * Цвет текущего хода.
+//	 */
+//	private PieceColor moveColor = PieceColor.WHITE;
 	
 	/**
 	 * Доска на которой присходят изменения.
@@ -52,14 +52,14 @@ public class MovePieceListener implements IGameListner {
 			return;
 		
 		selectedPiece = mouseSquare.getPiece();
-		if (selectedPiece.getColor() != moveColor)
+		if (selectedPiece.getColor() != board.moveColor)
 			return;
 		
 		selectedSquare = mouseSquare;
 		selectedSquare.removePiece();
 		
 		savedCursor = panel.getCursor();
-		panel.imageToCursor( getPieceImage(selectedPiece, moveColor) );
+		panel.imageToCursor( getPieceImage(selectedPiece, board.moveColor) );
 	    
 		board.setBoardChanged();
 		panel.redraw();
@@ -81,7 +81,7 @@ public class MovePieceListener implements IGameListner {
 			
 			// TODO Реализовать запрос фигуры для превращения пешки.
 
-			moveColor = getOponentColor();
+			board.moveColor = getOponentColor();
 		}
 
 		selectedPiece = null;
@@ -94,7 +94,7 @@ public class MovePieceListener implements IGameListner {
 	}
 
 	private PieceColor getOponentColor() {
-		return moveColor == PieceColor.WHITE 
+		return board.moveColor == PieceColor.WHITE 
 					? PieceColor.BLACK : PieceColor.WHITE;
 	}
 	
