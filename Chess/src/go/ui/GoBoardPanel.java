@@ -7,6 +7,7 @@ import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 import game.ui.AsiaBoard;
+import game.ui.listeners.IMouseMoveListener;
 import game.ui.listeners.PutPieceListener;
 import go.Go;
 import go.pieces.GoPiece;
@@ -32,6 +33,8 @@ public class GoBoardPanel extends AsiaBoard {
 				return new GoPiece(square, color);
 			}
 		};
+		
+		mouseMoveListener = IMouseMoveListener.EMPTY;
 	}
 
 	protected Image getPieceImage(Piece piece, PieceColor color) {
