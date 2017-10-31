@@ -29,7 +29,7 @@ import game.core.Piece;
 import game.core.Square;
 import game.ui.listeners.IGameListner;
 import game.ui.listeners.IMouseMoveListener;
-import game.ui.listeners.PieceMovePromptListener;
+import game.ui.listeners.MovePiecePromptListener;
 
 /**
  * Базовый класс для отрисовки досок всех настольных игр.
@@ -262,7 +262,7 @@ public class GameBoard extends Canvas
 	 * Слушатель события перемещения мыши.
 	 */
 	protected IMouseMoveListener mouseMoveListener 
-					= new PieceMovePromptListener(this, prompted);
+					= new MovePiecePromptListener(this, prompted);
 
 	@Override
 	public void mouseMove(MouseEvent e) {

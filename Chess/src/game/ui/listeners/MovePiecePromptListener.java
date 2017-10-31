@@ -13,7 +13,7 @@ import game.ui.GameBoard;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class PieceMovePromptListener implements IMouseMoveListener {
+public class MovePiecePromptListener implements IMouseMoveListener {
 	/**
 	 * Панель, на которой рисуется доска.
 	 */
@@ -33,7 +33,7 @@ public class PieceMovePromptListener implements IMouseMoveListener {
 	 *            мышкой. Эти клетки при перерисовке панели доски должны быть
 	 *            помечены. Например, красной рамкой.
 	 */
-	public PieceMovePromptListener(GameBoard boardPanel, List<Square> prompted) {
+	public MovePiecePromptListener(GameBoard boardPanel, List<Square> prompted) {
 		this.boardPanel = boardPanel;
 		this.prompted = prompted;
 	}
