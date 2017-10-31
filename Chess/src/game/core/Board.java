@@ -27,6 +27,11 @@ public class Board extends Observable {
 	 */
 	public History history = new History(this);
 	
+	/**
+	 * Цвет фигуры которая должна сделать ход.
+	 */
+	public PieceColor moveColor = PieceColor.WHITE;
+
 	public Board(int nV, int nH) {
 		this.nV = nV;
 		this.nH = nH;

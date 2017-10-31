@@ -16,10 +16,10 @@ import game.ui.GameBoard;
  */
 abstract
 public class PutPieceListener implements IGameListner {
-	/**
-	 * Цвет текущего хода.
-	 */
-	private PieceColor moveColor = PieceColor.WHITE;
+//	/**
+//	 * Цвет текущего хода.
+//	 */
+//	private PieceColor moveColor = PieceColor.WHITE;
 	
 	/**
 	 * Доска на которой присходят изменения.
@@ -50,7 +50,7 @@ public class PutPieceListener implements IGameListner {
 		if (!mouseSquare.isEmpty())
 			return;
 		
-		Piece piece = getPiece(mouseSquare, moveColor);
+		Piece piece = getPiece(mouseSquare, board.moveColor);
 		
 		if (!piece.isCorrectMove(mouseSquare)) {
 			piece.remove();
@@ -61,9 +61,9 @@ public class PutPieceListener implements IGameListner {
 		move.doMove();
 		board.history.addMove(move);
 		
-		moveColor = getOponentColor(moveColor);
+		board.moveColor = getOponentColor(board.moveColor);
 		
-		panel.imageToCursor( getPieceImage(piece, moveColor) );
+		panel.imageToCursor( getPieceImage(piece, board.moveColor) );
 	    
 		board.setBoardChanged();
 		panel.redraw();

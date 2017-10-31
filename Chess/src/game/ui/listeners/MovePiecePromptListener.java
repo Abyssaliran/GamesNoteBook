@@ -8,7 +8,7 @@ import game.core.Square;
 import game.ui.GameBoard;
 
 /**
- * Слушатель PieceMovePromptListener определяет клетки, на которые может пойти
+ * Слушатель MovePiecePromptListener определяет клетки, на которые может пойти
  * фигура находящаяся под мышкой.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
@@ -25,6 +25,8 @@ public class MovePiecePromptListener implements IMouseMoveListener {
 	private List<Square> prompted;
 
 	/**
+	 * Слушатель MovePiecePromptListener определяет клетки, на которые может
+	 * пойти фигура находящаяся под мышкой.
 	 * 
 	 * @param boardPanel
 	 *            - панель для отрисовки доски.
