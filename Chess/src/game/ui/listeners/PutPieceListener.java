@@ -63,7 +63,8 @@ public class PutPieceListener implements IGameListner {
 		
 		board.moveColor = getOponentColor(board.moveColor);
 		
-		panel.imageToCursor( getPieceImage(piece, board.moveColor) );
+		Image pieceImage = getPieceImage(piece, board.moveColor);
+		panel.imageToCursor(pieceImage);
 	    
 		board.setBoardChanged();
 		panel.redraw();

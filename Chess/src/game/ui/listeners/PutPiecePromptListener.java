@@ -2,6 +2,8 @@ package game.ui.listeners;
 
 import java.util.List;
 
+import org.eclipse.swt.graphics.Image;
+
 import game.core.Board;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -31,7 +33,7 @@ public class PutPiecePromptListener implements IMouseMoveListener {
 	@Override
 	public void mouseMove(Square mouseSquare) {
 		boardPanel.prompted.clear();
-		
+
 		Piece underMousePiece = mouseSquare.getPiece();
 		if (underMousePiece != null) {
 			// Под мышкой уже есть фигура. Клетка не пустая.
@@ -42,17 +44,21 @@ public class PutPiecePromptListener implements IMouseMoveListener {
 			boardPanel.redraw();
 			return;
 		}
-		
+
 		// Доска на которой расположены фигуры.
 		Board board = boardPanel.board;
-
-		// Клетки, на которые можно поставить новую фигуру.
-		List<Square> prompted = boardPanel.prompted;
-
+		
 		// Получим фигуру НЕ стоящую на клетке.
 		Piece piece = getPiece(mouseSquare, board.moveColor);
 		piece.remove(); // Уберем с доски.
 		
+		// Зададим изображение курсора как у фигуры.
+		Image pieceImage = getPieceImage(piece, board.moveColor);
+		boardPanel.imageToCursor(pieceImage);
+
+		// Клетки, на которые можно поставить новую фигуру.
+		List<Square> prompted = boardPanel.prompted;
+
 		for (int v = 0; v < board.nV; v++)
 			for (int h = 0; h < board.nH; h++) {
 				Square target = board.getSquare(v, h);
@@ -67,6 +73,15 @@ public class PutPiecePromptListener implements IMouseMoveListener {
 		boardPanel.redraw();
 	}
 	
+	/**
+	 * Выдать изображение фигуры заданного цвета.
+	 * 
+	 * @param piece - фигура.
+	 * @param color - цвет фигуры.
+	 * @return - изображение фигуры заданного цвета.
+	 */
+	abstract public Image getPieceImage(Piece piece, PieceColor color);
+
 	/**
 	 * Выдать фигуру заданного цвета.
 	 * 
