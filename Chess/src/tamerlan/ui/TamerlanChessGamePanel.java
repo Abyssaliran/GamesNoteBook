@@ -3,17 +3,13 @@ package tamerlan.ui;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.AdornedBoard;
 import game.ui.EuropeBoard;
-import game.ui.images.GameImages;
 import game.ui.listeners.MovePieceListener;
 import tamerlan.TamerlanChess;
 import tamerlan.pieces.Bishop;
@@ -105,26 +101,26 @@ class TamerlanChessBoardPanel extends EuropeBoard {
 				.get(color)
 				.get( piece.getClass() );
 	}
-	
-	@Override
-	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
-		boolean isWhiteSquare = ((v + h) % 2 == 0);
-
-		Rectangle bounds = GameImages.woodDark.getBounds();
-		
-		if (h == 0 || h == 1 || h == 12 || h == 13) { // выделяем клетки для отображения захваченных фигур
-			gc.drawImage(GameImages.woodLight, 
-		             0, 0, bounds.width, bounds.height, 
-			         v * squareWidth, h * squareHeight, 
-			         squareWidth, squareHeight);
-		}
-		else if (!isWhiteSquare) {
-			gc.drawImage(GameImages.woodDark, 
-			             0, 0, bounds.width, bounds.height, 
-				         v * squareWidth, h * squareHeight, 
-				         squareWidth, squareHeight);
-		}
-		gc.setForeground(new Color(null, 0, 0, 0));
-		gc.drawRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
-	}
+//	
+//	@Override
+//	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
+//		boolean isWhiteSquare = ((v + h) % 2 == 0);
+//
+//		Rectangle bounds = GameImages.woodDark.getBounds();
+//		
+//		if (h == 0 || h == 1 || h == 12 || h == 13) { // выделяем клетки для отображения захваченных фигур
+//			gc.drawImage(GameImages.woodLight, 
+//		             0, 0, bounds.width, bounds.height, 
+//			         v * squareWidth, h * squareHeight, 
+//			         squareWidth, squareHeight);
+//		}
+//		else if (!isWhiteSquare) {
+//			gc.drawImage(GameImages.woodDark, 
+//			             0, 0, bounds.width, bounds.height, 
+//				         v * squareWidth, h * squareHeight, 
+//				         squareWidth, squareHeight);
+//		}
+//		gc.setForeground(new Color(null, 0, 0, 0));
+//		gc.drawRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
+//	}
 }
