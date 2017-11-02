@@ -23,7 +23,7 @@ import reversi.ui.ReversiGamePanel;
 import reversi.ui.images.ReversiImages;
 import vikings.ui.VikingsBoardPanel;
 import vikings.ui.images.VikingImages;
-import tamerlan.ui.TamerlanChessBoardPanel;
+import tamerlan.ui.TamerlanChessGamePanel;
 import tamerlan.ui.images.TamerlanChessImages;
 
 /**
@@ -77,7 +77,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Тамерлан");
-		tabItem.setControl( new TamerlanChessBoardPanel(gamesFolder) );
+		tabItem.setControl( new TamerlanChessGamePanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 

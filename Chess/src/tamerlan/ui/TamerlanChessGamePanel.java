@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import game.core.Piece;
 import game.core.PieceColor;
+import game.ui.AdornedBoard;
 import game.ui.EuropeBoard;
 import game.ui.images.GameImages;
 import game.ui.listeners.MovePieceListener;
@@ -27,12 +28,25 @@ import tamerlan.pieces.WarMachine;
 import tamerlan.ui.images.TamerlanChessImages;
 
 /**
+ * Панель для игры шахматы.
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ */
+public class TamerlanChessGamePanel extends AdornedBoard {
+
+	public TamerlanChessGamePanel(Composite parent) {
+		super(parent);
+		
+		insertSquares( new TamerlanChessBoardPanel(this) );
+	}
+}
+/**
  * Панель для игры в 
  * <a href="https://ru.wikipedia.org/wiki/%D0%92%D0%B5%D0%BB%D0%B8%D0%BA%D0%B8%D0%B5_%D1%88%D0%B0%D1%85%D0%BC%D0%B0%D1%82%D1%8B">Шахматы Тамерлана</a>
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class TamerlanChessBoardPanel extends EuropeBoard {
+class TamerlanChessBoardPanel extends EuropeBoard {
 	private static Map<Class<? extends Piece>, Image> whites;
 	private static Map<Class<? extends Piece>, Image> blacks;
 	
