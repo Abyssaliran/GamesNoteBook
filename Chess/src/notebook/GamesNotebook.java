@@ -39,6 +39,7 @@ public class GamesNotebook {
 		final Display display = new Display();
 		
 		final Shell shell = new Shell(display);
+		shell.setBackgroundMode(SWT.INHERIT_FORCE);
 		
 		shell.setSize(600, 600);
 		shell.setText("Games Notebook");
