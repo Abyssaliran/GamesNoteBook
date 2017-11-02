@@ -19,7 +19,7 @@ import go.ui.images.GoImages;
 import halma.ui.HalmaBoardPanel;
 import halma.ui.images.HalmaImages;
 import notebook.ui.images.NotebookImages;
-import reversi.ui.ReversiBoardPanel;
+import reversi.ui.ReversiGamePanel;
 import reversi.ui.images.ReversiImages;
 import vikings.ui.VikingsBoardPanel;
 import vikings.ui.images.VikingImages;
@@ -172,7 +172,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Реверси");
-		tabItem.setControl( new ReversiBoardPanel(gamesFolder, 0) );
+		tabItem.setControl( new ReversiGamePanel(gamesFolder, 0) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -189,7 +189,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Реверси Х");
-		tabItem.setControl( new ReversiBoardPanel(gamesFolder, 1) );
+		tabItem.setControl( new ReversiGamePanel(gamesFolder, 1) );
 		tabItem.setImage(tabImage);
 	}
 
