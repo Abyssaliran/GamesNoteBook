@@ -19,15 +19,30 @@ import chess.pieces.Rook;
 import chess.ui.images.ChessImages;
 import game.core.Piece;
 import game.core.PieceColor;
+import game.ui.AdornedBoard;
 import game.ui.EuropeBoard;
 import game.ui.listeners.MovePieceListener;
+
+/**
+ * Панель для игры шахматы.
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ */
+public class ChessGamePanel extends AdornedBoard {
+
+	public ChessGamePanel(Composite parent) {
+		super(parent);
+		
+		insertSquares( new ChessBoardPanel(this) );
+	}
+}
 
 /**
  * Панель для отрисовки шахматных фигур на доске.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class ChessBoardPanel extends EuropeBoard {
+class ChessBoardPanel extends EuropeBoard {
 	private static Map<Class<? extends Piece>, Image> whites;
 	private static Map<Class<? extends Piece>, Image> blacks;
 	

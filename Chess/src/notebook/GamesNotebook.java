@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.TabItem;
 
 import checkers.ui.CheckersBoardPanel;
 import checkers.ui.images.CheckersImages;
-import chess.ui.ChessBoardPanel;
+import chess.ui.ChessGamePanel;
 import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessBoardPanel;
 import chinachess.ui.images.ChinaChessImages;
@@ -124,7 +124,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Шахматы");
-		tabItem.setControl( new ChessBoardPanel(gamesFolder) );
+		tabItem.setControl( new ChessGamePanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 
