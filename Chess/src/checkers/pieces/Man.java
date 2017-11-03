@@ -96,7 +96,7 @@ public class Man extends CheckersPiece {
 		
 		boolean isBlack = getColor() == PieceColor.BLACK;
 		boolean isPromotion = isBlack 
-				? target.h == 8 
+				? target.h == 7 
 				: target.h == 0;
 		
 		boolean isCapture = Math.abs(target.v - source.v) == 2;

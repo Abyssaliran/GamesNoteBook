@@ -65,6 +65,15 @@ public class SimpleMove implements Move {
 	 */
 	private void putKing(Square s) {
 		// TODO Auto-generated method stub
+		if (isPromotion)
+			//this.piece = s.getPiece();
+			s.removePiece();
+		
+		
+		
+		
+		
+		
 	}
 
 	/**
