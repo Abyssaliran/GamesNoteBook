@@ -3,8 +3,10 @@
  */
 package checkers.moves;
 
+import checkers.pieces.King;
 import game.core.Move;
 import game.core.Piece;
+import game.core.PieceColor;
 import game.core.Square;
 
 /**
@@ -66,14 +68,10 @@ public class SimpleMove implements Move {
 	private void putKing(Square s) {
 		// TODO Auto-generated method stub
 		if (isPromotion)
-			//this.piece = s.getPiece();
+			piece = s.getPiece();
+			PieceColor kingColor = piece.getColor();
 			s.removePiece();
-		
-		
-		
-		
-		
-		
+			piece = new King(s, kingColor);
 	}
 
 	/**

@@ -21,11 +21,11 @@ public class King extends CheckersPiece {
 	public boolean isCorrectMove(Square... squares) {
 		// Пока используем только умалчиваемую проверку
 		// выполняемую в базовом классе.
-		if (!super.isCorrectMove(squares))
-			return false;
+		//if (!super.isCorrectMove(squares))
+			//return false;
 		
-		Square source = squares[0];
-		Square target = squares[1];
+		//Square source = squares[0];
+		//Square target = squares[1];
 		
 		// TODO Checkers Сделать проверку правильности хода
 		// из клетки source в клетку target.
