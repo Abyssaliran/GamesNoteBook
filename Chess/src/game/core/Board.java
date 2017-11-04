@@ -107,4 +107,20 @@ public class Board extends Observable {
 	public boolean isEmpty(int v, int h) {
 		return getSquare(v, h).isEmpty();
 	}
+
+	/**
+	 * Имя игрока белыми фигурами.
+	 * @return
+	 */
+	public String getWhitePlayer() {
+		return "Homo sapiens";
+	}
+
+	/**
+	 * Имя игрока черными фигурами.
+	 * @return
+	 */
+	public String getBlackPlayer() {
+		return "Homo sapiens";
+	}
 }
