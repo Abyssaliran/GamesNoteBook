@@ -43,4 +43,9 @@ public class Capture extends SimpleMove implements ICapture {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public String toString() {
+		return "" + piece + source + "x" + target;
+	}
 }
