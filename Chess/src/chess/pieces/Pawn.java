@@ -23,20 +23,38 @@ public class Pawn extends ChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		Square source = square;
 		Square target = squares[0];
 		
-		if (square.v != target.v)
-			return false;
-		
+		int dv = Math.abs(target.v - source.v);
 		int dh = (getColor() == PieceColor.WHITE) 
-				? square.h - target.h 
-				: target.h - square.h;
+				? source.h - target.h 
+				: target.h - source.h;
 		
-		boolean isStartPosition = 
+		if (dv != 0) {
+			// Есть смещение пешки по вертикали. 
+			// Возможно это взятие пешкой вражеской фигуры.
+			
+			if (dv > 1)
+			   return false; // Смещение больше чем на 1 клетку
+			
+			if (target.isEmpty())
+				return false; // Бить некого.
+			
+			if (dh <= 0)      // Смещение пешки назад.
+				return false; // Назад пешки не бьют.
+			
+			if (dh > 1)       // Так далеко пешки не бьют.
+				return false;  
+			
+			return true;
+		}
+		
+		boolean isStartPosition = // Откуда пошла пешка.
 					(getColor() == PieceColor.WHITE) 
-						? square.h == 6 : square.h == 1;  
+						? source.h == 6 : source.h == 1;  
 		
-		int upper = isStartPosition ? 2 : 1;
+		int upper = isStartPosition ? 2 : 1; // Насколько может пойти.
 		
 		if ((1 <= dh) && (dh <= upper))
 			return true;
@@ -52,5 +70,10 @@ public class Pawn extends ChessPiece {
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "";
 	}
 }

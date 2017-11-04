@@ -126,7 +126,7 @@ public class AdornedBoard extends Canvas {
 	 * @param boardPanel
 	 *            - встраиваемая доска.
 	 */
-	protected void insertSquares(GameBoard boardPanel) {
+	public void insertSquares(GameBoard boardPanel) {
 		nV = boardPanel.board.nV;
 		nH = boardPanel.board.nH;
 		
