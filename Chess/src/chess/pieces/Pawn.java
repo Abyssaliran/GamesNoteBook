@@ -64,9 +64,10 @@ public class Pawn extends ChessPiece {
 	
 	@Override
 	public Move makeMove(Square... squares) {
+		Square source = squares[0];
 		Square target = squares[1];
 		
-		if (!target.isEmpty())
+		if (source.v != target.v) // Ход по диагонали.
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);
