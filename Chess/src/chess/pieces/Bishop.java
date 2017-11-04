@@ -39,4 +39,10 @@ public class Bishop extends ChessPiece {
 		
 		return new SimpleMove(squares);
 	}
+	
+	@Override
+	public String toString() {
+		return "B";
+	}
+
 }

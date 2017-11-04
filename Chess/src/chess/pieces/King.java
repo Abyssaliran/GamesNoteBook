@@ -39,4 +39,9 @@ public class King extends ChessPiece {
 		
 		return new SimpleMove(squares);
 	}
+	
+	@Override
+	public String toString() {
+		return "K";
+	}
 }
