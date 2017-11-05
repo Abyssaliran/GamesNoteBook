@@ -23,7 +23,7 @@ import reversi.ui.ReversiGamePanel;
 import reversi.ui.images.ReversiImages;
 import tamerlan.ui.TamerlanChessGamePanel;
 import tamerlan.ui.images.TamerlanChessImages;
-import vikings.ui.VikingsBoardPanel;
+import vikings.ui.VikingsGamePanel;
 import vikings.ui.images.VikingImages;
 
 /**
@@ -141,7 +141,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Викинги-9");
-		tabItem.setControl( new VikingsBoardPanel(gamesFolder, 9) );
+		tabItem.setControl( new VikingsGamePanel(gamesFolder, 9) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -157,7 +157,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Викинги-11");
-		tabItem.setControl( new VikingsBoardPanel(gamesFolder, 11) );
+		tabItem.setControl( new VikingsGamePanel(gamesFolder, 11) );
 		tabItem.setImage(tabImage);
 	}
 
