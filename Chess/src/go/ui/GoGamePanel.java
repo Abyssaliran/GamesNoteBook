@@ -13,7 +13,6 @@ import game.ui.AsiaBoard;
 import game.ui.GamePanel;
 import game.ui.listeners.NoPromptListener;
 import game.ui.listeners.PutPieceListener;
-import game.ui.listeners.PutPiecePromptListener;
 import go.Go;
 import go.pieces.GoPiece;
 import go.ui.images.GoImages;
