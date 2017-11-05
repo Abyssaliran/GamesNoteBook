@@ -1,14 +1,10 @@
-package chess.ui;
+package game.ui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-
-import game.ui.AdornedBoard;
-import game.ui.GameBoard;
-import game.ui.MovesJornal;
 
 /**
  * Составная панель для настольной игры:

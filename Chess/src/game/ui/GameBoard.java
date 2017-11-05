@@ -25,9 +25,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import game.core.Board;
+import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.core.moves.ITransferMove;
+
 import game.ui.listeners.IGameListner;
 import game.ui.listeners.IMouseMoveListener;
 import game.ui.listeners.MovePiecePromptListener;
@@ -42,7 +45,12 @@ public class GameBoard extends Canvas
 	implements PaintListener, MouseListener, MouseMoveListener, Observer  
 {
     /**
-     * Цвет для подсказок.
+     * Цвет для отрисовки последнего хода.
+     */
+    private Color lastMoveColor = new Color(null, 255, 0, 0) ;
+
+	/**
+     * Цвет для подсказок правильных ходов.
      */
     private Color promptColor = new Color(null, 0, 255, 0);
     
@@ -123,6 +131,8 @@ public class GameBoard extends Canvas
 				drawPiece(gc, v, h, squareWidth, squareHeight);
 		
 		drawSquaresPrompt(gc, squareWidth, squareHeight);
+		
+		markLastMove(gc);
 	}
 
 	/**
@@ -180,6 +190,26 @@ public class GameBoard extends Canvas
 	public void setPromptColor(Color color) {
 		promptColor = color;
 	}
+	
+	/* 
+	 * Пометить на доске последний ход.
+	 */
+	protected void markLastMove(GC gc) {
+		List<Move> moves = board.history.getMoves();
+		if (moves.isEmpty()) return;
+		
+		Move move = (Move) board.history.getCurMove();
+		
+		if (move == null) return;
+			
+		if (move instanceof ITransferMove) {
+			ITransferMove m = (ITransferMove) move;
+			Square source = m.getSource();
+			Square target = m.getTarget();
+			markLine(gc, source, target, lastMoveColor);
+		}
+	}
+
 	
 	/**
 	 * Нарисовать подсказку для клеток на которые фигура может сделать очередной ход.
