@@ -1,15 +1,15 @@
 package tamerlan.move;
 
-import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
+import game.core.moves.ITransferMove;
 
 /**
- * Простой ход шахмат тамерлана - перемещение фигуры на пустую клетку.
+ * Простой ход шахмат Тамерлана - перемещение фигуры на пустую клетку.
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class SimpleMove implements Move {
+public class SimpleMove implements ITransferMove {
 	/**
 	 * Какая фигура перемещается.
 	 */
@@ -18,19 +18,29 @@ public class SimpleMove implements Move {
 	/**
 	 * Откуда перемещается.
 	 */
-	private Square source;
+	protected Square source;
 	
 	/**
 	 * Куда перемещается.
 	 */
 	protected Square target;
 
-	Square[] _squares;
 	public SimpleMove(Square[] squares) {
 		source = squares[0];
 		target = squares[1];
 
 		piece = source.getPiece();
+	}
+	
+	
+	@Override
+	public Square getTarget() {
+		return target;
+	}
+	
+	@Override
+	public Square getSource() {
+		return source;
 	}
 
 	@Override
@@ -41,5 +51,10 @@ public class SimpleMove implements Move {
 	@Override
 	public void undoMove() {
 		piece.moveTo(source);
+	}
+	
+	@Override
+	public String toString() {
+		return "" + piece + source + "-" + target;
 	}
 }
