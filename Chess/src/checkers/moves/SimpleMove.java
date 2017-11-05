@@ -4,7 +4,6 @@
 package checkers.moves;
 
 import checkers.pieces.King;
-import checkers.pieces.Man;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -88,6 +87,7 @@ public class SimpleMove implements Move {
 		piece = tempKing.getMan();
 		s.setPiece(piece);
 		//TODO: fix rare bug with lost Man!
+		//FIXED!
 	}
 	
 	@Override

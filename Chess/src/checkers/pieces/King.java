@@ -38,7 +38,7 @@ public class King extends CheckersPiece {
 		// TODO Checkers Сделать проверку правильности хода
 		// из клетки source в клетку target.
 
-		return true;
+		return false;
 	}
 
 	@Override
