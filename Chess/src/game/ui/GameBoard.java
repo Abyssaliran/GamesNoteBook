@@ -29,8 +29,8 @@ import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.core.moves.ICaptureMove;
 import game.core.moves.ITransferMove;
-
 import game.ui.listeners.IGameListner;
 import game.ui.listeners.IMouseMoveListener;
 import game.ui.listeners.MovePiecePromptListener;
@@ -126,13 +126,14 @@ public class GameBoard extends Canvas
 			for (int h = 0; h < board.nH; h++)
 				drawSquare(gc, v, h, squareWidth, squareHeight);
 
+		markLastTransferMove(gc);
+
 		for (int v = 0; v < board.nV; v++)
 			for (int h = 0; h < board.nH; h++)
 				drawPiece(gc, v, h, squareWidth, squareHeight);
 		
 		drawSquaresPrompt(gc, squareWidth, squareHeight);
 		
-		markLastMove(gc);
 	}
 
 	/**
@@ -194,7 +195,7 @@ public class GameBoard extends Canvas
 	/* 
 	 * Пометить на доске последний ход.
 	 */
-	protected void markLastMove(GC gc) {
+	protected void markLastTransferMove(GC gc) {
 		List<Move> moves = board.history.getMoves();
 		if (moves.isEmpty()) return;
 		
@@ -207,6 +208,13 @@ public class GameBoard extends Canvas
 			Square source = m.getSource();
 			Square target = m.getTarget();
 			markLine(gc, source, target, lastMoveColor);
+			
+			if (move instanceof ICaptureMove) {
+				ICaptureMove capture = (ICaptureMove) move;
+				
+				for (Square s : capture.getCaptured())
+					markCross(gc, s, lastMoveColor);
+			}
 		}
 	}
 
@@ -329,6 +337,33 @@ public class GameBoard extends Canvas
 		
 		gc.setForeground(color);
 		gc.drawLine(v1, h1, v2, h2);
+	}
+	
+	/**
+	 * Нарисовать на клетке перекрестье.
+	 * 
+	 * @param gc
+	 *            - графический контекст.
+	 * @param source
+	 *            - откуда линия.
+	 * @param target
+	 *            - куда линия.
+	 * @param color
+	 *            - цвет линии.
+	 */
+	public void markCross(GC gc, Square source, Color color) {
+		int sw = getSquareWidth();
+		int sh = getSquareHeight();
+
+		int v1 = sw * source.v;
+		int h1 = sh * source.h;
+
+		int v2 = sw * source.v + sw;
+		int h2 = sh * source.h + sh;
+		
+		gc.setForeground(color);
+		gc.drawLine(v1, h1, v2, h2);
+		gc.drawLine(v2, h1, v1, h2);
 	}
 	
 	/**

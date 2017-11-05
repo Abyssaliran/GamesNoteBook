@@ -1,15 +1,21 @@
 package chess.moves;
 
+import java.util.Arrays;
+import java.util.List;
+
 import game.core.Piece;
 import game.core.Square;
+import game.core.moves.ICaptureMove;
 
 /**
  * Ход европейских шахмат - перемещение фигуры на клетку 
  * с захватом фигуры противника.
  *  
- * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ * @author <a href="mailto:vla	dimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Capture extends SimpleMove implements ICapture {
+public class Capture extends SimpleMove 
+	implements ICaptureMove, ICapture 
+{
 	private Piece capturedPiece;
 	private Square capturedSquare;
 
@@ -26,6 +32,11 @@ public class Capture extends SimpleMove implements ICapture {
 		
 		capturedSquare = squares[1];
 		capturedPiece = capturedSquare.getPiece();
+	}
+	
+	@Override
+	public List<Square> getCaptured() {
+		return Arrays.asList(capturedSquare);
 	}
 
 	/**
