@@ -2,6 +2,7 @@ package chess.pieces;
 
 import chess.moves.Capture;
 import chess.moves.SimpleMove;
+import game.core.Board;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -59,6 +60,18 @@ public class Pawn extends ChessPiece {
 						? source.h == 6 : source.h == 1;  
 		
 		int upper = isStartPosition ? 2 : 1; // Насколько может пойти.
+		
+		if (upper == 2) {
+			// Пешка прыгает с начальной позиции.
+			
+			// Не пытается ли пешка перепыгнуть через фигуру (барьер)?
+			int barierV = source.v;
+			int barierH = (source.h + target.h);
+			
+			Board board = source.getBoard();
+			if (!board.isEmpty(barierV, barierH))
+				return false; // Перепрыгивать нельзя.
+		}
 		
 		if ((1 <= dh) && (dh <= upper))
 			return true;
