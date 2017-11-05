@@ -34,8 +34,9 @@ public class Vinni implements IPlayer {
 		if (squares.isEmpty())
 			return;
 		
-		// Получим фигуру НЕ стоящую на клетке.
 		PieceColor moveColor = board.getMoveColor();
+
+		// Получим фигуру НЕ стоящую на клетке.
 		Square square = squares.get(0);
 		Piece piece = pieceProvider.getPiece(square, moveColor);
 		piece.remove(); // Уберем фигуру с клетки доски.
@@ -62,8 +63,6 @@ public class Vinni implements IPlayer {
 		board.history.addMove(randomMove);
 		randomMove.doMove();
 		
-//		board.setBoardChanged();
-
 		// Передаем ход противнику.
 		board.changeMoveColor();
 	}
