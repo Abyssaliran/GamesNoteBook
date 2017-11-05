@@ -16,30 +16,19 @@ import game.ui.GameBoard;
  */
 abstract
 public class PutPieceListener implements IGameListner {
-//	/**
-//	 * Цвет текущего хода.
-//	 */
-//	private PieceColor moveColor = PieceColor.WHITE;
-	
 	/**
 	 * Доска на которой присходят изменения.
 	 */
 	private Board board;
 	
-	
+	/**
+	 * Панель для отрисовки доски.
+	 */
 	private GameBoard panel;
 
 	public PutPieceListener(GameBoard panel) {
 		this.board = panel.board;
 		this.panel = panel;
-	}
-	
-	/**
-	 * @param сolor 
-	 * @return
-	 */
-	public PieceColor getOponentColor(PieceColor сolor) {
-		return сolor == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
 	}
 	
 	@Override
@@ -50,24 +39,26 @@ public class PutPieceListener implements IGameListner {
 		if (!mouseSquare.isEmpty())
 			return;
 		
-		Piece piece = getPiece(mouseSquare, board.moveColor);
+		// Получим фигуру НЕ стоящую на клетке.
+		PieceColor moveColor = board.getMoveColor();
+		Piece piece = getPiece(mouseSquare, moveColor);
+		piece.remove();
 		
-		if (!piece.isCorrectMove(mouseSquare)) {
-			piece.remove();
+		if (!piece.isCorrectMove(mouseSquare)) 
 			return;
-		}
 
 		Move move = piece.makeMove(mouseSquare);
-		move.doMove();
 		board.history.addMove(move);
+		move.doMove();
 		
-		board.moveColor = getOponentColor(board.moveColor);
-		
-		Image pieceImage = getPieceImage(piece, board.moveColor);
+		PieceColor oponentColor = board.getOponentColor(moveColor);
+		Image pieceImage = getPieceImage(piece, oponentColor);
 		panel.imageToCursor(pieceImage);
-	    
+		
 		board.setBoardChanged();
 		panel.redraw();
+		
+		board.changeMoveColor();
 	}
 	
 	/**

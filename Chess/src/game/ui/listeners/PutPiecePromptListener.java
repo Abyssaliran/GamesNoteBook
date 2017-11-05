@@ -49,14 +49,16 @@ public class PutPiecePromptListener implements IMouseMoveListener {
 		Board board = boardPanel.board;
 		
 		// Получим фигуру НЕ стоящую на клетке.
-		Piece piece = getPiece(mouseSquare, board.moveColor);
-		piece.remove(); // Уберем с доски.
+		PieceColor moveColor = board.getMoveColor();
+		Piece piece = getPiece(mouseSquare, moveColor);
+		piece.remove(); // Уберем фигуру с доски.
 		
-		// Зададим изображение курсора как у фигуры.
-		Image pieceImage = getPieceImage(piece, board.moveColor);
+		// Зададим изображение курсора такое как избражение у фигуры.
+		Image pieceImage = getPieceImage(piece, moveColor);
 		boardPanel.imageToCursor(pieceImage);
 
 		// Клетки, на которые можно поставить новую фигуру.
+		// Выдадим для этих клеток подсказки игроку.
 		List<Square> prompted = boardPanel.prompted;
 
 		for (int v = 0; v < board.nV; v++)
@@ -67,7 +69,7 @@ public class PutPiecePromptListener implements IMouseMoveListener {
 					prompted.add(target);
 			}
 		
-		// Перерисуем панель доски c подсказками для
+		// Перерисуем панель доски c подсказками для тех
 		// клеток на которые допустима постановка фигуры.
 		boardPanel.update();
 		boardPanel.redraw();

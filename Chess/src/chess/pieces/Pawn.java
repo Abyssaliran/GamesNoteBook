@@ -50,6 +50,10 @@ public class Pawn extends ChessPiece {
 			return true;
 		}
 		
+		// По вертикали пешка фигуры не бьет.
+		if (!target.isEmpty())
+			return false;
+		
 		boolean isStartPosition = // Откуда пошла пешка.
 					(getColor() == PieceColor.WHITE) 
 						? source.h == 6 : source.h == 1;  
@@ -67,7 +71,8 @@ public class Pawn extends ChessPiece {
 		Square source = squares[0];
 		Square target = squares[1];
 		
-		if (source.v != target.v) // Ход по диагонали.
+		int dv = Math.abs(target.v - source.v);
+		if (dv == 1) // Ход по диагонали.
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);

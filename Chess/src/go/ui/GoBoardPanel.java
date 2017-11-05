@@ -3,9 +3,11 @@ package go.ui;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
+import game.core.IPieceProvider;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.players.Vinni;
 import game.ui.AsiaBoard;
 import game.ui.listeners.IMouseMoveListener;
 import game.ui.listeners.PutPieceListener;
@@ -18,7 +20,7 @@ import go.ui.images.GoImages;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class GoBoardPanel extends AsiaBoard {
+public class GoBoardPanel extends AsiaBoard implements IPieceProvider {
 	public GoBoardPanel(Composite parent, int boardSize) {
 		super(parent, Go.getInitBoard(boardSize, boardSize));
 		
@@ -30,24 +32,27 @@ public class GoBoardPanel extends AsiaBoard {
 
 			@Override
 			public Piece getPiece(Square square, PieceColor color) {
-				return new GoPiece(square, color);
+				return GoBoardPanel.this.getPiece(square, color);
 			}
 		};
 		
 		mouseMoveListener = IMouseMoveListener.EMPTY;
+		
+//		board.setBlackPlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Vinni(this) );
 	}
 
+	@Override
+	public Piece getPiece(Square square, PieceColor color) {
+		return new GoPiece(square, color);
+	}
+	
 	protected Image getPieceImage(Piece piece, PieceColor color) {
 		return color == PieceColor.WHITE 
 				? GoImages.imageStoneWhite
 				: GoImages.imageStoneBlack;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see game.ui.GameBoard#getPieceImage(game.core.Piece)
-	 */
 	@Override
 	public Image getPieceImage(Piece piece) {
 		return getPieceImage(piece, piece.getColor());

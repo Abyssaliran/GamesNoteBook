@@ -152,8 +152,8 @@ public class MovesJornal extends Composite implements Observer {
 		// 
 		// Панель для показа игроков партии.
 		//
-		String white = board.getWhitePlayer();
-		String black = board.getBlackPlayer();
+		String white = board.getWhitePlayer().getName();
+		String black = board.getBlackPlayer().getName();
 		String title = String.format("%s - %s", white, black);
 
 		headerPanel = new Label(this, SWT.CENTER);

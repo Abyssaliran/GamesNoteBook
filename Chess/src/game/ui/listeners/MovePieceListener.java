@@ -38,28 +38,20 @@ public class MovePieceListener implements IGameListner {
 		this.panel = panel;
 	}
 	
-	/**
-	 * @param сolor 
-	 * @return
-	 */
-	public PieceColor getOponentColor(PieceColor сolor) {
-		return сolor == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
-	}
-	
 	@Override
 	public void mouseDown(Square mouseSquare, int button) {
 		if (mouseSquare.isEmpty())
 			return;
 		
 		selectedPiece = mouseSquare.getPiece();
-		if (selectedPiece.getColor() != board.moveColor)
+		if (selectedPiece.getColor() != board.getMoveColor())
 			return;
 		
 		selectedSquare = mouseSquare;
 		selectedSquare.removePiece();
 		
 		savedCursor = panel.getCursor();
-		panel.imageToCursor( getPieceImage(selectedPiece, board.moveColor) );
+		panel.imageToCursor( getPieceImage(selectedPiece, board.getMoveColor()) );
 	    
 		board.setBoardChanged();
 		panel.redraw();
@@ -81,7 +73,7 @@ public class MovePieceListener implements IGameListner {
 			
 			// TODO Реализовать запрос фигуры для превращения пешки.
 
-			board.moveColor = getOponentColor();
+			board.changeMoveColor();
 		}
 
 		selectedPiece = null;
@@ -92,11 +84,11 @@ public class MovePieceListener implements IGameListner {
 		board.setBoardChanged();
 		panel.redraw();
 	}
-
-	private PieceColor getOponentColor() {
-		return board.moveColor == PieceColor.WHITE 
-					? PieceColor.BLACK : PieceColor.WHITE;
-	}
+//
+//	private PieceColor getOponentColor() {
+//		return board.moveColor == PieceColor.WHITE 
+//					? PieceColor.BLACK : PieceColor.WHITE;
+//	}
 	
 	/**
 	 * Дать изображение для фигуры заданного цвета.
