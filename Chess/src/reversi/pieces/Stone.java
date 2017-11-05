@@ -27,6 +27,10 @@ public class Stone extends Piece {
 	@Override
 	public boolean isCorrectMove(Square... squares) {
 		Square target = squares[0];
+		
+		// Ход на занятую клетку невохможен.
+		if (!target.isEmpty())
+			return false;
 
 		// Если рядом с клеткой нет вражеских фигур,
 		// то ход туда не корректен.
@@ -156,5 +160,10 @@ public class Stone extends Piece {
 				collectCaptured(target, direction, captured);
 
 		return captured;
+	}
+
+	@Override
+	public String toString() {
+		return "" + square;
 	}
 }

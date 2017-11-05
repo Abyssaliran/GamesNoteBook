@@ -56,4 +56,9 @@ public class ReversiMove implements Move {
 		// перекрасить фигуры стоящие на клетках captured 
 		// в противоположный цвет.
 	}
+
+	@Override
+	public String toString() {
+		return "" + target;
+	}
 }
