@@ -66,7 +66,7 @@ public class Pawn extends ChessPiece {
 			
 			// Не пытается ли пешка перепыгнуть через фигуру (барьер)?
 			int barierV = source.v;
-			int barierH = (source.h + target.h);
+			int barierH = (source.h + target.h) / 2;
 			
 			Board board = source.getBoard();
 			if (!board.isEmpty(barierV, barierH))
