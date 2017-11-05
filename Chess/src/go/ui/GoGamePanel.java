@@ -45,7 +45,7 @@ class GoBoardPanel extends AsiaBoard implements IPieceProvider {
 		
 		// Слушатель мыши для выдачи подсказки для клеток - 
 		// можно ли ставить фигуру на клетку на доски.
-		mouseMoveListener = new PutPiecePromptListener(this);
+		// mouseMoveListener = new PutPiecePromptListener(this);
 		
 //		board.setBlackPlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Vinni(this) );
