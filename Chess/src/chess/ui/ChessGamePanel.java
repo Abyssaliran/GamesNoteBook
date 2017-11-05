@@ -20,6 +20,7 @@ import chess.ui.images.ChessImages;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
+import game.ui.GamePanel;
 import game.ui.listeners.MovePieceListener;
 
 /**

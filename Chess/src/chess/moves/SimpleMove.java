@@ -1,15 +1,15 @@
 package chess.moves;
 
-import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
+import game.core.moves.ITransferMove;
 
 /**
  * Простой ход европейских шахмат - перемещение фигуры на пустую клетку.
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class SimpleMove implements Move {
+public class SimpleMove implements ITransferMove {
 	/**
 	 * Какая фигура перемещается.
 	 */
@@ -30,6 +30,16 @@ public class SimpleMove implements Move {
 		target = squares[1];
 		
 		piece = source.getPiece();
+	}
+	
+	@Override
+	public Square getTarget() {
+		return target;
+	}
+	
+	@Override
+	public Square getSource() {
+		return source;
 	}
 
 	@Override
