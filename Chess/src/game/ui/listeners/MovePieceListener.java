@@ -21,11 +21,6 @@ public class MovePieceListener implements IGameListner {
 	private Square selectedSquare;
 	private Cursor savedCursor;
 
-//	/**
-//	 * Цвет текущего хода.
-//	 */
-//	private PieceColor moveColor = PieceColor.WHITE;
-	
 	/**
 	 * Доска на которой присходят изменения.
 	 */
