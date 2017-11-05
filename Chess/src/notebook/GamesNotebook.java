@@ -54,7 +54,7 @@ public class GamesNotebook {
 		addCheckersTab(display, gamesFolder);
 		addChinaChessTab(display, gamesFolder);
 		addViking9Tab(display, gamesFolder);
-		addViking11Tab(display, gamesFolder);
+//		addViking11Tab(display, gamesFolder);
 		addTamerlanChessTab(display, gamesFolder);
 		addReversiTab(display, gamesFolder);
 		addReversiHoleTab(display, gamesFolder);
@@ -151,7 +151,7 @@ public class GamesNotebook {
 	 * @param display - монитор на котором рисуется закладки.
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
-	private static void addViking11Tab(Display display, TabFolder gamesFolder) {
+	static void addViking11Tab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, VikingImages.icoVikings11
 				.getImageData().scaledTo(20, 20));
 		
