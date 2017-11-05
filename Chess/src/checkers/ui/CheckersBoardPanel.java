@@ -48,19 +48,11 @@ public class CheckersBoardPanel extends EuropeBoard {
 	public CheckersBoardPanel(Composite composite) {
 		super(composite, Checkers.getInitBoard());
 		
-		listener = new MovePieceListener(this) {
-			@Override
-			public Image getPieceImage(Piece piece, PieceColor color) {
-				return CheckersBoardPanel.this.getPieceImage(piece, color);
-			}
-		};
+		listener = new MovePieceListener(this);
 	}
 
-	public Image getPieceImage(Piece piece) {
-		return getPieceImage(piece, piece.getColor());
-	}
-
-	private Image getPieceImage(Piece piece, PieceColor color) {
+	@Override
+	public Image getPieceImage(Piece piece, PieceColor color) {
 		return pieceImages
 				.get(color)
 				.get( piece.getClass() );

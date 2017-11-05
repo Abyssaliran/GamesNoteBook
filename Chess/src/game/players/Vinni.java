@@ -19,6 +19,10 @@ import game.core.Square;
 public class Vinni implements IPlayer {
 	private IPieceProvider pieceProvider;
 
+	/**
+	 * Винни - простой игрок для игр в которых ставятся фигуры на доску.
+	 * Он случайным образом выбирает клетку на которую можно поставить фигуру.
+	 */
 	public Vinni(IPieceProvider pieceProvider) {
 		this.pieceProvider = pieceProvider;
 	}
@@ -30,39 +34,39 @@ public class Vinni implements IPlayer {
 
 	@Override
 	public void doMove(Board board, PieceColor color) {
-		List<Square> squares = board.getEmptySquares();
-		if (squares.isEmpty())
-			return;
-		
 		PieceColor moveColor = board.getMoveColor();
 
+		// Берем все пустые клетки на доске.
+		List<Square> emptySquares = board.getEmptySquares();
+		if (emptySquares.isEmpty())
+			return; // Пустых клеток нет, ходить некуда.
+
 		// Получим фигуру НЕ стоящую на клетке.
-		Square square = squares.get(0);
+		Square square = emptySquares.get(0);
 		Piece piece = pieceProvider.getPiece(square, moveColor);
 		piece.remove(); // Уберем фигуру с клетки доски.
 		
-		// Соберем клетки, на которые можно поставить новую фигуру.
-		List<Square> targets = new ArrayList<>();
+		// Соберем пустые клетки, на которые можно поставить 
+		// новую фигуру заданного цвета.
+		List<Square> allTargets = new ArrayList<>();
 
-		for (int v = 0; v < board.nV; v++)
-			for (int h = 0; h < board.nH; h++) {
-				Square target = board.getSquare(v, h);
-				
-				if (piece.isCorrectMove(target))
-					targets.add(target);
-			}
+		for (Square emptySquare : emptySquares)  
+			if (piece.isCorrectMove(emptySquare))
+				allTargets.add(emptySquare);
 		
-		if (targets.isEmpty())
-			return;
+		if (allTargets.isEmpty())
+			return; // Нет правильных ходов на все пустые клетки.
 		
 		// Выбираем случайную клетку из возможных клеток.
-		Square randomTarget = getRandomSquare(targets);
+		Square randomTarget = getRandomSquare(allTargets);
 		
-		// Делаем ход на случайную возможную клетку.
+		// Создаем ход на случайную клетку и делаем его.
 		Move randomMove = piece.makeMove(randomTarget);
-		board.history.addMove(randomMove);
 		randomMove.doMove();
 		
+		// Сохраняем ход в истории партии.
+		board.history.addMove(randomMove);
+
 		// Передаем ход противнику.
 		board.changeMoveColor();
 	}
@@ -70,12 +74,12 @@ public class Vinni implements IPlayer {
 	/**
 	 * Выбрать из списка клеток случайную клетку.
 	 * 
-	 * @param targets - список клеток.
+	 * @param squares - список клеток.
 	 * @return случайная клетка.
 	 */
-	private Square getRandomSquare(List<Square> targets) {
-		int nTargets = targets.size();
+	private Square getRandomSquare(List<Square> squares) {
+		int nTargets = squares.size();
 		int randomK = (int) (Math.random() * nTargets);
-		return targets.get(randomK);
+		return squares.get(randomK);
 	}
 }

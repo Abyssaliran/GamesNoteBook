@@ -1,7 +1,5 @@
 package game.ui.listeners;
 
-import org.eclipse.swt.graphics.Image;
-
 import game.core.Board;
 import game.core.Move;
 import game.core.Piece;
@@ -10,11 +8,11 @@ import game.core.Square;
 import game.ui.GameBoard;
 
 /**
- * Слушатель постановки новой фигуры на доску.
+ * Слушатель событий о нажатии кнопок мыши используемых 
+ * для постановки новой фигуры на доску.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-abstract
 public class PutPieceListener implements IGameListner {
 	/**
 	 * Доска на которой присходят изменения.
@@ -24,11 +22,17 @@ public class PutPieceListener implements IGameListner {
 	/**
 	 * Панель для отрисовки доски.
 	 */
-	private GameBoard panel;
+	private GameBoard boardPanel;
 
-	public PutPieceListener(GameBoard panel) {
-		this.board = panel.board;
-		this.panel = panel;
+	/**
+	 * Создать слушателя событий от нажатий кнопок мыши 
+	 * используемых для постановки новой фигуры на доску.
+	 * 
+	 * @param boardPanel - панель доски на которую ставятся фигуры.
+	 */
+	public PutPieceListener(GameBoard boardPanel) {
+		this.board = boardPanel.board;
+		this.boardPanel = boardPanel;
 	}
 	
 	@Override
@@ -41,41 +45,27 @@ public class PutPieceListener implements IGameListner {
 		
 		// Получим фигуру НЕ стоящую на клетке.
 		PieceColor moveColor = board.getMoveColor();
-		Piece piece = getPiece(mouseSquare, moveColor);
+		Piece piece = boardPanel.getPiece(mouseSquare, moveColor);
 		piece.remove();
 		
 		if (!piece.isCorrectMove(mouseSquare)) 
-			return;
+			return; // На эту клетку ставить нельзя.
 
+		// Постановка фигуры на заданную клетку правильная.
+		// Создадим экземпляр хода и выполним его.
 		Move move = piece.makeMove(mouseSquare);
 		board.history.addMove(move);
 		move.doMove();
 		
-		PieceColor oponentColor = board.getOponentColor(moveColor);
-		Image pieceImage = getPieceImage(piece, oponentColor);
-		panel.imageToCursor(pieceImage);
+		// Зададим изображение курсора такое как избражение у фигуры.
+		boardPanel.pieceToCursor(piece);
 		
+		// Пусть слушатели изменений на доске 
+		// нарисуют новое состояние доски.
 		board.setBoardChanged();
-		panel.redraw();
+		boardPanel.redraw();
 		
+		// Теперь ходить должен противник. 
 		board.changeMoveColor();
 	}
-	
-	/**
-	 * Дать изображение для фигуры заданного цвета.
-	 * 
-	 * @param piece - фигура.
-	 * @param color - цвет фигуры.
-	 * @return
-	 */
-	abstract public Image getPieceImage(Piece piece, PieceColor color);
-
-	/**
-	 * Выдать фигуру заданного цвета.
-	 * 
-	 * @param square - клетка для фигуры.
-	 * @param color - цвет фигуры.
-	 * @return - фигура заданного цвета.
-	 */
-	abstract public Piece getPiece(Square square, PieceColor color);
 }

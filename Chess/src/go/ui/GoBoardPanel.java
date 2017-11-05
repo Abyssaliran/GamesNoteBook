@@ -1,5 +1,6 @@
 package go.ui;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
@@ -9,8 +10,9 @@ import game.core.PieceColor;
 import game.core.Square;
 import game.players.Vinni;
 import game.ui.AsiaBoard;
-import game.ui.listeners.IMouseMoveListener;
+import game.ui.listeners.NoPromptListener;
 import game.ui.listeners.PutPieceListener;
+import game.ui.listeners.PutPiecePromptListener;
 import go.Go;
 import go.pieces.GoPiece;
 import go.ui.images.GoImages;
@@ -24,22 +26,17 @@ public class GoBoardPanel extends AsiaBoard implements IPieceProvider {
 	public GoBoardPanel(Composite parent, int boardSize) {
 		super(parent, Go.getInitBoard(boardSize, boardSize));
 		
-		listener = new PutPieceListener(this) {
-			@Override
-			public Image getPieceImage(Piece piece, PieceColor color) {
-				return GoBoardPanel.this.getPieceImage(piece, color);
-			}
-
-			@Override
-			public Piece getPiece(Square square, PieceColor color) {
-				return GoBoardPanel.this.getPiece(square, color);
-			}
-		};
+		listener = new PutPieceListener(this);
+		mouseMoveListener = new NoPromptListener(this);
 		
-		mouseMoveListener = IMouseMoveListener.EMPTY;
+		// Слушатель мыши для выдачи подсказки для клеток - 
+		// можно ли ставить фигуру на клетку на доски.
+		mouseMoveListener = new PutPiecePromptListener(this);
 		
 //		board.setBlackPlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Vinni(this) );
+		
+		setPromptColor( new Color(null, 0, 100, 0));
 	}
 
 	@Override
@@ -47,14 +44,10 @@ public class GoBoardPanel extends AsiaBoard implements IPieceProvider {
 		return new GoPiece(square, color);
 	}
 	
-	protected Image getPieceImage(Piece piece, PieceColor color) {
+	@Override
+	public Image getPieceImage(Piece piece, PieceColor color) {
 		return color == PieceColor.WHITE 
 				? GoImages.imageStoneWhite
 				: GoImages.imageStoneBlack;
-	}
-
-	@Override
-	public Image getPieceImage(Piece piece) {
-		return getPieceImage(piece, piece.getColor());
 	}
 }

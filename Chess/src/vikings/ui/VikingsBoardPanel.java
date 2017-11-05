@@ -26,20 +26,11 @@ public class VikingsBoardPanel extends GreenBoard {
 	public VikingsBoardPanel(Composite parent, int boardSize) {
 		super(parent, Vikings.getInitBoard(boardSize));
 		
-		listener = new MovePieceListener(this) {
-			@Override
-			public Image getPieceImage(Piece piece, PieceColor color) {
-				return VikingsBoardPanel.this.getPieceImage(piece, color);
-			}
-		};
+		listener = new MovePieceListener(this);
 	}
 
 	@Override
-	public Image getPieceImage(Piece piece) {
-		return getPieceImage(piece, piece.getColor());
-	}
-
-	private Image getPieceImage(Piece piece, PieceColor color) {
+	public Image getPieceImage(Piece piece, PieceColor color) {
 		if (piece instanceof Viking)
 			return color == PieceColor.WHITE 
 				? VikingImages.imageVikingWhite

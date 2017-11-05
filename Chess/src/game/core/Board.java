@@ -65,7 +65,7 @@ public class Board extends Observable {
 	}
 
 	/**
-	 * Уведомить обозревателей доски (классы реализующие интерфейс Observable)
+	 * Уведомить обозревателей доски (классы реализующие интерфейс <b>Observable</b>)<br>
 	 * что на доске произошли изменения.
 	 * 
 	 * @see java.util.Observable
@@ -91,8 +91,11 @@ public class Board extends Observable {
 	}
 
 	/**
-	 * @param сolor - цвет фигуры.
-	 * @return - противоположный цвет фигур. 
+	 * Дать цвет противоположный заданному цвету.
+	 * 
+	 * @param сolor
+	 *            - заданный цвет фигуры.
+	 * @return противоположный цвет фигур.
 	 */
 	public PieceColor getOponentColor(PieceColor сolor) {
 		return сolor == PieceColor.WHITE 
@@ -108,12 +111,14 @@ public class Board extends Observable {
 		return moveColor;
 	}
 
-	/** 
+	/**
 	 * Вернуть клетку доски.
 	 * 
-	 * @param v - вертикаль клетки.
-	 * @param h - горизонталь клетки.
-	 * @return - клетка с задаными вертикалью и горизонталью.
+	 * @param v
+	 *            - вертикаль клетки.
+	 * @param h
+	 *            - горизонталь клетки.
+	 * @return клетка с задаными вертикалью и горизонталью.
 	 */
 	public Square getSquare(int v, int h) {
 		return squares[v][h];
@@ -122,9 +127,11 @@ public class Board extends Observable {
 	/**
 	 * Проверка выхода координат клетки за границы доски.
 	 * 
-	 * @param v - вертикаль клетки
-	 * @param h - горизонталь клетки
-	 * @return - есть ли клетка с такими координатами на доске.
+	 * @param v
+	 *            - вертикаль клетки
+	 * @param h
+	 *            - горизонталь клетки
+	 * @return есть ли клетка с такими координатами на доске.
 	 */
 	public boolean onBoard(int v, int h) {
 		if (v < 0) return false;
@@ -163,7 +170,10 @@ public class Board extends Observable {
 
 	/**
 	 * Зададать игрока белыми фигурами.
-	 * @return
+	 * 
+	 * @param player - игрок белыми фигурами.
+	 * 
+	 * @see game.players.IPlayer
 	 */
 	public void setWhitePlayer(IPlayer player) {
 		players.put(PieceColor.WHITE, player);
@@ -171,7 +181,10 @@ public class Board extends Observable {
 
 	/**
 	 * Зададать игрока черными фигурами.
-	 * @return
+	 * 
+	 * @param player - игрок черными фигурами.
+	 * 
+	 * @see game.players.IPlayer
 	 */
 	public void setBlackPlayer(IPlayer player) {
 		players.put(PieceColor.BLACK, player);
@@ -179,6 +192,7 @@ public class Board extends Observable {
 
 	/**
 	 * Выдать игрока белыми фигурами.
+	 * 
 	 * @return
 	 */
 	public IPlayer getWhitePlayer() {
@@ -194,9 +208,10 @@ public class Board extends Observable {
 	}
 	
 	/**
-	 * Выдать список расположенных на доске фигур заданного цвета.
+	 * Выдать список всех расположенных на доске фигур заданного цвета.
 	 * 
-	 * @param color - цвет фигуры.
+	 * @param color
+	 *            - цвет фигуры.
 	 * @return - список фигур.
 	 */
 	public List<Piece> getPieces(PieceColor color) {
@@ -219,27 +234,30 @@ public class Board extends Observable {
 	}
 	
 	/**
-	 * Выдать список всех клеток доски.
+	 * Выдать список всех пустых клеток доски.
+	 * 
 	 * @return - список всех клеток доски.
 	 */
 	public List<Square> getEmptySquares() {
-		List<game.core.Square> ss = new ArrayList<>();
+		List<game.core.Square> emptySquares = new ArrayList<>();
+		
 		for (int v = 0; v < nV; v++)
 			for (int h = 0; h < nH; h++) {
 				game.core.Square square = getSquare(v, h);
 				if (square.isEmpty())
-					ss.add( square);
+					emptySquares.add( square);
 			}
 
-		return ss;
+		return emptySquares;
 	}
 
 	/**
-	 * Для заданной фигуры найти список клеток,
-	 * на которые ход данной фигурой допустим.
+	 * Для заданной фигуры найти список клеток, на которые ход данной фигурой
+	 * допустим.
 	 * 
-	 * @param piece - проверяемая фигура.
-	 * @return - список допустимых для хода клеток.
+	 * @param piece
+	 *            - проверяемая фигура.
+	 * @return список допустимых для хода клеток.
 	 */
 	public List<Square> getPieceTargets(Piece piece) {
 		List<Square> targets = new ArrayList<>();
@@ -255,4 +273,18 @@ public class Board extends Observable {
 		return targets;
 	}
 
+	/**
+	 * Выдать список всех клеток доски.
+	 * 
+	 * @return - список
+	 */
+	public List<Square> getSquares() {
+		List<Square> allSquares = new ArrayList<>();
+		
+		for (int v = 0; v < nV; v++)
+			for (int h = 0; h < nH; h++)  
+				allSquares.add(getSquare(v, h));
+		
+		return allSquares;
+	}
 }

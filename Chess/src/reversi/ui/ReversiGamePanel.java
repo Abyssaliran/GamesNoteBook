@@ -15,7 +15,6 @@ import game.ui.GreenBoard;
 import game.ui.listeners.PutPieceListener;
 import game.ui.listeners.PutPiecePromptListener;
 import reversi.Reversi;
-import reversi.pieces.Hole;
 import reversi.pieces.Stone;
 import reversi.ui.images.ReversiImages;
 
@@ -52,7 +51,6 @@ public class ReversiGamePanel extends Canvas {
 	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
 	 */
 	public class ReversiBoardPanel extends GreenBoard {
-
 		/**
 		 * Создать доску для игры в реверси.
 		 * 
@@ -65,44 +63,23 @@ public class ReversiGamePanel extends Canvas {
 			super(composite, Reversi.getInitBoard(nHoles));
 
 			// Слушатель мыши для постановки новой фигуры на доску.
-			listener = new PutPieceListener(this) {
-				@Override
-				public Image getPieceImage(Piece piece, PieceColor color) {
-					return ReversiBoardPanel.this.getPieceImage(piece, color);
-				}
-
-				@Override
-				public Piece getPiece(Square square, PieceColor color) {
-					return new Stone(square, color);
-				}
-			};
+			listener = new PutPieceListener(this);
 
 			// Слушатель мыши для выдачи подсказки - можно ли ставить фигуру
 			// клетку на доски.
-			mouseMoveListener = new PutPiecePromptListener(this) {
-				@Override
-				public Piece getPiece(Square square, PieceColor color) {
-					return new Stone(square, color);
-				}
-
-				@Override
-				public Image getPieceImage(Piece piece, PieceColor color) {
-					return ReversiBoardPanel.this.getPieceImage(piece, color);
-				}
-			};
+			mouseMoveListener = new PutPiecePromptListener(this);
 		}
 
 		@Override
-		public Image getPieceImage(Piece piece) {
-			if (piece instanceof Hole)
-				return ReversiImages.imageHoleBlack;
-
-			return getPieceImage(piece, piece.getColor());
+		public Piece getPiece(Square square, PieceColor color) {
+			return new Stone(square, color);
 		}
 
-		private Image getPieceImage(Piece piece, PieceColor color) {
-			return color == PieceColor.WHITE ? ReversiImages.imageStoneWhite : ReversiImages.imageStoneBlack;
+		@Override
+		public Image getPieceImage(Piece piece, PieceColor color) {
+			return color == PieceColor.WHITE 
+					? ReversiImages.imageStoneWhite 
+					: ReversiImages.imageStoneBlack;
 		}
-
 	}
 }

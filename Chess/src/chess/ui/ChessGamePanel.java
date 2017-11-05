@@ -77,21 +77,12 @@ class ChessBoardPanel extends EuropeBoard {
 	public ChessBoardPanel(Composite composite) {
 		super(composite, Chess.getInitBoard());
 		
-		listener = new MovePieceListener(this) {
-			@Override
-			public Image getPieceImage(Piece piece, PieceColor color) {
-				return ChessBoardPanel.this.getPieceImage(piece, color);
-			}
-		};
+		listener = new MovePieceListener(this);
 	}
 
-	protected Image getPieceImage(Piece piece, PieceColor color) {
+	public Image getPieceImage(Piece piece, PieceColor color) {
 		return pieceImages
 				.get(color)
 				.get( piece.getClass() );
-	}
-
-	public Image getPieceImage(Piece piece) {
-		return getPieceImage(piece, piece.getColor());
 	}
 }

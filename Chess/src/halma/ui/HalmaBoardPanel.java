@@ -3,6 +3,7 @@
  */
 package halma.ui;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
@@ -25,28 +26,14 @@ public class HalmaBoardPanel extends AsiaBoard {
 	public HalmaBoardPanel(Composite parent, int boardSize) {
 		super(parent, Halma.getInitBoard(boardSize));
 		
-		listener = new MovePieceListener(this) {
-			@Override
-			public Image getPieceImage(Piece piece, PieceColor color) {
-				return HalmaBoardPanel.this.getPieceImage(piece, color);
-			}
-		};
+		listener = new MovePieceListener(this);
+		
+		setPromptColor( new Color(null, 0, 100, 0) );
 	}
 
-	protected Image getPieceImage(Piece piece, PieceColor color) {
+	@Override
+	public Image getPieceImage(Piece piece, PieceColor color) {
 		return color == PieceColor.WHITE 
 				? HalmaImages.imageStoneWhite
 				: HalmaImages.imageStoneBlack;	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see game.ui.GameBoard#getPieceImage(game.core.Piece)
-	 */
-	@Override
-	public Image getPieceImage(Piece piece) {
-		return piece.getColor() == PieceColor.WHITE 
-				? HalmaImages.imageStoneWhite
-				: HalmaImages.imageStoneBlack;
-	}
 }

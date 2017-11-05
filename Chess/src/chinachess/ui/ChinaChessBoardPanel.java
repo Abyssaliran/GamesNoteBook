@@ -6,6 +6,7 @@ package chinachess.ui;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
@@ -41,45 +42,35 @@ public class ChinaChessBoardPanel extends AsiaBoardWithCastle {
 
 		// Инициализируем карту изображений белых фигур.
 		//
-		whites.put(Pawn.class,   ChinaChessImages.imagePawnWhite);
-		whites.put(Rook.class,   ChinaChessImages.imageRookWhite);
-		whites.put(Knight.class, ChinaChessImages.imageKnightWhite);
-		whites.put(Bishop.class, ChinaChessImages.imageBishopWhite);
-		whites.put(Gun.class,  	 ChinaChessImages.imageGunWhite);
-		whites.put(King.class,   ChinaChessImages.imageKingWhite);
+		whites.put(Pawn.class,     ChinaChessImages.imagePawnWhite);
+		whites.put(Rook.class,     ChinaChessImages.imageRookWhite);
+		whites.put(Knight.class,   ChinaChessImages.imageKnightWhite);
+		whites.put(Bishop.class,   ChinaChessImages.imageBishopWhite);
+		whites.put(Gun.class,  	   ChinaChessImages.imageGunWhite);
+		whites.put(King.class,     ChinaChessImages.imageKingWhite);
 		whites.put(Guardian.class, ChinaChessImages.imageGuardWhite);
 		
 		// Инициализируем карту изображений черных фигур.
 		//
-		blacks.put(Pawn.class,   ChinaChessImages.imagePawnBlack);
-		blacks.put(Rook.class,   ChinaChessImages.imageRookBlack);
-		blacks.put(Knight.class, ChinaChessImages.imageKnightBlack);
-		blacks.put(Bishop.class, ChinaChessImages.imageBishopBlack);
-		blacks.put(Gun.class,    ChinaChessImages.imageGunBlack);
-		blacks.put(King.class,   ChinaChessImages.imageKingBlack);
+		blacks.put(Pawn.class,     ChinaChessImages.imagePawnBlack);
+		blacks.put(Rook.class,     ChinaChessImages.imageRookBlack);
+		blacks.put(Knight.class,   ChinaChessImages.imageKnightBlack);
+		blacks.put(Bishop.class,   ChinaChessImages.imageBishopBlack);
+		blacks.put(Gun.class,      ChinaChessImages.imageGunBlack);
+		blacks.put(King.class,     ChinaChessImages.imageKingBlack);
 		blacks.put(Guardian.class, ChinaChessImages.imageGuardBlack);
 	}
 		
 	public ChinaChessBoardPanel(Composite composite) {
 		super(composite, ChinaChess.getInitBoard());
 		
-		listener = new MovePieceListener(this) {
-			@Override
-			public Image getPieceImage(Piece piece, PieceColor color) {
-				return ChinaChessBoardPanel.this.getPieceImage(piece, color);
-			}
-		};
+		listener = new MovePieceListener(this);
+		
+		setPromptColor( new Color(null, 0, 100, 0));
 	}
 
-	/* (non-Javadoc)
-	 * @see game.ui.GameBoard#getPieceImage(game.core.Piece)
-	 */
 	@Override
-	public Image getPieceImage(Piece piece) {
-		return getPieceImage(piece,  piece.getColor());
-	}
-
-	private Image getPieceImage(Piece piece, PieceColor color) {
+	public Image getPieceImage(Piece piece, PieceColor color) {
 		return pieceImages
 				.get(color)
 				.get(piece.getClass());

@@ -24,40 +24,66 @@ public class Neznaika implements IPlayer {
 
 	@Override
 	public void doMove(Board board, PieceColor color) {
+		// Берем все фигуры заданного цвета. 
 		List<Piece> pieces = board.getPieces(color);
 		
 		if (pieces.isEmpty())
 			return;
 
-		int nPieces = pieces.size();
+		while ( !pieces.isEmpty() ) {
+			// Берем случайную фигуру из списка фигур.
+			Piece randomPiece = getRandomPiece(pieces);
 
-		for (int k = 0; k < nPieces; k++) {
-			// Получаем случайную фигуру.
-			int randomN = (int) (Math.random() * nPieces);
-			Piece randomPiece = pieces.get(randomN);
-
-			// Получаем список допустимых для хода клеток.
+			// Получаем список допустимых клеток для хода этой фигурой.
 			List<Square> targets = board.getPieceTargets(randomPiece);
-			if (targets.isEmpty())
-				continue; // Допустимых ходов у фигуры нет.
+			if (targets.isEmpty()) {
+				// Допустимых ходов у этой фигуры нет.
+				// Исключим фигуру из списка возможных фигур
+				// и попробуем выбрать фигуру из оставшихся.
+				pieces.remove(randomPiece);
+				continue; 
+			}
 
-			// Получаем случайную клетку.
-			int nTargets = targets.size();
-			int randomK = (int) (Math.random() * nTargets);
-			Square randomTarget = targets.get(randomK);
-			
-			// Делаем ход на случайную клетку.
+			// Откуда идем - клетка где стоит эта фигура.
 			Square source = randomPiece.square;
 			
-			Move randomMove = randomPiece.makeMove(source, randomTarget);
-			board.history.addMove(randomMove);
+			// Куда идем - получаем случайную клетку 
+			// из всех возможных клеток для этой фигуры.
+			Square target = getRandomSquare(targets);
+			
+			// Создаем ход на случайную клетку и делаем его.
+			Move randomMove = randomPiece.makeMove(source, target);
 			randomMove.doMove();
 			
+			// Сохраняем ход в истории партии.
+			board.history.addMove(randomMove);
+			
+			// Выходим из цикла случайного выбора фигуры
+			// которая может сделать правильный ход.
 			break;
 		}
 		
 		// Передаем ход противнику.
 		board.changeMoveColor();
+	}
+
+	/**
+	 * Выдать случайную клетку из списка клеток.
+	 * @param squares - список клеток.
+	 * @return клетка выбранная случайным образом.
+	 */
+	private Square getRandomSquare(List<Square> squares) {
+		return squares.get((int) (Math.random() * squares.size()));
+	}
+
+	/**
+	 * Выдать случайную фигуру из списка фигур.
+	 * @param pieces - список фигур.
+	 * @return фигура выбранная случайным образом.
+	 */
+	private Piece getRandomPiece(List<Piece> pieces) {
+		int random = (int) (Math.random() * pieces.size());
+		return pieces.get(random);
 	}
 	
 	@Override
