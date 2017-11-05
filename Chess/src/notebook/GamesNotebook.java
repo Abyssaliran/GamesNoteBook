@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
-import checkers.ui.CheckersBoardPanel;
+import checkers.ui.CheckersGamePanel;
 import checkers.ui.images.CheckersImages;
 import chess.ui.ChessGamePanel;
 import chess.ui.images.ChessImages;
@@ -93,7 +93,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Шашки");
-		tabItem.setControl( new CheckersBoardPanel(gamesFolder) );
+		tabItem.setControl( new CheckersGamePanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 

@@ -3,16 +3,16 @@
  */
 package checkers.moves;
 
-import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
+import game.core.moves.ITransferMove;
 
 /**
  * Простой ход шашкой вперед без взятия фигуры противника.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class SimpleMove implements Move {
+public class SimpleMove implements ITransferMove  {
 	/**
 	 * Откуда пошла фигура.
 	 */
@@ -31,7 +31,7 @@ public class SimpleMove implements Move {
 	/**
 	 * Какая фигура пошла.
 	 */
-	private Piece piece;
+	protected Piece piece;
 
 	public SimpleMove(boolean isPromotion, Square... squares) {
 		this.isPromotion = isPromotion;
@@ -40,6 +40,16 @@ public class SimpleMove implements Move {
 		target = squares[1];
 
 		piece = source.getPiece();
+	}
+	
+	@Override
+	public Square getTarget() {
+		return target;
+	}
+	
+	@Override
+	public Square getSource() {
+		return source;
 	}
 
 	@Override
@@ -78,6 +88,6 @@ public class SimpleMove implements Move {
 	
 	@Override
 	public String toString() {
-		return "" + piece + "-" + target;
+		return "" + piece + source + "-" + target;
 	}
 }
