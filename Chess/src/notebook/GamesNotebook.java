@@ -16,7 +16,7 @@ import chinachess.ui.ChinaChessGamePanel;
 import chinachess.ui.images.ChinaChessImages;
 import go.ui.GoBoardPanel;
 import go.ui.images.GoImages;
-import halma.ui.HalmaBoardPanel;
+import halma.ui.HalmaGamePanel;
 import halma.ui.images.HalmaImages;
 import notebook.ui.images.NotebookImages;
 import reversi.ui.ReversiGamePanel;
@@ -223,7 +223,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Халма 8x8");
-		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 8) );
+		tabItem.setControl( new HalmaGamePanel(gamesFolder, 8) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -233,7 +233,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Халма 10x10");
-		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 10) );
+		tabItem.setControl( new HalmaGamePanel(gamesFolder, 10) );
 		tabItem.setImage(tabImage);
 	}
 	
@@ -243,7 +243,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Халма 16x16");
-		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 16) );
+		tabItem.setControl( new HalmaGamePanel(gamesFolder, 16) );
 		tabItem.setImage(tabImage);
 	}
 	

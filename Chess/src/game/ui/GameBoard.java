@@ -207,6 +207,8 @@ public class GameBoard extends Canvas
 			ITransferMove m = (ITransferMove) move;
 			Square source = m.getSource();
 			Square target = m.getTarget();
+			
+			gc.setLineWidth(3);
 			markLine(gc, source, target, lastMoveColor);
 			
 			if (move instanceof ICaptureMove) {

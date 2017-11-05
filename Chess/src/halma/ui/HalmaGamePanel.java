@@ -10,11 +10,24 @@ import org.eclipse.swt.widgets.Composite;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.AsiaBoard;
+import game.ui.GamePanel;
 import game.ui.listeners.MovePieceListener;
-
 import halma.Halma;
 import halma.ui.images.HalmaImages;
 
+/**
+ * Панель для игры в уголки.
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ */
+public class HalmaGamePanel extends GamePanel {
+
+	public HalmaGamePanel(Composite parent, int boardSize) {
+		super(parent);
+		
+		insertSquares( new HalmaBoardPanel(this, boardSize) );
+	}
+}
 /**
  * Доска для игры <a href=
  * "https://ru.wikipedia.org/wiki/https://ru.wikipedia.org/wiki/%D0%A5%D0%B0%D0%BB%D0%BC%D0%B0">
@@ -22,7 +35,7 @@ import halma.ui.images.HalmaImages;
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class HalmaBoardPanel extends AsiaBoard {
+class HalmaBoardPanel extends AsiaBoard {
 	public HalmaBoardPanel(Composite parent, int boardSize) {
 		super(parent, Halma.getInitBoard(boardSize));
 		
