@@ -60,8 +60,8 @@ public class GamesNotebook {
 //		addReversiHoleTab(display, gamesFolder);
 		addGoTab(display, gamesFolder);
 		addHalma8x8Tab(display, gamesFolder);
-		addHalma10x10Tab(display, gamesFolder);
-		addHalma16x16Tab(display, gamesFolder);
+//		addHalma10x10Tab(display, gamesFolder);
+//		addHalma16x16Tab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -226,7 +226,8 @@ public class GamesNotebook {
 		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 8) );
 		tabItem.setImage(tabImage);
 	}
-	private static void addHalma10x10Tab(Display display, TabFolder gamesFolder) {
+
+	static void addHalma10x10Tab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, HalmaImages.icoHalma
 				.getImageData().scaledTo(20, 20));
 		
@@ -235,7 +236,8 @@ public class GamesNotebook {
 		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 10) );
 		tabItem.setImage(tabImage);
 	}
-	private static void addHalma16x16Tab(Display display, TabFolder gamesFolder) {
+	
+	static void addHalma16x16Tab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, HalmaImages.icoHalma
 				.getImageData().scaledTo(20, 20));
 		
