@@ -14,7 +14,7 @@ import chess.ui.ChessGamePanel;
 import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessGamePanel;
 import chinachess.ui.images.ChinaChessImages;
-import go.ui.GoBoardPanel;
+import go.ui.GoGamePanel;
 import go.ui.images.GoImages;
 import halma.ui.HalmaGamePanel;
 import halma.ui.images.HalmaImages;
@@ -206,7 +206,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Го");
-		tabItem.setControl( new GoBoardPanel(gamesFolder, 10) );
+		tabItem.setControl( new GoGamePanel(gamesFolder, 10) );
 		tabItem.setImage(tabImage);
 	}
 

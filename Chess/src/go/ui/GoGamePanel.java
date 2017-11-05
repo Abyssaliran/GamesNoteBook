@@ -10,6 +10,7 @@ import game.core.PieceColor;
 import game.core.Square;
 import game.players.Vinni;
 import game.ui.AsiaBoard;
+import game.ui.GamePanel;
 import game.ui.listeners.NoPromptListener;
 import game.ui.listeners.PutPieceListener;
 import game.ui.listeners.PutPiecePromptListener;
@@ -18,11 +19,24 @@ import go.pieces.GoPiece;
 import go.ui.images.GoImages;
 
 /**
+ * Панель для игры в Го.
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ */
+public class  GoGamePanel extends GamePanel {
+
+	public GoGamePanel(Composite parent, int boardSize) {
+		super(parent);
+		
+		insertSquares( new GoBoardPanel(this, boardSize) );
+	}
+}
+/**
  * Панель для игры <a href="https://ru.wikipedia.org/wiki/%D0%93%D0%BE">Го</a>
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class GoBoardPanel extends AsiaBoard implements IPieceProvider {
+class GoBoardPanel extends AsiaBoard implements IPieceProvider {
 	public GoBoardPanel(Composite parent, int boardSize) {
 		super(parent, Go.getInitBoard(boardSize, boardSize));
 		

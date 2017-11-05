@@ -41,4 +41,9 @@ public class SimpleMove implements Move {
 	public void undoMove() {
 		piece.remove();
 	}
+	
+	@Override
+	public String toString() {
+		return "" + target;
+	}
 }
