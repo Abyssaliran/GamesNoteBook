@@ -40,4 +40,9 @@ public class Guardian extends ChinaChessPiece {
 		
 		return new SimpleMove(squares);
 	}
+	
+	@Override
+	public String toString() {
+		return "A";
+	}
 }

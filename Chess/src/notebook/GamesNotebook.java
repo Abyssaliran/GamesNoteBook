@@ -12,7 +12,7 @@ import checkers.ui.CheckersBoardPanel;
 import checkers.ui.images.CheckersImages;
 import chess.ui.ChessGamePanel;
 import chess.ui.images.ChessImages;
-import chinachess.ui.ChinaChessBoardPanel;
+import chinachess.ui.ChinaChessGamePanel;
 import chinachess.ui.images.ChinaChessImages;
 import go.ui.GoBoardPanel;
 import go.ui.images.GoImages;
@@ -21,10 +21,10 @@ import halma.ui.images.HalmaImages;
 import notebook.ui.images.NotebookImages;
 import reversi.ui.ReversiGamePanel;
 import reversi.ui.images.ReversiImages;
-import vikings.ui.VikingsBoardPanel;
-import vikings.ui.images.VikingImages;
 import tamerlan.ui.TamerlanChessGamePanel;
 import tamerlan.ui.images.TamerlanChessImages;
+import vikings.ui.VikingsBoardPanel;
+import vikings.ui.images.VikingImages;
 
 /**
  * <b>Блокнот настольных игр.</b></br></br>
@@ -109,7 +109,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Сянци");
-		tabItem.setControl( new ChinaChessBoardPanel(gamesFolder) );
+		tabItem.setControl( new ChinaChessGamePanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 

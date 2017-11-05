@@ -22,10 +22,24 @@ import chinachess.ui.images.ChinaChessImages;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.AsiaBoardWithCastle;
+import game.ui.GamePanel;
 import game.ui.listeners.MovePieceListener;
 
+/**
+ * Панель для игры в китайские шахматы.
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ */
+public class ChinaChessGamePanel extends GamePanel {
 
-public class ChinaChessBoardPanel extends AsiaBoardWithCastle {
+	public ChinaChessGamePanel(Composite parent) {
+		super(parent);
+		
+		insertSquares( new ChinaChessBoardPanel(this) );
+	}
+}
+
+class ChinaChessBoardPanel extends AsiaBoardWithCastle {
 
 	private static Map<Class<? extends Piece>, Image> whites;
 	private static Map<Class<? extends Piece>, Image> blacks;
