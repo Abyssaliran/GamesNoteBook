@@ -4,6 +4,7 @@
 package checkers.moves;
 
 import checkers.pieces.King;
+import checkers.pieces.Man;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -69,9 +70,10 @@ public class SimpleMove implements Move {
 		// TODO Auto-generated method stub
 		if (isPromotion)
 			piece = s.getPiece();
+			Piece tempMan = piece;
 			PieceColor kingColor = piece.getColor();
 			s.removePiece();
-			piece = new King(s, kingColor);
+			piece = new King(tempMan, s, kingColor);
 	}
 
 	/**
@@ -81,6 +83,11 @@ public class SimpleMove implements Move {
 	 */
 	private void removeKing(Square s) {
 		// TODO Auto-generated method stub
+		King tempKing = (King) s.getPiece();
+		s.removePiece();
+		piece = tempKing.getMan();
+		s.setPiece(piece);
+		//TODO: fix rare bug with lost Man!
 	}
 	
 	@Override

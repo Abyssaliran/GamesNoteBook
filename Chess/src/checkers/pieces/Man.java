@@ -14,6 +14,7 @@ import game.core.Square;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Man extends CheckersPiece {
+	
 	public Man(Square square, PieceColor color) {
 		super(square, color);
 	}
