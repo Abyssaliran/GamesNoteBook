@@ -3,6 +3,9 @@
  */
 package checkers.pieces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -35,10 +38,32 @@ public class King extends CheckersPiece {
 		Square source = square;
 		Square target = squares[0];
 		
+		if (target.isDiagonal(source)) {
+			List<PieceColor> diagonalPiecesColor = getDiagonalPiecesColor(source, target);
+			if (target.isEmptyDiagonal(source)) return true;
+			if (diagonalPiecesColor.size() > 1) return false;
+			else if (!diagonalPiecesColor.contains(getColor())) return true;
+		}
+		
 		// TODO Checkers Сделать проверку правильности хода
 		// из клетки source в клетку target.
 
 		return false;
+	}
+	
+	private List<PieceColor> getDiagonalPiecesColor (Square a, Square b){
+		if (!a.isDiagonal(b)||a.isEmpty()) return null;
+		List<PieceColor> diagonalPiecesColor = new ArrayList<>();
+		int n = Math.abs(a.v - b.v);
+		int dv = a.v > b.v ? -1: 1;
+		int dh = a.h > b.h ? -1: 1;
+		for (int k = 1; k < n - 1; k++) {
+			Square temp = a.getBoard().getSquare(a.v + k*dv, a.h + k*dh);
+			if (!temp.isEmpty()) {
+				diagonalPiecesColor.add(temp.getPiece().getColor());
+			}
+		}
+		return diagonalPiecesColor;
 	}
 
 	@Override
