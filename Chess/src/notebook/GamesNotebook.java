@@ -57,7 +57,7 @@ public class GamesNotebook {
 //		addViking11Tab(display, gamesFolder);
 		addTamerlanChessTab(display, gamesFolder);
 		addReversiTab(display, gamesFolder);
-		addReversiHoleTab(display, gamesFolder);
+//		addReversiHoleTab(display, gamesFolder);
 		addGoTab(display, gamesFolder);
 		addHalma8x8Tab(display, gamesFolder);
 		addHalma10x10Tab(display, gamesFolder);
@@ -184,7 +184,7 @@ public class GamesNotebook {
 	 * @param display - монитор на котором рисуется закладки.
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
-	private static void addReversiHoleTab(Display display, TabFolder gamesFolder) {
+	static void addReversiHoleTab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, ReversiImages.icoReversiX
 				.getImageData().scaledTo(20, 20));
 		
