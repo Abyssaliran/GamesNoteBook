@@ -24,7 +24,7 @@ public class SimpleMove implements Move {
 	 */
 	protected Square source;
 	
-	private Map<Man, King> kings = new HashMap<>(); 
+	private Map<King, Man> kings = new HashMap<>(); 
 
 	/**
 	 * Куда пошла фигура.
@@ -79,11 +79,8 @@ public class SimpleMove implements Move {
 			Man exMan = (Man) piece;
 			s.removePiece();
 			King kingFromMan = new King(s, kingColor);
-			kings.put(exMan, kingFromMan);
+			kings.put(kingFromMan, exMan);
 			piece = kingFromMan;
-			for (Map.Entry<Man, King> k: kings.entrySet()) {
-				System.out.println("Key:  " + k.getKey() + "  Value:  " + k.getValue());
-			}
 	}
 
 	/**
@@ -93,12 +90,10 @@ public class SimpleMove implements Move {
 	 */
 	private void removeKing(Square s) {
 		// TODO Auto-generated method stub
-		King tempKing = (King) s.getPiece();
+		Man manFromKing = kings.get(piece);
 		s.removePiece();
-	//	piece = tempKing.getMan();
+	    piece = manFromKing;
 		s.setPiece(piece);
-		//TODO: fix rare bug with lost Man!
-		//FIXED!
 	}
 	
 	@Override
