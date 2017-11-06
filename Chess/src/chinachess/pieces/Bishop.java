@@ -40,7 +40,6 @@ public class Bishop extends ChinaChessPiece {
 		if (isEnemyPart(getColor(), target))
 			return false;
 
-
 		// TODO Дмитрив - сделать проверку правильности хода фигурой.
 		// Проверить что слон ходит только на две клетки.
 		
