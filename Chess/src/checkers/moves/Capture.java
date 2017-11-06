@@ -34,8 +34,8 @@ public class Capture extends SimpleMove {
 	
 	@Override
 	public void doMove() {
-		captured.remove();
 		super.doMove();
+		captured.remove();
 	}
 
 	@Override
@@ -46,6 +46,6 @@ public class Capture extends SimpleMove {
 	
 	@Override
 	public String toString() {
-		return "" + source + "x" + target;
+		return "" + source + "  x   " + target;
 	}
 }

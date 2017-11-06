@@ -73,11 +73,11 @@ public class King extends CheckersPiece {
 		
 		Piece captured = getOneOpponentDiagonalPiece(source, target);
 		
-		if (source.isEmptyDiagonal(target))
+		if (source.isEmptyDiagonal(target)) 
 		    move = new SimpleMove(false, source, target);
-		 else if (captured != null)
+		 else if (captured != null) 
 		    move = new Capture(false, captured, source, target);
-		move.doMove();
+		//move.doMove();
 		return move;
 	}
 	

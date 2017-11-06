@@ -24,7 +24,7 @@ public class SimpleMove implements Move {
 	 */
 	protected Square source;
 	
-	private Map<King, Man> kings = new HashMap<>(); 
+	private Map<Piece, Piece> kings = new HashMap<>(); 
 
 	/**
 	 * Куда пошла фигура.
@@ -76,7 +76,7 @@ public class SimpleMove implements Move {
 		if (isPromotion)
 			piece = s.getPiece();
 			PieceColor kingColor = piece.getColor();
-			Man exMan = (Man) piece;
+			Piece exMan = piece;
 			s.removePiece();
 			King kingFromMan = new King(s, kingColor);
 			kings.put(kingFromMan, exMan);
@@ -90,7 +90,7 @@ public class SimpleMove implements Move {
 	 */
 	private void removeKing(Square s) {
 		// TODO Auto-generated method stub
-		Man manFromKing = kings.get(piece);
+		Piece manFromKing = kings.get(piece);
 		s.removePiece();
 	    piece = manFromKing;
 		s.setPiece(piece);
