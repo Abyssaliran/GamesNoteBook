@@ -1,5 +1,6 @@
 package chinachess.pieces;
 
+import game.core.Board;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
@@ -62,8 +63,10 @@ public class ChinaChessPiece extends Piece {
 	 * @return клетка <b>target</b> на вражеской территории или нет
 	 */
 	protected boolean isEnemyPart(PieceColor color, Square square) {
+		Board board = square.getBoard();
+		
 		return color == PieceColor.BLACK 
-				? (square.h >= 6)
-				: (square.h <= 3);
+				? (square.h >= board.nH / 2)
+				: (square.h <  board.nH / 2);
 	}
 }
