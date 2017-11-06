@@ -41,6 +41,5 @@ public class Checkers {
 	private void setHorizontal(Board board, int h, PieceColor color) {
 		for (int v = (h+1) % 2; v < board.nV; v += 2)
 			new Man(board.getSquare(v, h), color);
-			new King (board.getSquare(0,0).getPiece(), board.getSquare(2, 3), PieceColor.WHITE);
 	}
 }

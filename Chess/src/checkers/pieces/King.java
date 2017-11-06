@@ -16,15 +16,9 @@ import game.core.Square;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class King extends CheckersPiece {
-	private Piece pastMan;
 	
-	public King(Piece pastMan, Square square, PieceColor color) {
+	public King(Square square, PieceColor color) {
 		super(square, color);
-		this.pastMan = pastMan;
-	}
-	
-	public Piece getMan() {
-		return pastMan;
 	}
 
 	@Override

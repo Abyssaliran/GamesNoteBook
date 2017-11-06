@@ -3,7 +3,11 @@
  */
 package checkers.moves;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import checkers.pieces.King;
+import checkers.pieces.Man;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -19,6 +23,8 @@ public class SimpleMove implements Move {
 	 * Откуда пошла фигура.
 	 */
 	protected Square source;
+	
+	private Map<Man, King> kings = new HashMap<>(); 
 
 	/**
 	 * Куда пошла фигура.
@@ -69,10 +75,15 @@ public class SimpleMove implements Move {
 		// TODO Auto-generated method stub
 		if (isPromotion)
 			piece = s.getPiece();
-			Piece tempMan = piece;
 			PieceColor kingColor = piece.getColor();
+			Man exMan = (Man) piece;
 			s.removePiece();
-			piece = new King(tempMan, s, kingColor);
+			King kingFromMan = new King(s, kingColor);
+			kings.put(exMan, kingFromMan);
+			piece = kingFromMan;
+			for (Map.Entry<Man, King> k: kings.entrySet()) {
+				System.out.println("Key:  " + k.getKey() + "  Value:  " + k.getValue());
+			}
 	}
 
 	/**
@@ -84,7 +95,7 @@ public class SimpleMove implements Move {
 		// TODO Auto-generated method stub
 		King tempKing = (King) s.getPiece();
 		s.removePiece();
-		piece = tempKing.getMan();
+	//	piece = tempKing.getMan();
 		s.setPiece(piece);
 		//TODO: fix rare bug with lost Man!
 		//FIXED!
