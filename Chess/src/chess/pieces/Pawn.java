@@ -1,6 +1,7 @@
 package chess.pieces;
 
 import chess.moves.Capture;
+import chess.moves.Promotion;
 import chess.moves.SimpleMove;
 import game.core.Board;
 import game.core.Move;
@@ -84,8 +85,15 @@ public class Pawn extends ChessPiece {
 		Square source = squares[0];
 		Square target = squares[1];
 		
-		int dv = Math.abs(target.v - source.v);
-		if (dv == 1) // Ход по диагонали.
+		boolean isLastHorizontal = (
+				getColor() == PieceColor.WHITE 
+					? target.h == 0 
+					: target.h == 7);
+		
+		if (isLastHorizontal) // Ход на последнюю горизонталь.
+			return new Promotion(squares);
+		
+		if (Math.abs(target.v - source.v) == 1) // Ход по диагонали.
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);
