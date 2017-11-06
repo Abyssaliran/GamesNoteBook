@@ -3,7 +3,12 @@
  */
 package checkers.moves;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import checkers.pieces.King;
 import game.core.Piece;
+import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.ITransferMove;
 
@@ -17,6 +22,8 @@ public class SimpleMove implements ITransferMove  {
 	 * Откуда пошла фигура.
 	 */
 	protected Square source;
+	
+	private Map<Piece, Piece> kings = new HashMap<>(); 
 
 	/**
 	 * Куда пошла фигура.
@@ -75,6 +82,14 @@ public class SimpleMove implements ITransferMove  {
 	 */
 	private void putKing(Square s) {
 		// TODO Auto-generated method stub
+		if (isPromotion)
+			piece = s.getPiece();
+			PieceColor kingColor = piece.getColor();
+			Piece exMan = piece;
+			s.removePiece();
+			King kingFromMan = new King(s, kingColor);
+			kings.put(kingFromMan, exMan);
+			piece = kingFromMan;
 	}
 
 	/**
@@ -84,6 +99,10 @@ public class SimpleMove implements ITransferMove  {
 	 */
 	private void removeKing(Square s) {
 		// TODO Auto-generated method stub
+		Piece manFromKing = kings.get(piece);
+		s.removePiece();
+	    piece = manFromKing;
+		s.setPiece(piece);
 	}
 	
 	@Override

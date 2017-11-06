@@ -42,8 +42,8 @@ public class Capture extends SimpleMove implements ICaptureMove {
 	
 	@Override
 	public void doMove() {
-		captured.remove();
 		super.doMove();
+		captured.remove();
 	}
 
 	@Override

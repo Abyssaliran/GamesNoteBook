@@ -14,6 +14,7 @@ import game.core.Square;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Man extends CheckersPiece {
+	
 	public Man(Square square, PieceColor color) {
 		super(square, color);
 	}
@@ -96,7 +97,7 @@ public class Man extends CheckersPiece {
 		
 		boolean isBlack = getColor() == PieceColor.BLACK;
 		boolean isPromotion = isBlack 
-				? target.h == 8 
+				? target.h == 7 
 				: target.h == 0;
 		
 		boolean isCapture = Math.abs(target.v - source.v) == 2;
