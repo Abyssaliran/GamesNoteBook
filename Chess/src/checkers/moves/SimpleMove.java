@@ -17,13 +17,13 @@ import game.core.moves.ITransferMove;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class SimpleMove implements ITransferMove  {
+public class SimpleMove implements ITransferMove {
 	/**
 	 * Откуда пошла фигура.
 	 */
 	protected Square source;
-	
-	private Map<Piece, Piece> kings = new HashMap<>(); 
+
+	private Map<Piece, Piece> kings = new HashMap<>();
 
 	/**
 	 * Куда пошла фигура.
@@ -48,12 +48,12 @@ public class SimpleMove implements ITransferMove  {
 
 		piece = source.getPiece();
 	}
-	
+
 	@Override
 	public Square getTarget() {
 		return target;
 	}
-	
+
 	@Override
 	public Square getSource() {
 		return source;
@@ -62,7 +62,7 @@ public class SimpleMove implements ITransferMove  {
 	@Override
 	public void doMove() {
 		piece.moveTo(target);
-		
+
 		if (isPromotion)
 			putKing(target);
 	}
@@ -71,7 +71,7 @@ public class SimpleMove implements ITransferMove  {
 	public void undoMove() {
 		if (isPromotion)
 			removeKing(target);
-		
+
 		piece.moveTo(source);
 	}
 
@@ -81,30 +81,30 @@ public class SimpleMove implements ITransferMove  {
 	 * @param s
 	 */
 	private void putKing(Square s) {
-		// TODO Auto-generated method stub
 		if (isPromotion)
 			piece = s.getPiece();
-			PieceColor kingColor = piece.getColor();
-			Piece exMan = piece;
-			s.removePiece();
-			King kingFromMan = new King(s, kingColor);
-			kings.put(kingFromMan, exMan);
-			piece = kingFromMan;
+		
+		PieceColor kingColor = piece.getColor();
+		Piece exMan = piece;
+		s.removePiece();
+		
+		King kingFromMan = new King(s, kingColor);
+		kings.put(kingFromMan, exMan);
+		piece = kingFromMan;
 	}
 
 	/**
-	 * Заменить на поле s  на дамку простую шашку.
+	 * Заменить на поле s на дамку простую шашку.
 	 * 
 	 * @param s
 	 */
 	private void removeKing(Square s) {
-		// TODO Auto-generated method stub
-		Piece manFromKing = kings.get(piece);
 		s.removePiece();
-	    piece = manFromKing;
+
+		piece = kings.get(piece);
 		s.setPiece(piece);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "" + piece + source + "-" + target;

@@ -3,6 +3,7 @@ package checkers.pieces;
 import checkers.moves.Capture;
 import checkers.moves.SimpleMove;
 import game.core.Board;
+import game.core.DiagDirs;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -37,7 +38,7 @@ public class Man extends CheckersPiece {
 				: source.h - target.h; // Белая фигура идет вверх (от h=7 до h=0).
 		
 		// Отбросим ходы не по диагонали.
-		// У диагонали смещения по абсолютной величина совпадают.
+		// У диагонали смещения по абсолютной величине совпадают.
 		boolean isDiagonal = (Math.abs(dh) == Math.abs(dv));
 		if (!isDiagonal)
 			return false;
@@ -55,6 +56,11 @@ public class Man extends CheckersPiece {
 			// Проверяем не хочет ли фигура пойти занятую клетку.
 			// Если да, то ход неправильный.
 			if (!target.isEmpty())
+				return false;
+			
+			// Может быть есть ходы с захватом.
+			// В шашках такие ходы обязательны.
+			if (hasCaptures())
 				return false;
 			
 			// Все проверки фигура прошла. Ход правильный.
@@ -83,6 +89,46 @@ public class Man extends CheckersPiece {
 			
 			// Все проверки фигура прошла. Ход правильный.
 			return true;						
+		}
+		
+		return false;
+	}
+	
+	@Override
+	protected boolean hasCapture() {
+		Board board = square.getBoard();
+		
+		for (DiagDirs d : DiagDirs.ALL) {
+			// Смотрим по всем диагоналям.
+			
+			// Соседняя клетка.
+			final int nextV = square.v + d.dv;
+			final int nextH = square.h + d.dh;
+			
+			if (!board.onBoard(nextV, nextH))
+				continue; // Дошли до края доски.
+			
+			Square nextS = board.getSquare(nextV, nextH);
+			if (nextS.isEmpty())
+				continue; // Через пустую клетку не перепрыгнешь.
+			
+			Piece nextP = nextS.getPiece();
+			if (nextP.getColor() == getColor())
+				continue; // Через свою фигуру не перепрыгнешь.
+			
+			// Смотрим следующую клетку для прыжка фигуры.
+			final int next2V = square.v + 2 * d.dv;
+			final int next2H = square.h + 2 * d.dh;
+			
+			if (!board.onBoard(next2V, next2H))
+				continue; // Клетка для прыжка за пределами доски.
+			
+			Square next2S = board.getSquare(next2V, next2H);
+			if (!next2S.isEmpty())
+				continue; // Клетка для прыжка занята.
+				
+			// Нашли пустую клетку для прыжка фигуры через фигуру противника.
+			return true; 
 		}
 		
 		return false;

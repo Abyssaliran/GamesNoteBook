@@ -1,5 +1,8 @@
 package checkers.pieces;
 
+import java.util.List;
+
+import game.core.Board;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
@@ -24,5 +27,29 @@ public class CheckersPiece extends Piece {
 		
 		return target.isEmpty();
 		
+	}
+
+	/**
+	 * Имеет ли фигура ход с захватом фигур противника.
+	 * @return
+	 */
+	protected abstract boolean hasCapture();
+
+	/**
+	 * Имеются ли на шашечной доске фигуры, 
+	 * которые могут захватить фигуры противника.
+	 * Тогда простые ходы без захвата недопустимы.
+	 * 
+	 * @return
+	 */
+	protected boolean hasCaptures() {
+		// Получить все фигуры того же цвета.
+		Board board = square.getBoard();
+		List<Piece> samePieces = board.getPieces(getColor());
+		
+		return samePieces
+			.stream()
+			.map(p -> (CheckersPiece) p)
+			.anyMatch(p -> p.hasCapture());
 	}
 }
