@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
@@ -39,6 +40,11 @@ public class ChinaChessGamePanel extends GamePanel {
 	}
 }
 
+/**
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ *
+ */
 class ChinaChessBoardPanel extends AsiaBoardWithCastle {
 
 	private static Map<Class<? extends Piece>, Image> whites;
@@ -81,6 +87,27 @@ class ChinaChessBoardPanel extends AsiaBoardWithCastle {
 		listener = new MovePieceListener(this);
 		
 		setPromptColor( new Color(null, 0, 100, 0));
+	}
+	
+	@Override
+	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
+		int dv = squareWidth  / 2;
+		int dh = squareHeight / 2;
+		
+		int x = v * squareWidth  + dv;
+		int y = h * squareHeight + dh;
+
+		boolean isBlackMargin = (h == 4);
+		boolean isWhiteMargin = (h == board.nH-5);
+		
+		if (isBlackMargin || isWhiteMargin) {
+			if (v !=          0) gc.drawLine(x, y, x - dv, y);
+			if (v != board.nV-1) gc.drawLine(x, y, x + dv, y);
+	
+			if (!isWhiteMargin) gc.drawLine(x, y, x, y - dh);
+			if (!isBlackMargin) gc.drawLine(x, y, x, y + dh);
+		}
+		else super.drawSquare(gc, v, h, squareWidth, squareHeight);
 	}
 
 	@Override
