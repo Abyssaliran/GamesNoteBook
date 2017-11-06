@@ -2,9 +2,10 @@ package reversi.moves;
 
 import java.util.List;
 
-import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
+import game.core.moves.ICaptureMove;
+import game.core.moves.IPutMove;
 
 /**
  * Фигура-камень для 
@@ -12,7 +13,7 @@ import game.core.Square;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class ReversiMove implements Move {
+public class ReversiMove implements IPutMove, ICaptureMove {
 	/**
 	 * Клетка куда поставлена фигура.
 	 */
@@ -60,5 +61,15 @@ public class ReversiMove implements Move {
 	@Override
 	public String toString() {
 		return "" + target;
+	}
+
+	@Override
+	public Square getTarget() {
+		return target;
+	}
+
+	@Override
+	public List<Square> getCaptured() {
+		return captured;
 	}
 }
