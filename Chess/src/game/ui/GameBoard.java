@@ -25,9 +25,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import game.core.Board;
+import game.core.Move;
 import game.core.Piece;
+import game.core.PieceColor;
 import game.core.Square;
+import game.core.moves.ICaptureMove;
+import game.core.moves.IPutMove;
+import game.core.moves.ITransferMove;
 import game.ui.listeners.IGameListner;
+import game.ui.listeners.IMouseMoveListener;
+import game.ui.listeners.MovePiecePromptListener;
 
 /**
  * Базовый класс для отрисовки досок всех настольных игр.
@@ -38,12 +45,32 @@ abstract
 public class GameBoard extends Canvas 
 	implements PaintListener, MouseListener, MouseMoveListener, Observer  
 {
-    private static final Color PROMPT_COLOR = new Color(null, 255, 0, 0);
+    /**
+     * Цвет для отрисовки последнего хода.
+     */
+    private Color lastMoveColor = new Color(null, 255, 0, 0) ;
+
+	/**
+     * Цвет для подсказок правильных ходов.
+     */
+    private Color promptColor = new Color(null, 0, 255, 0);
     
+	/**
+	 * Доска с фигурами для игры отрисовываемая на этой панели.
+	 */
 	public Board board;
 
+	/**
+	 * Базовый класс для всех панелей отрисовывающих доски для игр.
+	 * 
+	 * @param parent
+	 *            - куда встраивается панель изображающая доску.
+	 * @param board
+	 *            - доска с фигурами для игры, которая будет отрисовываться на
+	 *            этой панели.
+	 */
 	public GameBoard(Composite parent, Board board) {
-		super(parent, SWT.NONE | SWT.DOUBLE_BUFFERED);
+		super(parent, SWT.DOUBLE_BUFFERED);
 		
 		this.board = board;
 
@@ -58,12 +85,10 @@ public class GameBoard extends Canvas
 		// После этого доска начнет получать события от колеса мыши.
 		addKeyListener(new KeyListener() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-			}
+			public void keyPressed(KeyEvent e) {}
 
 			@Override
-			public void keyReleased(KeyEvent e) {
-			}
+			public void keyReleased(KeyEvent e) {}
 		});
 		
 		// Добавим слушателя колеса мыши.
@@ -78,7 +103,6 @@ public class GameBoard extends Canvas
 			}
 		});
 
-		
 		board.setBoardChanged();
 	}
 	
@@ -103,11 +127,15 @@ public class GameBoard extends Canvas
 			for (int h = 0; h < board.nH; h++)
 				drawSquare(gc, v, h, squareWidth, squareHeight);
 
+		markLastTransferMove(gc);
+
 		for (int v = 0; v < board.nV; v++)
 			for (int h = 0; h < board.nH; h++)
 				drawPiece(gc, v, h, squareWidth, squareHeight);
 		
-		drawPrompt(gc, squareWidth, squareHeight);
+		markLastPutMove(gc);
+
+		drawSquaresPrompt(gc, squareWidth, squareHeight);
 	}
 
 	/**
@@ -144,12 +172,119 @@ public class GameBoard extends Canvas
 		Cursor cursorPiece = new Cursor(display, imageDate, sw/2, sh/2);
 		setCursor(cursorPiece);
 	}
+	
+	/**
+	 * Сделать изображение фигуры изображением курсора.
+	 * 
+	 * @param piece
+	 *            - фигура изображение которой "перемешается" в курсор.
+	 */
+	public void pieceToCursor(Piece piece) {
+		Image image = getPieceImage(piece, piece.getColor());
+		imageToCursor(image);
+	}
+	
+	/**
+	 * Задать цвет маркера которым будут помечаться допустимые для хода клетки.
+	 * 
+	 * @param color
+	 *            - цвет маркера.
+	 */
+	public void setPromptColor(Color color) {
+		promptColor = color;
+	}
+	
+	/**
+	 * Пометить на доске маркером последний ход для игр с перемещаемыми
+	 * фигурами.
+	 * 
+	 * @param gc
+	 *            - графический контекст для отрисовки маркера.
+	 */
+	protected void markLastTransferMove(GC gc) {
+		List<Move> moves = board.history.getMoves();
+		if (moves.isEmpty()) return;
+		
+		Move move = (Move) board.history.getCurMove();
+		
+		if (move == null) return;
+			
+		if (move instanceof ITransferMove) {
+			ITransferMove m = (ITransferMove) move;
+			Square source = m.getSource();
+			Square target = m.getTarget();
+			
+			gc.setLineWidth(3);
+			markLine(gc, source, target, lastMoveColor);
+			
+			if (move instanceof ICaptureMove) {
+				ICaptureMove capture = (ICaptureMove) move;
+				
+				for (Square s : capture.getCaptured())
+					markCross(gc, s, lastMoveColor);
+			}
+		}
+	}
 
 	/**
-	 * Выдать клетку над которой было нажатие мыши.
+	 * Пометить на доске маркером последний ход для игр с фигурами которые
+	 * ставятся на доску.
 	 * 
-	 * @param e - событие о нажатии мыши.
-	 * @return - клетка под мышкой
+	 * @param gc
+	 *            - графический контекст для отрисовки маркера.
+	 */
+	private void markLastPutMove(GC gc) {
+		List<Move> moves = board.history.getMoves();
+		if (moves.isEmpty()) return;
+		
+		Move move = (Move) board.history.getCurMove();
+		
+		if (move == null) return;
+			
+		if (move instanceof IPutMove) {
+			IPutMove m = (IPutMove) move;
+			Square target = m.getTarget();
+			
+			gc.setLineWidth(3);
+			markSquare(gc, target, lastMoveColor);
+			
+			if (move instanceof ICaptureMove) {
+				ICaptureMove capture = (ICaptureMove) move;
+				
+				for (Square s : capture.getCaptured())
+					markCross(gc, s, lastMoveColor);
+			}
+		}
+	}
+
+	/**
+	 * Нарисовать подсказку для клеток на которые фигура может сделать очередной ход.
+	 * 
+	 * @param gc
+	 *            - графический контекст для отрисовки подсказки.
+	 * @param sw
+	 *            - ширина клетки.
+	 * @param sh
+	 *            - высота клетки.
+	 */
+	void drawSquaresPrompt(GC gc, int sw, int sh) {
+		if (prompted.isEmpty())
+			return;
+		
+		gc.setLineWidth(3);
+		gc.setForeground(promptColor);
+		
+		for (Square s : prompted)  
+			markSquare(gc, s, promptColor);
+//			gc.drawRectangle(s.v * sw, s.h * sh, sw, sh);
+	}
+
+	/**
+	 * Выдать клетку над которой было произошло событие мыши.
+	 * 
+	 * @param e
+	 *            - событие от мыши.
+	 * @return клетка под мышкой
 	 */
 	private Square getSquare(MouseEvent e) {
 		int squareW = getSquareWidth();
@@ -167,11 +302,16 @@ public class GameBoard extends Canvas
 	/**
 	 * Отрисовать фигуру стоящую на клетке доски.
 	 * 
-	 * @param gc - графический контекст для рисования клетки
-	 * @param v - вертикаль клетки
-	 * @param h - горизонталь клетки
-	 * @param squareWidth - ширина клетки
-	 * @param squareHeight - высота клетки
+	 * @param gc
+	 *            - графический контекст для рисования клетки
+	 * @param v
+	 *            - вертикаль клетки
+	 * @param h
+	 *            - горизонталь клетки
+	 * @param squareWidth
+	 *            - ширина клетки
+	 * @param squareHeight
+	 *            - высота клетки
 	 */
 	private void drawPiece(GC gc, int v, int h, int squareWidth, int squareHeight) {
 		Piece piece = board.getSquare(v, h).getPiece();
@@ -183,11 +323,112 @@ public class GameBoard extends Canvas
 		int x = v * squareWidth  + dx;
 		int y = h * squareHeight + dy;
 		
-		Image image = getPieceImage(piece);
+		Image image = getPieceImage(piece, piece.getColor());
 		Rectangle bounds = image.getBounds();
 		gc.drawImage(image, 
 				0, 0, bounds.width, bounds.height, 
 				x, y, squareWidth - 2*dx, squareHeight - 2*dy);
+	}
+	
+	/**
+	 * Пометить клетку цветным маркером.
+	 * 
+	 * @param gc
+	 *            - графический контекст.
+	 * @param square
+	 *            - помечаемая клетка.
+	 * @param markColor
+	 *            - цвет маркера.
+	 */
+	public void markSquare(GC gc, Square square, Color markColor) {
+		int v = square.v;
+		int h = square.h;
+		int sw = getSquareWidth();
+		int sh = getSquareHeight();
+	
+		gc.setBackground(markColor);
+		int d = 10;
+		gc.fillOval(v*sw + (sw-d)/2, h*sh  + (sh-d)/2, d, d);
+	}
+
+	/**
+	 * Соединить линией центры двух клеток.
+	 * 
+	 * @param gc
+	 *            - графический контекст.
+	 * @param source
+	 *            - откуда линия.
+	 * @param target
+	 *            - куда линия.
+	 * @param color
+	 *            - цвет линии.
+	 */
+	public void markLine(GC gc, Square source, Square target, Color color) {
+		int sw = getSquareWidth();
+		int sh = getSquareHeight();
+
+		int v1 = sw * source.v + sw/2;
+		int h1 = sh * source.h + sh/2;
+
+		int v2 = sw * target.v + sw/2;
+		int h2 = sh * target.h + sh/2;
+		
+		gc.setForeground(color);
+		gc.drawLine(v1, h1, v2, h2);
+	}
+	
+	/**
+	 * Нарисовать на клетке перекрестье.
+	 * 
+	 * @param gc
+	 *            - графический контекст.
+	 * @param source
+	 *            - откуда линия.
+	 * @param target
+	 *            - куда линия.
+	 * @param color
+	 *            - цвет линии.
+	 */
+	public void markCross(GC gc, Square source, Color color) {
+		int sw = getSquareWidth();
+		int sh = getSquareHeight();
+
+		int v1 = sw * source.v;
+		int h1 = sh * source.h;
+
+		int v2 = sw * source.v + sw;
+		int h2 = sh * source.h + sh;
+		
+		gc.setForeground(color);
+		gc.drawLine(v1, h1, v2, h2);
+		gc.drawLine(v2, h1, v1, h2);
+	}
+	
+	/**
+	 * Пометить две клетки рамками заданного цвета.
+	 * 
+	 * @param gc
+	 *            - графический конеткст для рисования.
+	 * @param source
+	 *            - клетка откуда идет фигура.
+	 * @param target
+	 *            - клетка куда идет фигура.
+	 * @param color
+	 *            - цвет рамки.
+	 */
+	public void markSquares(GC gc, Square source, Square target, Color color) {
+		int sw = getSquareWidth();
+		int sh = getSquareHeight();
+
+		int v1 = sw * source.v + sw/2;
+		int h1 = sh * source.h + sh/2;
+
+		int v2 = sw * target.v + sw/2;
+		int h2 = sh * target.h + sh/2;
+		
+		gc.setForeground(color);
+		gc.drawRectangle(v1 * sw, h1 * sh, sw, sh);
+		gc.drawRectangle(v2 * sw, h2 * sh, sw, sh);
 	}
 
 	/**
@@ -200,15 +441,6 @@ public class GameBoard extends Canvas
 	protected void drawBackground(GC gc, Rectangle area);
 
 	/**
-	 * Выдать изображение для заданной фигуры клетке доски.
-	 * 
-	 * @param piece - фигура для которой нужно выдать изображение. 
-	 * @return - изображение фигуры.
-	 */
-	abstract 
-	public Image getPieceImage(Piece piece);
-
-	/**
 	 * Отрисовка клетки доски.
 	 * 
 	 * @param gc - графический контекст в котором рисуется клетка доски.
@@ -219,9 +451,39 @@ public class GameBoard extends Canvas
 	 */
 	abstract 
 	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight);
+	
+	/**
+	 * Выдать изображение для заданной фигуры клетке доски.<br>
+	 * <b> !!! Этот метод должен быть переопределен для игр<br>
+	 * !!! в которых фигуры ставятся на доску. </b>
+	 * 
+	 * @param piece
+	 *            - фигура для которой нужно выдать изображение.
+	 * @param color
+	 *            - цвет фигуры.
+	 * @return - изображение фигуры.
+	 */
+	public Piece getPiece(Square square, PieceColor color) 
+		{  return null; }
 
 	/**
-	 * Слушатель нажатий мыши над клетками доски.
+	 * Выдать изображение фигуры заданного цвета.
+	 * 
+	 * @param piece
+	 *            - фигура для которой выдается изображение.
+	 * @param color
+	 *            - цвет фигуры.
+	 * @return изображение фигуры.
+	 */
+	abstract
+	public Image getPieceImage(Piece piece, PieceColor color);
+
+	// ------------------------------------------------------
+	// ------ Обработка событий нажатия на кнопки мыши ------
+	// ------------------------------------------------------
+
+	/**
+	 * Слушатель нажатий кнопок мыши над клетками доски.
 	 */
 	protected IGameListner listener = IGameListner.EMPTY;
 	
@@ -240,60 +502,32 @@ public class GameBoard extends Canvas
 		if (s != null)
 			listener.mouseUp(s, e.button);
 	}
-
+	
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {}
+	
+	// ------------------------------------------------
+	// ------ Обработка событий перемещения мыши ------
+	// ------------------------------------------------
+	
+	/**
+	 * Клетки на которые допустим очередной ход фигурой.
+	 * Используются для отрисовки на доске подсказок 
+	 * для всех допустимых ходов этой фигуры.
+	 */
+	public List<Square> prompted = new ArrayList<>();
+	
+	/**
+	 * Слушатель события перемещения мыши.
+	 */
+	protected IMouseMoveListener mouseMoveListener 
+					= new MovePiecePromptListener(this);
 
 	@Override
 	public void mouseMove(MouseEvent e) {
 		Square s = getSquare(e);
 		
 		if (s != null)
-			mouseMove(s);
-	}
-
-	/**
-	 * Поля на которые допустим ход фигурой под мышкой.
-	 * Используется для подсказки допустимых ходов.
-	 */
-	private List<Square> prompted = new ArrayList<>();
-	
-	private void mouseMove(Square underMouse) {
-		prompted.clear();
-		
-		Piece underMousePiece = underMouse.getPiece();
-		if (underMousePiece == null) {
-			update();
-			redraw();
-			return;
-		}
-				
-		for (int v = 0; v < board.nV; v++)
-			for (int h = 0; h < board.nH; h++) {
-				Square square = board.getSquare(v, h);
-				if (underMousePiece.isCorrectMove(square))
-					prompted.add(square);
-			}
-		
-			update();
-			redraw();
-	}
-	
-	/**
-	 * Нарисовать подсказку для клетки на которую может фигура
-	 * находящаяся под мышкой.
-	 * 
-	 * @param gc - графический контекст для отрисовки подсказки.
-	 * @param squareWidth - ширина клетки.
-	 * @param squareHeight - высота клетки.
-	 */
-	void drawPrompt(GC gc, int squareWidth, int squareHeight) {
-		if (prompted.isEmpty())
-			return;
-		
-		gc.setLineWidth(3);
-		gc.setForeground(PROMPT_COLOR);
-		for (Square s : prompted)  
-			gc.drawRectangle(s.v * squareWidth, s.h * squareHeight, squareWidth, squareHeight);
+			mouseMoveListener.mouseMove(s);
 	}
 }

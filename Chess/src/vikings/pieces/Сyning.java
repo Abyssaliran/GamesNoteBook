@@ -35,4 +35,9 @@ public class Сyning extends VikingsPiece {
 		
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "K";
+	}
 }

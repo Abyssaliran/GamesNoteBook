@@ -56,6 +56,9 @@ public class Piece {
 	 * @param target - куда переместить.
 	 */
 	public void moveTo(Square target) {
+		if (square == null)
+			System.out.println("" + target);
+		
 		square.piece = null;
 		
 		target.piece = this;

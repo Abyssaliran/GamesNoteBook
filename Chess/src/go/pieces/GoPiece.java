@@ -7,7 +7,6 @@ import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
-import go.moves.Capture;
 import go.moves.SimpleMove;
 
 /**
@@ -26,7 +25,9 @@ public class GoPiece extends Piece {
 	@Override
 	public boolean isCorrectMove(Square... squares) {
 		// TODO Go Реализовать проверку правильности хода.
-		return true;
+		Square target = squares[0];
+		
+		return target.isEmpty();
 	}
 
 	/* (non-Javadoc)
@@ -38,7 +39,7 @@ public class GoPiece extends Piece {
 		
 		Move move = null;
 		// TODO Go Реализовать создание и выполнение хода.
-		move = new SimpleMove(squares);
+		move = new SimpleMove(this, squares);
 
 //		List<Square> captured = collectCaptured(squares);
 //		move = new Capture(target, captured);
@@ -59,5 +60,10 @@ public class GoPiece extends Piece {
 	public boolean hasDame() {
 		// TODO Go Реализовать проверку правила Dame.
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "" + square;
 	}
 }

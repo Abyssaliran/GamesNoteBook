@@ -121,6 +121,6 @@ public class Man extends CheckersPiece {
 	
 	@Override
 	public String toString() {
-		return "Man" + square;
+		return "";
 	}
 }

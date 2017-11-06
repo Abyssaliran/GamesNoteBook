@@ -83,6 +83,6 @@ public class King extends CheckersPiece {
 	
 	@Override
 	public String toString() {
-		return "King" + square;
+		return "K";
 	}
 }

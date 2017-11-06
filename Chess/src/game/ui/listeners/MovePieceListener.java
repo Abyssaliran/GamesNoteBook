@@ -1,7 +1,6 @@
 package game.ui.listeners;
 
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Image;
 
 import game.core.Board;
 import game.core.Move;
@@ -15,35 +14,41 @@ import game.ui.GameBoard;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-abstract
 public class MovePieceListener implements IGameListner {
+	/**
+	 * Выбранная для перемещения фигура.
+	 */
 	private Piece selectedPiece;
+	
+	/**
+	 * Клетка на которой стоит выбранная для перемещений фигура.
+	 */
 	private Square selectedSquare;
+	
+	/**
+	 * Сохраненный курсов. После перемещения фигуры как курсора,
+	 * этот курсор будет восстановлен.
+	 */
 	private Cursor savedCursor;
 
 	/**
-	 * Цвет текущего хода.
-	 */
-	private PieceColor moveColor = PieceColor.WHITE;
-	
-	/**
-	 * Доска на которой присходят изменения.
+	 * Доска на которой происходят изменения.
 	 */
 	private Board board;
 	
-	private GameBoard panel;
-
-	public MovePieceListener(GameBoard panel) {
-		this.board = panel.board;
-		this.panel = panel;
-	}
-	
 	/**
-	 * @param сolor 
-	 * @return
+	 * Панель на которой рисуется доска.
 	 */
-	public PieceColor getOponentColor(PieceColor сolor) {
-		return сolor == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+	private GameBoard boardPanel;
+
+	/**
+	 * Создать слушателя мыши для панели доски на которой перемещяются фигуры.
+	 *  
+	 * @param boardPanel
+	 */
+	public MovePieceListener(GameBoard boardPanel) {
+		this.board = boardPanel.board;
+		this.boardPanel = boardPanel;
 	}
 	
 	@Override
@@ -51,18 +56,28 @@ public class MovePieceListener implements IGameListner {
 		if (mouseSquare.isEmpty())
 			return;
 		
+		PieceColor moveColor = board.getMoveColor();
+
+		// Выберем для перемещения фигуру нужного цвета. 
 		selectedPiece = mouseSquare.getPiece();
 		if (selectedPiece.getColor() != moveColor)
 			return;
 		
+		// На время перемещения фигуры мышкой 
+		// снимем ее с доски.
 		selectedSquare = mouseSquare;
 		selectedSquare.removePiece();
 		
-		savedCursor = panel.getCursor();
-		panel.imageToCursor( getPieceImage(selectedPiece, moveColor) );
+		// Сохраним курсор для его восстановления
+		// после перемещения фигуры мышкой.
+		savedCursor = boardPanel.getCursor();
+		
+		// Зададим изображение курсора такое как избражение у фигуры.
+		boardPanel.pieceToCursor(selectedPiece);
 	    
+		// Перерисуем изображение доски с временно снятой фигурой.
 		board.setBoardChanged();
-		panel.redraw();
+		boardPanel.redraw();
 	}
 	
 	@Override
@@ -70,40 +85,36 @@ public class MovePieceListener implements IGameListner {
 		if (selectedSquare == null)
 			return;
 		
-		// Возвращаем фигуру на начальную клетку. 
+		// Возвращаем фигуру на начальную клетку.
+		// Теперь знаем куда эта фигура пойдет.
+		// Все изменения на доске, связанные с этим ходом,
+		// будут сделаны классом реализующим интерфейс Move.
 		selectedSquare.setPiece(selectedPiece);
 		
 		if (selectedPiece.isCorrectMove(mouseSquare)) {
+			// Ход на заданную клетку правильный.
+			// Создадим экземпляр хода и выполним его.
 			Move move = selectedPiece.makeMove(selectedSquare, mouseSquare);
 			move.doMove();
 			
+			// Сохраним экземпляр кода и истории партии.
 			board.history.addMove(move);
 			
 			// TODO Реализовать запрос фигуры для превращения пешки.
 
-			moveColor = getOponentColor();
+			// Теперь ходить должен противник. 
+			board.changeMoveColor();
 		}
 
 		selectedPiece = null;
 		selectedSquare = null;
 		
-		panel.setCursor(savedCursor);
+		// Восстановим курсор (с изображением стрелки).
+		boardPanel.setCursor(savedCursor);
 
+		// Пусть слушатели изменений на доске 
+		// нарисуют новое состояние доски.
 		board.setBoardChanged();
-		panel.redraw();
+		boardPanel.redraw();
 	}
-
-	private PieceColor getOponentColor() {
-		return moveColor == PieceColor.WHITE 
-					? PieceColor.BLACK : PieceColor.WHITE;
-	}
-	
-	/**
-	 * Дать изображение для фигуры заданного цвета.
-	 * 
-	 * @param piece - фигура.
-	 * @param color - цвет фигуры.
-	 * @return - изображение для фигуры заданного цвета.
-	 */
-	abstract public Image getPieceImage(Piece piece, PieceColor color);
 }
