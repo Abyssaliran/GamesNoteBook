@@ -11,8 +11,8 @@ import game.core.Square;
 import game.players.Vinni;
 import game.ui.AsiaBoard;
 import game.ui.GamePanel;
-import game.ui.listeners.NoPromptListener;
 import game.ui.listeners.PutPieceListener;
+import game.ui.listeners.PutPiecePromptListener;
 import go.Go;
 import go.pieces.GoPiece;
 import go.ui.images.GoImages;
@@ -36,20 +36,22 @@ public class  GoGamePanel extends GamePanel {
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 class GoBoardPanel extends AsiaBoard implements IPieceProvider {
+	private static final Color DARK_GREEN = new Color(null, 0, 100, 0);
+
 	public GoBoardPanel(Composite parent, int boardSize) {
 		super(parent, Go.getInitBoard(boardSize, boardSize));
 		
 		listener = new PutPieceListener(this);
-		mouseMoveListener = new NoPromptListener(this);
+//		mouseMoveListener = new NoPromptListeneromptListener(this);
 		
 		// Слушатель мыши для выдачи подсказки для клеток - 
 		// можно ли ставить фигуру на клетку на доски.
-		// mouseMoveListener = new PutPiecePromptListener(this);
+		 mouseMoveListener = new PutPiecePromptListener(this);
 		
 //		board.setBlackPlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Vinni(this) );
 		
-		setPromptColor( new Color(null, 0, 100, 0));
+		setPromptColor(DARK_GREEN);
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package go.moves;
 
-import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
+import game.core.moves.IPutMove;
 
 /**
  * Ход без захвата фигуры противника 
@@ -10,7 +10,7 @@ import game.core.Square;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class SimpleMove implements Move {
+public class SimpleMove implements IPutMove {
 	/**
 	 * Куда поставят фигуру..
 	 */
@@ -45,5 +45,10 @@ public class SimpleMove implements Move {
 	@Override
 	public String toString() {
 		return "" + target;
+	}
+
+	@Override
+	public Square getTarget() {
+		return target;
 	}
 }
