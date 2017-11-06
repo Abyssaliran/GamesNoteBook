@@ -1,8 +1,8 @@
 package halma.moves;
 
-import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
+import game.core.moves.ITransferMove;
 
 /**
  * Ход для игры <a href=
@@ -11,7 +11,7 @@ import game.core.Square;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class HalmaMove implements Move {
+public class HalmaMove implements ITransferMove  {
 	/**
 	 * Какая фигура перемещается.
 	 */
@@ -27,6 +27,10 @@ public class HalmaMove implements Move {
 	 */
 	private Square target;
 
+	/**
+	 * Перемешение фигуры через даданные клетки.
+	 * @param squares
+	 */
 	public HalmaMove(Square... squares) {
 		source = squares[0];
 		target = squares[1];
@@ -42,5 +46,20 @@ public class HalmaMove implements Move {
 	@Override
 	public void undoMove() {
 		piece.moveTo(source);
+	}
+	
+	@Override
+	public String toString() {
+		return "" + source + "-" + target;
+	}
+
+	@Override
+	public Square getTarget() {
+		return target;
+	}
+
+	@Override
+	public Square getSource() {
+		return source;
 	}
 }

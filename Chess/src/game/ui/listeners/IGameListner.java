@@ -8,7 +8,6 @@ import game.core.Square;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public interface IGameListner {
-
 	/**
 	 * Единственный экземпляр пустой реализации слушателя доски.
 	 */

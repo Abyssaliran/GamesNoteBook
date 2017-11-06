@@ -42,4 +42,9 @@ public class Bishop extends ChinaChessPiece {
 		
 		return new SimpleMove(squares);
 	}
+	
+	@Override
+	public String toString() {
+		return "E";
+	}
 }

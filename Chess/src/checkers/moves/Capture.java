@@ -3,19 +3,27 @@
  */
 package checkers.moves;
 
+import java.util.Arrays;
+import java.util.List;
+
 import game.core.Piece;
 import game.core.Square;
+import game.core.moves.ICaptureMove;
 
 /**
  * Ход шашкой с взятием одной фигуры противника.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Capture extends SimpleMove {
+public class Capture extends SimpleMove implements ICaptureMove {
 	/**
 	 * Захваченая фигура.
 	 */
 	Piece captured;
+	
+	/**
+	 * Клетка где стоит захваченная фигура. 
+	 */
 	private Square capturedSquare;
 
 	/**
@@ -46,6 +54,11 @@ public class Capture extends SimpleMove {
 	
 	@Override
 	public String toString() {
-		return "" + source + "x" + target;
+		return "" + piece + source + "x" + target;
+	}
+
+	@Override
+	public List<Square> getCaptured() {
+		return Arrays.asList(capturedSquare);
 	}
 }

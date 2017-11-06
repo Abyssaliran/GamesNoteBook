@@ -1,5 +1,6 @@
 package tamerlan.pieces;
 
+import chess.moves.Capture;
 import chess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
@@ -25,11 +26,24 @@ public class WarMachine extends TamerlanPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		Square target = squares[0];
+		
+		return IKnightFigure.isCorrectMove(square, target) ||
+		       ILineFigure.isCorrectMove(square, target);
 	}
 	
 	@Override
 	public Move makeMove(Square... squares) {
+		Square target = squares[1];
+		
+		if (!target.isEmpty())
+			return new Capture(squares);
+		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "W";
 	}
 }
