@@ -40,8 +40,12 @@ public class Pawn extends ChinaChessPiece {
 				? target.h - source.h  // Черная фигура идет вниз.
 				: source.h - target.h; // Белая фигура идет вверх.
 		
+		// Пешка назад не ходит.
+		if (dh < 0)
+			return false;
+		
 		if ((dh == 1) && (dv == 0))
-			return true;
+			return true; // Пешка пошла на один ход вперед.
 		
 		// Если пешка стоит на вражской территории,
 		// то может пойти еще влево и вправо.
