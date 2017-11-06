@@ -1,6 +1,5 @@
 package checkers;
 
-import checkers.pieces.King;
 import checkers.pieces.Man;
 import game.core.Board;
 import game.core.PieceColor;

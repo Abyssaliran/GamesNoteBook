@@ -7,11 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import checkers.pieces.King;
-import checkers.pieces.Man;
-import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.core.moves.ITransferMove;
 
 /**
  * Простой ход шашкой вперед без взятия фигуры противника.
