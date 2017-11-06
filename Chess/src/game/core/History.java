@@ -56,12 +56,22 @@ public class History {
 	
 	public void toLastMove() {
 		for (; curMove < moves.size()-1; curMove++)
-			moves.get(curMove).doMove();
+			try {
+				moves.get(curMove).doMove();
+			} catch (Win | Drawn e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	public void toNextMove() {
-		if (curMove < moves.size()-1) 
-			moves.get(++curMove).doMove();
+		if (curMove < moves.size()-1)
+			try {
+				moves.get(++curMove).doMove();
+			} catch (Win | Drawn e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	public void toPrevMove() {

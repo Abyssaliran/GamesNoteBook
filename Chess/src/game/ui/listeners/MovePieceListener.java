@@ -3,10 +3,12 @@ package game.ui.listeners;
 import org.eclipse.swt.graphics.Cursor;
 
 import game.core.Board;
+import game.core.Drawn;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.core.Win;
 import game.ui.GameBoard;
 
 /**
@@ -95,7 +97,15 @@ public class MovePieceListener implements IGameListner {
 			// Ход на заданную клетку правильный.
 			// Создадим экземпляр хода и выполним его.
 			Move move = selectedPiece.makeMove(selectedSquare, mouseSquare);
-			move.doMove();
+			try {
+				move.doMove();
+			} catch (Win e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Drawn e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			// Сохраним экземпляр кода и истории партии.
 			board.history.addMove(move);

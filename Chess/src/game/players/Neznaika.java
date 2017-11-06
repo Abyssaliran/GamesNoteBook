@@ -3,10 +3,12 @@ package game.players;
 import java.util.List;
 
 import game.core.Board;
+import game.core.Drawn;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.core.Win;
 
 /**
  * Незнайка - простой игрок для игр в которых передвигают фигуры. 
@@ -53,7 +55,15 @@ public class Neznaika implements IPlayer {
 			
 			// Создаем ход на случайную клетку и делаем его.
 			Move randomMove = randomPiece.makeMove(source, target);
-			randomMove.doMove();
+			try {
+				randomMove.doMove();
+			} catch (Win e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Drawn e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			// Сохраняем ход в истории партии.
 			board.history.addMove(randomMove);
