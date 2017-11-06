@@ -2,6 +2,7 @@ package game.core.moves;
 
 import java.util.List;
 
+import game.core.Move;
 import game.core.Square;
 
 /**
@@ -9,7 +10,7 @@ import game.core.Square;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public interface ICaptureMove extends IPutMove {
+public interface ICaptureMove extends Move {
 	/**
 	 * Вернуть клетки на которых стоят захваченные фигуры.
 	 */

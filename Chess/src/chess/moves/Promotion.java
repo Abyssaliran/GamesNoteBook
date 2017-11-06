@@ -1,8 +1,12 @@
 package chess.moves;
 
+import java.util.Arrays;
+import java.util.List;
+
 import chess.pieces.Queen;
 import game.core.Piece;
 import game.core.Square;
+import game.core.moves.ICaptureMove;
 
 /**
  * Ход европейских шахмат - преврашение пешки на последней горизонтали
@@ -10,11 +14,12 @@ import game.core.Square;
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Promotion extends SimpleMove {
-
+public class Promotion extends SimpleMove 
+	implements ICaptureMove
+{
+	private Piece pawn;
 	private Piece capturedPiece;
 	private Queen promotedPiece;
-	private Piece pawn;
 
 	public Promotion(Square[] squares) {
 		super(squares);
@@ -25,7 +30,13 @@ public class Promotion extends SimpleMove {
 			// Ход по диагонали со взятием фигуры.
 			capturedPiece = target.getPiece();
 	}
-	
+
+	@Override
+	public List<Square> getCaptured() {
+		return capturedPiece == null
+				? Arrays.asList() : Arrays.asList(target);
+	}
+
 	/* 
 	 * Удалить пешку, поставить фигуру.
 	 */
