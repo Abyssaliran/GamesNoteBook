@@ -3,9 +3,8 @@
  */
 package checkers.pieces;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import checkers.moves.Capture;
+import checkers.moves.SimpleMove;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -39,42 +38,52 @@ public class King extends CheckersPiece {
 		Square target = squares[0];
 		
 		if (target.isDiagonal(source)) {
-			List<PieceColor> diagonalPiecesColor = getDiagonalPiecesColor(source, target);
 			if (target.isEmptyDiagonal(source)) return true;
-			if (diagonalPiecesColor.size() > 1) return false;
-			else if (!diagonalPiecesColor.contains(getColor())) return true;
+			Piece captured = getOneOpponentDiagonalPiece(source, target); 
+			if (captured != null) return true; 
 		}
-		
+			
 		// TODO Checkers Сделать проверку правильности хода
 		// из клетки source в клетку target.
 
 		return false;
 	}
 	
-	private List<PieceColor> getDiagonalPiecesColor (Square a, Square b){
+	private static Piece getOneOpponentDiagonalPiece (Square a, Square b){
 		if (!a.isDiagonal(b)||a.isEmpty()) return null;
-		List<PieceColor> diagonalPiecesColor = new ArrayList<>();
+		int count = 0;
+		Piece oneDiagonalPiece = null;
 		int n = Math.abs(a.v - b.v);
 		int dv = a.v > b.v ? -1: 1;
 		int dh = a.h > b.h ? -1: 1;
-		for (int k = 1; k < n - 1; k++) {
+		for (int k = 1; k <= n - 1; k++) {
 			Square temp = a.getBoard().getSquare(a.v + k*dv, a.h + k*dh);
 			if (!temp.isEmpty()) {
-				diagonalPiecesColor.add(temp.getPiece().getColor());
+				if (count == 1) return null;
+				if (a.getPiece().getColor() != temp.getPiece().getColor()) {
+					oneDiagonalPiece = temp.getPiece(); 
+					count++;
+				}
 			}
 		}
-		return diagonalPiecesColor;
+		return oneDiagonalPiece;
 	}
 
 	@Override
 	public Move makeMove(Square... squares) {
 		Move move = null;
 		// TODO Checkers Создать ход шашек
-		// if (...)
-		//    move = new SimpleMove(isPromotion, source, target);
-		// else
-		//    move = new Capture(isPromotion, captured, source, target);
-		// move.doMove();
+		
+		Square source = squares[0];
+		Square target = squares[1];
+		
+		Piece captured = getOneOpponentDiagonalPiece(source, target);
+		
+		if (source.isEmptyDiagonal(target))
+		    move = new SimpleMove(false, source, target);
+		 else if (captured != null)
+		    move = new Capture(false, captured, source, target);
+		move.doMove();
 		return move;
 	}
 	
