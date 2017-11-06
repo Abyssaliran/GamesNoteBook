@@ -34,8 +34,17 @@ public class King extends CheckersPiece {
 		Square target = squares[0];
 
 		if (target.isDiagonal(source)) {
-			if (target.isEmptyDiagonal(source))
+			if (target.isEmptyDiagonal(source)) {
+				// Это простой ход дамкой.
+				
+				// Проверим может быть есть ходы с захватом фигуры.
+				// В шашках такие ходы-захваты обязательны.
+				if (hasCaptures())
+					return false; // Простой ход не делаем.
+				
 				return true;
+			}
+
 			Piece captured = getOneOpponentDiagonalPiece(source, target);
 			if (captured != null)
 				return true;
@@ -71,14 +80,12 @@ public class King extends CheckersPiece {
 
 	@Override
 	public Move makeMove(Square... squares) {
-		Move move = null;
-		// TODO Checkers Создать ход шашек
-
 		Square source = squares[0];
 		Square target = squares[1];
 
 		Piece captured = getOneOpponentDiagonalPiece(source, target);
 
+		Move move = null;
 		if (source.isEmptyDiagonal(target))
 			move = new SimpleMove(false, source, target);
 		else if (captured != null)
@@ -97,13 +104,13 @@ public class King extends CheckersPiece {
 		Board board = square.getBoard();
 
 		for (DiagDirs d : DiagDirs.ALL) {
-			// Смотрим по всем диагоналям.
+			// Двигаемся по всем диагоналям.
 
 			int nextV = square.v;
 			int nextH = square.h;
 
 			for (;;) {
-				// Следующая клетка в направлении .
+				// Следующая клетка в направлении d.
 				nextV += d.dv;
 				nextH += d.dh;
 
@@ -111,14 +118,15 @@ public class King extends CheckersPiece {
 					break; // Дошли до края доски.
 
 				Square nextS = board.getSquare(nextV, nextH);
-				if (nextS.isEmpty())
-					continue; // Продолжим движение в заданном направлении.
+				if (nextS.isEmpty()) // Клетка пустая.
+					continue; // Продолжим движение дамки в направлении d.
 
 				Piece nextP = nextS.getPiece();
 				if (nextP.getColor() == getColor())
 					break; // Через свою фигуру не перепрыгнешь.
 
-				// Смотрим клетку для прыжка через фигуру противника.
+				// Смотрим следующую клетку для прыжка 
+				// через фигуру противника.
 				int next2V = nextV + d.dv;
 				int next2H = nextH + d.dh;
 
@@ -126,8 +134,10 @@ public class King extends CheckersPiece {
 					break; // Фигура на доски краю. Прыгаем с доски.
 
 				Square next2S = board.getSquare(next2V, next2H);
-				if (next2S.isEmpty())
-					return true; // // Прыгаем на пустое поле.
+				if (!next2S.isEmpty())
+					break; // Клетка для прыжка дамки занята.
+				
+				return true; // Клетка для прыжка дамки свободна.
 			}
 		}
 		return false;

@@ -106,26 +106,29 @@ public class Man extends CheckersPiece {
 			final int nextH = square.h + d.dh;
 			
 			if (!board.onBoard(nextV, nextH))
-				continue; // Стоим с краю.
+				continue; // Дошли до края доски.
 			
 			Square nextS = board.getSquare(nextV, nextH);
 			if (nextS.isEmpty())
-				continue; // Через пустую не перепрыгнешь.
+				continue; // Через пустую клетку не перепрыгнешь.
 			
 			Piece nextP = nextS.getPiece();
 			if (nextP.getColor() == getColor())
-				continue; // Через свою не перепрыгнешь.
+				continue; // Через свою фигуру не перепрыгнешь.
 			
-			// Смотрим клетку для прыжка.
+			// Смотрим следующую клетку для прыжка фигуры.
 			final int next2V = square.v + 2 * d.dv;
 			final int next2H = square.h + 2 * d.dh;
 			
 			if (!board.onBoard(next2V, next2H))
-				continue; // Прыгаем с доски.
+				continue; // Клетка для прыжка за пределами доски.
 			
 			Square next2S = board.getSquare(next2V, next2H);
-			if (next2S.isEmpty())
-				return true;
+			if (!next2S.isEmpty())
+				continue; // Клетка для прыжка занята.
+				
+			// Нашли пустую клетку для прыжка фигуры через фигуру противника.
+			return true; 
 		}
 		
 		return false;
