@@ -30,6 +30,7 @@ import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
+import game.core.moves.IPutMove;
 import game.core.moves.ITransferMove;
 import game.ui.listeners.IGameListner;
 import game.ui.listeners.IMouseMoveListener;
@@ -132,8 +133,9 @@ public class GameBoard extends Canvas
 			for (int h = 0; h < board.nH; h++)
 				drawPiece(gc, v, h, squareWidth, squareHeight);
 		
+		markLastPutMove(gc);
+
 		drawSquaresPrompt(gc, squareWidth, squareHeight);
-		
 	}
 
 	/**
@@ -192,8 +194,12 @@ public class GameBoard extends Canvas
 		promptColor = color;
 	}
 	
-	/* 
-	 * Пометить на доске последний ход.
+	/**
+	 * Пометить на доске маркером последний ход для игр с перемещаемыми
+	 * фигурами.
+	 * 
+	 * @param gc
+	 *            - графический контекст для отрисовки маркера.
 	 */
 	protected void markLastTransferMove(GC gc) {
 		List<Move> moves = board.history.getMoves();
@@ -220,7 +226,37 @@ public class GameBoard extends Canvas
 		}
 	}
 
-	
+	/**
+	 * Пометить на доске маркером последний ход для игр с фигурами которые
+	 * ставятся на доску.
+	 * 
+	 * @param gc
+	 *            - графический контекст для отрисовки маркера.
+	 */
+	private void markLastPutMove(GC gc) {
+		List<Move> moves = board.history.getMoves();
+		if (moves.isEmpty()) return;
+		
+		Move move = (Move) board.history.getCurMove();
+		
+		if (move == null) return;
+			
+		if (move instanceof IPutMove) {
+			IPutMove m = (IPutMove) move;
+			Square target = m.getTarget();
+			
+			gc.setLineWidth(3);
+			markSquare(gc, target, lastMoveColor);
+			
+			if (move instanceof ICaptureMove) {
+				ICaptureMove capture = (ICaptureMove) move;
+				
+				for (Square s : capture.getCaptured())
+					markCross(gc, s, lastMoveColor);
+			}
+		}
+	}
+
 	/**
 	 * Нарисовать подсказку для клеток на которые фигура может сделать очередной ход.
 	 * 
