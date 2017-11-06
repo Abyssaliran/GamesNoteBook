@@ -36,7 +36,7 @@ public class Gun extends ChinaChessPiece {
 		Square target = squares[0];
 	
 		// По пустым вертикалям и горизонталям 
-		// ходит как ладья на захватывая фигур.
+		// ходит как ладья не захватывая фигур.
 		if (gun.isEmptyHorizontal(target))
 			return target.isEmpty();
 			
@@ -47,7 +47,7 @@ public class Gun extends ChinaChessPiece {
 		if (target.isEmpty())
 			return false;
 		
-		// По НЕ пустым вертикалям и горизонталям можм стрелять, 
+		// По НЕ пустым вертикалям и горизонталям можем стрелять, 
 		// если:
 		// 		- между пушкой и целью есть только одна фигура-барьер.
 		//  	- этот барьер рядом с пушкой.
