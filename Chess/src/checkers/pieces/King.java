@@ -5,7 +5,7 @@ package checkers.pieces;
 
 import checkers.moves.Capture;
 import checkers.moves.SimpleMove;
-import game.core.DiagDirs;
+import game.core.Dirs;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -97,7 +97,7 @@ public class King extends CheckersPiece {
 	@Override
 	protected boolean hasCapture() {
 		// Двигаемся по всем диагоналям.
-		for (DiagDirs d : DiagDirs.ALL) {
+		for (Dirs d : Dirs.DIAGONAL) {
 			Square s = square;
 
 			while (s.hasNext(d)) {

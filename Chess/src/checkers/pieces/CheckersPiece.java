@@ -1,8 +1,5 @@
 package checkers.pieces;
 
-import java.util.List;
-
-import game.core.Board;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
@@ -26,7 +23,6 @@ public class CheckersPiece extends Piece {
 		Square target = squares[0];
 		
 		return target.isEmpty();
-		
 	}
 
 	/**
@@ -44,10 +40,7 @@ public class CheckersPiece extends Piece {
 	 */
 	protected boolean hasCaptures() {
 		// Получить все фигуры того же цвета.
-		Board board = square.getBoard();
-		List<Piece> samePieces = board.getPieces(getColor());
-		
-		return samePieces
+		return getFriends()
 			.stream()
 			.map(p -> (CheckersPiece) p)
 			.anyMatch(p -> p.hasCapture());

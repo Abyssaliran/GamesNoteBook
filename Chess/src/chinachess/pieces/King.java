@@ -35,7 +35,7 @@ public class King extends ChinaChessPiece{
 		// если между ними пустая вертикаль.
 		Board board = target.getBoard();
 		PieceColor color = getColor();
-		PieceColor oponentColor = board.getOponentColor(color);
+		PieceColor oponentColor = Board.getOponentColor(color);
 		
 		Optional<King> opponentKingOpt = 
 			board.getPieces(oponentColor)

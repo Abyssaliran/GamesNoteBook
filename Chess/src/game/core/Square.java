@@ -228,7 +228,7 @@ public class Square {
 	 * @param d - направление
 	 * @return
 	 */
-	public boolean hasNext(DiagDirs d) {
+	public boolean hasNext(Dirs d) {
 		return board.onBoard(v + d.dv, h + d.dh);
 	}
 
@@ -237,7 +237,7 @@ public class Square {
 	 * @param d
 	 * @return
 	 */
-	public Square next(DiagDirs d) {
+	public Square next(Dirs d) {
 		return board.getSquare(v + d.dv, h + d.dh);
 	}
 }

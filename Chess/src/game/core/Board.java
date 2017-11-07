@@ -97,6 +97,7 @@ public class Board extends Observable {
 	 *            - заданный цвет фигуры.
 	 * @return противоположный цвет фигур.
 	 */
+	static
 	public PieceColor getOponentColor(PieceColor сolor) {
 		return сolor == PieceColor.WHITE 
 				? PieceColor.BLACK : PieceColor.WHITE;
@@ -267,7 +268,7 @@ public class Board extends Observable {
 				Square target = getSquare(v, h);
 				
 				if (piece.isCorrectMove(target))
-					targets .add(target);
+					targets.add(target);
 			}
 		
 		return targets;

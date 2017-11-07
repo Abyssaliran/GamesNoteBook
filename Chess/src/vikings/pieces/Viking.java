@@ -39,7 +39,7 @@ public class Viking extends VikingsPiece {
 	public Move makeMove(Square... squares) {
 		// Соберем захваченные вражеские фигуры.
 		Board board = square.getBoard();
-		PieceColor oponentColor = board.getOponentColor(getColor());
+		PieceColor oponentColor = Board.getOponentColor(getColor());
 		
 		List<Square> captured = collectCaptured(board, oponentColor);
 		
