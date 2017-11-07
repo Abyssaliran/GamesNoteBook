@@ -5,7 +5,6 @@ package checkers.pieces;
 
 import checkers.moves.Capture;
 import checkers.moves.SimpleMove;
-import game.core.Board;
 import game.core.DiagDirs;
 import game.core.Move;
 import game.core.Piece;
@@ -85,13 +84,9 @@ public class King extends CheckersPiece {
 
 		Piece captured = getOneOpponentDiagonalPiece(source, target);
 
-		Move move = null;
 		if (source.isEmptyDiagonal(target))
-			move = new SimpleMove(false, source, target);
-		else if (captured != null)
-			move = new Capture(false, captured, source, target);
-		// move.doMove();
-		return move;
+			 return new SimpleMove(false, source, target);
+		else return new Capture(false, captured, source, target);
 	}
 
 	@Override
@@ -101,40 +96,23 @@ public class King extends CheckersPiece {
 
 	@Override
 	protected boolean hasCapture() {
-		Board board = square.getBoard();
-
+		// Двигаемся по всем диагоналям.
 		for (DiagDirs d : DiagDirs.ALL) {
-			// Двигаемся по всем диагоналям.
+			Square s = square;
 
-			int nextV = square.v;
-			int nextH = square.h;
+			while (s.hasNext(d)) {
+				s = s.next(d);
+				
+				if (s.isEmpty()) // Клетка пустая.
+					continue;    // Продолжим движение дамки в направлении d.
 
-			for (;;) {
-				// Следующая клетка в направлении d.
-				nextV += d.dv;
-				nextH += d.dh;
-
-				if (!board.onBoard(nextV, nextH))
-					break; // Дошли до края доски.
-
-				Square nextS = board.getSquare(nextV, nextH);
-				if (nextS.isEmpty()) // Клетка пустая.
-					continue; // Продолжим движение дамки в направлении d.
-
-				Piece nextP = nextS.getPiece();
-				if (nextP.getColor() == getColor())
+				if (hasFriend(s))
 					break; // Через свою фигуру не перепрыгнешь.
 
-				// Смотрим следующую клетку для прыжка 
-				// через фигуру противника.
-				int next2V = nextV + d.dv;
-				int next2H = nextH + d.dh;
-
-				if (!board.onBoard(next2V, next2H))
-					break; // Фигура на доски краю. Прыгаем с доски.
-
-				Square next2S = board.getSquare(next2V, next2H);
-				if (!next2S.isEmpty())
+				if (!s.hasNext(d))
+					break; // Вражеская фигура на краю доски.
+				
+				if (!s.next(d).isEmpty())
 					break; // Клетка для прыжка дамки занята.
 				
 				return true; // Клетка для прыжка дамки свободна.

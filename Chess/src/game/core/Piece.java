@@ -53,6 +53,7 @@ public class Piece {
 	}
 	/**
 	 * Переместить фигуру на указанную клетку. 
+	 * 
 	 * @param target - куда переместить.
 	 */
 	public void moveTo(Square target) {
@@ -63,6 +64,30 @@ public class Piece {
 		
 		target.piece = this;
 		square = target;
+	}
+
+	/**
+	 * Стоит ли на клетке <b>s</b> вражеская фигура.
+	 * @param s - проверяемая клетка.
+	 * @return
+	 */
+	protected boolean hasEnemy(Square s) {
+		if (s.isEmpty())
+			return false;
+		
+		return s.getPiece().getColor() != getColor();
+	}
+
+	/**
+	 * Стоит ли на клетке <b>s</b> вражеская фигура.
+	 * @param s - проверяемая клетка.
+	 * @return
+	 */
+	protected boolean hasFriend(Square s) {
+		if (s.isEmpty())
+			return false;
+		
+		return s.getPiece().getColor() == getColor();
 	}
 
 	/**
@@ -80,4 +105,5 @@ public class Piece {
 	 * @return экжемпляр класса реализующего интерфейс <b>Move</b>.
 	 */
 	abstract public Move makeMove(Square ...squares);
+
 }

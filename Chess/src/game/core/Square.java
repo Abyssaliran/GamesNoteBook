@@ -222,4 +222,22 @@ public class Square {
 	public String toString() {
 		return getVLetter() + getHNumber();
 	}
+
+	/**
+	 * Существует ли на доске следующая клетка в направлении <b>d</b> от текущей клетки.
+	 * @param d - направление
+	 * @return
+	 */
+	public boolean hasNext(DiagDirs d) {
+		return board.onBoard(v + d.dv, h + d.dh);
+	}
+
+	/**
+	 * Существует ли на доске следующая клетка в направлении <b>d</b> от текущей клетки.
+	 * @param d
+	 * @return
+	 */
+	public Square next(DiagDirs d) {
+		return board.getSquare(v + d.dv, h + d.dh);
+	}
 }

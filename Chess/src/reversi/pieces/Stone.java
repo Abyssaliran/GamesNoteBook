@@ -55,7 +55,7 @@ public class Stone extends Piece {
 	 *            - проверяемая клетка.
 	 * @return - есть ли враги при постановке фигуры на эту клетку.
 	 */
-	private boolean hasEnemy(Square target) {
+	public boolean hasEnemy(Square target) {
 		Board board = target.getBoard();
 
 		int tv = target.v;

@@ -96,39 +96,21 @@ public class Man extends CheckersPiece {
 	
 	@Override
 	protected boolean hasCapture() {
-		Board board = square.getBoard();
-		
+		// Смотрим по всем диагоналям возможность захвата фигуры.
 		for (DiagDirs d : DiagDirs.ALL) {
-			// Смотрим по всем диагоналям.
+			if (!square.hasNext(d))
+				continue;
 			
-			// Соседняя клетка.
-			final int nextV = square.v + d.dv;
-			final int nextH = square.h + d.dh;
+			Square nextS = square.next(d);
+
+			if (!hasEnemy(nextS))
+				continue; // Нет вражеской фигуры для перепрыгивания. 
 			
-			if (!board.onBoard(nextV, nextH))
-				continue; // Дошли до края доски.
+			if (!nextS.hasNext(d))
+				continue; // Вражеская фигура на краю доски.
 			
-			Square nextS = board.getSquare(nextV, nextH);
-			if (nextS.isEmpty())
-				continue; // Через пустую клетку не перепрыгнешь.
-			
-			Piece nextP = nextS.getPiece();
-			if (nextP.getColor() == getColor())
-				continue; // Через свою фигуру не перепрыгнешь.
-			
-			// Смотрим следующую клетку для прыжка фигуры.
-			final int next2V = square.v + 2 * d.dv;
-			final int next2H = square.h + 2 * d.dh;
-			
-			if (!board.onBoard(next2V, next2H))
-				continue; // Клетка для прыжка за пределами доски.
-			
-			Square next2S = board.getSquare(next2V, next2H);
-			if (!next2S.isEmpty())
-				continue; // Клетка для прыжка занята.
-				
-			// Нашли пустую клетку для прыжка фигуры через фигуру противника.
-			return true; 
+			if (nextS.next(d).isEmpty())
+				return true; // Клетка куда прыгаем пуста.
 		}
 		
 		return false;
