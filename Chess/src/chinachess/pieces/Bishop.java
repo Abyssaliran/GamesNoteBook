@@ -40,6 +40,8 @@ public class Bishop extends ChinaChessPiece {
 		if (isEnemyPart(getColor(), target))
 			return false;
 		
+		//Если dv должно быть равно dh, 
+		//то справедливо что любое из них не должно быть больше 2
 		if (dh > 2)
 			return false;
 		// TODO Дмитрив - сделать проверку правильности хода фигурой.
