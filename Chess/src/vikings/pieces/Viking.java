@@ -1,8 +1,12 @@
 package vikings.pieces;
 
+import java.util.List;
+
+import game.core.Board;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
+import vikings.moves.Capture;
 import vikings.moves.SimpleMove;
 
 /**
@@ -14,12 +18,7 @@ public class Viking extends VikingsPiece {
 	public Viking(Square square, PieceColor color) {
 		super(square, color);
 	}
-
-	@Override
-	public Move makeMove(Square... squares) {
-		return new SimpleMove(squares);
-	}
-
+	
 	@Override
 	public boolean isCorrectMove(Square... squares) {
 		if (!super.isCorrectMove(squares))
@@ -34,5 +33,26 @@ public class Viking extends VikingsPiece {
 			return true;
 		
 		return false;
+	}
+
+	@Override
+	public Move makeMove(Square... squares) {
+		// Соберем захваченные вражеские фигуры.
+		Board board = square.getBoard();
+		PieceColor oponentColor = Board.getOponentColor(getColor());
+		
+		List<Square> captured = collectCaptured(board, oponentColor);
+		
+		// Если захваченные фигуры есть, 
+		// то вернем ход - захват фигур.
+		if (!captured.isEmpty())
+			return new Capture(captured, squares);
+		
+		return new SimpleMove(squares);
+	}
+
+	@Override
+	public String toString() {
+		return "";
 	}
 }

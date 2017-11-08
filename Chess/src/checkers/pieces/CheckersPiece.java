@@ -23,6 +23,26 @@ public class CheckersPiece extends Piece {
 		Square target = squares[0];
 		
 		return target.isEmpty();
-		
+	}
+
+	/**
+	 * Имеет ли фигура ход с захватом фигур противника.
+	 * @return
+	 */
+	protected abstract boolean hasCapture();
+
+	/**
+	 * Имеются ли на шашечной доске фигуры, 
+	 * которые могут захватить фигуры противника.
+	 * Тогда простые ходы без захвата недопустимы.
+	 * 
+	 * @return
+	 */
+	protected boolean hasCaptures() {
+		// Получить все фигуры того же цвета.
+		return getFriends()
+			.stream()
+			.map(p -> (CheckersPiece) p)
+			.anyMatch(p -> p.hasCapture());
 	}
 }

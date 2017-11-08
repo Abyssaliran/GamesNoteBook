@@ -1,7 +1,5 @@
 package game.ui.listeners;
 
-import java.util.List;
-
 import game.core.Board;
 import game.core.Piece;
 import game.core.Square;
@@ -20,11 +18,6 @@ public class MovePiecePromptListener implements IMouseMoveListener {
 	private GameBoard boardPanel;
 	
 	/**
-	 * Клетки, на которые может пойти фигура находящаяся под мышкой.
-	 */
-	private List<Square> prompted;
-
-	/**
 	 * Слушатель MovePiecePromptListener определяет клетки, на которые может
 	 * пойти фигура находящаяся под мышкой.
 	 * 
@@ -35,9 +28,8 @@ public class MovePiecePromptListener implements IMouseMoveListener {
 	 *            мышкой. Эти клетки при перерисовке панели доски должны быть
 	 *            помечены. Например, красной рамкой.
 	 */
-	public MovePiecePromptListener(GameBoard boardPanel, List<Square> prompted) {
+	public MovePiecePromptListener(GameBoard boardPanel) {
 		this.boardPanel = boardPanel;
-		this.prompted = prompted;
 	}
 
 	@Override
@@ -46,7 +38,7 @@ public class MovePiecePromptListener implements IMouseMoveListener {
 
 		Piece underMousePiece = underMouse.getPiece();
 		if (underMousePiece == null) {
-			// Под мышкой фигуры нет. Клетка пустая.
+			// Под мышкой фигуры нет, клетка пустая.
 			// Перерисуем панель доски без подсказок.
 			boardPanel.update();
 			boardPanel.redraw();
@@ -56,16 +48,12 @@ public class MovePiecePromptListener implements IMouseMoveListener {
 		// Доска на которой расположены фигуры.
 		Board board = boardPanel.board;
 		
-		for (int v = 0; v < board.nV; v++)
-			for (int h = 0; h < board.nH; h++) {
-				Square target = board.getSquare(v, h);
-				
-				if (underMousePiece.isCorrectMove(target))
-					prompted.add(target);
-			}
+		for (Square s : board.getSquares())  
+			if (underMousePiece.isCorrectMove(s))
+				boardPanel.prompted.add(s);
 
-		// Перерисуем панель доски c подсказками для
-		// клеток на которые допустим ход фигуры.
+		// Перерисуем панель доски c маркерами-подсказками 
+		// для клеток на которые допустим ход фигуры.
 		boardPanel.update();
 		boardPanel.redraw();
 	}

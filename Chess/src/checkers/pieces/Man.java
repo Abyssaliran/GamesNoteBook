@@ -3,6 +3,7 @@ package checkers.pieces;
 import checkers.moves.Capture;
 import checkers.moves.SimpleMove;
 import game.core.Board;
+import game.core.Dirs;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -14,6 +15,7 @@ import game.core.Square;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Man extends CheckersPiece {
+	
 	public Man(Square square, PieceColor color) {
 		super(square, color);
 	}
@@ -36,7 +38,7 @@ public class Man extends CheckersPiece {
 				: source.h - target.h; // Белая фигура идет вверх (от h=7 до h=0).
 		
 		// Отбросим ходы не по диагонали.
-		// У диагонали смещения по абсолютной величина совпадают.
+		// У диагонали смещения по абсолютной величине совпадают.
 		boolean isDiagonal = (Math.abs(dh) == Math.abs(dv));
 		if (!isDiagonal)
 			return false;
@@ -54,6 +56,11 @@ public class Man extends CheckersPiece {
 			// Проверяем не хочет ли фигура пойти занятую клетку.
 			// Если да, то ход неправильный.
 			if (!target.isEmpty())
+				return false;
+			
+			// Может быть есть ходы с захватом.
+			// В шашках такие ходы обязательны.
+			if (hasCaptures())
 				return false;
 			
 			// Все проверки фигура прошла. Ход правильный.
@@ -86,6 +93,28 @@ public class Man extends CheckersPiece {
 		
 		return false;
 	}
+	
+	@Override
+	protected boolean hasCapture() {
+		// Смотрим по всем диагоналям возможность захвата фигуры.
+		for (Dirs d : Dirs.DIAGONAL) {
+			if (!square.hasNext(d))
+				continue;
+			
+			Square nextS = square.next(d);
+
+			if (!hasEnemy(nextS))
+				continue; // Нет вражеской фигуры для перепрыгивания. 
+			
+			if (!nextS.hasNext(d))
+				continue; // Вражеская фигура на краю доски.
+			
+			if (nextS.next(d).isEmpty())
+				return true; // Клетка куда прыгаем пуста.
+		}
+		
+		return false;
+	}
 
 	@Override
 	public Move makeMove(Square... squares) {
@@ -96,7 +125,7 @@ public class Man extends CheckersPiece {
 		
 		boolean isBlack = getColor() == PieceColor.BLACK;
 		boolean isPromotion = isBlack 
-				? target.h == 8 
+				? target.h == 7 
 				: target.h == 0;
 		
 		boolean isCapture = Math.abs(target.v - source.v) == 2;
@@ -120,6 +149,6 @@ public class Man extends CheckersPiece {
 	
 	@Override
 	public String toString() {
-		return "Man" + square;
+		return "";
 	}
 }

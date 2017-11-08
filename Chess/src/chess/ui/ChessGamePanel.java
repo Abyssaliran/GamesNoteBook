@@ -20,14 +20,29 @@ import chess.ui.images.ChessImages;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
+import game.ui.GamePanel;
 import game.ui.listeners.MovePieceListener;
+
+/**
+ * Панель для игры в шахматы.
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ */
+public class ChessGamePanel extends GamePanel {
+
+	public ChessGamePanel(Composite parent) {
+		super(parent);
+		
+		insertSquares( new ChessBoardPanel(this) );
+	}
+}
 
 /**
  * Панель для отрисовки шахматных фигур на доске.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class ChessBoardPanel extends EuropeBoard {
+class ChessBoardPanel extends EuropeBoard {
 	private static Map<Class<? extends Piece>, Image> whites;
 	private static Map<Class<? extends Piece>, Image> blacks;
 	
@@ -63,21 +78,12 @@ public class ChessBoardPanel extends EuropeBoard {
 	public ChessBoardPanel(Composite composite) {
 		super(composite, Chess.getInitBoard());
 		
-		listener = new MovePieceListener(this) {
-			@Override
-			public Image getPieceImage(Piece piece, PieceColor color) {
-				return ChessBoardPanel.this.getPieceImage(piece, color);
-			}
-		};
+		listener = new MovePieceListener(this);
 	}
 
-	protected Image getPieceImage(Piece piece, PieceColor color) {
+	public Image getPieceImage(Piece piece, PieceColor color) {
 		return pieceImages
 				.get(color)
 				.get( piece.getClass() );
-	}
-
-	public Image getPieceImage(Piece piece) {
-		return getPieceImage(piece, piece.getColor());
 	}
 }

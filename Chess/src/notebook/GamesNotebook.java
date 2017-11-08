@@ -8,23 +8,23 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
-import checkers.ui.CheckersBoardPanel;
+import checkers.ui.CheckersGamePanel;
 import checkers.ui.images.CheckersImages;
-import chess.ui.ChessBoardPanel;
+import chess.ui.ChessGamePanel;
 import chess.ui.images.ChessImages;
-import chinachess.ui.ChinaChessBoardPanel;
+import chinachess.ui.ChinaChessGamePanel;
 import chinachess.ui.images.ChinaChessImages;
-import go.ui.GoBoardPanel;
+import go.ui.GoGamePanel;
 import go.ui.images.GoImages;
-import halma.ui.HalmaBoardPanel;
+import halma.ui.HalmaGamePanel;
 import halma.ui.images.HalmaImages;
 import notebook.ui.images.NotebookImages;
-import reversi.ui.ReversiBoardPanel;
+import reversi.ui.ReversiGamePanel;
 import reversi.ui.images.ReversiImages;
-import vikings.ui.VikingsBoardPanel;
-import vikings.ui.images.VikingImages;
-import tamerlan.ui.TamerlanChessBoardPanel;
+import tamerlan.ui.TamerlanChessGamePanel;
 import tamerlan.ui.images.TamerlanChessImages;
+import vikings.ui.VikingsGamePanel;
+import vikings.ui.images.VikingImages;
 
 /**
  * <b>Блокнот настольных игр.</b></br></br>
@@ -39,8 +39,9 @@ public class GamesNotebook {
 		final Display display = new Display();
 		
 		final Shell shell = new Shell(display);
+		shell.setBackgroundMode(SWT.INHERIT_FORCE);
 		
-		shell.setSize(600, 600);
+		shell.setSize(800, 600);
 		shell.setText("Games Notebook");
 		shell.setImage(NotebookImages.iconNotebook);
 		
@@ -53,14 +54,14 @@ public class GamesNotebook {
 		addCheckersTab(display, gamesFolder);
 		addChinaChessTab(display, gamesFolder);
 		addViking9Tab(display, gamesFolder);
-		addViking11Tab(display, gamesFolder);
+//		addViking11Tab(display, gamesFolder);
 		addTamerlanChessTab(display, gamesFolder);
 		addReversiTab(display, gamesFolder);
-		addReversiHoleTab(display, gamesFolder);
+//		addReversiHoleTab(display, gamesFolder);
 		addGoTab(display, gamesFolder);
 		addHalma8x8Tab(display, gamesFolder);
-		addHalma10x10Tab(display, gamesFolder);
-		addHalma16x16Tab(display, gamesFolder);
+//		addHalma10x10Tab(display, gamesFolder);
+//		addHalma16x16Tab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -76,7 +77,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Тамерлан");
-		tabItem.setControl( new TamerlanChessBoardPanel(gamesFolder) );
+		tabItem.setControl( new TamerlanChessGamePanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -92,7 +93,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Шашки");
-		tabItem.setControl( new CheckersBoardPanel(gamesFolder) );
+		tabItem.setControl( new CheckersGamePanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -108,7 +109,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Сянци");
-		tabItem.setControl( new ChinaChessBoardPanel(gamesFolder) );
+		tabItem.setControl( new ChinaChessGamePanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -124,7 +125,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Шахматы");
-		tabItem.setControl( new ChessBoardPanel(gamesFolder) );
+		tabItem.setControl( new ChessGamePanel(gamesFolder) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -140,7 +141,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Викинги-9");
-		tabItem.setControl( new VikingsBoardPanel(gamesFolder, 9) );
+		tabItem.setControl( new VikingsGamePanel(gamesFolder, 9) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -150,13 +151,13 @@ public class GamesNotebook {
 	 * @param display - монитор на котором рисуется закладки.
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
-	private static void addViking11Tab(Display display, TabFolder gamesFolder) {
+	static void addViking11Tab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, VikingImages.icoVikings11
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Викинги-11");
-		tabItem.setControl( new VikingsBoardPanel(gamesFolder, 11) );
+		tabItem.setControl( new VikingsGamePanel(gamesFolder, 11) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -172,7 +173,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Реверси");
-		tabItem.setControl( new ReversiBoardPanel(gamesFolder, 0) );
+		tabItem.setControl( new ReversiGamePanel(gamesFolder, 0) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -183,13 +184,13 @@ public class GamesNotebook {
 	 * @param display - монитор на котором рисуется закладки.
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
-	private static void addReversiHoleTab(Display display, TabFolder gamesFolder) {
+	static void addReversiHoleTab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, ReversiImages.icoReversiX
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Реверси Х");
-		tabItem.setControl( new ReversiBoardPanel(gamesFolder, 1) );
+		tabItem.setControl( new ReversiGamePanel(gamesFolder, 1) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -205,7 +206,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Го");
-		tabItem.setControl( new GoBoardPanel(gamesFolder, 10) );
+		tabItem.setControl( new GoGamePanel(gamesFolder, 10) );
 		tabItem.setImage(tabImage);
 	}
 
@@ -222,25 +223,27 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Халма 8x8");
-		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 8) );
+		tabItem.setControl( new HalmaGamePanel(gamesFolder, 8) );
 		tabItem.setImage(tabImage);
 	}
-	private static void addHalma10x10Tab(Display display, TabFolder gamesFolder) {
+
+	static void addHalma10x10Tab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, HalmaImages.icoHalma
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Халма 10x10");
-		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 10) );
+		tabItem.setControl( new HalmaGamePanel(gamesFolder, 10) );
 		tabItem.setImage(tabImage);
 	}
-	private static void addHalma16x16Tab(Display display, TabFolder gamesFolder) {
+	
+	static void addHalma16x16Tab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, HalmaImages.icoHalma
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Халма 16x16");
-		tabItem.setControl( new HalmaBoardPanel(gamesFolder, 16) );
+		tabItem.setControl( new HalmaGamePanel(gamesFolder, 16) );
 		tabItem.setImage(tabImage);
 	}
 	

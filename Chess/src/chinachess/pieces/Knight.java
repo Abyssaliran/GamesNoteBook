@@ -5,6 +5,7 @@ package chinachess.pieces;
 
 import chess.moves.Capture;
 import chess.moves.SimpleMove;
+import game.core.Board;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -32,7 +33,39 @@ public class Knight extends ChinaChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		// TODO Дмитрив - сделать проверку правильности хода фигурой.
+		Square knight = square;
+		Square target = squares[0];
+		
+		int dh = Math.abs(target.h - square.h);
+		int dv = Math.abs(target.v - square.v);
+		
+		boolean isKnightMove = (dh == 1 && dv == 2) || 
+		                       (dh == 2 && dv == 1);
+		if (!isKnightMove)
+			return false;
+		
+		// Китайские лошади не могут перепрыгнуть через фигуру.
+		// Они маленькие, наверное их плохо кормят.
+		// Посмотрим есть ли у лошади на пути фигура-барьер.
+		int hBarier = 0;
+		int vBarier = 0;
+		
+		if (dh > dv) {
+			// Прыжок по горизонтали и ход в вертикали.
+			hBarier = (knight.h + target.h) / 2;
+			vBarier = knight.v;
+		}
+		else
+		if (dh < dv) {
+			// Прыжок по вертикали и ход в горизонтали.
+			vBarier = (knight.v + target.v) / 2;
+			hBarier = knight.h;
+		}		
+		
+		// Клетка на пути не пустая?
+		Board board = target.getBoard();
+		if (!board.isEmpty(vBarier, hBarier))
+			return false;
 
 		return true;
 	}
@@ -45,5 +78,10 @@ public class Knight extends ChinaChessPiece {
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "H";
 	}
 }

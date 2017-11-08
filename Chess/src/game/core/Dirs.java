@@ -17,6 +17,30 @@ public enum Dirs {
 		LEFT_DOWN, DOWN, RIGHT_DOWN
 	};
 	
+	public static final 
+	Dirs[] DIAGONAL = {
+		LEFT_UP,     RIGHT_UP,
+		LEFT_DOWN, RIGHT_DOWN
+	};
+
+	public static final 
+	Dirs[] LINES = {
+		          UP,          
+		LEFT,            RIGHT,
+		        DOWN,            
+	};
+
+	public static final 
+	Dirs[] VERTICAL = {
+		          UP,          
+		        DOWN,            
+	};
+
+	public static final 
+	Dirs[] HORIZONTAL = {
+		LEFT, RIGHT,
+	};
+
 	/**
 	 * Смещение по вертикали.
 	 */

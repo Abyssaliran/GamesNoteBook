@@ -22,60 +22,52 @@ import tamerlan.pieces.WarMachine;
 public class TamerlanChess {
 
 	public static Board getInitBoard() {
-		Board board = new Board(10, 14);
+		Board board = new Board(10, 10);
+		
+		putPieces(board, PieceColor.BLACK);
+		putPieces(board, PieceColor.WHITE);
+
+		return board;
+	}
+
+	private static void putPieces(Board board, PieceColor color) {
+		int rookH = (color == PieceColor.BLACK ? 0 : board.nH-1);
+		int pawnH = (color == PieceColor.BLACK ? 1 : board.nH-2);
+		int dh    = (color == PieceColor.BLACK ? 1 : -1);
 		
 		// Расставляем пешки.
 		for (int v = 0; v < board.nV; v++) {
-			if (v != 4 && v != 5) {
-				new Pawn(board.getSquare(v, 3), PieceColor.BLACK);
-				new Pawn(board.getSquare(v, 10), PieceColor.WHITE);
-			}
-			else {
-				new Pawn(board.getSquare(v, 4), PieceColor.BLACK);
-				new Pawn(board.getSquare(v, 9), PieceColor.WHITE);
-			}
+			int ph = ((v != 4 && v != 5)) ? pawnH : pawnH + dh;
+			
+			new Pawn(board.getSquare(v, ph), color);
 		}
 
 		// Расставляем ладьи.
-		new Rook(board.getSquare(0, 2), PieceColor.BLACK);
-		new Rook(board.getSquare(9, 2), PieceColor.BLACK);
-		new Rook(board.getSquare(0, 11), PieceColor.WHITE);
-		new Rook(board.getSquare(9, 11), PieceColor.WHITE);
+		new Rook(board.getSquare(0, rookH), color);
+		new Rook(board.getSquare(9, rookH), color);
 
 		// Расставляем коней.
-		new Knight(board.getSquare(1, 2), PieceColor.BLACK);
-		new Knight(board.getSquare(8, 2), PieceColor.BLACK);
-		new Knight(board.getSquare(1, 11), PieceColor.WHITE);
-		new Knight(board.getSquare(8, 11), PieceColor.WHITE);
+		new Knight(board.getSquare(1, rookH), color);
+		new Knight(board.getSquare(8, rookH), color);
 
 		// Расставляем слонов.
-		new Bishop(board.getSquare(2, 2), PieceColor.BLACK);
-		new Bishop(board.getSquare(7, 2), PieceColor.BLACK);
-		new Bishop(board.getSquare(2, 11), PieceColor.WHITE);
-		new Bishop(board.getSquare(7, 11), PieceColor.WHITE);
+		new Bishop(board.getSquare(2, rookH), color);
+		new Bishop(board.getSquare(7, rookH), color);
 
 		// Расставляем ферзей.
-		new Queen(board.getSquare(3, 2), PieceColor.BLACK);
-		new Queen(board.getSquare(6, 11), PieceColor.WHITE);
+		new Queen(board.getSquare(3, rookH), color);
 
 		// Расставляем королей.
-		new King(board.getSquare(4, 2), PieceColor.BLACK);
-		new King(board.getSquare(5, 11), PieceColor.WHITE);
+		new King(board.getSquare(4, rookH), color);
 		
 		// Расставляем жирафов.
-		new Giraffe(board.getSquare(5, 2), PieceColor.BLACK);
-		new Giraffe(board.getSquare(4, 11), PieceColor.WHITE);
+		new Giraffe(board.getSquare(5, rookH), color);
 		
 		// Расставляем визирей.
-		new Vizir(board.getSquare(6, 2), PieceColor.BLACK);
-		new Vizir(board.getSquare(3, 11), PieceColor.WHITE);
+		new Vizir(board.getSquare(6, rookH), color);
 
-		// Расставляем визирей.
-		new WarMachine(board.getSquare(4, 3), PieceColor.BLACK);
-		new WarMachine(board.getSquare(5, 3), PieceColor.BLACK);
-		new WarMachine(board.getSquare(4, 10), PieceColor.WHITE);
-		new WarMachine(board.getSquare(5, 10), PieceColor.WHITE);
-
-		return board;
+		// Расставляем машины.
+		new WarMachine(board.getSquare(4, pawnH), color);
+		new WarMachine(board.getSquare(5, pawnH), color);
 	}
 }

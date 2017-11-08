@@ -28,7 +28,21 @@ public class Bishop extends ChinaChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		Square target = squares[0];
+		
+		int dh = Math.abs(target.h - square.h);
+		int dv = Math.abs(target.v - square.v);
+		
+		if (dh != dv)
+			return false; // Это не диагональ.
+		
+		// Слон не может пойти на вражескую территорию.
+		if (isEnemyPart(getColor(), target))
+			return false;
+
+
 		// TODO Дмитрив - сделать проверку правильности хода фигурой.
+		// Проверить что слон ходит только на две клетки.
 		
 		return true;
 	}
@@ -41,5 +55,10 @@ public class Bishop extends ChinaChessPiece {
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "E";
 	}
 }

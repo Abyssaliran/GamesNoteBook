@@ -5,6 +5,7 @@ package chinachess.pieces;
 
 import chess.moves.Capture;
 import chess.moves.SimpleMove;
+import game.core.Board;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -31,22 +32,80 @@ public class Gun extends ChinaChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		// TODO Дмитрив - сделать проверку правильности хода фигурой.
-		//пушка ходит как шахматный ферзь. Соответственно, 
-		//можно делать либо ход по вертикали, либо по горизонтали.
+		Square gun = square;
 		Square target = squares[0];
-		if (target.v > square.v) {
-			if (target.h != square.h) {
-				return false;
-			}
-		}
-		if (target.h > square.h) {
-			if (target.v != square.v) {
-				return false;
-			}
-		}
 	
-		return true;
+		// По пустым вертикалям и горизонталям 
+		// ходит как ладья не захватывая фигур.
+		if (gun.isEmptyHorizontal(target))
+			return target.isEmpty();
+			
+		if (gun.isEmptyVertical(target))
+			return target.isEmpty();
+		
+		// Ни по кому не стреляем?
+		if (target.isEmpty())
+			return false;
+		
+		// По НЕ пустым вертикалям и горизонталям можем стрелять, 
+		// если:
+		// 		- между пушкой и целью есть только одна фигура-барьер.
+		//  	- этот барьер рядом с пушкой.
+		Board board = square.getBoard();
+		int v = target.v;
+		int h = target.h;
+		int nBarier = 0;
+		Square barier = null;
+		
+		// Стреляем по горизонтали?
+		if (gun.isHorizontal(target)) {
+			// Двинемся в сторону цели.
+			int dv = (target.v > gun.v) ? +1 : -1;
+			
+			for (v = gun.v; v != target.v; v += dv) {
+				Square s = board.getSquare(v, h);
+				
+				// Пропустим пустую клетку.
+				if (s.isEmpty()) continue;
+
+				nBarier++;
+				barier = s;
+			}
+			
+			// Барьеров слишом много.
+			if (nBarier != 1) return false;
+			
+			// Барьер далеко.
+			if (!barier.isNear(square))	return false;
+
+			return true;
+		}
+		
+		// Стреляем по вертикали?
+		if (gun.isVertical(target)) {
+			// Двинемся в сторону цели.
+			int dh = (target.h > gun.h) ? +1 : -1;
+			
+			for (h = gun.h + dh; h != target.h; h += dh) {
+				Square s = board.getSquare(v, h);
+
+				// Пропустим пустую клетку.
+				if (s.isEmpty()) continue;
+
+				nBarier++;
+				barier = s;
+			}
+			
+			if (nBarier != 1) // Барьеров слишом много.
+				return false;
+			
+			if (!barier.isNear(square))
+				return false; // Барьер далеко.
+
+			return true;
+		}
+			
+		return false;
 	}
 
 	@Override
@@ -57,5 +116,10 @@ public class Gun extends ChinaChessPiece {
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "C";
 	}
 }

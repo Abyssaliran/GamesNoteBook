@@ -2,15 +2,16 @@ package go.moves;
 
 import java.util.List;
 
-import game.core.Move;
 import game.core.Square;
+import game.core.moves.ICaptureMove;
+import game.core.moves.IPutMove;
 
 /**
  * Ход с захватом фигуры для <a href="https://ru.wikipedia.org/wiki/%D0%93%D0%BE">Го</a>
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Capture implements Move {
+public class Capture implements IPutMove, ICaptureMove {
 	/**
 	 * Клетка куда поставлена фигура.
 	 */
@@ -42,5 +43,15 @@ public class Capture implements Move {
 	@Override
 	public void undoMove() {
 		// TODO Go реализовать отмену хода и возврат фигур.
+	}
+
+	@Override
+	public List<Square> getCaptured() {
+		return captured;
+	}
+
+	@Override
+	public Square getTarget() {
+		return target;
 	}
 }
