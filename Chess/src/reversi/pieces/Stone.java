@@ -105,8 +105,43 @@ public class Stone extends Piece {
 	 * @return - возможен ли захват вражеских фигур.
 	 */
 	private boolean hasCaptured(Square source, Dirs direction) {
+		Board board = source.getBoard();
+		
 		// TODO Задорожная.
 		// Реализовать проверку возможности захвата вражеских фигур.
+		
+		int sv = source.v + direction.dv;
+		int sh = source.h + direction.dh;
+		
+		int nCaptured = 0;
+		
+		if ((sv == 2) && (sh == 3))
+			System.out.println();
+		
+		while (board.onBoard(sv, sh)) {
+			Square nextSquare = board.getSquare(sv, sh);
+			
+			if (nextSquare.isEmpty())
+				return false;
+			
+			PieceColor nextColor = nextSquare.getPiece().getColor();
+			
+			if (nextColor != getColor()) {
+				// Это враг.
+				nCaptured++;
+
+				// Смещаемся в заданном направлении.
+				sv = sv + direction.dv;
+				sh = sv + direction.dh;
+				
+				continue;
+			}
+				
+			if (nextColor == getColor()) {
+				// Это друг.
+				return nCaptured >  0;
+			}
+		}
 
 		return true;
 	}
