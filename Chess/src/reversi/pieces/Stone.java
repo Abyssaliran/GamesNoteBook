@@ -95,8 +95,8 @@ public class Stone extends Piece {
 	}
 
 	/**
-	 * Возможен ли захват фигуры при движении из заданной клетки в заданном
-	 * направлении.
+	 * Возможен ли захват фигуры при движении из заданной клетки 
+	 * в заданном направлении.
 	 * 
 	 * @param source
 	 *            - из какой клетки двигаемся.
@@ -107,43 +107,35 @@ public class Stone extends Piece {
 	private boolean hasCaptured(Square source, Dirs direction) {
 		Board board = source.getBoard();
 		
-		// TODO Задорожная.
-		// Реализовать проверку возможности захвата вражеских фигур.
-		
 		int sv = source.v + direction.dv;
 		int sh = source.h + direction.dh;
 		
+		PieceColor myColor = getColor();
 		int nCaptured = 0;
-		
-		if ((sv == 2) && (sh == 3))
-			System.out.println();
 		
 		while (board.onBoard(sv, sh)) {
 			Square nextSquare = board.getSquare(sv, sh);
 			
 			if (nextSquare.isEmpty())
-				return false;
+				return false; // На другом конце друга нет.
 			
 			PieceColor nextColor = nextSquare.getPiece().getColor();
 			
-			if (nextColor != getColor()) {
-				// Это враг.
+			if (nextColor != myColor) {
+				// Это враг. Сосчитаем его.
 				nCaptured++;
 
 				// Смещаемся в заданном направлении.
-				sv = sv + direction.dv;
-				sh = sv + direction.dh;
+				sv += direction.dv;
+				sh += direction.dh;
 				
 				continue;
 			}
-				
-			if (nextColor == getColor()) {
-				// Это друг.
-				return nCaptured >  0;
-			}
+			else // Это друг. Я с одной стороны, он с другой.
+				 return nCaptured >  0; // Стоят ли враги между нами.
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
