@@ -30,6 +30,7 @@ public class SimpleMove implements IPutMove {
 	public SimpleMove(Piece piece, Square... squares) {
 		target = squares[0];
 		this.piece = piece;
+		piece.square = target;
 	}
 
 	@Override
@@ -39,6 +40,8 @@ public class SimpleMove implements IPutMove {
 
 	@Override
 	public void undoMove() {
+		if (piece.square == null)
+			System.out.println();
 		piece.remove();
 	}
 	

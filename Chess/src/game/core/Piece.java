@@ -48,7 +48,8 @@ public class Piece {
 	 * Удалить фигуру с доски. 
 	 */
 	public void remove() {
-		square.piece = null;
+		if (square != null)
+			square.piece = null;
 		square = null;
 	}
 	

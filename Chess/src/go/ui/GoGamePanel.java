@@ -8,6 +8,7 @@ import game.core.IPieceProvider;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.players.IPlayer;
 import game.players.Vinni;
 import game.ui.AsiaBoard;
 import game.ui.GamePanel;
