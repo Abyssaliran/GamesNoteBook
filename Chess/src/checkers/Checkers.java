@@ -35,6 +35,9 @@ public class Checkers extends Game {
 		setHorizontal(board, 6, PieceColor.WHITE);
 		setHorizontal(board, 7, PieceColor.WHITE);
 		
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+		
 		return board;
 	}
 

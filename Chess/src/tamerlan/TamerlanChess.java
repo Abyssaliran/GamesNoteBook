@@ -35,6 +35,9 @@ public class TamerlanChess extends Game {
 		putPieces(board, PieceColor.BLACK);
 		putPieces(board, PieceColor.WHITE);
 
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+
 		return board;
 	}
 

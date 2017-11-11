@@ -67,6 +67,7 @@ public class ReversiGamePanel extends GamePanel {
 			// клетку на доски.
 			mouseMoveListener = new PutPiecePromptListener(this);
 			
+			board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 			board.setBlackPlayer( new Vinni(this) );
 			
 			Game.addPlayer(Go.class, IPlayer.HOMO_SAPIENCE);

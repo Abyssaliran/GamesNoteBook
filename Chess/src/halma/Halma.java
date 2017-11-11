@@ -52,6 +52,10 @@ public class Halma extends Game {
 				new Stone( board.getSquare(boardSize - i - 2, boardSize - 5 + i), PieceColor.BLACK);				
 			}						
 		}
+		
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+
 		return board;
 	}	
 	

@@ -62,6 +62,9 @@ public class Chess extends Game {
 		// Расставляем королей.
 		new King(board.getSquare(4, 0), PieceColor.BLACK);
 		new King(board.getSquare(4, 7), PieceColor.WHITE);
+		
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
 
 		return board;
 	}

@@ -35,7 +35,6 @@ public class Vikings extends Game {
 			case  9: return initBoard9();
 			case 11: return initBoard11();
 		}
-
 		return null;
 	}
 
@@ -49,6 +48,9 @@ public class Vikings extends Game {
 		Board board = new Board(11, 11);
 		
 		new Сyning(board.getSquare(5, 5), PieceColor.WHITE);
+
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
 
 		return board ;
 	}
@@ -75,6 +77,9 @@ public class Vikings extends Game {
 		for(LineDirs dir : LineDirs.ALL)  
 			setBlack(board, c + 4 * dir.dv, c + 4 * dir.dh);
 		
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+
 		return board ;
 	}
 

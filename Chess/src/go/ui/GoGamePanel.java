@@ -54,7 +54,7 @@ class GoBoardPanel extends AsiaBoard implements IPieceProvider {
 		// можно ли ставить фигуру на клетку на доски.
 		 mouseMoveListener = new PutPiecePromptListener(this);
 		
-//		board.setBlackPlayer( IPlayer.HOMO_SAPIENCE );
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Vinni(this) );
 		
 		setPromptColor(DARK_GREEN);
