@@ -1,6 +1,7 @@
 package game.ui.listeners;
 
 import game.core.Board;
+import game.core.GameOver;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -55,7 +56,12 @@ public class PutPieceListener implements IGameListner {
 		// Создадим экземпляр хода и выполним его.
 		Move move = piece.makeMove(mouseSquare);
 		board.history.addMove(move);
-		move.doMove();
+		try {
+			move.doMove();
+		} catch (GameOver e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Зададим изображение курсора такое как избражение у фигуры.
 		boardPanel.pieceToCursor(piece);

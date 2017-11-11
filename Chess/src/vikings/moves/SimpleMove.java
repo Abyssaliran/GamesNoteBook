@@ -1,8 +1,12 @@
 package vikings.moves;
 
+import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Piece;
 import game.core.Square;
 import game.core.moves.ITransferMove;
+import vikings.pieces.VikingsPiece;
+import vikings.pieces.Сyning;
 
 /**
  * Простой ход викингов - перемещение фигуры на пустую клетку.
@@ -54,8 +58,12 @@ public class SimpleMove implements ITransferMove {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		piece.moveTo(target);
+		
+		// Белый король добрался до выхода.
+		if ((piece instanceof Сyning) && VikingsPiece.isExit(target) )
+			throw new GameOver(GameResult.WHITE_WIN);
 	}
 
 	@Override

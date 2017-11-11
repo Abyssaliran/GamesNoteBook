@@ -2,6 +2,7 @@ package game.core.moves;
 
 import java.util.ArrayList;
 
+import game.core.GameOver;
 import game.core.Move;
 
 /**
@@ -40,7 +41,12 @@ public class CompositeMove implements Move {
 	@Override
 	public void doMove() {
 		for (Move move : moves)
-			move.doMove();
+			try {
+				move.doMove();
+			} catch (GameOver e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
 	@Override

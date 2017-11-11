@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import game.core.Board;
+import game.core.GameOver;
 import game.core.IPieceProvider;
 import game.core.Move;
 import game.core.Piece;
@@ -62,7 +63,12 @@ public class Vinni implements IPlayer {
 		
 		// Создаем ход на случайную клетку и делаем его.
 		Move randomMove = piece.makeMove(randomTarget);
-		randomMove.doMove();
+		try {
+			randomMove.doMove();
+		} catch (GameOver e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Сохраняем ход в истории партии.
 		board.history.addMove(randomMove);

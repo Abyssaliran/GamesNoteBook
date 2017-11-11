@@ -3,6 +3,7 @@ package game.ui.listeners;
 import org.eclipse.swt.graphics.Cursor;
 
 import game.core.Board;
+import game.core.GameOver;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -95,7 +96,24 @@ public class MovePieceListener implements IGameListner {
 			// Ход на заданную клетку правильный.
 			// Создадим экземпляр хода и выполним его.
 			Move move = selectedPiece.makeMove(selectedSquare, mouseSquare);
-			move.doMove();
+			try {
+				move.doMove();
+			} catch (GameOver e) {
+				// Сохраним экземпляр кода и истории партии.
+				board.history.addMove(move);
+				board.history.setResult(e.result);
+
+				selectedPiece = null;
+				selectedSquare = null;
+				
+				// Восстановим курсор (с изображением стрелки).
+				boardPanel.setCursor(savedCursor);
+
+				// Пусть слушатели изменений на доске 
+				// нарисуют новое состояние доски.
+				board.setBoardChanged();
+				boardPanel.redraw();
+			}
 			
 			// Сохраним экземпляр кода и истории партии.
 			board.history.addMove(move);
