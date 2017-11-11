@@ -1,9 +1,12 @@
 package vikings;
 
 import game.core.Board;
+import game.core.Game;
 import game.core.LineDirs;
 import game.core.PieceColor;
 import game.core.Square;
+import game.players.IPlayer;
+import game.players.Neznaika;
 import vikings.pieces.Viking;
 import vikings.pieces.Сyning;
 
@@ -13,7 +16,13 @@ import vikings.pieces.Сyning;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Vikings {
+public class Vikings extends Game {
+	
+	static {
+		addPlayer(Vikings.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(Vikings.class, new Neznaika());
+	}
+	
 	/**
 	 * Создание доски заданного размера
 	 * и расстановка фигур для этого размера доски.

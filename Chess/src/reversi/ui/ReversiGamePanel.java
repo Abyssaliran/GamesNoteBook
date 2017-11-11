@@ -4,15 +4,18 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
+import game.core.Game;
 import game.core.IPieceProvider;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.players.IPlayer;
 import game.players.Vinni;
 import game.ui.GamePanel;
 import game.ui.GreenBoard;
 import game.ui.listeners.PutPieceListener;
 import game.ui.listeners.PutPiecePromptListener;
+import go.Go;
 import reversi.Reversi;
 import reversi.pieces.Stone;
 import reversi.ui.images.ReversiImages;
@@ -65,7 +68,10 @@ public class ReversiGamePanel extends GamePanel {
 			mouseMoveListener = new PutPiecePromptListener(this);
 			
 			board.setBlackPlayer( new Vinni(this) );
-			}
+			
+			Game.addPlayer(Go.class, IPlayer.HOMO_SAPIENCE);
+			Game.addPlayer(Go.class, new Vinni(this));
+		}
 
 		@Override
 		public Piece getPiece(Square square, PieceColor color) {

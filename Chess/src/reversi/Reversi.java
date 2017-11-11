@@ -1,6 +1,7 @@
 package reversi;
 
 import game.core.Board;
+import game.core.Game;
 import game.core.PieceColor;
 import reversi.pieces.Hole;
 import reversi.pieces.Stone;
@@ -11,7 +12,7 @@ import reversi.pieces.Stone;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Reversi {
+public class Reversi extends Game {
 	/**
 	 * Вернуть инициализированную доску для игры в реверси.
 	 * 

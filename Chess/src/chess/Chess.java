@@ -7,14 +7,23 @@ import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
 import game.core.Board;
+import game.core.Game;
 import game.core.PieceColor;
+import game.players.IPlayer;
+import game.players.Neznaika;
 
 /**
  * Класс представляющий игру шахматы.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Chess {
+public class Chess extends Game {
+	
+	static {
+		addPlayer(Chess.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(Chess.class, new Neznaika());
+	}
+
 	/**
 	 * Расстановка шахматных фигур в начальную позицию.
 	 * @return доска с расставленными фигурами.

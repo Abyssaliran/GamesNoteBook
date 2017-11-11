@@ -4,10 +4,12 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
+import game.core.Game;
 import game.core.IPieceProvider;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.players.IPlayer;
 import game.players.Vinni;
 import game.ui.AsiaBoard;
 import game.ui.GamePanel;
@@ -23,6 +25,7 @@ import go.ui.images.GoImages;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class  GoGamePanel extends GamePanel {
+	
 
 	public GoGamePanel(Composite parent, int boardSize) {
 		super(parent);
@@ -40,6 +43,9 @@ class GoBoardPanel extends AsiaBoard implements IPieceProvider {
 
 	public GoBoardPanel(Composite parent, int boardSize) {
 		super(parent, Go.getInitBoard(boardSize, boardSize));
+		
+		Game.addPlayer(Go.class, IPlayer.HOMO_SAPIENCE);
+		Game.addPlayer(Go.class, new Vinni(this));
 		
 		listener = new PutPieceListener(this);
 //		mouseMoveListener = new NoPromptListeneromptListener(this);

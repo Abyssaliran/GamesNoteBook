@@ -1,7 +1,10 @@
 package halma;
 
 import game.core.Board;
+import game.core.Game;
 import game.core.PieceColor;
+import game.players.IPlayer;
+import game.players.Neznaika;
 import halma.pieces.Stone;
 
 /**
@@ -11,7 +14,12 @@ import halma.pieces.Stone;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Halma {
+public class Halma extends Game {
+	
+	static {
+		addPlayer(Halma.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(Halma.class, new Neznaika());
+	}
 
 	private static final short   allowableBoardSizeNumb = 3;
 	private static final short[] allowableBoardSize = {8, 10, 16};

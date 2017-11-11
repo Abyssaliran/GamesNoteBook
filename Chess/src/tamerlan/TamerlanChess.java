@@ -1,5 +1,10 @@
 package tamerlan;
 
+import game.core.Board;
+import game.core.Game;
+import game.core.PieceColor;
+import game.players.IPlayer;
+import game.players.Neznaika;
 import tamerlan.pieces.Bishop;
 import tamerlan.pieces.Giraffe;
 import tamerlan.pieces.King;
@@ -7,8 +12,6 @@ import tamerlan.pieces.Knight;
 import tamerlan.pieces.Pawn;
 import tamerlan.pieces.Queen;
 import tamerlan.pieces.Rook;
-import game.core.Board;
-import game.core.PieceColor;
 import tamerlan.pieces.Vizir;
 import tamerlan.pieces.WarMachine;
 
@@ -19,7 +22,12 @@ import tamerlan.pieces.WarMachine;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class TamerlanChess {
+public class TamerlanChess extends Game {
+	
+	static {
+		addPlayer(TamerlanChess.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(TamerlanChess.class, new Neznaika());
+	}
 
 	public static Board getInitBoard() {
 		Board board = new Board(10, 10);

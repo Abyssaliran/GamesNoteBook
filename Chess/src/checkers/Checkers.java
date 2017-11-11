@@ -2,14 +2,23 @@ package checkers;
 
 import checkers.pieces.Man;
 import game.core.Board;
+import game.core.Game;
 import game.core.PieceColor;
+import game.players.IPlayer;
+import game.players.Neznaika;
+import tamerlan.TamerlanChess;
 
 /**
  * Класс представляющий игру шашки.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Checkers {
+public class Checkers extends Game {
+	static {
+		addPlayer(TamerlanChess.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(TamerlanChess.class, new Neznaika());
+	}
+
 	/**
 	 * Расстановка фигур шашек в начальную позицию.
 	 * @return доска с расставленными фигурами.

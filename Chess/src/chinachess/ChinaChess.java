@@ -1,10 +1,17 @@
 package chinachess;
 
-
-import chinachess.pieces.*;
-
+import chinachess.pieces.Bishop;
+import chinachess.pieces.Guardian;
+import chinachess.pieces.Gun;
+import chinachess.pieces.King;
+import chinachess.pieces.Knight;
+import chinachess.pieces.Pawn;
+import chinachess.pieces.Rook;
 import game.core.Board;
+import game.core.Game;
 import game.core.PieceColor;
+import game.players.IPlayer;
+import game.players.Neznaika;
 
 /**
  * Игра <a href=
@@ -13,7 +20,13 @@ import game.core.PieceColor;
  * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
  *
  */
-public class ChinaChess {
+public class ChinaChess extends Game {
+	
+	static {
+		addPlayer(ChinaChess.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(ChinaChess.class, new Neznaika());
+	}
+
 	public static Board getInitBoard() {
 		Board board = new Board(9, 10);
 		
