@@ -35,8 +35,14 @@ public class MovesJornal extends Composite implements Observer {
 	private static final Color BLACK_COLOR  = new Color(Display.getCurrent(),   0,   0,   0);
 	private static final Color PAPER_COLOR  = new Color(Display.getCurrent(), 240, 255, 240);
 
+	/**
+	 * История игры.
+	 */
 	private History history;
 	
+	/**
+	 * Панель для имен игроков
+	 */
 	private Label headerPanel;
 	private Composite movesPanel;
 	private Label resultPanel;
@@ -133,11 +139,15 @@ public class MovesJornal extends Composite implements Observer {
 		GridData data;
 		
 		// 
-		// Панель для показа игроков партии.
+		// Панель для показа игроков партии и авторов программ.
 		//
 		String white = board.getWhitePlayer().getName();
 		String black = board.getBlackPlayer().getName();
 		String title = String.format("%s - %s", white, black);
+
+		String aWhite = board.getWhitePlayer().getAuthorName();
+		String aBlack = board.getBlackPlayer().getAuthorName();
+		String aTitle = String.format("%s против %s", aWhite, aBlack);
 
 		data = new GridData(SWT.FILL, SWT.TOP, false, false);
 		data.widthHint  = 230;
@@ -145,6 +155,7 @@ public class MovesJornal extends Composite implements Observer {
 
 		headerPanel = new Label(this, SWT.CENTER | SWT.BORDER);
 		headerPanel.setText(title);
+		headerPanel.setToolTipText(aTitle);
 		headerPanel.setBackground(HEADER_COLOR);
 		headerPanel.setForeground(BLACK_COLOR);
 		headerPanel.setFont(font);
@@ -199,7 +210,7 @@ public class MovesJornal extends Composite implements Observer {
 			Control control = children[k];
 			control.setBackground(color);
 		}
-		resultPanel.setText( "" + history.getResult() );
+		resultPanel.setText("" + history.getResult());
 
 		movesPanel.pack(true);
 	}

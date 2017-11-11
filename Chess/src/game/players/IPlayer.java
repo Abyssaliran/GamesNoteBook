@@ -18,6 +18,11 @@ public interface IPlayer {
 		public String getName() {
 			return "Homo sapience";
 		}
+		
+		@Override
+		public String getAuthorName() {
+			return "Это я";
+		}
 
 		@Override
 		public void doMove(Board board, PieceColor color) {}
@@ -35,6 +40,12 @@ public interface IPlayer {
 	 */
 	String getName();
 	
+	/**
+	 * Выдать имя автора программы для отображения имени на панели игры.
+	 * 
+	 * @return - имя автора программы.
+	 */
+	String getAuthorName();
 	
 	/**
 	 * Сделать ход на доске фигурой заданного цвета.
