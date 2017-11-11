@@ -135,7 +135,7 @@ public class King extends ChessPiece {
 		Square target = squares[1];
 		
 		int dv = Math.abs(target.v - source.v);
-		if (dv >= 1)
+		if (dv > 1)
 			return new Castling(squares);
 		
 		if (!target.isEmpty())

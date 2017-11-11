@@ -3,12 +3,11 @@ package game.ui.listeners;
 import org.eclipse.swt.graphics.Cursor;
 
 import game.core.Board;
-import game.core.Drawn;
+import game.core.GameOver;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
-import game.core.Win;
 import game.ui.GameBoard;
 
 /**
@@ -99,12 +98,21 @@ public class MovePieceListener implements IGameListner {
 			Move move = selectedPiece.makeMove(selectedSquare, mouseSquare);
 			try {
 				move.doMove();
-			} catch (Win e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Drawn e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (GameOver e) {
+				// Сохраним экземпляр кода и истории партии.
+				board.history.addMove(move);
+				board.history.setResult(e.result);
+
+				selectedPiece = null;
+				selectedSquare = null;
+				
+				// Восстановим курсор (с изображением стрелки).
+				boardPanel.setCursor(savedCursor);
+
+				// Пусть слушатели изменений на доске 
+				// нарисуют новое состояние доски.
+				board.setBoardChanged();
+				boardPanel.redraw();
 			}
 			
 			// Сохраним экземпляр кода и истории партии.

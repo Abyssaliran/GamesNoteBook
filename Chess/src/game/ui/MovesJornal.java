@@ -1,9 +1,6 @@
 package game.ui;
 
-import game.core.Board;
-import game.core.History;
-import game.core.Move;
-
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,11 +13,14 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+
+import game.core.Board;
+import game.core.History;
+import game.core.Move;
 
 /**
  * Журнал для хранения истории ходов игры.
@@ -33,44 +33,32 @@ public class MovesJornal extends Composite implements Observer {
 	private static final Color SELECT_COLOR = new Color(Display.getCurrent(), 217, 173, 124);
 	private static final Color HEADER_COLOR = new Color(Display.getCurrent(), 217, 173, 124);
 	private static final Color BLACK_COLOR  = new Color(Display.getCurrent(),   0,   0,   0);
-	private static final Color PAPER_COLOR  = new Color(Display.getCurrent(), 255, 255,   0);
+	private static final Color PAPER_COLOR  = new Color(Display.getCurrent(), 240, 255, 240);
+
+	private History history;
+	
+	private Label headerPanel;
+	private Composite movesPanel;
+	private Label resultPanel;
 
 	/**
-	 * Текст для представления хода в истории игры.
+	 * Класс для представлени текста хода в истории игры.
 	 * 
 	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
 	 */
 	private class MoveLabel {
 		private Move move;
+		
 		private Label label;
 
 		/**
-		 * @param parent
-		 * @param style
-		 */
-		public MoveLabel(Composite parent, Move move) {
-			init(parent, move);
-
-			label.setText( move.toString() );
-		}
-
-		/**
-		 * @param parent
-		 * @param kMove
-		 * @param move
+		 * Управляющий элемент представляющий ход и сам ход в игре. 
+		 * 
+		 * @param parent родительский элемент для текста (Label).
+		 * @param kMove - номер хода.
+		 * @param move - ход в игре.
 		 */
 		public MoveLabel(Composite parent, int kMove, Move move) {
-			init(parent, move);
-
-			int n = 1 + kMove / 2;
-			label.setText("" + n + ". " + move);
-		}
-		
-		/**
-		 * @param parent
-		 * @param move
-		 */
-		private void init(Composite parent, Move move) {
 			this.move = move;
 
 			label = new Label(parent, SWT.TRANSPARENT);
@@ -111,27 +99,20 @@ public class MovesJornal extends Composite implements Observer {
 				public void mouseDoubleClick(MouseEvent e) {}
 			};
 			label.addMouseListener(mListener);
-		}
 
-		/**
-		 * Задать фон для текущего рассматриваемого хода в истории игры.
-		 * 
-		 * @param color
-		 * 		цвет фона
-		 */
-		public void setBackground(Color color) {
-			label.setBackground(color);
+			boolean isOdd = ((kMove % 2) == 0);
+			String number = (!isOdd ? "" : "" + (1+kMove/2) + ". ");
+			
+			label.setText("" + number + move);
+			label.update();
+			label.redraw();
+			label.setRedraw(true);
 		}
 	}
 
-	private History history;
-	
-	private Composite movesPanel;
-	private Label headerPanel;
-
 	/**
-	 * @param parent
-	 * @param history
+	 * @param parent - родительский элемент для журнала ходов.
+	 * @param history - история игры.
 	 */
 	public MovesJornal(Composite parent, History history) {
 		super(parent, SWT.BORDER);
@@ -141,13 +122,15 @@ public class MovesJornal extends Composite implements Observer {
 		this.history = history;
 		Board board = history.getBoard();
 	
-		GridLayout layout = new GridLayout(1, true);
+		GridLayout layout = new GridLayout(1, false);
 		layout.verticalSpacing = 0;
 		layout.horizontalSpacing = 0;
 		layout.marginBottom = 0;
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
 		setLayout(layout);
+		
+		GridData data;
 		
 		// 
 		// Панель для показа игроков партии.
@@ -156,69 +139,68 @@ public class MovesJornal extends Composite implements Observer {
 		String black = board.getBlackPlayer().getName();
 		String title = String.format("%s - %s", white, black);
 
-		headerPanel = new Label(this, SWT.CENTER);
+		data = new GridData(SWT.FILL, SWT.TOP, false, false);
+		data.widthHint  = 230;
+		data.heightHint =  30;
+
+		headerPanel = new Label(this, SWT.CENTER | SWT.BORDER);
 		headerPanel.setText(title);
 		headerPanel.setBackground(HEADER_COLOR);
 		headerPanel.setForeground(BLACK_COLOR);
 		headerPanel.setFont(font);
-
-		GridData headerData = new GridData(SWT.FILL, SWT.TOP, false, true);
-		headerData.widthHint  = 200;
-		headerData.heightHint =  30;
-		headerPanel.setLayoutData(headerData);
+		headerPanel.setLayoutData(data);
 		
 		// 
 		// Панель для показа ходов в партии.
 		//
-		movesPanel = new Composite(this, SWT.NONE);
-		movesPanel.setLayout( new RowLayout() );
-		movesPanel.setBackground(PAPER_COLOR);
+		data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		
-		GridData movesData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		movesData.widthHint  = 200;
-		movesPanel.setLayoutData(movesData);
+		movesPanel = new Composite(this, SWT.NONE);
+		movesPanel.setBackground(PAPER_COLOR);
+		movesPanel.setLayoutData(data);
+		movesPanel.setLayout( new GridLayout(4, false) );
+
+		//
+		// Панель для выдачи результата игры.
+		//
+		data = new GridData(SWT.FILL, SWT.BOTTOM, false, false);
+		
+		resultPanel = new Label(this, SWT.CENTER | SWT.BORDER);
+		resultPanel.setFont(font);
+		resultPanel.setText("" + history.getResult());
+		resultPanel.setBackground(HEADER_COLOR);
+		resultPanel.setForeground(BLACK_COLOR);
+		resultPanel.setLayoutData(data);
 
 		// Добавляем к доске еще одного обозревателя - панель ходов.
-		// При изменении положения фигур на доске панель ходов уведомят, 
-		// что нужно перерисовать историю партии (список ходов партии). 
+		// При изменении положения фигур на доске или результата партии
+		// панель ходов уведомят, что нужно перерисовать историю партии
+		// (список ходов партии). 
 		board.addObserver(this);
-		pack();
 	}
 
 	@Override
 	public void update(Observable board, Object arg) {
-		update(movesPanel, history);
+		int nChilds = movesPanel.getChildren().length;
 		
-		setSize(getSize().x, getSize().y+1);
-		pack();
-	}
+		List<Move> moves = history.getMoves();
+		
+		// Добавим новые ходв в отображаемый список.
+		for (int k = nChilds; k < moves.size(); k++) 
+			new MoveLabel(movesPanel, k, moves.get(k));
 
-	/**
-	 * Обновить изображение истории игры.
-	 * 
-	 * @param parent
-	 *            составной элемент в котором показываются ходы.
-	 * @param history
-	 *            история игры
-	 */
-	void update(Composite parent, History history) {
-		for (Control control : parent.getChildren())
-			control.dispose();
-		
-		int kMove = 0;
+		// Отрисуем в списке темным фоном текущий ход.
+		//
 		int curMove = history.getCurMoveNumber();
+		Control[] children = movesPanel.getChildren();
 		
-		for (Move move : history.getMoves()) {
-			MoveLabel label = (kMove % 2 == 0) 
-								? new MoveLabel(parent, kMove, move)
-								: new MoveLabel(parent, move);
-								
-			if (kMove == curMove)
-				label.setBackground(SELECT_COLOR);
-				
-			kMove++;
+		for (int k = 0; k < children.length; k++) {
+			Color color = (k == curMove ? SELECT_COLOR : PAPER_COLOR);
+			Control control = children[k];
+			control.setBackground(color);
 		}
-		
-		parent.changed(parent.getChildren());
+		resultPanel.setText( "" + history.getResult() );
+
+		movesPanel.pack(true);
 	}
 }

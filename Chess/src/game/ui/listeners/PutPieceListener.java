@@ -1,12 +1,11 @@
 package game.ui.listeners;
 
 import game.core.Board;
-import game.core.Drawn;
+import game.core.GameOver;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
-import game.core.Win;
 import game.ui.GameBoard;
 
 /**
@@ -59,10 +58,7 @@ public class PutPieceListener implements IGameListner {
 		board.history.addMove(move);
 		try {
 			move.doMove();
-		} catch (Win e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Drawn e) {
+		} catch (GameOver e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import game.core.Board;
-import game.core.Drawn;
+import game.core.GameOver;
 import game.core.IPieceProvider;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
-import game.core.Win;
 
 /**
  * Винни - простой игрок для игр в которых ставятся фигуры на доску.
@@ -66,10 +65,7 @@ public class Vinni implements IPlayer {
 		Move randomMove = piece.makeMove(randomTarget);
 		try {
 			randomMove.doMove();
-		} catch (Win e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Drawn e) {
+		} catch (GameOver e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

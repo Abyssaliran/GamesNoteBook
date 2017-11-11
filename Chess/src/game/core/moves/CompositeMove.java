@@ -2,9 +2,8 @@ package game.core.moves;
 
 import java.util.ArrayList;
 
-import game.core.Drawn;
+import game.core.GameOver;
 import game.core.Move;
-import game.core.Win;
 
 /**
  * Составной ход - последовательность простых ходов фигурой одного цвета.
@@ -44,10 +43,7 @@ public class CompositeMove implements Move {
 		for (Move move : moves)
 			try {
 				move.doMove();
-			} catch (Win e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Drawn e) {
+			} catch (GameOver e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

@@ -9,9 +9,9 @@ package game.core;
 public interface Move {
 	/**
 	 * Сделать ход (расстановку или перемещение фигур на доске).
-	 * @throws Win 
+	 * @throws GameOver 
 	 */
-	void doMove() throws Win, Drawn;
+	void doMove() throws GameOver;
 	
 	/**
 	 * Вернуть фигуры в состояние до сделанного ходя.
