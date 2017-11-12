@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -150,7 +151,7 @@ public class MovesJornal extends Composite implements Observer {
 		String aTitle = String.format("%s против %s", aWhite, aBlack);
 
 		data = new GridData(SWT.FILL, SWT.TOP, false, false);
-		data.widthHint  = 230;
+		data.widthHint  = 260;
 		data.heightHint =  30;
 
 		headerPanel = new Label(this, SWT.CENTER | SWT.BORDER);
@@ -167,9 +168,9 @@ public class MovesJornal extends Composite implements Observer {
 		data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		
 		movesPanel = new Composite(this, SWT.NONE);
+		movesPanel.setLayout( new GridLayout(4, false) );
 		movesPanel.setBackground(PAPER_COLOR);
 		movesPanel.setLayoutData(data);
-		movesPanel.setLayout( new GridLayout(4, false) );
 
 		//
 		// Панель для выдачи результата игры.
