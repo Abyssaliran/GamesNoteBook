@@ -28,6 +28,14 @@ public class Chess extends Game {
 	 * @return доска с расставленными фигурами.
 	 */
 	public Chess() {
+		initBoardDefault();
+		
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+	}
+
+	@Override
+	public void initBoardDefault() {
 		super.initBoard(8, 8);
 		
 		// Расставляем пешки.
@@ -61,8 +69,5 @@ public class Chess extends Game {
 		// Расставляем королей.
 		new King(board.getSquare(4, 0), PieceColor.BLACK);
 		new King(board.getSquare(4, 7), PieceColor.WHITE);
-		
-		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
-		board.setBlackPlayer( new Neznaika() );
 	}
 }

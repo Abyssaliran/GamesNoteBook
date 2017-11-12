@@ -28,7 +28,7 @@ public class TamerlanChess extends Game {
 		addPlayer(TamerlanChess.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(TamerlanChess.class, new Neznaika());
 	}
-
+	
 	public TamerlanChess() {
 		super.initBoard(10, 10);
 		
@@ -78,5 +78,13 @@ public class TamerlanChess extends Game {
 		// Расставляем машины.
 		new WarMachine(board.getSquare(4, pawnH), color);
 		new WarMachine(board.getSquare(5, pawnH), color);
+	}
+
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(10, 10);
+		
+		putPieces(board, PieceColor.BLACK);
+		putPieces(board, PieceColor.WHITE);
 	}
 }

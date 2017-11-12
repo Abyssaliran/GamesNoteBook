@@ -33,16 +33,17 @@ public class GamePanel extends Composite {
 		
 		setLayout( new GridLayout(3, false) );
 		
-		final GridData data;
+		GridData data;
 
 		data = new GridData(SWT.LEFT, SWT.FILL, false, true);
-		data.widthHint  = 180;
+		data.widthHint = 120;
 
 		control = new GameControlPanel(this, game);
 		control.setLayoutData(data);
 		
+		data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		adorned = new AdornedBoard(this);
-		adorned.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		adorned.setLayoutData(data);
 	}
 
 	public GamePanel(Composite parent, Color color) {

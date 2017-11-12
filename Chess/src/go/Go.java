@@ -24,13 +24,18 @@ public class Go extends Game {
 	
 	static {
 		Game.addPlayer(Go.class, IPlayer.HOMO_SAPIENCE);
-		Game.addPlayer(Go.class, new Vinni(pieceProvider));
+		Game.addPlayer(Go.class, new Vinni(pieceProvider) );
 	}
 	
-	public Go (int boardSize) {
+	public Go(int boardSize) {
 		super.initBoard(boardSize, boardSize);
-		
+
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Vinni(pieceProvider) );
+	}
+
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(10, 10);	
 	}
 }

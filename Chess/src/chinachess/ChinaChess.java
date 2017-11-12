@@ -32,7 +32,7 @@ public class ChinaChess extends Game {
 		
 		putPieces(board, PieceColor.BLACK);
 		putPieces(board, PieceColor.WHITE);
-		
+
 //		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setWhitePlayer( new Neznaika() );
 		board.setBlackPlayer( new Neznaika() );
@@ -69,5 +69,11 @@ public class ChinaChess extends Game {
 		// Rooks in positions
 		new Rook(board.getSquare(0,  hPiece), color);
 		new Rook(board.getSquare(8, hPiece), color);
+	}
+
+	@Override
+	public void initBoardDefault() {
+		// TODO Auto-generated method stub
+		
 	}
 }

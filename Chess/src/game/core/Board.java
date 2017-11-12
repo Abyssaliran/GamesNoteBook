@@ -93,6 +93,21 @@ public class Board extends Observable {
 				{ break; }
 		}
 	}
+	
+	public void startGame() {
+		for (;;) {
+			IPlayer player = players.get(moveColor);
+			if (player == IPlayer.HOMO_SAPIENCE)
+				break; // Ход сделает человек мышкой.
+			
+			try { player.doMove(this, moveColor); } 
+			catch (GameOver e) 
+				{ break; }
+
+			moveColor = getOponentColor(moveColor);
+		}
+	}
+
 
 	/**
 	 * Дать цвет противоположный заданному цвету.

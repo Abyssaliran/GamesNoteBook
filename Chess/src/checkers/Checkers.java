@@ -23,6 +23,14 @@ public class Checkers extends Game {
 	 * @return доска с расставленными фигурами.
 	 */
 	public Checkers() {
+		initBoardDefault();
+
+		board.setWhitePlayer(IPlayer.HOMO_SAPIENCE);
+		board.setBlackPlayer( new Neznaika() );
+	}
+
+	@Override
+	public void initBoardDefault() {
 		super.initBoard(8, 8);
 		
 		setHorizontal(board, 0, PieceColor.BLACK);
@@ -32,11 +40,8 @@ public class Checkers extends Game {
 		setHorizontal(board, 5, PieceColor.WHITE);
 		setHorizontal(board, 6, PieceColor.WHITE);
 		setHorizontal(board, 7, PieceColor.WHITE);
-		
-		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
-		board.setBlackPlayer( new Neznaika() );
 	}
-
+	
 	/**
 	 * Расставить шашки на заданой горизонтали.
 	 * 

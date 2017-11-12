@@ -12,6 +12,7 @@ import game.players.IPlayer;
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
+abstract 
 public class Game {
 	
 	/**
@@ -52,4 +53,11 @@ public class Game {
 	public void initBoard(int nV, int nH) {
 		board = new Board(nV, nH);
 	}
+
+	/**
+	 * Сделать доску умалчиваемого размера 
+	 * с умалчиваемой расстановкой фигур на доске.
+	 */
+	abstract
+	public void initBoardDefault();
 }

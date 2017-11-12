@@ -20,7 +20,7 @@ public class Halma extends Game {
 		addPlayer(Halma.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(Halma.class, new Neznaika());
 	}
-
+	
 	private static final short   allowableBoardSizeNumb = 3;
 	private static final short[] allowableBoardSize = {8, 10, 16};
 	
@@ -31,7 +31,7 @@ public class Halma extends Game {
 	public Halma(int boardSize) {
 		super.initBoard(boardSize, boardSize);
 		initializeParticularBoard(boardSize);
-		
+
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Neznaika() );
 	}	
@@ -84,6 +84,12 @@ public class Halma extends Game {
 		}
 		
 		return board;
+	}
+
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(10, 10);
+		initializeParticularBoard(10);
 	}
 }
 

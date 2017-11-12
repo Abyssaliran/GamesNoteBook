@@ -36,17 +36,11 @@ public class Reversi extends Game {
 	 * @return доска с расставленными отверстиями (если они нужны).
 	 */
 	public Reversi(int nHoles) {
-		super.initBoard(8, 8);
-		
-		new Stone( board.getSquare(3, 3), PieceColor.BLACK);
-		new Stone( board.getSquare(4, 4), PieceColor.BLACK);
-		
-		new Stone( board.getSquare(3, 4), PieceColor.WHITE);
-		new Stone( board.getSquare(4, 3), PieceColor.WHITE);
+		initBoardDefault();
 		
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Vinni(pieceProvider) );
-		
+
 		if (nHoles != 0) {
 			int randomV = (int) (8 * Math.random());
 			int randomH = (int) (8 * Math.random());
@@ -54,5 +48,16 @@ public class Reversi extends Game {
 			Square randomSquare = board.getSquare(randomV, randomH);
 			new Hole(randomSquare, PieceColor.BLACK);
 		}
+	}
+
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(8, 8);
+		
+		new Stone( board.getSquare(3, 3), PieceColor.BLACK);
+		new Stone( board.getSquare(4, 4), PieceColor.BLACK);
+		
+		new Stone( board.getSquare(3, 4), PieceColor.WHITE);
+		new Stone( board.getSquare(4, 3), PieceColor.WHITE);
 	}
 }

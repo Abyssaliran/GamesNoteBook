@@ -37,7 +37,7 @@ public class Vikings extends Game {
 			case  9: initBoard9();  break;
 			case 11: initBoard11(); break;
 		}
-		
+
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Neznaika() );
 	}
@@ -86,5 +86,11 @@ public class Vikings extends Game {
 				new Viking(square, PieceColor.BLACK);
 			}
 		}
+	}
+
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(9, 9);
+		initBoard9();
 	}
 }
