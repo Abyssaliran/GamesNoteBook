@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import checkers.pieces.King;
+import game.core.GameOver;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
@@ -60,7 +61,7 @@ public class SimpleMove implements ITransferMove {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		piece.moveTo(target);
 
 		if (isPromotion)

@@ -2,6 +2,7 @@ package checkers.moves;
 
 import java.util.ArrayList;
 
+import game.core.GameOver;
 import game.core.Move;
 
 /**
@@ -28,7 +29,7 @@ public class CompositeMove implements Move {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		for (Capture capture : captures)
 			capture.doMove();
 	}

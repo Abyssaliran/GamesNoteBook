@@ -6,7 +6,11 @@ package checkers.moves;
 import java.util.Arrays;
 import java.util.List;
 
+import game.core.Board;
+import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Piece;
+import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
 
@@ -41,9 +45,17 @@ public class Capture extends SimpleMove implements ICaptureMove {
 	}
 	
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		super.doMove();
 		captured.remove();
+		
+		Board board = source.getBoard();
+		PieceColor enemyColor = captured.getColor();
+		List<Piece> enemies = board.getPieces(enemyColor);
+		
+		if (enemies.isEmpty())
+			throw new GameOver(enemyColor == PieceColor.WHITE 
+									? GameResult.BLACK_WIN : GameResult.WHITE_WIN);
 	}
 
 	@Override
