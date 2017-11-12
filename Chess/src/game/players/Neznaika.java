@@ -4,6 +4,7 @@ import java.util.List;
 
 import game.core.Board;
 import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Move;
 import game.core.PieceColor;
 
@@ -35,7 +36,7 @@ public class Neznaika extends MovePiecePlayer {
 	}
 
 	@Override
-	public void doMove(Board board, PieceColor color) {
+	public void doMove(Board board, PieceColor color) throws GameOver {
 		List<Move> correctMoves = getCorrectMoves(board, color);
 		
 //		if (correctMoves.isEmpty()) // Пат.
@@ -49,21 +50,37 @@ public class Neznaika extends MovePiecePlayer {
 		
 		try { randomMove.doMove(); } 
 		catch (GameOver e) {
-			// Сохраняем последний ход и 
-			// результат игры в истории игры.
+			// Сохраняем в истории игры последний сделанный ход 
+			// и результат игры.
 			board.history.addMove(randomMove);
 			board.history.setResult(e.result);
 			
-			// Просим показать ход и результат игры.
+			// Просим обозревателей доски показать 
+			// положение на доске, сделанный ход и 
+			// результат игры.
 			board.setBoardChanged();
-			return;
+			
+			throw new GameOver(e.result);
 		}
 		
 		// Сохраняем ход в истории игры.
 		board.history.addMove(randomMove);
+
+		// Просим обозревателей доски показать 
+		// положение на доске, сделанный ход и 
+		// результат игры.
+		board.setBoardChanged();
 	
-		// Передаем ход противнику.
-		board.changeMoveColor();
+		// Для отладки ограничим количество ходов в игре.
+		// После этого результат игры ничья.
+		if (board.history.getMoves().size() > 80) {
+			// Сохраняем в истории игры последний сделанный ход 
+			// и результат игры.
+			board.history.setResult(GameResult.DRAWN);
+			
+			// Сообщаем что игра закончилась ничьей.
+			throw new GameOver(GameResult.DRAWN);
+		}
 	}
 
 	@Override

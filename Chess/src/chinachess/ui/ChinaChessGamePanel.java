@@ -41,12 +41,11 @@ public class ChinaChessGamePanel extends GamePanel {
 }
 
 /**
- * 
+ * Панель для доски китайских шахмат.
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  *
  */
 class ChinaChessBoardPanel extends AsiaBoardWithCastle {
-
 	private static Map<Class<? extends Piece>, Image> whites;
 	private static Map<Class<? extends Piece>, Image> blacks;
 	
@@ -101,13 +100,15 @@ class ChinaChessBoardPanel extends AsiaBoardWithCastle {
 		boolean isWhiteMargin = (h == board.nH-5);
 		
 		if (isBlackMargin || isWhiteMargin) {
+			// Рисуем "реку" между территориями противников.
 			if (v !=          0) gc.drawLine(x, y, x - dv, y);
 			if (v != board.nV-1) gc.drawLine(x, y, x + dv, y);
 	
 			if (!isWhiteMargin) gc.drawLine(x, y, x, y - dh);
 			if (!isBlackMargin) gc.drawLine(x, y, x, y + dh);
 		}
-		else super.drawSquare(gc, v, h, squareWidth, squareHeight);
+		else // Обычные клетки зиатской доски с двумя крепостями.
+			super.drawSquare(gc, v, h, squareWidth, squareHeight);
 	}
 
 	@Override

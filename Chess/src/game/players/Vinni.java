@@ -4,6 +4,7 @@ import java.util.List;
 
 import game.core.Board;
 import game.core.GameOver;
+import game.core.GameResult;
 import game.core.IPieceProvider;
 import game.core.Move;
 import game.core.PieceColor;
@@ -35,7 +36,7 @@ public class Vinni extends PutPiecePlayer {
 	}
 
 	@Override
-	public void doMove(Board board, PieceColor color) {
+	public void doMove(Board board, PieceColor color) throws GameOver {
 		List<Move> correctMoves = getCorrectMoves(board, color);
 
 		if (correctMoves.isEmpty())
@@ -46,21 +47,37 @@ public class Vinni extends PutPiecePlayer {
 		
 		try { randomMove.doMove(); } 
 		catch (GameOver e) {
-			// Сохраняем последний ход и 
-			// результат игры в истории игры.
+			// Сохраняем в истории игры последний сделанный ход 
+			// и результат игры.
 			board.history.addMove(randomMove);
 			board.history.setResult(e.result);
 			
-			// Просим показать ход и результат игры.
+			// Просим обозревателей доски показать 
+			// положение на доске, сделанный ход и 
+			// результат игры.
 			board.setBoardChanged();
-			return;
+			
+			throw new GameOver(GameResult.DRAWN);
 		}
 		
-		// Сохраняем ход в истории партии.
+		// Сохраняем ход в истории игры.
 		board.history.addMove(randomMove);
 
-		// Передаем ход противнику.
-		board.changeMoveColor();
+		// Просим обозревателей доски показать 
+		// положение на доске, сделанный ход и 
+		// результат игры.
+		board.setBoardChanged();
+
+		// Для отладки ограничим количество ходов в игре.
+		// После этого результат игры ничья.
+		if (board.history.getMoves().size() > 80) {
+			// Сохраняем в истории игры последний сделанный ход 
+			// и результат игры.
+			board.history.setResult(GameResult.DRAWN);
+			
+			// Сообщаем что игра закончилась ничьей.
+			throw new GameOver(GameResult.DRAWN);
+		}
 	}
 	
 	/**

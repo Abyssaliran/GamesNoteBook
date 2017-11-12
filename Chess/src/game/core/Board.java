@@ -81,13 +81,17 @@ public class Board extends Observable {
 	 * Смена цвета (игрока который должен сделать ход).
 	 */
 	public void changeMoveColor() {
-		moveColor = getOponentColor(moveColor);
-		
-		IPlayer player = players.get(moveColor);
-		if (player == IPlayer.HOMO_SAPIENCE)
-			return; // Ход сделает человек мышкой.
-		
-		player.doMove(this, moveColor);
+		for (;;) {
+			moveColor = getOponentColor(moveColor);
+			
+			IPlayer player = players.get(moveColor);
+			if (player == IPlayer.HOMO_SAPIENCE)
+				break; // Ход сделает человек мышкой.
+			
+			try { player.doMove(this, moveColor); } 
+			catch (GameOver e) 
+				{ break; }
+		}
 	}
 
 	/**

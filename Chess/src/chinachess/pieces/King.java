@@ -2,8 +2,8 @@ package chinachess.pieces;
 
 import java.util.Optional;
 
-import chess.moves.Capture;
-import chess.moves.SimpleMove;
+import chinachess.moves.Capture;
+import chinachess.moves.SimpleMove;
 import game.core.Board;
 import game.core.Move;
 import game.core.PieceColor;
@@ -28,6 +28,7 @@ public class King extends ChinaChessPiece{
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		Square source = square;
 		Square target = squares[0];
 		
 		// Особый случай - ход вне крепости.
@@ -52,7 +53,7 @@ public class King extends ChinaChessPiece{
 			boolean isAttempt = (target == opponentSquare);
 			
 			// Возможно ли захватить?
-			boolean isPossible = opponentSquare.isEmptyVertical(target);
+			boolean isPossible = source.isEmptyVertical(opponentSquare);
 			
 			if (isAttempt && isPossible)
 				return true; // Это захват короля противника.
@@ -62,8 +63,8 @@ public class King extends ChinaChessPiece{
 		if (!inCastle(color, target))
 			return false;
 		
-		int dv = Math.abs(target.v - square.v);
-		int dh = Math.abs(target.h - square.h);
+		int dv = Math.abs(target.v - source.v);
+		int dh = Math.abs(target.h - source.h);
 				
 		// Допустимы только ходы на одну клетку
 		// по вертикали и горизонтали.

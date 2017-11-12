@@ -1,6 +1,5 @@
 package tamerlan.move;
 
-import chess.moves.ICapture;
 import game.core.Piece;
 import game.core.Square;
 
@@ -10,7 +9,7 @@ import game.core.Square;
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Capture extends SimpleMove implements ICapture {
+public class Capture extends SimpleMove {
 	private Square capturedSquare;
 	private Piece capturedPiece;
 	
@@ -33,18 +32,6 @@ public class Capture extends SimpleMove implements ICapture {
 		capturedSquare.setPiece(capturedPiece);
 	}
 
-	@Override
-	public void removePiece() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void restotePiece() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	@Override
 	public String toString() {
 		return "" + piece + source + "x" + target;

@@ -1,5 +1,6 @@
 package chinachess.moves;
 
+import game.core.GameOver;
 import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
@@ -16,17 +17,17 @@ public class SimpleMove implements Move {
 	/**
 	 * Какая фигура перемещается.
 	 */
-	private Piece piece;
+	protected Piece piece;
 
 	/**
 	 * Откуда перемещается.
 	 */
-	private Square source;
+	protected Square source;
 
 	/**
 	 * Куда перемещается.
 	 */
-	private Square target;
+	protected Square target;
 
 	public SimpleMove(Square[] squares) {
 		source = squares[0];
@@ -36,12 +37,17 @@ public class SimpleMove implements Move {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		piece.moveTo(target);
 	}
 
 	@Override
 	public void undoMove() {
 		piece.moveTo(source);
+	}
+	
+	@Override
+	public String toString() {
+		return "" + piece + source + "-" + target;
 	}
 }

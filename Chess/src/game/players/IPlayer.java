@@ -1,7 +1,9 @@
 package game.players;
 
 import game.core.Board;
+import game.core.GameOver;
 import game.core.PieceColor;
+import game.core.GameResult;
 
 /**
  * Интерфейс для игроков в шахматы.
@@ -54,6 +56,11 @@ public interface IPlayer {
 	 *            - доска для хода.
 	 * @param color
 	 *            - фигура какого цвета должна сделать ход.
+	 * @throws GameOver
+	 *             - во время выполнения хода может возникнуть ситуация
+	 *             GameOver.
+	 *             
+	 * @see GameResult
 	 */
-	void doMove(Board board, PieceColor color);
+	void doMove(Board board, PieceColor color) throws GameOver;
 }
