@@ -1,5 +1,6 @@
 package go.moves;
 
+import game.core.GameOver;
 import game.core.Piece;
 import game.core.Square;
 import game.core.moves.IPutMove;
@@ -10,7 +11,7 @@ import game.core.moves.IPutMove;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class SimpleMove implements IPutMove {
+public class SimpleMove extends GoMove implements IPutMove {
 	/**
 	 * Куда поставят фигуру..
 	 */
@@ -34,8 +35,10 @@ public class SimpleMove implements IPutMove {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		target.setPiece(piece);
+		
+		checkGameEnd(piece);
 	}
 
 	@Override

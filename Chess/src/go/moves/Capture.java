@@ -3,11 +3,11 @@ package go.moves;
 import java.util.List;
 
 import game.core.Board;
+import game.core.GameOver;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
-import game.core.moves.IPutMove;
 import go.pieces.GoPiece;
 
 /**
@@ -15,11 +15,11 @@ import go.pieces.GoPiece;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Capture implements IPutMove, ICaptureMove {
+public class Capture extends GoMove implements ICaptureMove {
 	/**
 	 * Какая клетка ставится.
 	 */
-	private Piece piece;
+	Piece piece;
 
 	/**
 	 * Клетка куда поставлена фигура.
@@ -47,13 +47,15 @@ public class Capture implements IPutMove, ICaptureMove {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		// Поставим на доску свою фигуру.
 		target.setPiece(piece);
 		
 		// Удалим с доски вражеские фигуры.
 		for (Square s : captured)
 			s.getPiece().remove();
+		
+		checkGameEnd(piece);
 	}
 
 	@Override
