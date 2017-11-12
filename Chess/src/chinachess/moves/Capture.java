@@ -48,4 +48,9 @@ public class Capture extends SimpleMove {
 		super.undoMove();
 		capturedSquare.setPiece(capturedPiece);
 	}
+	
+	@Override
+	public String toString() {
+		return "" + piece + source + "x" + target;
+	}
 }
