@@ -1,5 +1,6 @@
 package chinachess.moves;
 
+import game.core.GameOver;
 import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
@@ -36,7 +37,7 @@ public class SimpleMove implements Move {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		piece.moveTo(target);
 	}
 
