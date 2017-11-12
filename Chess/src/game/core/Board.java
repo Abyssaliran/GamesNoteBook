@@ -68,6 +68,8 @@ public class Board extends Observable {
 				squares[v][h] = new Square(this, v, h);
 		
 		history.clear();
+		moveColor = PieceColor.WHITE;
+		
 		setBoardChanged();
 	}
 

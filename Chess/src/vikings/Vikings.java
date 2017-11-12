@@ -71,9 +71,6 @@ public class Vikings extends Game {
 
 		for(LineDirs dir : LineDirs.ALL)  
 			setBlack(board, c + 4 * dir.dv, c + 4 * dir.dh);
-		
-		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
-		board.setBlackPlayer( new Neznaika() );
 	}
 
 	private static void setBlack(Board board, int v, int h) {
