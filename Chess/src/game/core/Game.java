@@ -20,6 +20,10 @@ public class Game {
 	 */
 	private static 
 	Map<Class<? extends Game>, List<IPlayer>> allPlayers = new HashMap<>();
+	
+	public Game() {
+		board = new Board();
+	}
 
 	/**
 	 * Добавить игрока для данной игры.
@@ -51,7 +55,7 @@ public class Game {
 	}
 
 	public void initBoard(int nV, int nH) {
-		board = new Board(nV, nH);
+		board.reset(nV, nH);
 	}
 
 	/**

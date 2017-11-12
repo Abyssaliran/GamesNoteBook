@@ -32,6 +32,12 @@ public class History {
 	public History(Board board) {
 		setBoard(board);
 	}
+	
+	public void clear() {
+		curMove = -1;
+		moves.clear();
+		result = GameResult.UNKNOWN;
+	}
 
 	/**
 	 * Добавить ход в историю игрыs.

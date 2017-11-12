@@ -96,7 +96,7 @@ public class GameControlPanel extends Composite {
 		startButton.setText("Старт");
 		startButton.setLayoutData(data);
 		startButton.addListener(SWT.Selection, e -> {
-//			game.initBoardDefault();
+			game.initBoardDefault();
 			game.board.startGame();
 		});
 	}

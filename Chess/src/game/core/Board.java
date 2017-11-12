@@ -46,15 +46,19 @@ public class Board extends Observable {
 		setBlackPlayer( new Neznaika() );
 	}
 
+	public Board() {
+		reset(0, 0);
+	}
+
 	/**
-	 * Создать доску с заданным количеством вертикалей и горизонталей.
+	 * Изменить размеры доски и очистить историю игры.
 	 * 
 	 * @param nV
-	 *            - количество вертикалей
+	 *            - количество вертикалей доски.
 	 * @param nH
-	 *            - количество горизонталей.
+	 *            - количество горизонталей доски.
 	 */
-	public Board(int nV, int nH) {
+	public void reset(int nV, int nH) {
 		this.nV = nV;
 		this.nH = nH;
 		
@@ -62,6 +66,9 @@ public class Board extends Observable {
 		for (int v = 0; v < nV; v++)
 			for (int h = 0; h < nH; h++)
 				squares[v][h] = new Square(this, v, h);
+		
+		history.clear();
+		setBoardChanged();
 	}
 
 	/**

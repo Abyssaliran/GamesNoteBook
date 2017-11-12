@@ -36,19 +36,6 @@ public class Halma extends Game {
 		board.setBlackPlayer( new Neznaika() );
 	}	
 	
-	/**
-	 * is used when wrong board size is passed on input
-	 * @param boardSize
-	 * @return  empty non-initialized board
-	 */
-	private static Board emptyBoard(int boardSize) {
-		
-		// TO DO:
-		// Throw an exception or say about wrong board sizes
-		
-		return new Board(boardSize, boardSize);	// null	
-	} 
-	
 	public Board getInitBoard(int boardSize) {
 		
 		// Initialize board of the proper format
@@ -57,7 +44,7 @@ public class Halma extends Game {
 				return initializeParticularBoard(allowableBoardSize[ind_sz]);
 			}
 		}
-		return Halma.emptyBoard(boardSize);
+		return null;
 	}
 
 	public Board initializeParticularBoard(int boardSize) {

@@ -44,8 +44,28 @@ public class MovesJornal extends Composite implements Observer {
 	 * Панель для имен игроков
 	 */
 	private Label headerPanel;
-	private Composite movesPanel;
+	private MovesPanel movesPanel;
 	private Label resultPanel;
+	
+	/**
+	 * 
+	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+	 */
+	class MovesPanel extends Composite {
+
+		public MovesPanel(Composite parent, int style) {
+			super(parent, style);
+		}
+		
+		public void clear() {
+		    Control[] children = getChildren();
+		    int length = children.length;
+			for (int i = length -1;i>=0;i--) {
+		        children[i].dispose();
+		    }
+		}
+		
+	}
 
 	/**
 	 * Класс для представлени текста хода в истории игры.
@@ -158,7 +178,7 @@ public class MovesJornal extends Composite implements Observer {
 		//
 		data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		
-		movesPanel = new Composite(this, SWT.NONE);
+		movesPanel = new MovesPanel(this, SWT.NONE);
 		movesPanel.setLayout( new GridLayout(4, false) );
 		movesPanel.setBackground(PAPER_COLOR);
 		movesPanel.setLayoutData(data);
@@ -203,6 +223,11 @@ public class MovesJornal extends Composite implements Observer {
 		
 		List<Move> moves = history.getMoves();
 		
+		if (nChilds > moves.size()) {
+			movesPanel.clear();
+			nChilds = 0;
+		}
+			
 		// Добавим новые ходв в отображаемый список.
 		for (int k = nChilds; k < moves.size(); k++) 
 			new MoveLabel(movesPanel, k, moves.get(k));
