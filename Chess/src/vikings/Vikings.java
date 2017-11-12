@@ -34,8 +34,8 @@ public class Vikings extends Game {
 		super.initBoard(boardSize, boardSize);
 		
 		switch (boardSize) {
-			case  9: initBoard9();
-			case 11: initBoard11();
+			case  9: initBoard9();  break;
+			case 11: initBoard11(); break;
 		}
 		
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
