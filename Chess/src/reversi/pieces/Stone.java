@@ -37,12 +37,9 @@ public class Stone extends Piece {
 		if (!hasEnemy(target))
 			return false;
 
-		// Если при ходе на клетку target не произойдет захват вражеских фигур,
-		// то ход туда не корректен.
-		if (!isPossibleCapture(target))
-			return false;
-
-		return true;
+		// Если при ходе на клетку target не произойдет захват 
+		// вражеских фигур, то ход туда не корректен.
+		return isPossibleCapture(target);
 	}
 
 	/**
