@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
+import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.AsiaBoard;
@@ -23,9 +24,9 @@ import halma.ui.images.HalmaImages;
 public class HalmaGamePanel extends GamePanel {
 
 	public HalmaGamePanel(Composite parent, int boardSize) {
-		super(parent);
+		super(parent, new Halma(boardSize));
 		
-		insertSquares( new HalmaBoardPanel(this, boardSize) );
+		insertSquares( new HalmaBoardPanel(this, game) );
 	}
 }
 /**
@@ -36,8 +37,8 @@ public class HalmaGamePanel extends GamePanel {
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 class HalmaBoardPanel extends AsiaBoard {
-	public HalmaBoardPanel(Composite parent, int boardSize) {
-		super(parent, Halma.getInitBoard(boardSize));
+	public HalmaBoardPanel(Composite parent, Game game) {
+		super(parent, game.board);
 		
 		listener = new MovePieceListener(this);
 		
@@ -48,5 +49,6 @@ class HalmaBoardPanel extends AsiaBoard {
 	public Image getPieceImage(Piece piece, PieceColor color) {
 		return color == PieceColor.WHITE 
 				? HalmaImages.imageStoneWhite
-				: HalmaImages.imageStoneBlack;	}
+				: HalmaImages.imageStoneBlack;	
+	}
 }

@@ -206,7 +206,7 @@ public class GamesNotebook {
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
 		tabItem.setText("Го");
-		tabItem.setControl( new GoGamePanel(gamesFolder, 10) );
+		tabItem.setControl( new GoGamePanel(gamesFolder, 8) );
 		tabItem.setImage(tabImage);
 	}
 

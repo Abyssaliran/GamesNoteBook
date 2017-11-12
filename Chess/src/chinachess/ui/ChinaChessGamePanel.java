@@ -20,6 +20,7 @@ import chinachess.pieces.Knight;
 import chinachess.pieces.Pawn;
 import chinachess.pieces.Rook;
 import chinachess.ui.images.ChinaChessImages;
+import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.AsiaBoardWithCastle;
@@ -32,11 +33,10 @@ import game.ui.listeners.MovePieceListener;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class ChinaChessGamePanel extends GamePanel {
-
 	public ChinaChessGamePanel(Composite parent) {
-		super(parent);
+		super(parent, new ChinaChess());
 		
-		insertSquares( new ChinaChessBoardPanel(this) );
+		insertSquares( new ChinaChessBoardPanel(this, game) );
 	}
 }
 
@@ -80,8 +80,8 @@ class ChinaChessBoardPanel extends AsiaBoardWithCastle {
 		blacks.put(Guardian.class, ChinaChessImages.imageGuardBlack);
 	}
 		
-	public ChinaChessBoardPanel(Composite composite) {
-		super(composite, ChinaChess.getInitBoard());
+	public ChinaChessBoardPanel(Composite composite, Game game) {
+		super(composite, game.board);
 		
 		listener = new MovePieceListener(this);
 		

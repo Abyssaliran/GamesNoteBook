@@ -27,8 +27,8 @@ public class ChinaChess extends Game {
 		addPlayer(ChinaChess.class, new Neznaika());
 	}
 
-	public static Board getInitBoard() {
-		Board board = new Board(9, 10);
+	public ChinaChess() {
+		super.initBoard(9, 10);
 		
 		putPieces(board, PieceColor.BLACK);
 		putPieces(board, PieceColor.WHITE);
@@ -36,8 +36,6 @@ public class ChinaChess extends Game {
 //		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setWhitePlayer( new Neznaika() );
 		board.setBlackPlayer( new Neznaika() );
-
-		return board;
 	}
 
 	private static void putPieces(Board board, PieceColor color) {

@@ -30,12 +30,16 @@ public class Vikings extends Game {
 	 * @param boardSize - размер доски.
 	 * @return доска с расставленными фигурами.
 	 */
-	public static Board getInitBoard(int boardSize) {
+	public Vikings(int boardSize) {
+		super.initBoard(boardSize, boardSize);
+		
 		switch (boardSize) {
-			case  9: return initBoard9();
-			case 11: return initBoard11();
+			case  9: initBoard9();
+			case 11: initBoard11();
 		}
-		return null;
+		
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
 	}
 
 	/** 
@@ -44,15 +48,8 @@ public class Vikings extends Game {
 	 * 
 	 * @return доска с расставленными фигурами.
 	 */
-	private static Board initBoard11() {
-		Board board = new Board(11, 11);
-		
+	private void initBoard11() {
 		new Сyning(board.getSquare(5, 5), PieceColor.WHITE);
-
-		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
-		board.setBlackPlayer( new Neznaika() );
-
-		return board ;
 	}
 
 	/** 
@@ -61,9 +58,7 @@ public class Vikings extends Game {
 	 * 
 	 * @return доска с расставленными фигурами.
 	 */
-	private static Board initBoard9() {
-		Board board = new Board(9, 9);
-		
+	private void initBoard9() {
 		int c = 4;
 		
 		new Сyning(board.getSquare(c, c), PieceColor.WHITE);
@@ -79,8 +74,6 @@ public class Vikings extends Game {
 		
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Neznaika() );
-
-		return board ;
 	}
 
 	private static void setBlack(Board board, int v, int h) {

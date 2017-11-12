@@ -5,6 +5,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
+import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.GamePanel;
@@ -23,9 +24,9 @@ import vikings.ui.images.VikingImages;
 public class VikingsGamePanel extends GamePanel {
 
 	public VikingsGamePanel(Composite parent, int boardSize) {
-		super(parent);
+		super(parent, new Vikings(boardSize));
 		
-		insertSquares( new VikingsBoardPanel(this, boardSize) );
+		insertSquares( new VikingsBoardPanel(this, game) );
 	}
 }
 
@@ -38,8 +39,8 @@ public class VikingsGamePanel extends GamePanel {
 class VikingsBoardPanel extends GreenBoard {
 	private static final Color COLOR = new Color(null, 0,   255, 0);
 
-	public VikingsBoardPanel(Composite parent, int boardSize) {
-		super(parent, Vikings.getInitBoard(boardSize));
+	public VikingsBoardPanel(Composite parent, Game game) {
+		super(parent, game.board);
 		
 		listener = new MovePieceListener(this);
 	}

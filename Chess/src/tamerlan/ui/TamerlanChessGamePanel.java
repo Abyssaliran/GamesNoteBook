@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
+import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
@@ -31,9 +32,9 @@ import tamerlan.ui.images.TamerlanChessImages;
 public class TamerlanChessGamePanel extends GamePanel {
 
 	public TamerlanChessGamePanel(Composite parent) {
-		super(parent);
+		super(parent, new TamerlanChess());
 		
-		insertSquares( new TamerlanChessBoardPanel(this) );
+		insertSquares( new TamerlanChessBoardPanel(this, game) );
 	}
 }
 
@@ -82,8 +83,8 @@ class TamerlanChessBoardPanel extends EuropeBoard {
 		blacks.put(Giraffe.class,    	TamerlanChessImages.imageGiraffeBlack);	
 	}
 
-	public TamerlanChessBoardPanel(Composite composite) {
-		super(composite, TamerlanChess.getInitBoard());
+	public TamerlanChessBoardPanel(Composite composite, Game game) {
+		super(composite, game.board);
 		
 		listener = new MovePieceListener(this);
 	}

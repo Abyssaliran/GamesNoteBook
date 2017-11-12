@@ -6,6 +6,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import game.core.Game;
+
 /**
  * Составная панель для настольной игры:
  * 	<ul><li>
@@ -19,12 +21,25 @@ import org.eclipse.swt.widgets.Composite;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class GamePanel extends Composite {
+	protected GameControlPanel control;
 	protected AdornedBoard adorned;
 	protected MovesJornal jornal;
+	
+	public Game game;
 
-	public GamePanel(Composite parent) {
+	public GamePanel(Composite parent, Game game) {
 		super(parent, SWT.TRANSPARENT);
-		setLayout( new GridLayout(2, false) );
+		this.game = game;
+		
+		setLayout( new GridLayout(3, false) );
+		
+		final GridData data;
+
+		data = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		data.widthHint  = 180;
+
+		control = new GameControlPanel(this, game);
+		control.setLayoutData(data);
 		
 		adorned = new AdornedBoard(this);
 		adorned.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));

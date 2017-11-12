@@ -6,7 +6,6 @@ import game.core.Game;
 import game.core.PieceColor;
 import game.players.IPlayer;
 import game.players.Neznaika;
-import tamerlan.TamerlanChess;
 
 /**
  * Класс представляющий игру шашки.
@@ -15,17 +14,16 @@ import tamerlan.TamerlanChess;
  */
 public class Checkers extends Game {
 	static {
-		addPlayer(TamerlanChess.class, IPlayer.HOMO_SAPIENCE);
-		addPlayer(TamerlanChess.class, new Neznaika());
+		addPlayer(Checkers.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(Checkers.class, new Neznaika());
 	}
 
 	/**
 	 * Расстановка фигур шашек в начальную позицию.
 	 * @return доска с расставленными фигурами.
 	 */
-	static 
-	public Board getInitBoard() {
-		Board board = new Board(8, 8);
+	public Checkers() {
+		super.initBoard(8, 8);
 		
 		setHorizontal(board, 0, PieceColor.BLACK);
 		setHorizontal(board, 1, PieceColor.BLACK);
@@ -37,8 +35,6 @@ public class Checkers extends Game {
 		
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Neznaika() );
-		
-		return board;
 	}
 
 	/**

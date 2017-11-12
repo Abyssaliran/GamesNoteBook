@@ -9,8 +9,6 @@ import game.core.IPieceProvider;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
-import game.players.IPlayer;
-import game.players.Vinni;
 import game.ui.AsiaBoard;
 import game.ui.GamePanel;
 import game.ui.listeners.PutPieceListener;
@@ -25,12 +23,11 @@ import go.ui.images.GoImages;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class  GoGamePanel extends GamePanel {
-	
 
 	public GoGamePanel(Composite parent, int boardSize) {
-		super(parent);
+		super(parent, new Go(boardSize));
 		
-		insertSquares( new GoBoardPanel(this, boardSize) );
+		insertSquares( new GoBoardPanel(this, game) );
 	}
 }
 /**
@@ -41,34 +38,28 @@ public class  GoGamePanel extends GamePanel {
 class GoBoardPanel extends AsiaBoard implements IPieceProvider {
 	private static final Color DARK_GREEN = new Color(null, 0, 100, 0);
 
-	public GoBoardPanel(Composite parent, int boardSize) {
-		super(parent, Go.getInitBoard(boardSize, boardSize));
-		
-		Game.addPlayer(Go.class, IPlayer.HOMO_SAPIENCE);
-		Game.addPlayer(Go.class, new Vinni(this));
+	public GoBoardPanel(Composite parent, Game game) {
+		super(parent, game.board);
 		
 		listener = new PutPieceListener(this);
 //		mouseMoveListener = new NoPromptListeneromptListener(this);
 		
-		// Слушатель мыши для выдачи подсказки для клеток - 
-		// можно ли ставить фигуру на клетку на доски.
-		 mouseMoveListener = new PutPiecePromptListener(this);
-		
-		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
-		board.setBlackPlayer( new Vinni(this) );
+		// Слушатель мыши выдающий подсказки для клеток - 
+		// можно ли ставить фигуру на клетку доски.
+		mouseMoveListener = new PutPiecePromptListener(this);
 		
 		setPromptColor(DARK_GREEN);
 	}
 
 	@Override
-	public Piece getPiece(Square square, PieceColor color) {
-		return new GoPiece(square, color);
-	}
-	
-	@Override
 	public Image getPieceImage(Piece piece, PieceColor color) {
 		return color == PieceColor.WHITE 
 				? GoImages.imageStoneWhite
 				: GoImages.imageStoneBlack;
+	}
+	
+	@Override
+	public Piece getPiece(Square square, PieceColor color) {
+		return new GoPiece(square, color);
 	}
 }

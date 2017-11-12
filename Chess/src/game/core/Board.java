@@ -182,6 +182,7 @@ public class Board extends Observable {
 	 */
 	public void setWhitePlayer(IPlayer player) {
 		players.put(PieceColor.WHITE, player);
+		setBoardChanged();
 	}
 
 	/**
@@ -193,6 +194,7 @@ public class Board extends Observable {
 	 */
 	public void setBlackPlayer(IPlayer player) {
 		players.put(PieceColor.BLACK, player);
+		setBoardChanged();
 	}
 
 	/**

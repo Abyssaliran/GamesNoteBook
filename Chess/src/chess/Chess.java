@@ -6,7 +6,6 @@ import chess.pieces.Knight;
 import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
-import game.core.Board;
 import game.core.Game;
 import game.core.PieceColor;
 import game.players.IPlayer;
@@ -28,8 +27,8 @@ public class Chess extends Game {
 	 * Расстановка шахматных фигур в начальную позицию.
 	 * @return доска с расставленными фигурами.
 	 */
-	static public Board getInitBoard() {
-		Board board = new Board(8, 8);
+	public Chess() {
+		super.initBoard(8, 8);
 		
 		// Расставляем пешки.
 		for (int v = 0; v < board.nV; v++) {
@@ -65,7 +64,5 @@ public class Chess extends Game {
 		
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Neznaika() );
-
-		return board;
 	}
 }

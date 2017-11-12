@@ -28,9 +28,39 @@ public class Halma extends Game {
 	 * Creates game board with proper sizes allowable for the Game.
 	 * @return Board with allocated figures
 	 */
-	private static Board initializeParticularBoard(short boardSize) {
-		Board board = new Board(boardSize, boardSize);
+	public Halma(int boardSize) {
+		super.initBoard(boardSize, boardSize);
+		initializeParticularBoard(boardSize);
 		
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+	}	
+	
+	/**
+	 * is used when wrong board size is passed on input
+	 * @param boardSize
+	 * @return  empty non-initialized board
+	 */
+	private static Board emptyBoard(int boardSize) {
+		
+		// TO DO:
+		// Throw an exception or say about wrong board sizes
+		
+		return new Board(boardSize, boardSize);	// null	
+	} 
+	
+	public Board getInitBoard(int boardSize) {
+		
+		// Initialize board of the proper format
+		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz) {
+			if (allowableBoardSize[ind_sz] == boardSize) {
+				return initializeParticularBoard(allowableBoardSize[ind_sz]);
+			}
+		}
+		return Halma.emptyBoard(boardSize);
+	}
+
+	public Board initializeParticularBoard(int boardSize) {
 		// Add Common Corner
 		for (short i = 0; i < 4; ++i) {
 			for (short j = 0; j < 4 - i; ++j) {
@@ -53,34 +83,7 @@ public class Halma extends Game {
 			}						
 		}
 		
-		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
-		board.setBlackPlayer( new Neznaika() );
-
 		return board;
-	}	
-	
-	/**
-	 * is used when wrong board size is passed on input
-	 * @param boardSize
-	 * @return  empty non-initialized board
-	 */
-	private static Board emptyBoard(int boardSize) {
-		
-		// TO DO:
-		// Throw an exception or say about wrong board sizes
-		
-		return new Board(boardSize, boardSize);	// null	
-	} 
-	
-	public static Board getInitBoard(int boardSize) {
-		
-		// Initialize board of the proper format
-		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz) {
-			if (allowableBoardSize[ind_sz] == boardSize) {
-				return Halma.initializeParticularBoard(allowableBoardSize[ind_sz]);
-			}
-		}
-		return Halma.emptyBoard(boardSize);
 	}
 }
 

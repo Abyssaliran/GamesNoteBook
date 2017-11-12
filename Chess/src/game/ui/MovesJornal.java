@@ -141,25 +141,17 @@ public class MovesJornal extends Composite implements Observer {
 		// 
 		// Панель для показа игроков партии и авторов программ.
 		//
-		String white = board.getWhitePlayer().getName();
-		String black = board.getBlackPlayer().getName();
-		String title = String.format("%s - %s", white, black);
-
-		String aWhite = board.getWhitePlayer().getAuthorName();
-		String aBlack = board.getBlackPlayer().getAuthorName();
-		String aTitle = String.format("%s против %s", aWhite, aBlack);
-
 		data = new GridData(SWT.FILL, SWT.TOP, false, false);
 		data.widthHint  = 260;
-		data.heightHint =  30;
+		data.heightHint =  25;
 
 		headerPanel = new Label(this, SWT.CENTER | SWT.BORDER);
-		headerPanel.setText(title);
-		headerPanel.setToolTipText(aTitle);
 		headerPanel.setBackground(HEADER_COLOR);
 		headerPanel.setForeground(BLACK_COLOR);
 		headerPanel.setFont(font);
 		headerPanel.setLayoutData(data);
+		
+		setHeaderText(board);
 		
 		// 
 		// Панель для показа ходов в партии.
@@ -175,6 +167,8 @@ public class MovesJornal extends Composite implements Observer {
 		// Панель для выдачи результата игры.
 		//
 		data = new GridData(SWT.FILL, SWT.BOTTOM, false, false);
+		data.widthHint  = 260;
+		data.heightHint =  25;
 		
 		resultPanel = new Label(this, SWT.CENTER | SWT.BORDER);
 		resultPanel.setFont(font);
@@ -188,6 +182,19 @@ public class MovesJornal extends Composite implements Observer {
 		// панель ходов уведомят, что нужно перерисовать историю партии
 		// (список ходов партии). 
 		board.addObserver(this);
+	}
+
+	private void setHeaderText(Board board) {
+		String white = board.getWhitePlayer().getName();
+		String black = board.getBlackPlayer().getName();
+		String title = String.format("%s - %s", white, black);
+		
+		String aWhite = board.getWhitePlayer().getAuthorName();
+		String aBlack = board.getBlackPlayer().getAuthorName();
+		String aTitle = String.format("%s против %s", aWhite, aBlack);
+		
+		headerPanel.setText(title);
+		headerPanel.setToolTipText(aTitle);
 	}
 
 	@Override
@@ -211,6 +218,7 @@ public class MovesJornal extends Composite implements Observer {
 			control.setBackground(color);
 		}
 		resultPanel.setText("" + history.getResult());
+		setHeaderText( history.getBoard() );
 
 		movesPanel.pack(true);
 	}

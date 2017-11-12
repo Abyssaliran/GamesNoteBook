@@ -37,6 +37,8 @@ public class Game {
 		
 		players.add(player);
 	}
+
+	public Board board;
 	
 	/**
 	 * Получить список всех игрокода для заданной игры.
@@ -45,5 +47,9 @@ public class Game {
 	 */
 	public List<IPlayer> getPlayers(Class<? extends Game> game) {
 		return allPlayers.get(game);
+	}
+
+	public void initBoard(int nV, int nH) {
+		board = new Board(nV, nH);
 	}
 }

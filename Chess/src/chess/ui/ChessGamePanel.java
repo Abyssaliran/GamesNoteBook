@@ -17,6 +17,7 @@ import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
 import chess.ui.images.ChessImages;
+import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
@@ -31,9 +32,9 @@ import game.ui.listeners.MovePieceListener;
 public class ChessGamePanel extends GamePanel {
 
 	public ChessGamePanel(Composite parent) {
-		super(parent);
+		super(parent, new Chess());
 		
-		insertSquares( new ChessBoardPanel(this) );
+		insertSquares( new ChessBoardPanel(this, game) );
 	}
 }
 
@@ -75,8 +76,8 @@ class ChessBoardPanel extends EuropeBoard {
 		blacks.put(King.class,   ChessImages.imageKingBlack);
 	}
 
-	public ChessBoardPanel(Composite composite) {
-		super(composite, Chess.getInitBoard());
+	public ChessBoardPanel(Composite composite, Game game) {
+		super(composite, game.board);
 		
 		listener = new MovePieceListener(this);
 	}

@@ -29,16 +29,14 @@ public class TamerlanChess extends Game {
 		addPlayer(TamerlanChess.class, new Neznaika());
 	}
 
-	public static Board getInitBoard() {
-		Board board = new Board(10, 10);
+	public TamerlanChess() {
+		super.initBoard(10, 10);
 		
 		putPieces(board, PieceColor.BLACK);
 		putPieces(board, PieceColor.WHITE);
 
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Neznaika() );
-
-		return board;
 	}
 
 	private static void putPieces(Board board, PieceColor color) {

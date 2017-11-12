@@ -9,13 +9,10 @@ import game.core.IPieceProvider;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
-import game.players.IPlayer;
-import game.players.Vinni;
 import game.ui.GamePanel;
 import game.ui.GreenBoard;
 import game.ui.listeners.PutPieceListener;
 import game.ui.listeners.PutPiecePromptListener;
-import go.Go;
 import reversi.Reversi;
 import reversi.pieces.Stone;
 import reversi.ui.images.ReversiImages;
@@ -32,10 +29,10 @@ public class ReversiGamePanel extends GamePanel {
 	private static final Color GREEN = new Color(null, 0, 192, 0);
 
 	public ReversiGamePanel(Composite composite, int nHoles) {
-		super(composite);
+		super(composite, new Reversi(nHoles));
 		setBackground(GREEN);
 		
-		ReversiBoardPanel gameBoard = new ReversiBoardPanel(this, nHoles);
+		ReversiBoardPanel gameBoard = new ReversiBoardPanel(this, game, nHoles);
 		insertSquares( gameBoard );
 
 		new ScorePanel(this, gameBoard.board);
@@ -54,24 +51,19 @@ public class ReversiGamePanel extends GamePanel {
 		 * 
 		 * @param composite
 		 *            - составной элемент содержащий доску.
+		 * @param game 
 		 * @param nHoles
 		 *            - количество случайно расположенных отверстий в доске.
 		 */
-		public ReversiBoardPanel(Composite composite, int nHoles) {
-			super(composite, Reversi.getInitBoard(nHoles));
+		public ReversiBoardPanel(Composite composite, Game game, int nHoles) {
+			super(composite, game.board);
 
 			// Слушатель мыши для постановки новой фигуры на доску.
 			listener = new PutPieceListener(this);
 
-			// Слушатель мыши для выдачи подсказки - можно ли ставить фигуру
-			// клетку на доски.
+			// Слушатель мыши для отрисовки подсказки на доске - 
+			// можно ли ставить фигуру на клетку на доски.
 			mouseMoveListener = new PutPiecePromptListener(this);
-			
-			board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
-			board.setBlackPlayer( new Vinni(this) );
-			
-			Game.addPlayer(Go.class, IPlayer.HOMO_SAPIENCE);
-			Game.addPlayer(Go.class, new Vinni(this));
 		}
 
 		@Override

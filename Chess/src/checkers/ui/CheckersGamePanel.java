@@ -10,6 +10,7 @@ import checkers.Checkers;
 import checkers.pieces.King;
 import checkers.pieces.Man;
 import checkers.ui.images.CheckersImages;
+import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
@@ -24,9 +25,9 @@ import game.ui.listeners.MovePieceListener;
 public class CheckersGamePanel extends GamePanel {
 
 	public CheckersGamePanel(Composite parent) {
-		super(parent);
+		super(parent, new Checkers());
 		
-		insertSquares( new CheckersBoardPanel(this) );
+		insertSquares( new CheckersBoardPanel(this, game) );
 	}
 }
 /**
@@ -59,8 +60,8 @@ class CheckersBoardPanel extends EuropeBoard {
 		blacks.put(King.class, CheckersImages.imageKingBlack);
 	}
 
-	public CheckersBoardPanel(Composite composite) {
-		super(composite, Checkers.getInitBoard());
+	public CheckersBoardPanel(Composite composite, Game game) {
+		super(composite, game.board);
 		
 		listener = new MovePieceListener(this);
 	}

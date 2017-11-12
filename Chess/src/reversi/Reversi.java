@@ -1,8 +1,12 @@
 package reversi;
 
-import game.core.Board;
 import game.core.Game;
+import game.core.IPieceProvider;
+import game.core.Piece;
 import game.core.PieceColor;
+import game.core.Square;
+import game.players.IPlayer;
+import game.players.Vinni;
 import reversi.pieces.Hole;
 import reversi.pieces.Stone;
 
@@ -13,14 +17,26 @@ import reversi.pieces.Stone;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Reversi extends Game {
+	private static IPieceProvider pieceProvider = new IPieceProvider() {
+		@Override
+		public Piece getPiece(Square square, PieceColor color) {
+			return new Stone(square, color);
+		}
+	};
+	
+	static {
+		Game.addPlayer(Reversi.class, IPlayer.HOMO_SAPIENCE);
+		Game.addPlayer(Reversi.class, new Vinni(pieceProvider));
+	}
+	
 	/**
 	 * Вернуть инициализированную доску для игры в реверси.
 	 * 
 	 * @param nHoles - количество случайно расположенных отверстий.
 	 * @return доска с расставленными отверстиями (если они нужны).
 	 */
-	public static Board getInitBoard(int nHoles) {
-		Board board = new Board(8, 8);
+	public Reversi(int nHoles) {
+		super.initBoard(8, 8);
 		
 		new Stone( board.getSquare(3, 3), PieceColor.BLACK);
 		new Stone( board.getSquare(4, 4), PieceColor.BLACK);
@@ -28,13 +44,15 @@ public class Reversi extends Game {
 		new Stone( board.getSquare(3, 4), PieceColor.WHITE);
 		new Stone( board.getSquare(4, 3), PieceColor.WHITE);
 		
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Vinni(pieceProvider) );
+		
 		if (nHoles != 0) {
 			int randomV = (int) (8 * Math.random());
 			int randomH = (int) (8 * Math.random());
 			
-			new Hole( board.getSquare(randomV, randomH), PieceColor.BLACK);
+			Square randomSquare = board.getSquare(randomV, randomH);
+			new Hole(randomSquare, PieceColor.BLACK);
 		}
-		
-		return board;
 	}
 }
