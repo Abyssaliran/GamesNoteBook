@@ -1,6 +1,10 @@
 package tamerlan.move;
 
+import chinachess.pieces.King;
+import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Piece;
+import game.core.PieceColor;
 import game.core.Square;
 
 /**
@@ -21,9 +25,20 @@ public class Capture extends SimpleMove {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		capturedPiece.remove();
 		super.doMove();
+		
+		if (capturedPiece instanceof King) {
+			PieceColor kingColor = capturedPiece.getColor();
+			
+			GameResult result = (
+				kingColor == PieceColor.WHITE
+					? GameResult.BLACK_WIN 
+					: GameResult.WHITE_WIN);
+			
+			throw new GameOver(result);
+		}
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package tamerlan.move;
 
+import game.core.GameOver;
 import game.core.Piece;
 import game.core.Square;
 import game.core.moves.ITransferMove;
@@ -44,7 +45,7 @@ public class SimpleMove implements ITransferMove {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		piece.moveTo(target);
 	}
 
