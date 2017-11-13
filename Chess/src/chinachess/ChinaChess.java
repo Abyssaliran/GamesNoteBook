@@ -7,6 +7,7 @@ import chinachess.pieces.King;
 import chinachess.pieces.Knight;
 import chinachess.pieces.Pawn;
 import chinachess.pieces.Rook;
+import chinachess.players.Confucious;
 import chinachess.players.SunTzu;
 import game.core.Board;
 import game.core.Game;
@@ -27,6 +28,7 @@ public class ChinaChess extends Game {
 		addPlayer(ChinaChess.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(ChinaChess.class, new Neznaika());
 		addPlayer(ChinaChess.class, new SunTzu());
+		addPlayer(ChinaChess.class, new Confucious());
 	}
 
 	public ChinaChess() {
