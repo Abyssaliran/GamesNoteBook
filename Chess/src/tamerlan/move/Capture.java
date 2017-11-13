@@ -1,11 +1,11 @@
 package tamerlan.move;
 
-import chinachess.pieces.King;
 import game.core.GameOver;
 import game.core.GameResult;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import tamerlan.pieces.King;
 
 /**
  * Ход шахмат Тамерлана - перемещение фигуры на клетку 
