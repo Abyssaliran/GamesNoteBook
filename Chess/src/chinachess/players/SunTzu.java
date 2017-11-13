@@ -45,6 +45,7 @@ public class SunTzu extends MovePiecePlayer {
 			return;
 
 		// Пока делает случайный ход.
+		// TODO Дмитрив. Приоритет - делать ход с захватом вражеской фигуры.
 		Move randomMove = getRandomMove(correctMoves);
 		
 		try { randomMove.doMove(); } 
