@@ -18,7 +18,7 @@ import game.core.PieceColor;
 public class Vinni extends PutPiecePlayer {
 	@Override
 	public String getName() {
-		return "Vinni";
+		return "Винни";
 	}
 
 	@Override

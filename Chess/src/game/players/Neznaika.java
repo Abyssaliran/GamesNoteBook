@@ -17,7 +17,7 @@ import game.core.PieceColor;
 public class Neznaika extends MovePiecePlayer {
 	@Override
 	public String getName() {
-		return "Neznaika";
+		return "Незнайка";
 	}
 
 	@Override
