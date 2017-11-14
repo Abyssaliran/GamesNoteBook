@@ -47,6 +47,8 @@ public class SunTzu extends MovePiecePlayer {
 		// Пока делает случайный ход.
 		// TODO Дмитрив. Приоритет - делать ход с захватом вражеской фигуры.
 		Move randomMove = getRandomMove(correctMoves);
+		//Условие: если в зоне хода есть фигура другого цвета -> сделать этот ход
+		// если нет, то рандомный ход в направлении вражеского короля.
 		
 		try { randomMove.doMove(); } 
 		catch (GameOver e) {
