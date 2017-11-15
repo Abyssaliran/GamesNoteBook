@@ -1,16 +1,41 @@
 package go;
 
-import game.core.Board;
+import game.core.Game;
+import game.core.IPieceProvider;
+import game.core.Piece;
+import game.core.PieceColor;
+import game.core.Square;
+import game.players.IPlayer;
+import game.players.Vinni;
+import go.pieces.GoPiece;
 
 /**
  * Игра <a href="https://ru.wikipedia.org/wiki/%D0%93%D0%BE">Го</a>
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Go {
-	public static Board getInitBoard(int v, int h) {
-		Board board = new Board(v, h);
+public class Go extends Game {
+	private static IPieceProvider pieceProvider = new IPieceProvider() {
+		@Override
+		public Piece getPiece(Square square, PieceColor color) {
+			return new GoPiece(square, color);
+		}
+	};
+	
+	static {
+		Game.addPlayer(Go.class, IPlayer.HOMO_SAPIENCE);
+		Game.addPlayer(Go.class, new Vinni(pieceProvider) );
+	}
+	
+	public Go(int boardSize) {
+		super.initBoard(boardSize, boardSize);
 
-		return board;
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Vinni(pieceProvider) );
+	}
+
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(10, 10);	
 	}
 }

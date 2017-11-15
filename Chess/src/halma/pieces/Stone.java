@@ -22,6 +22,21 @@ public class Stone extends Piece {
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
+		Square source = square;
+		Square target = squares[0];
+		
+		int dv = Math.abs(target.v - source.v);
+		int dh = Math.abs(target.h - source.h);
+		
+		if (!target.isEmpty())
+			return false; // На занятую клетку не ходим.
+		
+		if (dv > 0 && dh > 0)
+			return false; // Ход не по горизонтали или вертикали.
+		
+		if (dv > 1 || dh > 1)
+			return false; // Пока прыжки не делаем.
+		
 		return true;
 	}
 

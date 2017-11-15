@@ -1,6 +1,6 @@
 package tamerlan.pieces;
 
-import chess.moves.SimpleMove;
+import chinachess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -23,46 +23,34 @@ public class Pawn extends TamerlanPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		// TODO Утаев - проверить правильность хода пешкой.
-		
-		//Пешка не может делать первый ход на два поля. 
-		//Соответственно, отсутствует и взятие на проходе
+		Square source = square;
 		Square target = squares[0];
-		if (Math.abs(target.h - square.h) > 1) 
-			return false;
-	 
-		//Пешка не может делать ход по диагонали,если это не захват
-		if (square.h != target.h && square.v != target.v && target.isEmpty()) 
-			return false;
-		 
-		//Пешка не может делать ход на занятую клетку впереди
-		if (square.v == target.v && !target.isEmpty()) 
-			return false;
-		 
-		//Пешка не может делать ход по текущей горизонтали
-		if (target.h == square.h) 
-			return false;
-		 
-		//Пешка не может делать ход назад (правило для белой фигуры)
-		if (getColor() == PieceColor.WHITE && target.h > square.h)  
-			return false;
-		 
-		//Пешка не может делать ход назад (правило для черной фигуры)
-		if (getColor() == PieceColor.BLACK && target.h < square.h)  
-			return false;
 		
-		return true;
+		// Вычислим смещение фигуры.
+		int dv = Math.abs(target.v - source.v);
+		int dh = getColor() == PieceColor.BLACK 
+				? target.h - source.h  // Черная фигура идет вниз.
+				: source.h - target.h; // Белая фигура идет вверх.
+		
+		// Пошли по диагонали на 1 клетку не пустую.
+		if ((dv == 1) && (dh == 1) && !target.isEmpty())
+			return true;
+		
+		// Пошли вперед на 1 клетку пустую.
+		return (dv == 0) && (dh == 1) && target.isEmpty();
 	}
 
 	@Override
 	public Move makeMove(Square... squares) {
-		// TODO Утаев - если это захват фигуры противника,
-		// то вернуть ход-захват фигуры new Capture();
-		
 		Square target = squares[1];
 		
 		if (!target.isEmpty())
 			 return new Capture(squares);
 		else return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "";
 	}
 }

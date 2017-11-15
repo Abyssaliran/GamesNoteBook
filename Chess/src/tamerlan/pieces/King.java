@@ -1,6 +1,7 @@
 package tamerlan.pieces;
 
-import chess.moves.SimpleMove;
+import chinachess.moves.Capture;
+import chinachess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -22,16 +23,23 @@ public class King extends TamerlanPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		// TODO Утаев - проверить правильность хода королем.
-		
-		return true;
+		Square target = squares[0];
+	
+		return square.isNear(target);
 	}
 	
 	@Override
 	public Move makeMove(Square... squares) {
-		// TODO Утаев - если это захват фигуры противника,
-		// то вернуть ход-захват фигуры new Capture();
+		Square target = squares[1];
+		
+		if (!target.isEmpty())
+			return new Capture(squares);
 		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "K";
 	}
 }

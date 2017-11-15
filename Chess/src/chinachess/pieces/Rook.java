@@ -3,8 +3,8 @@
  */
 package chinachess.pieces;
 
-import chess.moves.Capture;
-import chess.moves.SimpleMove;
+import chinachess.moves.Capture;
+import chinachess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -32,7 +32,17 @@ public class Rook extends ChinaChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		Square rook = square;
+		Square target = squares[0];
+	
+		// По пустым вертикалям и горизонталям ходит как ладья.
+		if (rook.isEmptyHorizontal(target))
+			return true;
+			
+		if (rook.isEmptyVertical(target))
+			return true;
+		
+		return false;
 	}
 
 	@Override
@@ -43,5 +53,10 @@ public class Rook extends ChinaChessPiece {
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "R";
 	}
 }

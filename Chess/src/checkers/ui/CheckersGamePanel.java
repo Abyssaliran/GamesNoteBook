@@ -10,17 +10,32 @@ import checkers.Checkers;
 import checkers.pieces.King;
 import checkers.pieces.Man;
 import checkers.ui.images.CheckersImages;
+import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
+import game.ui.GamePanel;
 import game.ui.listeners.MovePieceListener;
 
+/**
+ * Панель для игры в шашки.
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ */
+public class CheckersGamePanel extends GamePanel {
+
+	public CheckersGamePanel(Composite parent) {
+		super(parent, new Checkers());
+		
+		insertSquares( new CheckersBoardPanel(this, game) );
+	}
+}
 /**
  * Доска для игры в шашки.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class CheckersBoardPanel extends EuropeBoard {
+class CheckersBoardPanel extends EuropeBoard {
 	private static Map<Class<? extends Piece>, Image> whites;
 	private static Map<Class<? extends Piece>, Image> blacks;
 	
@@ -45,22 +60,14 @@ public class CheckersBoardPanel extends EuropeBoard {
 		blacks.put(King.class, CheckersImages.imageKingBlack);
 	}
 
-	public CheckersBoardPanel(Composite composite) {
-		super(composite, Checkers.getInitBoard());
+	public CheckersBoardPanel(Composite composite, Game game) {
+		super(composite, game.board);
 		
-		listener = new MovePieceListener(this) {
-			@Override
-			public Image getPieceImage(Piece piece, PieceColor color) {
-				return CheckersBoardPanel.this.getPieceImage(piece, color);
-			}
-		};
+		listener = new MovePieceListener(this);
 	}
 
-	public Image getPieceImage(Piece piece) {
-		return getPieceImage(piece, piece.getColor());
-	}
-
-	private Image getPieceImage(Piece piece, PieceColor color) {
+	@Override
+	public Image getPieceImage(Piece piece, PieceColor color) {
 		return pieceImages
 				.get(color)
 				.get( piece.getClass() );

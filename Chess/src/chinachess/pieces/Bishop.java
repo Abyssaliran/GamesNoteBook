@@ -3,8 +3,8 @@
  */
 package chinachess.pieces;
 
-import chess.moves.Capture;
-import chess.moves.SimpleMove;
+import chinachess.moves.Capture;
+import chinachess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -28,7 +28,24 @@ public class Bishop extends ChinaChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		Square target = squares[0];
+		
+		int dh = Math.abs(target.h - square.h);
+		int dv = Math.abs(target.v - square.v);
+		
+		if (dh != dv)
+			return false; // Это не диагональ.
+		
+		// Слон не может пойти на вражескую территорию.
+		if (isEnemyPart(getColor(), target))
+			return false;
+		
+		//Если dv должно быть равно dh, 
+		//то справедливо что любое из них не должно быть больше 2
+		if (dh > 2)
+			return false;
 		// TODO Дмитрив - сделать проверку правильности хода фигурой.
+		// Проверить что слон ходит только на две клетки.
 		
 		return true;
 	}
@@ -41,5 +58,10 @@ public class Bishop extends ChinaChessPiece {
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "E";
 	}
 }

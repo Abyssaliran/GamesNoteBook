@@ -1,7 +1,10 @@
 package halma;
 
 import game.core.Board;
+import game.core.Game;
 import game.core.PieceColor;
+import game.players.IPlayer;
+import game.players.Neznaika;
 import halma.pieces.Stone;
 
 /**
@@ -11,8 +14,13 @@ import halma.pieces.Stone;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Halma {
-
+public class Halma extends Game {
+	
+	static {
+		addPlayer(Halma.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(Halma.class, new Neznaika());
+	}
+	
 	private static final short   allowableBoardSizeNumb = 3;
 	private static final short[] allowableBoardSize = {8, 10, 16};
 	
@@ -20,9 +28,26 @@ public class Halma {
 	 * Creates game board with proper sizes allowable for the Game.
 	 * @return Board with allocated figures
 	 */
-	private static Board initializeParticularBoard(short boardSize) {
-		Board board = new Board(boardSize, boardSize);
+	public Halma(int boardSize) {
+		super.initBoard(boardSize, boardSize);
+		initializeParticularBoard(boardSize);
+
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+	}	
+	
+	public Board getInitBoard(int boardSize) {
 		
+		// Initialize board of the proper format
+		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz) {
+			if (allowableBoardSize[ind_sz] == boardSize) {
+				return initializeParticularBoard(allowableBoardSize[ind_sz]);
+			}
+		}
+		return null;
+	}
+
+	public Board initializeParticularBoard(int boardSize) {
 		// Add Common Corner
 		for (short i = 0; i < 4; ++i) {
 			for (short j = 0; j < 4 - i; ++j) {
@@ -44,31 +69,14 @@ public class Halma {
 				new Stone( board.getSquare(boardSize - i - 2, boardSize - 5 + i), PieceColor.BLACK);				
 			}						
 		}
+		
 		return board;
-	}	
-	
-	/**
-	 * is used when wrong board size is passed on input
-	 * @param boardSize
-	 * @return  empty non-initialized board
-	 */
-	private static Board emptyBoard(int boardSize) {
-		
-		// TO DO:
-		// Throw an exception or say about wrong board sizes
-		
-		return new Board(boardSize, boardSize);	// null	
-	} 
-	
-	public static Board getInitBoard(int boardSize) {
-		
-		// Initialize board of the proper format
-		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz) {
-			if (allowableBoardSize[ind_sz] == boardSize) {
-				return Halma.initializeParticularBoard(allowableBoardSize[ind_sz]);
-			}
-		}
-		return Halma.emptyBoard(boardSize);
+	}
+
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(10, 10);
+		initializeParticularBoard(10);
 	}
 }
 

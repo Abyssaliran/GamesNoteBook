@@ -1,5 +1,10 @@
 package tamerlan;
 
+import game.core.Board;
+import game.core.Game;
+import game.core.PieceColor;
+import game.players.IPlayer;
+import game.players.Neznaika;
 import tamerlan.pieces.Bishop;
 import tamerlan.pieces.Giraffe;
 import tamerlan.pieces.King;
@@ -7,8 +12,6 @@ import tamerlan.pieces.Knight;
 import tamerlan.pieces.Pawn;
 import tamerlan.pieces.Queen;
 import tamerlan.pieces.Rook;
-import game.core.Board;
-import game.core.PieceColor;
 import tamerlan.pieces.Vizir;
 import tamerlan.pieces.WarMachine;
 
@@ -19,63 +22,69 @@ import tamerlan.pieces.WarMachine;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class TamerlanChess {
+public class TamerlanChess extends Game {
+	
+	static {
+		addPlayer(TamerlanChess.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(TamerlanChess.class, new Neznaika());
+	}
+	
+	public TamerlanChess() {
+		super.initBoard(10, 10);
+		
+		putPieces(board, PieceColor.BLACK);
+		putPieces(board, PieceColor.WHITE);
 
-	public static Board getInitBoard() {
-		Board board = new Board(10, 14);
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+	}
+
+	private static void putPieces(Board board, PieceColor color) {
+		int rookH = (color == PieceColor.BLACK ? 0 : board.nH-1);
+		int pawnH = (color == PieceColor.BLACK ? 1 : board.nH-2);
+		int dh    = (color == PieceColor.BLACK ? 1 : -1);
 		
 		// Расставляем пешки.
 		for (int v = 0; v < board.nV; v++) {
-			if (v != 4 && v != 5) {
-				new Pawn(board.getSquare(v, 3), PieceColor.BLACK);
-				new Pawn(board.getSquare(v, 10), PieceColor.WHITE);
-			}
-			else {
-				new Pawn(board.getSquare(v, 4), PieceColor.BLACK);
-				new Pawn(board.getSquare(v, 9), PieceColor.WHITE);
-			}
+			int ph = ((v != 4 && v != 5)) ? pawnH : pawnH + dh;
+			
+			new Pawn(board.getSquare(v, ph), color);
 		}
 
 		// Расставляем ладьи.
-		new Rook(board.getSquare(0, 2), PieceColor.BLACK);
-		new Rook(board.getSquare(9, 2), PieceColor.BLACK);
-		new Rook(board.getSquare(0, 11), PieceColor.WHITE);
-		new Rook(board.getSquare(9, 11), PieceColor.WHITE);
+		new Rook(board.getSquare(0, rookH), color);
+		new Rook(board.getSquare(9, rookH), color);
 
 		// Расставляем коней.
-		new Knight(board.getSquare(1, 2), PieceColor.BLACK);
-		new Knight(board.getSquare(8, 2), PieceColor.BLACK);
-		new Knight(board.getSquare(1, 11), PieceColor.WHITE);
-		new Knight(board.getSquare(8, 11), PieceColor.WHITE);
+		new Knight(board.getSquare(1, rookH), color);
+		new Knight(board.getSquare(8, rookH), color);
 
 		// Расставляем слонов.
-		new Bishop(board.getSquare(2, 2), PieceColor.BLACK);
-		new Bishop(board.getSquare(7, 2), PieceColor.BLACK);
-		new Bishop(board.getSquare(2, 11), PieceColor.WHITE);
-		new Bishop(board.getSquare(7, 11), PieceColor.WHITE);
+		new Bishop(board.getSquare(2, rookH), color);
+		new Bishop(board.getSquare(7, rookH), color);
 
 		// Расставляем ферзей.
-		new Queen(board.getSquare(3, 2), PieceColor.BLACK);
-		new Queen(board.getSquare(6, 11), PieceColor.WHITE);
+		new Queen(board.getSquare(3, rookH), color);
 
 		// Расставляем королей.
-		new King(board.getSquare(4, 2), PieceColor.BLACK);
-		new King(board.getSquare(5, 11), PieceColor.WHITE);
+		new King(board.getSquare(4, rookH), color);
 		
 		// Расставляем жирафов.
-		new Giraffe(board.getSquare(5, 2), PieceColor.BLACK);
-		new Giraffe(board.getSquare(4, 11), PieceColor.WHITE);
+		new Giraffe(board.getSquare(5, rookH), color);
 		
 		// Расставляем визирей.
-		new Vizir(board.getSquare(6, 2), PieceColor.BLACK);
-		new Vizir(board.getSquare(3, 11), PieceColor.WHITE);
+		new Vizir(board.getSquare(6, rookH), color);
 
-		// Расставляем визирей.
-		new WarMachine(board.getSquare(4, 3), PieceColor.BLACK);
-		new WarMachine(board.getSquare(5, 3), PieceColor.BLACK);
-		new WarMachine(board.getSquare(4, 10), PieceColor.WHITE);
-		new WarMachine(board.getSquare(5, 10), PieceColor.WHITE);
+		// Расставляем машины.
+		new WarMachine(board.getSquare(4, pawnH), color);
+		new WarMachine(board.getSquare(5, pawnH), color);
+	}
 
-		return board;
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(10, 10);
+		
+		putPieces(board, PieceColor.BLACK);
+		putPieces(board, PieceColor.WHITE);
 	}
 }

@@ -1,7 +1,10 @@
 package chinachess.pieces;
 
-import chess.moves.Capture;
-import chess.moves.SimpleMove;
+import java.util.Optional;
+
+import chinachess.moves.Capture;
+import chinachess.moves.SimpleMove;
+import game.core.Board;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -25,7 +28,51 @@ public class King extends ChinaChessPiece{
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		Square source = square;
+		Square target = squares[0];
+		
+		// Особый случай - ход вне крепости.
+		// Король может захватить вражеского короля,
+		// если между ними пустая вертикаль.
+		Board board = target.getBoard();
+		PieceColor color = getColor();
+		PieceColor oponentColor = Board.getOponentColor(color);
+		
+		Optional<King> opponentKingOpt = 
+			board.getPieces(oponentColor)
+			.stream()
+			.filter(piece -> piece.getClass() == King.class)
+			.map(piece -> (King) piece)
+			.findAny();
+		
+		if (opponentKingOpt.isPresent()) {
+			King opponentKing = opponentKingOpt.get();
+			Square opponentSquare = opponentKing.square;
+			
+			// Пытаемся ли захватить?
+			boolean isAttempt = (target == opponentSquare);
+			
+			// Возможно ли захватить?
+			boolean isPossible = source.isEmptyVertical(opponentSquare);
+			
+			if (isAttempt && isPossible)
+				return true; // Это захват короля противника.
+		}
+		
+		// Другие ходы вне крепости для короля запрещены.
+		if (!inCastle(color, target))
+			return false;
+		
+		int dv = Math.abs(target.v - source.v);
+		int dh = Math.abs(target.h - source.h);
+				
+		// Допустимы только ходы на одну клетку
+		// по вертикали и горизонтали.
+		if (((dh == 1) && (dv == 0)) ||
+            ((dh == 0) && (dv == 1)) )
+			return true;
+		
+		return false;
 	}
 
 	@Override
@@ -36,5 +83,10 @@ public class King extends ChinaChessPiece{
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "K";
 	}
 }

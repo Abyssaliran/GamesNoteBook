@@ -6,21 +6,37 @@ import chess.pieces.Knight;
 import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
-import game.core.Board;
+import game.core.Game;
 import game.core.PieceColor;
+import game.players.IPlayer;
+import game.players.Neznaika;
 
 /**
  * Класс представляющий игру шахматы.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Chess {
+public class Chess extends Game {
+	
+	static {
+		addPlayer(Chess.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(Chess.class, new Neznaika());
+	}
+
 	/**
 	 * Расстановка шахматных фигур в начальную позицию.
 	 * @return доска с расставленными фигурами.
 	 */
-	static public Board getInitBoard() {
-		Board board = new Board(8, 8);
+	public Chess() {
+		initBoardDefault();
+		
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+	}
+
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(8, 8);
 		
 		// Расставляем пешки.
 		for (int v = 0; v < board.nV; v++) {
@@ -53,7 +69,5 @@ public class Chess {
 		// Расставляем королей.
 		new King(board.getSquare(4, 0), PieceColor.BLACK);
 		new King(board.getSquare(4, 7), PieceColor.WHITE);
-
-		return board;
 	}
 }

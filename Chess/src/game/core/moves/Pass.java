@@ -1,4 +1,6 @@
-package game.core;
+package game.core.moves;
+
+import game.core.Move;
 
 /**
  * Простейший ход.

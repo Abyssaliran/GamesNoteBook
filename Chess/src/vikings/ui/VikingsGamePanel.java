@@ -5,8 +5,10 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
+import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
+import game.ui.GamePanel;
 import game.ui.GreenBoard;
 import game.ui.listeners.MovePieceListener;
 import vikings.Vikings;
@@ -15,31 +17,36 @@ import vikings.pieces.Сyning;
 import vikings.ui.images.VikingImages;
 
 /**
+ * Панель для игры в Викинги.
+ * 
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ */
+public class VikingsGamePanel extends GamePanel {
+
+	public VikingsGamePanel(Composite parent, int boardSize) {
+		super(parent, new Vikings(boardSize));
+		
+		insertSquares( new VikingsBoardPanel(this, game) );
+	}
+}
+
+/**
  * Доска для игры 
  * <a href="https://ru.wikipedia.org/wiki/%D0%A5%D0%BD%D0%B5%D1%84%D0%B0%D1%82%D0%B0%D1%84%D0%BB">Викинги (Хнефатафл, Тавлеи) </a>.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class VikingsBoardPanel extends GreenBoard {
+class VikingsBoardPanel extends GreenBoard {
 	private static final Color COLOR = new Color(null, 0,   255, 0);
 
-	public VikingsBoardPanel(Composite parent, int boardSize) {
-		super(parent, Vikings.getInitBoard(boardSize));
+	public VikingsBoardPanel(Composite parent, Game game) {
+		super(parent, game.board);
 		
-		listener = new MovePieceListener(this) {
-			@Override
-			public Image getPieceImage(Piece piece, PieceColor color) {
-				return VikingsBoardPanel.this.getPieceImage(piece, color);
-			}
-		};
+		listener = new MovePieceListener(this);
 	}
 
 	@Override
-	public Image getPieceImage(Piece piece) {
-		return getPieceImage(piece, piece.getColor());
-	}
-
-	private Image getPieceImage(Piece piece, PieceColor color) {
+	public Image getPieceImage(Piece piece, PieceColor color) {
 		if (piece instanceof Viking)
 			return color == PieceColor.WHITE 
 				? VikingImages.imageVikingWhite

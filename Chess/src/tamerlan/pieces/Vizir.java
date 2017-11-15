@@ -1,6 +1,7 @@
 package tamerlan.pieces;
 
-import chess.moves.SimpleMove;
+import chinachess.moves.Capture;
+import chinachess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -25,11 +26,25 @@ public class Vizir extends TamerlanPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		
+		Square target = squares[0];
+		
+		return IKnightFigure.isCorrectMove(square, target) ||
+		       IDiagonalFigure.isCorrectMove(square, target);
 	}
 	
 	@Override
 	public Move makeMove(Square... squares) {
+		Square target = squares[1];
+		
+		if (!target.isEmpty())
+			return new Capture(squares);
+		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "V";
 	}
 }

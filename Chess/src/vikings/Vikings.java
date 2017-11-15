@@ -1,9 +1,12 @@
 package vikings;
 
 import game.core.Board;
+import game.core.Game;
 import game.core.LineDirs;
 import game.core.PieceColor;
 import game.core.Square;
+import game.players.IPlayer;
+import game.players.Neznaika;
 import vikings.pieces.Viking;
 import vikings.pieces.Сyning;
 
@@ -13,7 +16,13 @@ import vikings.pieces.Сyning;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Vikings {
+public class Vikings extends Game {
+	
+	static {
+		addPlayer(Vikings.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(Vikings.class, new Neznaika());
+	}
+	
 	/**
 	 * Создание доски заданного размера
 	 * и расстановка фигур для этого размера доски.
@@ -21,13 +30,16 @@ public class Vikings {
 	 * @param boardSize - размер доски.
 	 * @return доска с расставленными фигурами.
 	 */
-	public static Board getInitBoard(int boardSize) {
+	public Vikings(int boardSize) {
+		super.initBoard(boardSize, boardSize);
+		
 		switch (boardSize) {
-			case  9: return initBoard9();
-			case 11: return initBoard11();
+			case  9: initBoard9();  break;
+			case 11: initBoard11(); break;
 		}
 
-		return null;
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
 	}
 
 	/** 
@@ -36,12 +48,8 @@ public class Vikings {
 	 * 
 	 * @return доска с расставленными фигурами.
 	 */
-	private static Board initBoard11() {
-		Board board = new Board(11, 11);
-		
+	private void initBoard11() {
 		new Сyning(board.getSquare(5, 5), PieceColor.WHITE);
-
-		return board ;
 	}
 
 	/** 
@@ -50,9 +58,7 @@ public class Vikings {
 	 * 
 	 * @return доска с расставленными фигурами.
 	 */
-	private static Board initBoard9() {
-		Board board = new Board(9, 9);
-		
+	private void initBoard9() {
 		int c = 4;
 		
 		new Сyning(board.getSquare(c, c), PieceColor.WHITE);
@@ -65,8 +71,6 @@ public class Vikings {
 
 		for(LineDirs dir : LineDirs.ALL)  
 			setBlack(board, c + 4 * dir.dv, c + 4 * dir.dh);
-		
-		return board ;
 	}
 
 	private static void setBlack(Board board, int v, int h) {
@@ -79,5 +83,11 @@ public class Vikings {
 				new Viking(square, PieceColor.BLACK);
 			}
 		}
+	}
+
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(9, 9);
+		initBoard9();
 	}
 }

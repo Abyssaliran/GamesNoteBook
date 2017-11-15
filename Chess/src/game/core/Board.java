@@ -1,6 +1,13 @@
 package game.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Observable;
+
+import game.players.IPlayer;
+import game.players.Neznaika;
 
 /**
  * Доска для расстановки фигур.
@@ -12,6 +19,7 @@ public class Board extends Observable {
 	 * Количество вертикалей на доске.
 	 */
 	public int nV;
+	
 	/**
 	 * Количество горизонталей на доске.
 	 */
@@ -30,9 +38,27 @@ public class Board extends Observable {
 	/**
 	 * Цвет фигуры которая должна сделать ход.
 	 */
-	public PieceColor moveColor = PieceColor.WHITE;
+	private PieceColor moveColor = PieceColor.WHITE;
+	
+	Map<PieceColor, IPlayer> players = new HashMap<>(); 
+	{
+		setWhitePlayer(IPlayer.HOMO_SAPIENCE);
+		setBlackPlayer( new Neznaika() );
+	}
 
-	public Board(int nV, int nH) {
+	public Board() {
+		reset(0, 0);
+	}
+
+	/**
+	 * Изменить размеры доски и очистить историю игры.
+	 * 
+	 * @param nV
+	 *            - количество вертикалей доски.
+	 * @param nH
+	 *            - количество горизонталей доски.
+	 */
+	public void reset(int nV, int nH) {
 		this.nV = nV;
 		this.nH = nH;
 		
@@ -40,10 +66,15 @@ public class Board extends Observable {
 		for (int v = 0; v < nV; v++)
 			for (int h = 0; h < nH; h++)
 				squares[v][h] = new Square(this, v, h);
-		}
+		
+		history.clear();
+		moveColor = PieceColor.WHITE;
+		
+		setBoardChanged();
+	}
 
 	/**
-	 * Уведомить обозревателей доски (классы реализующие интерфейс Observable)
+	 * Уведомить обозревателей доски (классы реализующие интерфейс <b>Observable</b>)<br>
 	 * что на доске произошли изменения.
 	 * 
 	 * @see java.util.Observable
@@ -54,13 +85,69 @@ public class Board extends Observable {
 		super.setChanged();
 		super.notifyObservers();
 	}
+	
+	/**
+	 * Смена цвета (игрока который должен сделать ход).
+	 */
+	public void changeMoveColor() {
+		for (;;) {
+			moveColor = getOponentColor(moveColor);
+			
+			IPlayer player = players.get(moveColor);
+			if (player == IPlayer.HOMO_SAPIENCE)
+				break; // Ход сделает человек мышкой.
+			
+			try { player.doMove(this, moveColor); } 
+			catch (GameOver e) 
+				{ break; }
+		}
+	}
+	
+	public void startGame() {
+		for (;;) {
+			IPlayer player = players.get(moveColor);
+			if (player == IPlayer.HOMO_SAPIENCE)
+				break; // Ход сделает человек мышкой.
+			
+			try { player.doMove(this, moveColor); } 
+			catch (GameOver e) 
+				{ break; }
 
-	/** 
-	 * Вернуть клетку доски
+			moveColor = getOponentColor(moveColor);
+		}
+	}
+
+
+	/**
+	 * Дать цвет противоположный заданному цвету.
 	 * 
-	 * @param v - вертикаль клетки.
-	 * @param h - горизонталь клетки.
-	 * @return - клетка с задаными вертикалью и горизонталью.
+	 * @param сolor
+	 *            - заданный цвет фигуры.
+	 * @return противоположный цвет фигур.
+	 */
+	static
+	public PieceColor getOponentColor(PieceColor сolor) {
+		return сolor == PieceColor.WHITE 
+				? PieceColor.BLACK : PieceColor.WHITE;
+	}
+	
+	/**
+	 * Выдать цвет фигуры, которая должна сделать ход.
+	 * 
+	 * @return - цвет фигуры.
+	 */
+	public PieceColor getMoveColor() {
+		return moveColor;
+	}
+
+	/**
+	 * Вернуть клетку доски.
+	 * 
+	 * @param v
+	 *            - вертикаль клетки.
+	 * @param h
+	 *            - горизонталь клетки.
+	 * @return клетка с задаными вертикалью и горизонталью.
 	 */
 	public Square getSquare(int v, int h) {
 		return squares[v][h];
@@ -69,9 +156,11 @@ public class Board extends Observable {
 	/**
 	 * Проверка выхода координат клетки за границы доски.
 	 * 
-	 * @param v - вертикаль клетки
-	 * @param h - горизонталь клетки
-	 * @return - есть ли клетка с такими координатами на доске.
+	 * @param v
+	 *            - вертикаль клетки
+	 * @param h
+	 *            - горизонталь клетки
+	 * @return есть ли клетка с такими координатами на доске.
 	 */
 	public boolean onBoard(int v, int h) {
 		if (v < 0) return false;
@@ -106,5 +195,127 @@ public class Board extends Observable {
 	 */
 	public boolean isEmpty(int v, int h) {
 		return getSquare(v, h).isEmpty();
+	}
+
+	/**
+	 * Задать игрока белыми фигурами.
+	 * 
+	 * @param player - игрок белыми фигурами.
+	 * 
+	 * @see game.players.IPlayer
+	 */
+	public void setWhitePlayer(IPlayer player) {
+		players.put(PieceColor.WHITE, player);
+		setBoardChanged();
+	}
+
+	/**
+	 * Задать игрока черными фигурами.
+	 * 
+	 * @param player - игрок черными фигурами.
+	 * 
+	 * @see game.players.IPlayer
+	 */
+	public void setBlackPlayer(IPlayer player) {
+		players.put(PieceColor.BLACK, player);
+		setBoardChanged();
+	}
+
+	/**
+	 * Выдать игрока белыми фигурами.
+	 * 
+	 * @return
+	 */
+	public IPlayer getWhitePlayer() {
+		return players.get(PieceColor.WHITE);
+	}
+
+	/**
+	 * Выдать игрока черными фигурами.
+	 * @return
+	 */
+	public IPlayer getBlackPlayer() {
+		return players.get(PieceColor.BLACK);
+	}
+	
+	/**
+	 * Выдать список всех расположенных на доске фигур заданного цвета.
+	 * 
+	 * @param color
+	 *            - цвет фигуры.
+	 * @return - список фигур.
+	 */
+	public List<Piece> getPieces(PieceColor color) {
+		List<Piece> pieces = new ArrayList<>();		
+
+		for (int v = 0; v < nV; v++)
+			for (int h = 0; h < nH; h++) {
+				Square s = getSquare(v, h);
+				
+				Piece p = s.getPiece();
+				if (p == null) continue;
+				
+				if (p.color != color)
+					continue;
+				
+				pieces.add(p);
+			}
+		
+		return pieces;
+	}
+	
+	/**
+	 * Выдать список всех пустых клеток доски.
+	 * 
+	 * @return - список всех клеток доски.
+	 */
+	public List<Square> getEmptySquares() {
+		List<game.core.Square> emptySquares = new ArrayList<>();
+		
+		for (int v = 0; v < nV; v++)
+			for (int h = 0; h < nH; h++) {
+				game.core.Square square = getSquare(v, h);
+				if (square.isEmpty())
+					emptySquares.add( square);
+			}
+
+		return emptySquares;
+	}
+
+	/**
+	 * Для заданной фигуры найти список клеток, на которые ход данной фигурой
+	 * допустим.
+	 * 
+	 * @param piece
+	 *            - проверяемая фигура.
+	 * @return список допустимых для хода клеток.
+	 */
+	public List<Square> getPieceTargets(Piece piece) {
+		List<Square> targets = new ArrayList<>();
+		
+		for (int v = 0; v < nV; v++)
+			for (int h = 0; h < nH; h++) {
+				Square target = getSquare(v, h);
+				
+				if (piece.isCorrectMove(target))
+					targets.add(target);
+			}
+		
+		return targets;
+	}
+
+	/**
+	 * Выдать список всех клеток доски.
+	 * 
+	 * @return - список
+	 */
+	public List<Square> getSquares() {
+		List<Square> allSquares = new ArrayList<>();
+		
+		for (int v = 0; v < nV; v++)
+			for (int h = 0; h < nH; h++)  
+				allSquares.add(getSquare(v, h));
+		
+		return allSquares;
 	}
 }

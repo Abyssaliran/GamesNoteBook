@@ -3,8 +3,8 @@
  */
 package chinachess.pieces;
 
-import chess.moves.Capture;
-import chess.moves.SimpleMove;
+import chinachess.moves.Capture;
+import chinachess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
@@ -28,7 +28,21 @@ public class Guardian extends ChinaChessPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		Square target = squares[0];
+		
+		// Ходы вне крепости для короля запрещены.
+		if (!inCastle(getColor(), target))
+			return false;
+		
+		int dv = Math.abs(target.v - square.v);
+		int dh = Math.abs(target.h - square.h);
+				
+		// Допустимы только ходы на одну клетку
+		// по диагонали.
+		if ((dh == 1) && (dv == 1)) 
+			return true;
+		
+		return false;
 	}
 
 	@Override
@@ -39,5 +53,10 @@ public class Guardian extends ChinaChessPiece {
 			return new Capture(squares);
 		
 		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "A";
 	}
 }

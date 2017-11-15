@@ -27,18 +27,19 @@ public class Stone extends Piece {
 	@Override
 	public boolean isCorrectMove(Square... squares) {
 		Square target = squares[0];
+		
+		// Ход на занятую клетку невохможен.
+		if (!target.isEmpty())
+			return false;
 
 		// Если рядом с клеткой нет вражеских фигур,
 		// то ход туда не корректен.
 		if (!hasEnemy(target))
 			return false;
 
-		// Если при ходе на клетку target не произойдет захват вражеских фигур,
-		// то ход туда не корректен.
-		if (!isPossibleCapture(target))
-			return false;
-
-		return true;
+		// Если при ходе на клетку target не произойдет захват 
+		// вражеских фигур, то ход туда не корректен.
+		return isPossibleCapture(target);
 	}
 
 	/**
@@ -51,8 +52,9 @@ public class Stone extends Piece {
 	 *            - проверяемая клетка.
 	 * @return - есть ли враги при постановке фигуры на эту клетку.
 	 */
-	private boolean hasEnemy(Square target) {
+	public boolean hasEnemy(Square target) {
 		Board board = target.getBoard();
+		PieceColor myColor = getColor();
 
 		int tv = target.v;
 		int th = target.h;
@@ -62,18 +64,21 @@ public class Stone extends Piece {
 			int v = tv + d.dv;
 			int h = th + d.dh;
 
+			// Клетки с координатами (v,h) нет, 
+			// вышли за пределы доски.
 			if (!board.onBoard(v, h))
-				continue; // Рядом клетки нет, Вышли за пределы доски.
+				continue;
 
-			Piece p = board.getSquare(v, h).getPiece();
-			if (p == null)
+			Square nearSquare = board.getSquare(v, h);
+			if (nearSquare.isEmpty())
 				continue; // Рядом пустая клетка.
 
-			if (getColor() != p.getColor())
-				return true; // Нашли рядом вражескую фигуру.
+			PieceColor pieceColor = nearSquare.getPiece().getColor();
+			if (pieceColor != myColor)
+				return true; // Нашли рядом врага.
 		}
 
-		return false; // Не нашли рядом вражескую фигуру.
+		return false; // Не нашли рядом рядом врага.
 	}
 
 	/**
@@ -95,8 +100,8 @@ public class Stone extends Piece {
 	}
 
 	/**
-	 * Возможен ли захват фигуры при движении из заданной клетки в заданном
-	 * направлении.
+	 * Возможен ли захват фигуры при движении из заданной клетки 
+	 * в заданном направлении.
 	 * 
 	 * @param source
 	 *            - из какой клетки двигаемся.
@@ -105,10 +110,37 @@ public class Stone extends Piece {
 	 * @return - возможен ли захват вражеских фигур.
 	 */
 	private boolean hasCaptured(Square source, Dirs direction) {
-		// TODO Задорожная.
-		// Реализовать проверку возможности захвата вражеских фигур.
+		Board board = source.getBoard();
+		
+		int sv = source.v + direction.dv;
+		int sh = source.h + direction.dh;
+		
+		PieceColor myColor = getColor();
+		int nCaptured = 0;
+		
+		while (board.onBoard(sv, sh)) {
+			Square nextSquare = board.getSquare(sv, sh);
+			
+			// На другом конце друга нет. Окружить нельзя.
+			if (nextSquare.isEmpty())
+				return false; 
+			
+			PieceColor nextColor = nextSquare.getPiece().getColor();
 
-		return true;
+			// Это друг. Окружаем я с одной стороны, он с другой.
+			if (nextColor == myColor) 
+				return nCaptured >  0; // Стоят ли враги между нами?
+			
+			// Фигура другого цвета. Это враг. 
+			// Сосчитаем его и ищем следующего.
+			nCaptured++;
+
+			// Смещаемся в заданном направлении.
+			sv += direction.dv;
+			sh += direction.dh;
+		}
+
+		return false;
 	}
 
 	/**
@@ -156,5 +188,10 @@ public class Stone extends Piece {
 				collectCaptured(target, direction, captured);
 
 		return captured;
+	}
+
+	@Override
+	public String toString() {
+		return "" + square;
 	}
 }

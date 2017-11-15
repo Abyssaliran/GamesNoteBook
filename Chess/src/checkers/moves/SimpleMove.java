@@ -3,20 +3,28 @@
  */
 package checkers.moves;
 
-import game.core.Move;
+import java.util.HashMap;
+import java.util.Map;
+
+import checkers.pieces.King;
+import game.core.GameOver;
 import game.core.Piece;
+import game.core.PieceColor;
 import game.core.Square;
+import game.core.moves.ITransferMove;
 
 /**
  * Простой ход шашкой вперед без взятия фигуры противника.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class SimpleMove implements Move {
+public class SimpleMove implements ITransferMove {
 	/**
 	 * Откуда пошла фигура.
 	 */
 	protected Square source;
+
+	private Map<Piece, Piece> kings = new HashMap<>();
 
 	/**
 	 * Куда пошла фигура.
@@ -31,7 +39,7 @@ public class SimpleMove implements Move {
 	/**
 	 * Какая фигура пошла.
 	 */
-	private Piece piece;
+	protected Piece piece;
 
 	public SimpleMove(boolean isPromotion, Square... squares) {
 		this.isPromotion = isPromotion;
@@ -43,9 +51,19 @@ public class SimpleMove implements Move {
 	}
 
 	@Override
-	public void doMove() {
+	public Square getTarget() {
+		return target;
+	}
+
+	@Override
+	public Square getSource() {
+		return source;
+	}
+
+	@Override
+	public void doMove() throws GameOver {
 		piece.moveTo(target);
-		
+
 		if (isPromotion)
 			putKing(target);
 	}
@@ -54,7 +72,7 @@ public class SimpleMove implements Move {
 	public void undoMove() {
 		if (isPromotion)
 			removeKing(target);
-		
+
 		piece.moveTo(source);
 	}
 
@@ -64,20 +82,32 @@ public class SimpleMove implements Move {
 	 * @param s
 	 */
 	private void putKing(Square s) {
-		// TODO Auto-generated method stub
+		if (isPromotion)
+			piece = s.getPiece();
+		
+		PieceColor kingColor = piece.getColor();
+		Piece exMan = piece;
+		s.removePiece();
+		
+		King kingFromMan = new King(s, kingColor);
+		kings.put(kingFromMan, exMan);
+		piece = kingFromMan;
 	}
 
 	/**
-	 * Заменить на поле s  на дамку простую шашку.
+	 * Заменить на поле s на дамку простую шашку.
 	 * 
 	 * @param s
 	 */
 	private void removeKing(Square s) {
-		// TODO Auto-generated method stub
+		s.removePiece();
+
+		piece = kings.get(piece);
+		s.setPiece(piece);
 	}
-	
+
 	@Override
 	public String toString() {
-		return "" + piece + "-" + target;
+		return "" + piece + source + "-" + target;
 	}
 }

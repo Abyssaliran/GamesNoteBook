@@ -1,8 +1,11 @@
 package tamerlan.move;
 
-import chess.moves.ICapture;
+import game.core.GameOver;
+import game.core.GameResult;
+import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import tamerlan.pieces.King;
 
 /**
  * Ход шахмат Тамерлана - перемещение фигуры на клетку 
@@ -10,58 +13,42 @@ import game.core.Square;
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Capture extends SimpleMove implements ICapture {
-	Square[] sq = null;
+public class Capture extends SimpleMove {
+	private Square capturedSquare;
+	private Piece capturedPiece;
+	
 	public Capture(Square[] squares) {
 		super(squares);
-		sq = squares;
+		
+		capturedSquare = squares[1];
+		capturedPiece = capturedSquare.getPiece();
 	}
 
 	@Override
-	public void doMove() {
-		// TODO Утаев - реализовать захват фигуры 
-		if (isCapture()) {
-			// сохраним клетку для перемещения 
-			Square targetCache = target;
-			// удаляем фигуру перемещая ее на поле хранения захваченных фигур
-			removePiece();
-			// собственно перемещаем фигуру на захваченную клетку
-			piece.moveTo(targetCache);
+	public void doMove() throws GameOver {
+		capturedPiece.remove();
+		super.doMove();
+		
+		if (capturedPiece instanceof King) {
+			PieceColor kingColor = capturedPiece.getColor();
+			
+			GameResult result = (
+				kingColor == PieceColor.WHITE
+					? GameResult.BLACK_WIN 
+					: GameResult.WHITE_WIN);
+			
+			throw new GameOver(result);
 		}
 	}
 
 	@Override
 	public void undoMove() {
-		// TODO Утаев - реализовать отмену захвата фигуры 
+		super.undoMove();
+		capturedSquare.setPiece(capturedPiece);
 	}
 
 	@Override
-	public void removePiece() {
-		for (int i = 0; i < target.getBoard().nV; i++) {
-			// на место хранения игрока с черными фигурами
-			if (piece.getColor() == PieceColor.BLACK) {
-				for (int j = 0; j < 2; j++) {
-					if (target.getBoard().getSquare(i, j).isEmpty()) {
-						target.movePieceTo(target.getBoard().getSquare(i, j));
-						return;
-					}
-				} 
-			// на место хранения игрока с белыми фигурами
-			} else {
-				for (int j = 13; j > 11; j--) {
-					if (target.getBoard().getSquare(i, j).isEmpty()) {
-						target.movePieceTo(target.getBoard().getSquare(i, j));
-						return;
-					}
-				}
-			}
-		}
+	public String toString() {
+		return "" + piece + source + "x" + target;
 	}
-
-	@Override
-	public void restotePiece() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }

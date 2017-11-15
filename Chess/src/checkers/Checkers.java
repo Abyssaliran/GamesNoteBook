@@ -2,21 +2,36 @@ package checkers;
 
 import checkers.pieces.Man;
 import game.core.Board;
+import game.core.Game;
 import game.core.PieceColor;
+import game.players.IPlayer;
+import game.players.Neznaika;
 
 /**
  * Класс представляющий игру шашки.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Checkers {
+public class Checkers extends Game {
+	static {
+		addPlayer(Checkers.class, IPlayer.HOMO_SAPIENCE);
+		addPlayer(Checkers.class, new Neznaika());
+	}
+
 	/**
 	 * Расстановка фигур шашек в начальную позицию.
 	 * @return доска с расставленными фигурами.
 	 */
-	static 
-	public Board getInitBoard() {
-		Board board = new Board(8, 8);
+	public Checkers() {
+		initBoardDefault();
+
+		board.setWhitePlayer(IPlayer.HOMO_SAPIENCE);
+		board.setBlackPlayer( new Neznaika() );
+	}
+
+	@Override
+	public void initBoardDefault() {
+		super.initBoard(8, 8);
 		
 		setHorizontal(board, 0, PieceColor.BLACK);
 		setHorizontal(board, 1, PieceColor.BLACK);
@@ -25,10 +40,8 @@ public class Checkers {
 		setHorizontal(board, 5, PieceColor.WHITE);
 		setHorizontal(board, 6, PieceColor.WHITE);
 		setHorizontal(board, 7, PieceColor.WHITE);
-		
-		return board;
 	}
-
+	
 	/**
 	 * Расставить шашки на заданой горизонтали.
 	 * 
