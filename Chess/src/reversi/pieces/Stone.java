@@ -159,6 +159,35 @@ public class Stone extends Piece {
 		// TODO Задорожная.
 		// Реализовать захват вражеских фигур.
 
+		Board board = source.getBoard();
+		
+		int sv = source.v + direction.dv;
+		int sh = source.h + direction.dh;
+		
+		PieceColor myColor = getColor();
+		int nCaptured = 0;
+		
+		while (board.onBoard(sv, sh)) {
+			Square nextSquare = board.getSquare(sv, sh);
+			
+			// На другом конце друга нет. Окружить нельзя.
+			if (nextSquare.isEmpty())
+				return; 
+			
+			PieceColor nextColor = nextSquare.getPiece().getColor();
+
+			// Это друг. Окружаем я с одной стороны, он с другой.
+			if (nextColor == myColor) 
+				return ; // Стоят ли враги между нами?
+			
+			// Фигура другого цвета. Это враг. 
+			// Сосчитаем его и ищем следующего.
+			captured.add(nextSquare);
+
+			// Смещаемся в заданном направлении.
+			sv += direction.dv;
+			sh += direction.dh;
+		}
 	}
 
 	@Override

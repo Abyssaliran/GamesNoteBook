@@ -40,7 +40,7 @@ public class Piece {
 	/**
 	 * @return задать цвет фигуры.
 	 */
-	public void getColor(PieceColor color) {
+	public void setColor(PieceColor color) {
 		this.color = color;
 	}
 	
@@ -173,5 +173,4 @@ public class Piece {
 	 * @return экжемпляр класса реализующего интерфейс <b>Move</b>.
 	 */
 	abstract public Move makeMove(Square ...squares);
-
 }

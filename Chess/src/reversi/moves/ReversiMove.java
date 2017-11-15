@@ -51,6 +51,12 @@ public class ReversiMove implements IPutMove, ICaptureMove {
 		// TODO Задорожная - дополнить выполнение хода реверси:
 		// перекрасить фигуры стоящие на клетках captured 
 		// в противоположный цвет.
+		for (Square square : captured) {
+			Piece capturedPiece = square.getPiece();
+			PieceColor color = capturedPiece.getColor();
+			PieceColor newColor = (color == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE);
+			capturedPiece.setColor(newColor);
+		}
 
 		// Проверим остались ли пустые клетки на доске.
 		Board board = target.getBoard();
@@ -86,6 +92,12 @@ public class ReversiMove implements IPutMove, ICaptureMove {
 		// TODO Задорожная - дополнить выполнение хода реверси:
 		// перекрасить фигуры стоящие на клетках captured 
 		// в противоположный цвет.
+		for (Square square : captured) {
+			Piece capturedPiece = square.getPiece();
+			PieceColor color = capturedPiece.getColor();
+			PieceColor newColor = (color == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE);
+			capturedPiece.setColor(newColor);
+		}
 	}
 
 	@Override
