@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Label;
 
 import game.core.Board;
 import game.core.PieceColor;
+import game.core.Square;
 
 /**
  * Панель для демонстрации количества фигур у белых и черных.
@@ -69,7 +70,15 @@ public class ScorePanel extends Canvas implements Observer {
 	 * @return  количество фигур 
 	 */
 	private int getPieceCount(Board board, PieceColor color) {
-		// TODO Платнова. Реализовать подсчет фигур.
-		return 1;
+		int count = 0;
+
+		for (int v = 0; v < board.nV; v++)
+			for (int h = 0; h < board.nH; h++) {
+				Square square = board.getSquare(v, h);
+				if (!square.isEmpty())
+					if (square.getPiece().getColor() == color)
+						count++;
+			}
+		return count;
 	}
 }
