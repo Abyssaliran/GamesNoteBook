@@ -1,10 +1,14 @@
 package tamerlan.move;
 
+import java.util.Arrays;
+import java.util.List;
+
 import game.core.GameOver;
 import game.core.GameResult;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.core.moves.ICaptureMove;
 import tamerlan.pieces.King;
 
 /**
@@ -13,7 +17,7 @@ import tamerlan.pieces.King;
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Capture extends SimpleMove {
+public class Capture extends SimpleMove implements ICaptureMove {
 	private Square capturedSquare;
 	private Piece capturedPiece;
 	
@@ -50,5 +54,10 @@ public class Capture extends SimpleMove {
 	@Override
 	public String toString() {
 		return "" + piece + source + "x" + target;
+	}
+
+	@Override
+	public List<Square> getCaptured() {
+		return Arrays.asList(capturedSquare);
 	}
 }
