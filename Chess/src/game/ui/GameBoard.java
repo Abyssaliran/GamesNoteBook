@@ -48,9 +48,14 @@ public class GameBoard extends Canvas
     /**
      * Цвет для отрисовки последнего хода.
      */
-    private Color lastMoveColor = new Color(null, 255, 0, 0) ;
+    private Color lastMoveColor = new Color(null, 255, 0, 0);
 
-	/**
+    /**
+     * Цвет для отрисовки захвата фигур.
+     */
+    private Color lastCaptureColor = new Color(null, 0, 0, 255);
+
+    /**
      * Цвет для подсказок правильных ходов.
      */
     private Color promptColor = new Color(null, 0, 255, 0);
@@ -59,6 +64,7 @@ public class GameBoard extends Canvas
 	 * Доска с фигурами для игры отрисовываемая на этой панели.
 	 */
 	public Board board;
+
 
 	/**
 	 * Базовый класс для всех панелей отрисовывающих доски для игр.
@@ -252,7 +258,7 @@ public class GameBoard extends Canvas
 				ICaptureMove capture = (ICaptureMove) move;
 				
 				for (Square s : capture.getCaptured())
-					markCross(gc, s, lastMoveColor);
+					markSquare(gc, s, lastCaptureColor);
 			}
 		}
 	}
