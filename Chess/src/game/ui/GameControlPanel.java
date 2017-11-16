@@ -1,103 +1,135 @@
 package game.ui;
 
+import java.util.Optional;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
+import game.core.Board;
 import game.core.Game;
 import game.players.IPlayer;
 
 /**
- * Управляющая панель для игр.
+ * Управляющая панель для игр. Запуск игры с выбранными игроками.
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class GameControlPanel extends Composite {
-	private static final Color CONTROL_COLOR = new Color(null,   0, 192,  80);
-	private static final Color LIST_COLOR    = new Color(null, 255, 255, 255);
 	private static final Color TITLE_COLOR   = new Color(null, 255, 255,   0);
-	private static final Color BLACK_COLOR   = new Color(null,   0,   0,   0);
+	private static final Color LIST_COLOR    = new Color(null, 255, 255, 255);
+	private static final Color BORDER_COLOR  = new Color(null,   0,   0,   0);
+	private static final Color CONTROL_COLOR = new Color(null,   0, 192,  80);
 	
-	private Label bTitle;
-	private Label wTitle;
-	private Button startButton;
-
 	public GameControlPanel(Composite parent, Game game) {
 		super(parent, SWT.NONE);
 		setBackground(CONTROL_COLOR);
 		setLayout( new GridLayout(1, true) );
+
+		final Board board = game.board;
 		
+		// Получим всех игроков для этой игры.
 		Class<? extends Game> gameClass = game.getClass();
 		java.util.List<IPlayer> players = game.getPlayers(gameClass);
 		
-		IPlayer whitePlayer = game.board.getWhitePlayer();
-		int whitePlayerNumber = players.indexOf(whitePlayer);
+		// Получим текущих белого и черного игроков для этой игры.
+		IPlayer wPlayer = board.getWhitePlayer();
+		IPlayer bPlayer = board.getBlackPlayer();
 		
-		IPlayer blackPlayer = game.board.getBlackPlayer();
-		int blackPlayerNumber = players.indexOf(blackPlayer);
+		// Получим индексы в списке игроков для текущих 
+		// белого и черного игроков этой игры.
+		int wPlayerNumber = getPlayerIndex(wPlayer, players);
+		int bPlayerNumber = getPlayerIndex(bPlayer, players);
 		
 		// Список для выбора игроков белыми фигурами.
-		//
-		GridData data;
-		
-		data = new GridData(SWT.FILL, SWT.TOP, true, false);
-		
-		wTitle = new Label(this, SWT.CENTER);
-		wTitle.setText("White");
-		wTitle.setForeground(TITLE_COLOR);
-		wTitle.setLayoutData(data);
-
-		data = new GridData(SWT.FILL, SWT.TOP, true, false);
-		
-		List wList = new List(this, SWT.BORDER);
-		wList.setForeground(BLACK_COLOR);
-		wList.setBackground(LIST_COLOR);
-		wList.setLayoutData(data);
-		wList.select(whitePlayerNumber);
-		wList.addListener(SWT.Selection, e -> {
-			int selection = wList.getSelectionIndices()[0];
-			game.board.setWhitePlayer(players.get(selection));
-		});
-		for (IPlayer p : players) wList.add(p.getName());
+		List wList = getPlayersList("White", wPlayerNumber, players);
+		wList.addListener(SWT.Selection, event ->  
+			board.setWhitePlayer( getSelectedPlayer(event, players) )
+		);
 		
 		// Список для выбора игроков черными фигурами.
-		//
-		data = new GridData(SWT.FILL, SWT.TOP, true, false);
-		
-		bTitle = new Label(this, SWT.CENTER);
-		bTitle.setText("Black");
-		bTitle.setForeground(TITLE_COLOR);
-		bTitle.setLayoutData(data);
-		
-		data = new GridData(SWT.FILL, SWT.TOP, true, false);
-
-		List bList = new List(this, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		bList.setForeground(BLACK_COLOR);
-		bList.setBackground(LIST_COLOR);
-		bList.setLayoutData(data);
-		bList.select(blackPlayerNumber);
-		bList.addListener(SWT.Selection, e -> {
-			int selection = bList.getSelectionIndices()[0];
-			IPlayer player = players.get(selection);
-			game.board.setBlackPlayer(player);
-		});
-		for (IPlayer p : players) bList.add(p.getName());
+		List bList = getPlayersList("Black", bPlayerNumber, players);
+		bList.addListener(SWT.Selection, event -> 
+			board.setBlackPlayer( getSelectedPlayer(event, players) )
+		);
 
 		// Кнопка запуска игры.
 		//
-		data = new GridData(SWT.CENTER, SWT.TOP, true, false);
+		GridData data = new GridData(SWT.CENTER, SWT.TOP, true, false);
 
-		startButton = new Button(this, SWT.NONE);
+		Button startButton = new Button(this, SWT.NONE);
 		startButton.setText("Старт");
 		startButton.setLayoutData(data);
-		startButton.addListener(SWT.Selection, e -> {
+		startButton.addListener(SWT.Selection, event -> {
 			game.initBoardDefault();
-			game.board.startGame();
+			board.startGame();
 		});
+	}
+
+	/**
+	 * Выдать игрока выбранного в списке игроков.
+	 * 
+	 * @param e - событие выбора в списке.
+	 * @param players - список игроков.
+	 * @return выбраный из списка игрок.
+	 */
+	private IPlayer getSelectedPlayer(Event e, java.util.List<IPlayer> players) {
+		List list = (List) e.widget;
+		int selection = list.getSelectionIndices()[0];
+		return players.get(selection);
+	}
+
+	/**
+	 * Выдать управляющий элемент - список игроков.
+	 * 
+	 * @param titleText - текст заголовка списка.
+	 * @param playerNumber - номер выделенного в списке игрока. 
+	 * @param players - список игроков.
+	 * @return управляющий элемент - список игроков.
+	 */
+	private List getPlayersList(String titleText, int playerNumber, java.util.List<IPlayer> players) {
+		GridData titleData = new GridData(SWT.FILL, SWT.TOP, true, false);
+		
+		Label title = new Label(this, SWT.CENTER);
+		title.setText(titleText);
+		title.setForeground(TITLE_COLOR);
+		title.setLayoutData(titleData);
+
+		GridData listData = new GridData(SWT.FILL, SWT.TOP, true, false);
+		
+		List list = new List(this, SWT.BORDER | SWT.SINGLE);
+		players.forEach(p -> list.add( p.getName() ));
+
+		list.setForeground(BORDER_COLOR);
+		list.setBackground(LIST_COLOR);
+		list.setLayoutData(listData);
+		list.select(playerNumber);
+		
+		return list;
+	}
+
+	/**
+	 * Найти номер игрока в списке игроков.
+	 * 
+	 * @param player
+	 *            - заданный игрок.
+	 * @param players
+	 *            - список игроков.
+	 * 
+	 * @return номер найденного игрока.
+	 */
+	private int getPlayerIndex(IPlayer player, java.util.List<IPlayer> players) {
+		Optional<IPlayer> x = 
+			players.stream()
+				.filter(p -> p.getClass() == player.getClass())
+				.findFirst();
+		
+		return x.isPresent() ? players.indexOf(x.get()) : 0;
 	}
 }
