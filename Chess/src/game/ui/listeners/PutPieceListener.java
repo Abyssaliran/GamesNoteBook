@@ -59,8 +59,15 @@ public class PutPieceListener implements IGameListner {
 		try {
 			move.doMove();
 		} catch (GameOver e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Сохраним экземпляр кода и истории партии.
+			board.history.addMove(move);
+			board.history.setResult(e.result);
+
+			// Пусть слушатели изменений на доске 
+			// нарисуют новое состояние доски.
+			board.setBoardChanged();
+			boardPanel.redraw();
+			return;
 		}
 		
 		// Зададим изображение курсора такое как избражение у фигуры.
