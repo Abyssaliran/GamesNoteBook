@@ -1,7 +1,9 @@
 package reversi.ui;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 import game.core.Game;
@@ -35,7 +37,11 @@ public class ReversiGamePanel extends GamePanel {
 		ReversiBoardPanel gameBoard = new ReversiBoardPanel(this, game, nHoles);
 		insertSquares( gameBoard );
 
-		new ScorePanel(this, gameBoard.board);
+		GridData data = new GridData(SWT.FILL, SWT.BOTTOM, false, true);
+		data.widthHint = 100;
+		
+		ScorePanel sp = new ScorePanel(control, gameBoard.board);
+		sp.setLayoutData(data);
 	}
 
 	/**
