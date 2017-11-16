@@ -145,7 +145,7 @@ public class Stone extends Piece {
 
 	/**
 	 * Двигаясь из клетки <b>source</b> (куда ставится наша фигура), в заданном
-	 * направлении, в список captured собираются клетки, на которых соят
+	 * направлении, в список captured собираются клетки, на которых стоят
 	 * вражеские фигуры.
 	 * 
 	 * @param source
@@ -165,7 +165,6 @@ public class Stone extends Piece {
 		int sh = source.h + direction.dh;
 		
 		PieceColor myColor = getColor();
-		int nCaptured = 0;
 		
 		while (board.onBoard(sv, sh)) {
 			Square nextSquare = board.getSquare(sv, sh);
@@ -176,12 +175,13 @@ public class Stone extends Piece {
 			
 			PieceColor nextColor = nextSquare.getPiece().getColor();
 
-			// Это друг. Окружаем я с одной стороны, он с другой.
+			// Это друг. 
 			if (nextColor == myColor) 
-				return ; // Стоят ли враги между нами?
+				return; // Окружение закончили.
 			
 			// Фигура другого цвета. Это враг. 
-			// Сосчитаем его и ищем следующего.
+			// Запомним клетку на которой он стоит
+			// ищем следующего.
 			captured.add(nextSquare);
 
 			// Смещаемся в заданном направлении.

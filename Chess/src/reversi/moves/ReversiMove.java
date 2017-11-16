@@ -19,16 +19,19 @@ import game.core.moves.IPutMove;
  */
 public class ReversiMove implements IPutMove, ICaptureMove {
 	/**
-	 * Клетка куда поставлена фигура.
+	 * Клетка на которую ставится фигура.
 	 */
 	Square target;
 	
 	/**
 	 * Клетки на которых стоят захваченные в плен вражеские фигуры.
-	 * Эти фигуры меняют цвет и воюют на нашей стороне.
+	 * Эти пленные фигуры поменяют цвет и будут вовать на нашей стороне.
 	 */
 	List<Square> captured;
 
+	/**
+	 * Фигура которая делает ход.
+	 */
 	private Piece piece;
 
 	/**
@@ -47,32 +50,30 @@ public class ReversiMove implements IPutMove, ICaptureMove {
 	@Override
 	public void doMove() throws GameOver {
 		target.setPiece(piece);
-		
-		// TODO Задорожная - дополнить выполнение хода реверси:
-		// перекрасить фигуры стоящие на клетках captured 
-		// в противоположный цвет.
-		for (Square square : captured) {
-			Piece capturedPiece = square.getPiece();
-			PieceColor color = capturedPiece.getColor();
-			PieceColor newColor = (color == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE);
-			capturedPiece.setColor(newColor);
-		}
+		changeCapturedColor();
 
+		//
 		// Проверим остались ли пустые клетки на доске.
+		//
 		Board board = target.getBoard();
 		PieceColor myColor = piece.getColor();
 		
 		List<Square> empties = board.getEmptySquares();
 		if (!empties.isEmpty()) return;
 		
-		// Подсчитаем количество белых и черных.
-		// Выдадим результат игры.
+		//
+		// Пустых клеток нет. Игра закончилась!
+		//
+		
+		// Подсчитаем количество белых и черных фигур.
+		// Выдадим наверх ситуацию GameOver - результат игры.
 		int enemies = piece.getEnemies().size();
 		int friends = piece.getFriends().size();
 
 		if (enemies == friends)
 			throw new GameOver(GameResult.DRAWN);
 
+		// Я выиграл?
 		boolean iWin = (enemies < friends);
 
 		GameResult result = GameResult.UNKNOWN;
@@ -88,14 +89,19 @@ public class ReversiMove implements IPutMove, ICaptureMove {
 	@Override
 	public void undoMove() {
 		piece.remove();
-		
-		// TODO Задорожная - дополнить выполнение хода реверси:
-		// перекрасить фигуры стоящие на клетках captured 
-		// в противоположный цвет.
+		changeCapturedColor();
+	}
+
+	/**
+	 * Изменить цвет захваченных фигур.
+	 */
+	private void changeCapturedColor() {
 		for (Square square : captured) {
 			Piece capturedPiece = square.getPiece();
 			PieceColor color = capturedPiece.getColor();
-			PieceColor newColor = (color == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE);
+			PieceColor newColor = (color == PieceColor.WHITE 
+					? PieceColor.BLACK 
+					: PieceColor.WHITE);
 			capturedPiece.setColor(newColor);
 		}
 	}
