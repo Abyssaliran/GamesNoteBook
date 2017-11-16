@@ -20,8 +20,9 @@ import game.core.Square;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class ScorePanel extends Canvas implements Observer {
-	private static final Color WHITE = new Color(null, 255, 255, 255);
-	private static final Color GRAY  = new Color(null, 192, 192, 192);
+	private static final Color COLOR_WHITE = new Color(null, 255, 255, 255);
+	private static final Color COLOR_BACK  = new Color(null, 192, 192, 192);
+	private static final Color COLOR_TEXT  = new Color(null,  0,   0,    0);
 
 	private Label whiteScore;
 	private Label blackScore;
@@ -32,22 +33,26 @@ public class ScorePanel extends Canvas implements Observer {
 	private Board board;
 
 	public ScorePanel(Composite parent, Board board) {
-		super(parent, SWT.NONE);
+		super(parent, SWT.BORDER);
+		setBackground(COLOR_BACK);
 		
 		this.board = board;
 
-		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
+		FillLayout layout = new FillLayout(SWT.VERTICAL);
 		layout.spacing = 10;
 		layout.marginWidth = 5;
 		layout.marginHeight = 5;
 		setLayout(layout);
 
 		whiteScore = new Label(this, SWT.BORDER_SOLID);
-		whiteScore.setBackground(WHITE);
+		whiteScore.setBackground(COLOR_WHITE);
+		whiteScore.setForeground(COLOR_TEXT);
 		whiteScore.setText(" White: " + wScore);
+		whiteScore.computeSize(300, SWT.DEFAULT);
 
 		blackScore = new Label(this, SWT.BORDER_SOLID);
-		blackScore.setBackground(GRAY);
+		blackScore.setBackground(COLOR_WHITE);
+		blackScore.setForeground(COLOR_TEXT);
 		blackScore.setText(" Black: " + bScore);
 		
 		board.addObserver(this);
@@ -58,8 +63,8 @@ public class ScorePanel extends Canvas implements Observer {
 		wScore = getPieceCount(board, PieceColor.WHITE);
 		bScore = getPieceCount(board, PieceColor.BLACK);
 		
-		whiteScore.setText(" White: " + wScore);
-		blackScore.setText(" Black: " + bScore);
+		whiteScore.setText(" White: " + wScore + "  ");
+		blackScore.setText(" Black: " + bScore + "  ");
 	}
 
 	/**
