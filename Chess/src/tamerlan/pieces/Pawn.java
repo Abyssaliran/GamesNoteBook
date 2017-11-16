@@ -1,10 +1,10 @@
 package tamerlan.pieces;
 
-import chinachess.moves.SimpleMove;
 import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
 import tamerlan.move.Capture;
+import tamerlan.move.SimpleMove;
 
 /**
  * Класс представляющий на доске пешку европейских шахмат.

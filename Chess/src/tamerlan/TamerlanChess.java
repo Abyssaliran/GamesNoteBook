@@ -14,6 +14,7 @@ import tamerlan.pieces.Queen;
 import tamerlan.pieces.Rook;
 import tamerlan.pieces.Vizir;
 import tamerlan.pieces.WarMachine;
+import tamerlan.playres.Bayezid;
 
 /**
  * Расстановка фигур для <a href=
@@ -27,6 +28,7 @@ public class TamerlanChess extends Game {
 	static {
 		addPlayer(TamerlanChess.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(TamerlanChess.class, new Neznaika());
+		addPlayer(TamerlanChess.class, new Bayezid());
 	}
 	
 	public TamerlanChess() {
