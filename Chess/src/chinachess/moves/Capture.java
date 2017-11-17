@@ -1,11 +1,15 @@
 package chinachess.moves;
 
+import java.util.Arrays;
+import java.util.List;
+
 import chinachess.pieces.King;
 import game.core.GameOver;
 import game.core.GameResult;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.core.moves.ICaptureMove;
 
 /**
  * Ход китайских шахматах - перемещение фигуры на клетку 
@@ -15,7 +19,7 @@ import game.core.Square;
  * 
  * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
  */
-public class Capture extends SimpleMove {
+public class Capture extends SimpleMove implements ICaptureMove {
 	private Square capturedSquare;
 	private Piece  capturedPiece;
 
@@ -52,5 +56,10 @@ public class Capture extends SimpleMove {
 	@Override
 	public String toString() {
 		return "" + piece + source + "x" + target;
+	}
+
+	@Override
+	public List<Square> getCaptured() {
+		return Arrays.asList(capturedSquare);
 	}
 }
