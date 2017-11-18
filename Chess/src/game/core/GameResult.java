@@ -19,12 +19,23 @@ public enum GameResult {
 		return "";
 	}
 
-	static
-	public GameResult win(Piece piece) {
-		return piece.getColor() == PieceColor.BLACK ? BLACK_WIN : WHITE_WIN;
+	static 
+	public GameResult lost(PieceColor color) {
+		return color == PieceColor.WHITE ? BLACK_WIN : WHITE_WIN;
 	}
 
-	public static GameResult lost(Piece piece) {
-		return piece.getColor() == PieceColor.WHITE ? BLACK_WIN : WHITE_WIN;
+	static 
+	public GameResult win(PieceColor color) {
+		return color == PieceColor.BLACK ? BLACK_WIN : WHITE_WIN;
+	}
+	
+	static
+	public GameResult win(Piece piece) {
+		return win( piece.getColor() );
+	}
+	
+	static 
+	public GameResult lost(Piece piece) {
+		return lost( piece.getColor() );
 	}
 }

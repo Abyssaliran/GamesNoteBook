@@ -9,10 +9,15 @@ import game.core.Move;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Pass implements Move {
+public class PassMove implements Move {
 	@Override
 	public void doMove() {}
 
 	@Override
 	public void undoMove() {}
+	
+	@Override
+	public String toString() {
+		return "Pass";
+	}
 }

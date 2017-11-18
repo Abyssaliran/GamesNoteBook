@@ -9,6 +9,7 @@ import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.core.moves.PassMove;
 import reversi.moves.ReversiMove;
 
 /**
@@ -193,6 +194,9 @@ public class Stone extends Piece {
 
 		// Соберем захваченные вражеские фигуры.
 		List<Square> captured = collectCaptured(target);
+		
+		if (captured.isEmpty())
+			return new PassMove();
 
 		return new ReversiMove(this, target, captured);
 	}

@@ -8,10 +8,12 @@ import game.core.GameOver;
 import game.core.GameResult;
 import game.core.IPieceProvider;
 import game.core.Move;
+import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
 import game.core.moves.IPutMove;
+import game.core.moves.PassMove;
 import game.players.PutPiecePlayer;
 
 /**
@@ -23,7 +25,7 @@ import game.players.PutPiecePlayer;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Owl extends PutPiecePlayer {
-	private static final Comparator<? super Move> movesSorter = new OwlBrain();
+	private static final Comparator<? super Move> owlBrain = new OwlBrain();
 
 	@Override
 	public String getName() {
@@ -47,12 +49,40 @@ public class Owl extends PutPiecePlayer {
 
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
+		PieceColor enemyColor = Board.getOponentColor(color);
+		List<Piece> enemies = board.getPieces(enemyColor);
+		
+		if (enemies.isEmpty()) {
+			// Врагов уже нет. Мы выиграли.
+			// Сохраняем в истории игры последний сделанный ход 
+			// и результат игры.
+			board.history.setResult(GameResult.win(color));
+			
+			// Просим обозревателей доски показать 
+			// положение на доске, сделанный ход и 
+			// результат игры.
+			board.setBoardChanged();
+			
+			throw new GameOver( GameResult.win(color) );
+		}
+		
 		List<Move> correctMoves = getCorrectMoves(board, color);
 
-		if (correctMoves.isEmpty())
+		if (correctMoves.isEmpty()){
+			// Пропускаем ход.
+			Move bestMove = new PassMove();
+			
+			// Сохраняем ход в истории игры.
+			board.history.addMove(bestMove );
+
+			// Просим обозревателей доски показать 
+			// положение на доске, сделанный ход и 
+			// результат игры.
+			board.setBoardChanged();
 			return;
+		}
 		
-		correctMoves.sort(movesSorter);
+		correctMoves.sort(owlBrain);
 		Move bestMove = correctMoves.get(0);
 		
 		try { bestMove.doMove(); } 
@@ -155,5 +185,4 @@ class OwlBrain implements Comparator<Move> {
 
 		return false;
 	}
-
 }
