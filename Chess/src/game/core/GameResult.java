@@ -18,4 +18,13 @@ public enum GameResult {
 		}
 		return "";
 	}
+
+	static
+	public GameResult win(Piece piece) {
+		return piece.getColor() == PieceColor.BLACK ? BLACK_WIN : WHITE_WIN;
+	}
+
+	public static GameResult lost(Piece piece) {
+		return piece.getColor() == PieceColor.WHITE ? BLACK_WIN : WHITE_WIN;
+	}
 }

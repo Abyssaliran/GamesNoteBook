@@ -7,7 +7,6 @@ import chinachess.pieces.King;
 import game.core.GameOver;
 import game.core.GameResult;
 import game.core.Piece;
-import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
 
@@ -35,16 +34,8 @@ public class Capture extends SimpleMove implements ICaptureMove {
 		capturedPiece.remove();
 		super.doMove();
 		
-		if (capturedPiece instanceof King) {
-			PieceColor kingColor = capturedPiece.getColor();
-			
-			GameResult result = (
-				kingColor == PieceColor.WHITE
-					? GameResult.BLACK_WIN 
-					: GameResult.WHITE_WIN);
-			
-			throw new GameOver(result);
-		}
+		if (capturedPiece instanceof King)  
+			throw new GameOver( GameResult.lost(capturedPiece) );
 	}
 
 	@Override

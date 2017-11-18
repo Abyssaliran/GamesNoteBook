@@ -56,7 +56,6 @@ public class ReversiMove implements IPutMove, ICaptureMove {
 		// Проверим остались ли пустые клетки на доске.
 		//
 		Board board = target.getBoard();
-		PieceColor myColor = piece.getColor();
 		
 		List<Square> empties = board.getEmptySquares();
 		if (!empties.isEmpty()) return;
@@ -75,14 +74,10 @@ public class ReversiMove implements IPutMove, ICaptureMove {
 
 		// Я выиграл?
 		boolean iWin = (enemies < friends);
-
-		GameResult result = GameResult.UNKNOWN;
-
-		if (myColor == PieceColor.BLACK)
-			result = iWin ? GameResult.BLACK_WIN : GameResult.WHITE_WIN;
-		else
-			result = iWin ? GameResult.WHITE_WIN : GameResult.BLACK_WIN;
-
+		
+		GameResult result = iWin 
+				? GameResult.win(piece) 
+				: GameResult.lost(piece);
 		throw new GameOver(result);
 	}
 

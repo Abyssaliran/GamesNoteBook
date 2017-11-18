@@ -54,8 +54,7 @@ public class Capture extends SimpleMove implements ICaptureMove {
 		List<Piece> enemies = board.getPieces(enemyColor);
 		
 		if (enemies.isEmpty())
-			throw new GameOver(enemyColor == PieceColor.WHITE 
-									? GameResult.BLACK_WIN : GameResult.WHITE_WIN);
+			throw new GameOver( GameResult.lost(captured) );
 	}
 
 	@Override
