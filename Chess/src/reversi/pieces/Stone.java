@@ -156,9 +156,6 @@ public class Stone extends Piece {
 	 *            - список в который добавляем клетки с вражескими фигурами.
 	 */
 	private void collectCaptured(Square source, Dirs direction, List<Square> captured) {
-		// TODO Задорожная.
-		// Реализовать захват вражеских фигур.
-
 		Board board = source.getBoard();
 		
 		int sv = source.v + direction.dv;

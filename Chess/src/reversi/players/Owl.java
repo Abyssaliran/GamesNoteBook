@@ -1,5 +1,6 @@
 package reversi.players;
 
+import java.util.Comparator;
 import java.util.List;
 
 import game.core.Board;
@@ -8,6 +9,9 @@ import game.core.GameResult;
 import game.core.IPieceProvider;
 import game.core.Move;
 import game.core.PieceColor;
+import game.core.Square;
+import game.core.moves.ICaptureMove;
+import game.core.moves.IPutMove;
 import game.players.PutPiecePlayer;
 
 /**
@@ -19,6 +23,8 @@ import game.players.PutPiecePlayer;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Owl extends PutPiecePlayer {
+	private static final Comparator<? super Move> movesSorter = new OwlBrain();
+
 	@Override
 	public String getName() {
 		return "Сова";
@@ -46,13 +52,14 @@ public class Owl extends PutPiecePlayer {
 		if (correctMoves.isEmpty())
 			return;
 		
-		Move randomMove = getRandomMove(correctMoves);
+		correctMoves.sort(movesSorter);
+		Move bestMove = correctMoves.get(0);
 		
-		try { randomMove.doMove(); } 
+		try { bestMove.doMove(); } 
 		catch (GameOver e) {
 			// Сохраняем в истории игры последний сделанный ход 
 			// и результат игры.
-			board.history.addMove(randomMove);
+			board.history.addMove(bestMove);
 			board.history.setResult(e.result);
 			
 			// Просим обозревателей доски показать 
@@ -64,7 +71,7 @@ public class Owl extends PutPiecePlayer {
 		}
 		
 		// Сохраняем ход в истории игры.
-		board.history.addMove(randomMove);
+		board.history.addMove(bestMove);
 
 		// Просим обозревателей доски показать 
 		// положение на доске, сделанный ход и 
@@ -82,14 +89,71 @@ public class Owl extends PutPiecePlayer {
 			throw new GameOver(GameResult.DRAWN);
 		}
 	}
-	
-	/**
-	 * Выдать случайную фигуру из списка фигур.
-	 * @param moves - список фигур.
-	 * @return фигура выбранная случайным образом.
-	 */
-	private Move getRandomMove(List<Move> moves) {
-		int random = (int) (Math.random() * moves.size());
-		return moves.get(random);
+}
+
+/**
+ * Алгоритм выбора Совой лучшего хода.
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ */
+class OwlBrain implements Comparator<Move> {
+	@Override
+	public int compare(Move m1, Move m2) {
+		int w1 = getMoveWeight(m1);
+		int w2 = getMoveWeight(m2);
+		
+		return w2 - w1;
 	}
+
+	private int getMoveWeight(Move move) {
+		IPutMove putMove = (IPutMove) move;
+		
+		Square target = putMove.getTarget();
+		
+		if (isCorner(target))
+			return 1000; // Встали в угол.
+
+		if (isBorder(target))
+			return 900; // Встали на край доски.
+		
+		if (move instanceof ICaptureMove) {
+			// Ход - взятие фигур врага.
+			ICaptureMove capture = (ICaptureMove) move;
+			
+			// Цена хода - сколько взяли фигур.
+			return capture.getCaptured().size();
+		}
+		
+		return 0; 
+	}
+
+	/**
+	 * Находится ли клетка на границе доски.
+	 * @param s - проверяемая клетка.
+	 * @return
+	 */
+	private boolean isBorder(Square s) {
+		Board b = s.getBoard();
+		
+		return (s.v == 0) || 
+			   (s.h == 0) || 
+			   (s.v == b.nV-1) ||
+			   (s.h == b.nH-1) ;
+	}
+
+	/**
+	 * Находится ли клетка в углу доски.
+	 * @param s - проверяемая клетка.
+	 * @return
+	 */
+	private boolean isCorner(Square s) {
+		Board b = s.getBoard();
+		
+		if ((s.v == 0) && (s.h == 0)) return true;
+		if ((s.v == 0) && (s.h == b.nH-1)) return true;
+		if ((s.v == b.nV-1) && (s.h == 0)) return true;
+		if ((s.v == b.nV-1) && (s.h == b.nH-1)) return true;
+
+		return false;
+	}
+
 }

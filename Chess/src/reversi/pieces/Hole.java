@@ -24,8 +24,6 @@ public class Hole extends Piece {
 
 	@Override
 	public Move makeMove(Square... squares) {
-		// TODO ds-generated method stub
 		return null;
 	}
-
 }
