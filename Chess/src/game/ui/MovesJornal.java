@@ -29,6 +29,7 @@ import game.core.Move;
  */
 public class MovesJornal extends Composite implements Observer {
 	private static final Font font = new Font(Display.getCurrent(), "mono", 10, SWT.BOLD);
+	private static final Cursor hand = new Cursor(Display.getCurrent(), SWT.CURSOR_HAND);
 	
 	private static final Color SELECT_COLOR = new Color(Display.getCurrent(), 217, 173, 124);
 	private static final Color HEADER_COLOR = new Color(Display.getCurrent(), 217, 173, 124);
@@ -92,7 +93,6 @@ public class MovesJornal extends Composite implements Observer {
 
 			MouseTrackListener listener = new MouseTrackListener() {
 				private Cursor oldCursor;
-				private Cursor hand = new Cursor(Display.getCurrent(), SWT.CURSOR_HAND);
 
 				@Override
 				public void mouseEnter(MouseEvent e) {
