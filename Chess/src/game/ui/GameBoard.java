@@ -158,6 +158,8 @@ public class GameBoard extends Canvas
 		return getClientArea().width  / board.nV;
 	}
 
+	Cursor boardCursor = new Cursor( Display.getCurrent(), SWT.CURSOR_ARROW);
+	
 	/**
 	 * Сделать заданное изображение изображением курсора.
 	 * 
@@ -173,11 +175,12 @@ public class GameBoard extends Canvas
 		
 		ImageData imageDate = image.getImageData().scaledTo(pw,	ph);
 	
+		boardCursor.dispose();
+		
 		Display display = Display.getCurrent();
 		
-		// TODO new Cursor !!! Хранить старый курсор. Иначе курсоры в SWT могут кончиться. !!!!
-		Cursor cursorPiece = new Cursor(display, imageDate, sw/2, sh/2);
-		setCursor(cursorPiece);
+		boardCursor = new Cursor(display, imageDate, sw/2, sh/2);
+		setCursor(boardCursor);
 	}
 	
 	/**
