@@ -21,6 +21,8 @@ import chinachess.players.PlayerBrain;
  * <a href="http://militera.lib.ru/science/sun-tszy/01.html">Сунь-Цзы. Искусство войны</a>
  */
 public class SunTzu extends MovePiecePlayer {
+	
+	private Comparator<? super Move> moveSorter = new SunTzuBrain();
 	@Override
 	public String getName() {
 		return "Сунь-Цзы";
@@ -53,15 +55,16 @@ public class SunTzu extends MovePiecePlayer {
 
 		// Пока делает случайный ход.
 		// TODO Дмитрив. Приоритет - делать ход с захватом вражеской фигуры.
-		Move randomMove = getRandomMove(correctMoves);
+		correctMoves.sort(moveSorter);
+		Move bestMove = correctMoves.get(0);
 		//Условие: если в зоне хода есть фигура другого цвета -> сделать этот ход
 		// если нет, то рандомный ход в направлении вражеского короля.
 		
-		try { randomMove.doMove(); } 
+		try { bestMove.doMove(); } 
 		catch (GameOver e) {
 			// Сохраняем в истории игры последний сделанный ход 
 			// и результат игры.
-			board.history.addMove(randomMove);
+			board.history.addMove(bestMove);
 			board.history.setResult(e.result);
 			
 			// Просим обозревателей доски показать 
@@ -73,7 +76,7 @@ public class SunTzu extends MovePiecePlayer {
 		}
 		
 		// Сохраняем ход в истории игры.
-		board.history.addMove(randomMove);
+		board.history.addMove(bestMove);
 
 		// Просим обозревателей доски показать 
 		// положение на доске, сделанный ход и 
