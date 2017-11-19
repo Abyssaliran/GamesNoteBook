@@ -1,13 +1,20 @@
 package chinachess.players;
 
+import java.util.Comparator;
 import java.util.List;
 
 import game.core.Board;
 import game.core.GameOver;
 import game.core.GameResult;
 import game.core.Move;
+import game.core.Piece;
 import game.core.PieceColor;
+import game.core.Square;
+import game.core.moves.ICaptureMove;
+import game.core.moves.ITransferMove;
 import game.players.MovePiecePlayer;
+import chinachess.pieces.King;
+import chinachess.players.PlayerBrain;
 
 /**
  * Сунь-Цзы - автор знаменитого трактата о военной стратегии «Искусство войны».<br>
@@ -90,3 +97,55 @@ public class SunTzu extends MovePiecePlayer {
 		return getName();
 	}
 }
+
+/**
+* Алгоритм определения лучших ходов у создателя трактата "Искусство войны" Сунь-Тзы.
+* 
+* @author 
+*/
+class SunTzuBrain extends PlayerBrain implements Comparator<Move> {
+	@Override
+	public int compare(Move m1, Move m2) {
+		int w1 = getMoveWeight(m1);
+		int w2 = getMoveWeight(m2);
+		
+		return w2 - w1;
+	}
+
+	/**
+	 * Задать вес для хода.
+	 * @param move - ход
+	 * @return оценка хода.
+	 */
+	private int getMoveWeight(Move move) {
+		ITransferMove transfer = (ITransferMove) move;
+		
+		Square source = transfer.getSource();
+		Square target = transfer.getTarget();
+		Piece thePiece = source.getPiece();
+
+		if (move instanceof ICaptureMove) {
+			// Ход - взятие фигуры врага.
+			ICaptureMove capture = (ICaptureMove) move;
+			
+			Square capturedSquare = capture.getCaptured().get(0);
+			Piece  capturedPiece  = capturedSquare.getPiece();
+			
+			// У захвата короля врага наивысший приоритет.
+			if (capturedPiece instanceof King)
+				return 1000;
+			
+			// Пока берем любую фигуру.
+			return 999;
+		}
+		
+		// Из всех ходов без взятия фигуры врага лучший ход
+		// который максимально приближает к королю врага.
+		King enemyKing = getEnemyKing(thePiece);
+		int stepWeight = MAX_DISTANCE - distance(target, enemyKing.square);
+		
+		return stepWeight; 
+//		return getSquareWeight(target);
+	}
+}
+
