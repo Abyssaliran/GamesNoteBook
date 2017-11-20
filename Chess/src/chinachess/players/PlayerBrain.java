@@ -20,7 +20,7 @@ public class PlayerBrain {
 	/**
 	 * Максимальное расстояние между клетками доски.
 	 */
-	protected static final int MAX_DISTANCE = 20;
+	protected static final int MAX_DISTANCE = 18;
 
 	/**
 	 * Ценность (вес) поля на доске.
