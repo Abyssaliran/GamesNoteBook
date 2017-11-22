@@ -110,4 +110,9 @@ public class SimpleMove implements ITransferMove {
 	public String toString() {
 		return "" + piece + source + "-" + target;
 	}
+
+	@Override
+	public Piece getPiece() {
+		return piece;
+	}
 }

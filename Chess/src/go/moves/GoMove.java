@@ -10,6 +10,16 @@ import game.core.Square;
 import game.core.moves.IPutMove;
 
 public abstract class GoMove implements IPutMove {
+	/**
+	 * Какую фигуру поставят.
+	 */
+	protected Piece piece;
+	
+	@Override
+	public Piece getPiece() {
+		return piece;
+	}
+
 	protected void checkGameEnd(Piece piece) throws GameOver {
 		// Проверим остались ли пустые клетки на доске.
 		Board board = piece.square.getBoard();

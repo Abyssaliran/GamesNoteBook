@@ -60,4 +60,9 @@ public class SimpleMove implements ITransferMove {
 	public Square getTarget() {
 		return target;
 	}
+
+	@Override
+	public Piece getPiece() {
+		return piece;
+	}
 }

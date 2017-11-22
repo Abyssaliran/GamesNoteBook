@@ -62,4 +62,9 @@ public class HalmaMove implements ITransferMove  {
 	public Square getSource() {
 		return source;
 	}
+
+	@Override
+	public Piece getPiece() {
+		return piece;
+	}
 }

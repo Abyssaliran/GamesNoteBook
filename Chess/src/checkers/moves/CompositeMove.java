@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import game.core.GameOver;
 import game.core.Move;
+import game.core.Piece;
 
 /**
  * Составной ход - последовательность ходов-захватов фигур.
@@ -15,6 +16,11 @@ public class CompositeMove implements Move {
 	 * Последовательность захватов фигур противника.
 	 */
 	private ArrayList<Capture> captures;
+	
+	/**
+	 * Фигура которая делает ход. 
+	 */
+	private Piece piece;
 
 	CompositeMove() {
 		captures = new ArrayList<>();
@@ -38,5 +44,10 @@ public class CompositeMove implements Move {
 	public void undoMove() {
 		for (Capture capture : captures)
 			capture.undoMove();
+	}
+
+	@Override
+	public Piece getPiece() {
+		return piece;
 	}
 }

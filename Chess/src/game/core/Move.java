@@ -8,6 +8,12 @@ package game.core;
  */
 public interface Move {
 	/**
+	 * Вернуть фигуру которая делает ход.
+	 * @return
+	 */
+	Piece getPiece();
+	
+	/**
 	 * Сделать ход (расстановку или перемещение фигур на доске).
 	 * @throws GameOver 
 	 */

@@ -115,4 +115,9 @@ public class ReversiMove implements IPutMove, ICaptureMove {
 	public List<Square> getCaptured() {
 		return captured;
 	}
+
+	@Override
+	public Piece getPiece() {
+		return piece;
+	}
 }

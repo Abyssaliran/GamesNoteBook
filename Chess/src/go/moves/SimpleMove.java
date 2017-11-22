@@ -17,10 +17,6 @@ public class SimpleMove extends GoMove implements IPutMove {
 	 */
 	private Square target;
 	
-	/**
-	 * Какую фигуру поставят.
-	 */
-	private Piece piece;
 
 	/**
 	 * Простой ход без взятия фигур противника.

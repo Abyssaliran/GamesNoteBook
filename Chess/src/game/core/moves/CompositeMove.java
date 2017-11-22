@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import game.core.GameOver;
 import game.core.Move;
+import game.core.Piece;
 
 /**
  * Составной ход - последовательность простых ходов фигурой одного цвета.
@@ -15,6 +16,11 @@ public class CompositeMove implements Move {
 	 * Последовательность простых ходов.
 	 */
 	private ArrayList<Move> moves;
+	
+	/**
+	 * фигура которая делает ход.
+	 */
+	private Piece piece;
 
 	CompositeMove() {
 		moves = new ArrayList<>();
@@ -53,5 +59,10 @@ public class CompositeMove implements Move {
 	public void undoMove() {
 		for (Move move : moves)
 			move.undoMove();
+	}
+
+	@Override
+	public Piece getPiece() {
+		return piece;
 	}
 }

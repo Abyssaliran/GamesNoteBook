@@ -1,6 +1,7 @@
 package game.core.moves;
 
 import game.core.Move;
+import game.core.Piece;
 
 /**
  * Простейший ход.
@@ -19,5 +20,10 @@ public class PassMove implements Move {
 	@Override
 	public String toString() {
 		return "Pass";
+	}
+
+	@Override
+	public Piece getPiece() {
+		return null;
 	}
 }
