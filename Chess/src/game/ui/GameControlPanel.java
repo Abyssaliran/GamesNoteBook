@@ -47,18 +47,18 @@ public class GameControlPanel extends Composite {
 		int wPlayerNumber = getPlayerIndex(wPlayer, players);
 		int bPlayerNumber = getPlayerIndex(bPlayer, players);
 		
-		// Список для выбора игроков белыми фигурами.
-		List wList = getPlayersList("White", wPlayerNumber, players);
-		wList.addListener(SWT.Selection, event ->  
-			board.setWhitePlayer( getSelectedPlayer(event, players) )
-		);
-		
 		// Список для выбора игроков черными фигурами.
 		List bList = getPlayersList("Black", bPlayerNumber, players);
 		bList.addListener(SWT.Selection, event -> 
 			board.setBlackPlayer( getSelectedPlayer(event, players) )
 		);
 
+		// Список для выбора игроков белыми фигурами.
+		List wList = getPlayersList("White", wPlayerNumber, players);
+		wList.addListener(SWT.Selection, event ->  
+			board.setWhitePlayer( getSelectedPlayer(event, players) )
+		);
+		
 		// Кнопка запуска игры.
 		//
 		GridData data = new GridData(SWT.CENTER, SWT.TOP, true, false);
