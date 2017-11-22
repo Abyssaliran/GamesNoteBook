@@ -1,6 +1,7 @@
 package checkers;
 
 import checkers.pieces.Man;
+import checkers.players.Znaika;
 import game.core.Board;
 import game.core.Game;
 import game.core.PieceColor;
@@ -16,6 +17,7 @@ public class Checkers extends Game {
 	static {
 		addPlayer(Checkers.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(Checkers.class, new Neznaika());
+		addPlayer(Checkers.class, new Znaika());
 	}
 
 	/**
