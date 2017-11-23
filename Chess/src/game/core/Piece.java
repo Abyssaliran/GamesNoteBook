@@ -157,6 +157,15 @@ public class Piece {
 		
 		return square.getBoard().getPieces(enemyColor);
 	}
+	
+	/**
+	 * Являются ли две фигуры врагами (они разного цвета).
+	 * @param piece - проверяемая фигура.
+	 * @return разного цвета или нет.
+	 */
+	public boolean isEnemy(Piece piece) {
+		return piece.getColor() != getColor();
+	}
 
 	/**
 	 * Является ли корректным ход фигурой для заданой последовательности клеток?
