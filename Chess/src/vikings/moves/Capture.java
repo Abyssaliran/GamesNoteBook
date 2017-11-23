@@ -53,6 +53,10 @@ public class Capture extends SimpleMove implements ICaptureMove {
 			.collect( Collectors.toList() );
 	}
 
+	public List<Piece> getCapturedPieces() {
+		return captured;
+	}
+
 	@Override
 	public void doMove() throws GameOver {
 		super.doMove();
@@ -82,13 +86,13 @@ public class Capture extends SimpleMove implements ICaptureMove {
 	}
 
 	/**
-	 * Вернуть список с захваченными фигурами.
+	 * Вернуть список захваченных фигур.
 	 * 
 	 * @param source
 	 *            - откуда пошла вражеская фигура.
 	 * @param target
 	 *            - куда пошла вражеская фигура.
-	 * @return список клеток с клетками где стоят захваченные фигуры противника.
+	 * @return список клеток где стоят захваченные фигуры противника.
 	 */
 	static
 	public List<Piece> collectCaptured(Square source, Square target) {
@@ -190,14 +194,14 @@ public class Capture extends SimpleMove implements ICaptureMove {
 	private boolean isCaptureSide(Piece piece, Square source, Square target, Dirs dir) {
 		boolean isKing = (piece instanceof Сyning);
 		
-		// В этом направлении край доски. 
-		// Окружение возможно только для короля.
+		// В этом направлении край доски, клетки нет. 
+		// Окружение на краю доски возможно только для короля.
 		if (!piece.square.hasNext(dir)) return isKing;
 		
 		Square next = piece.next(dir);
 
 		// В этом направлении трон. Окружение возможно.
-		if (VikingsPiece.isTron(next)) return true;
+		if (VikingsPiece.isTron(next) && isKing) return true;
 		
 		// В этом направлении выход. Окружение возможно.
 		if (VikingsPiece.isExit(next)) return true;
