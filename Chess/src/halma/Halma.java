@@ -6,6 +6,7 @@ import game.core.PieceColor;
 import game.players.IPlayer;
 import game.players.Neznaika;
 import halma.pieces.Stone;
+import halma.players.Ants;
 
 /**
  * Игра <a href=
@@ -19,6 +20,7 @@ public class Halma extends Game {
 	static {
 		addPlayer(Halma.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(Halma.class, new Neznaika());
+		addPlayer(Halma.class, new Ants());
 	}
 	
 	private static final short   allowableBoardSizeNumb = 3;
