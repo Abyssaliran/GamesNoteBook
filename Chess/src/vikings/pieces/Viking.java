@@ -51,7 +51,7 @@ public class Viking extends VikingsPiece {
 		Square target = squares[1]; // Куда идет.
 		
 		// Соберем захваченные вражеские фигуры.
-		List<Piece> captured = collectCaptured(source, target);
+		List<Piece> captured = Capture.collectCaptured(source, target);
 		
 		// Если захваченные фигуры есть, то вернем ход - захват фигур.
 		if (!captured.isEmpty())
@@ -62,6 +62,6 @@ public class Viking extends VikingsPiece {
 
 	@Override
 	public String toString() {
-		return "" + square;
+		return "";
 	}
 }
