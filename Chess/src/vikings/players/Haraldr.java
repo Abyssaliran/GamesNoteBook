@@ -23,7 +23,7 @@ import vikings.pieces.Сyning;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Haraldr extends MovePiecePlayer{
-	private Comparator<? super Move> movesSorter = new RurikBrain();
+	private Comparator<? super Move> movesSorter = new HaraldrBrain();
 
 	@Override
 	public String getName() {
