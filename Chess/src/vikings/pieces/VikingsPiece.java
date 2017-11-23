@@ -1,5 +1,9 @@
 package vikings.pieces;
 
+import java.util.Arrays;
+import java.util.List;
+
+import game.core.Board;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
@@ -68,5 +72,18 @@ public class VikingsPiece extends Piece {
 			return true;
 
 		return false;
+	}
+
+	public static List<Square> getExits(Piece piece) {
+		Board board = piece.square.getBoard();
+		int nv = board.nV-1;
+		int nh = board.nH-1;
+		
+		return Arrays.asList(
+				board.getSquare( 0,  0),
+				board.getSquare(nv,  0),
+				board.getSquare( 0, nv),
+				board.getSquare(nv, nh)
+		);
 	}
 }
