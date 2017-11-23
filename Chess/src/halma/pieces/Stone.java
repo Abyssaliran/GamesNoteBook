@@ -1,5 +1,6 @@
 package halma.pieces;
 
+import game.core.Board;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -25,6 +26,8 @@ public class Stone extends Piece {
 		Square source = square;
 		Square target = squares[0];
 		
+		Board board = square.getBoard();
+		
 		int dv = Math.abs(target.v - source.v);
 		int dh = Math.abs(target.h - source.h);
 		
@@ -34,9 +37,21 @@ public class Stone extends Piece {
 		if (dv > 0 && dh > 0)
 			return false; // Ход не по горизонтали или вертикали.
 		
-		if (dv > 1 || dh > 1)
-			return false; // Пока прыжки не делаем.
+		if ((dv == 2) && (dh == 0)) {
+			// Есть ли через кого перепрыгнуть?
+			int cv = (target.v + source.v)/2;
+			return !board.getSquare(cv, source.h).isEmpty();
+		}
 		
+		if ((dv == 0) && (dh == 2)) {
+			// Есть ли через кого перепрыгнуть?
+			int ch = (target.h + source.h)/2;
+			return !board.getSquare(source.v, ch).isEmpty();
+		}
+
+		if ((dv > 1) || (dh > 1)) 
+			return false;
+			
 		return true;
 	}
 
