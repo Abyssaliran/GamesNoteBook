@@ -11,6 +11,7 @@ import vikings.pieces.Viking;
 import vikings.pieces.Сyning;
 import vikings.players.Haraldr;
 import vikings.players.Rurik;
+import vikings.players.William;
 
 /**
  * Игра 
@@ -25,6 +26,7 @@ public class Vikings extends Game {
 		addPlayer(Vikings.class, new Neznaika());
 		addPlayer(Vikings.class, new Rurik());
 		addPlayer(Vikings.class, new Haraldr());
+		addPlayer(Vikings.class, new William());
 	}
 	
 	/**
