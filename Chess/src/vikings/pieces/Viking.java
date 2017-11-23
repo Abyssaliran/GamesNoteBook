@@ -2,8 +2,8 @@ package vikings.pieces;
 
 import java.util.List;
 
-import game.core.Board;
 import game.core.Move;
+import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 import vikings.moves.Capture;
@@ -26,9 +26,19 @@ public class Viking extends VikingsPiece {
 		
 		Square target = squares[0];
 		
+		// Викинг не может пойти на трон.
+		if (isExit(target)) 
+			return false;
+		
+		// Викинг не может пойти на клетку выхода.
+		if (isExit(target)) 
+			return false;
+		
+		// Допустим ход по пустой вертикали.
 		if (square.isEmptyVertical(target))
 			return true;
 		
+		// Допустим ход по пустой горизонтали.
 		if (square.isEmptyHorizontal(target))
 			return true;
 		
@@ -37,14 +47,13 @@ public class Viking extends VikingsPiece {
 
 	@Override
 	public Move makeMove(Square... squares) {
+		Square source = squares[0]; // Откуда идет.
+		Square target = squares[1]; // Куда идет.
+		
 		// Соберем захваченные вражеские фигуры.
-		Board board = square.getBoard();
-		PieceColor oponentColor = Board.getOponentColor(getColor());
+		List<Piece> captured = Capture.collectCaptured(source, target);
 		
-		List<Square> captured = collectCaptured(board, oponentColor);
-		
-		// Если захваченные фигуры есть, 
-		// то вернем ход - захват фигур.
+		// Если захваченные фигуры есть, то вернем ход - захват фигур.
 		if (!captured.isEmpty())
 			return new Capture(captured, squares);
 		

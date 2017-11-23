@@ -36,7 +36,7 @@ public class GamePanel extends Composite {
 		GridData data;
 
 		data = new GridData(SWT.LEFT, SWT.FILL, false, true);
-		data.widthHint = 120;
+		data.widthHint = 150;
 
 		control = new GameControlPanel(this, game);
 		control.setLayoutData(data);

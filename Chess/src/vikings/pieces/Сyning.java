@@ -1,8 +1,12 @@
 package vikings.pieces;
 
+import java.util.List;
+
 import game.core.Move;
+import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import vikings.moves.Capture;
 import vikings.moves.SimpleMove;
 
 /**
@@ -17,6 +21,16 @@ public class Сyning extends VikingsPiece {
 
 	@Override
 	public Move makeMove(Square... squares) {
+		Square source = squares[0]; // Откуда идет.
+		Square target = squares[1]; // Куда идет.
+		
+		// Соберем захваченные вражеские фигуры.
+		List<Piece> captured = Capture.collectCaptured(source, target);
+		
+		// Если захваченные фигуры есть, то вернем ход - захват фигур.
+		if (!captured.isEmpty())
+			return new Capture(captured, squares);
+		
 		return new SimpleMove(squares);
 	}
 
