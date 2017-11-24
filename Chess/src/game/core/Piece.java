@@ -168,6 +168,23 @@ public class Piece {
 	}
 
 	/**
+	 * Являются ли две фигуры друзья (они одного цвета).
+	 * @param piece - проверяемая фигура.
+	 * @return одного цвета или нет.
+	 */
+	public boolean isFriend(Piece piece) {
+		return piece.getColor() == getColor();
+	}
+
+	public boolean isWhite() {
+		return getColor() == PieceColor.WHITE;
+	}
+
+	public boolean isBlack() {
+		return getColor() == PieceColor.BLACK;
+	}
+	
+	/**
 	 * Является ли корректным ход фигурой для заданой последовательности клеток?
 	 * @param squares - последтвательность клеток через которые перемещается фигура.
 	 * @return корректен ход или нет.
@@ -182,4 +199,5 @@ public class Piece {
 	 * @return экжемпляр класса реализующего интерфейс <b>Move</b>.
 	 */
 	abstract public Move makeMove(Square ...squares);
+
 }
