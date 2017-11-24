@@ -3,8 +3,10 @@
  */
 package halma.ui;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 import game.core.Game;
@@ -12,6 +14,7 @@ import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.AsiaBoard;
 import game.ui.GamePanel;
+import game.ui.ScorePanel;
 import game.ui.listeners.MovePieceListener;
 import halma.Halma;
 import halma.ui.images.HalmaImages;
@@ -26,9 +29,17 @@ public class HalmaGamePanel extends GamePanel {
 	public HalmaGamePanel(Composite parent, int boardSize) {
 		super(parent, new Halma(boardSize));
 		
-		insertSquares( new HalmaBoardPanel(this, game) );
+		final HalmaBoardPanel gameBoardPanel = new HalmaBoardPanel(this, game);
+		insertSquares(gameBoardPanel);
+		
+		GridData data = new GridData(SWT.FILL, SWT.BOTTOM, false, true);
+		data.widthHint = 100;
+		
+		ScorePanel sp = new ScorePanel(control, game);
+		sp.setLayoutData(data);
 	}
 }
+
 /**
  * Доска для игры <a href=
  * "https://ru.wikipedia.org/wiki/https://ru.wikipedia.org/wiki/%D0%A5%D0%B0%D0%BB%D0%BC%D0%B0">
