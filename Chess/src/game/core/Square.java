@@ -240,4 +240,36 @@ public class Square {
 	public Square next(Dirs d) {
 		return board.getSquare(v + d.dv, h + d.dh);
 	}
+
+	/**
+	 * Выдать расстояние между клетками доски - 
+	 * сумму расстояний по вертикали и горизонтали.
+	 * 
+	 * @param source
+	 *            - клетка откуда идет фигура.
+	 * @param target
+	 *            - клетка куда идет фигура.
+	 * @return Расстояние между клетками <b>target</b> и <b>source</b>.
+	 */
+	public int distance(Square s) {
+		int dv = v - s.v;
+		int dh = h - s.h;
+		
+		return Math.abs(dv) + Math.abs(dh);
+	}
+	
+	/**
+	 * Выдать смещение между клетками - сумма смещений по вертикали и горизонтали. 
+	 * Смещение между клетками может быть отрицательным.
+	 * 
+	 * @param s
+	 *            - клетка куда идет фигура.
+	 * @return смещение между клетками target и source.
+	 */
+	public int shift(Square s) {
+		int dv = s.v - v;
+		int dh = s.h - h;
+		
+		return dv + dh;
+	}
 }
