@@ -52,7 +52,7 @@ public class Game {
 	 * Выдать счет для фигур заданного цвета. 
 	 * 
 	 * @param color - цвет фигур.
-	 * @return счет.
+	 * @return счет для заданного цвета фигур.
 	 */
 	public int getScore(PieceColor color) {
 		return board.getPieces(color).size();
@@ -60,13 +60,23 @@ public class Game {
 	
 	/**
 	 * Получить список всех игрокода для заданной игры.
-	 * @param game - заданная игра.
+	 * 
+	 * @param game
+	 *            - заданная игра.
 	 * @return список игроков для этой игры.
 	 */
 	public List<IPlayer> getPlayers(Class<? extends Game> game) {
 		return allPlayers.get(game);
 	}
 
+	/**
+	 * Задать для игры новые размеры доски.
+	 * 
+	 * @param nV
+	 *            - количество вертикалей.
+	 * @param nH
+	 *            - количество горизонталей.
+	 */
 	public void initBoard(int nV, int nH) {
 		board.reset(nV, nH);
 	}

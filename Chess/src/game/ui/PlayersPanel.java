@@ -69,7 +69,7 @@ public class PlayersPanel extends Composite {
 		GridData groupData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		
 		group = new Group(this, SWT.SHADOW_IN);
-		group.setText("Игорки");
+		group.setText("Игроки");
 		group.setForeground(TITLE_COLOR);
 		group.setLayout( new GridLayout(1, false) );
 		group.setLayoutData(groupData);
