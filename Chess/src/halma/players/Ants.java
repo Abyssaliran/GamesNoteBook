@@ -109,11 +109,11 @@ public class Ants extends MovePiecePlayer {
 
 	/**
 	 * Выбор случайного хода по случайному числу
-	 * в диапазоне от -0.5 до +0.5.
+	 * в диапазоне от -1 до +1.
 	 * 
 	 */
 	Comparator<? super ITransferMove> random = 
-		(move1, move2) -> (int)(Math.random() - 0.5);
+		(move1, move2) ->  (int) Math.round((2 * Math.random() - 1));
 
 	/**
 	 * Приоритет у хода делающего больший шаг к противоположному углу доски. 
