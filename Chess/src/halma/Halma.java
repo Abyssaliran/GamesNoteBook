@@ -61,8 +61,8 @@ public class Halma extends Game {
 	 * В сторону какой клетки должна двигаться заданная фигура.
 	 * 
 	 * @param piece
-	 *            - задання фигура.
-	 * @return клетка в сторону которой она должна двигаться.
+	 *            - заданная фигура.
+	 * @return клетка в сторону которой фигура должна двигаться.
 	 */
 	static
 	public Square getPieceGoal(Piece piece) {
@@ -80,14 +80,23 @@ public class Halma extends Game {
 	public int getScore(PieceColor color) {
 		return getScore(board, color);
 	}
-	
-	public Board getInitBoard(int boardSize) {
+
+	@Override
+	public void initBoard(int nV, int nH) {
+		super.initBoard(nV, nH);
 		
 		// Initialize board of the proper format
 		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz) {
-			if (allowableBoardSize[ind_sz] == boardSize) {
+			if (allowableBoardSize[ind_sz] == nV)  
+				initializeParticularBoard(allowableBoardSize[ind_sz]);
+		}
+	}
+	
+	public Board getInitBoard1(int boardSize) {
+		// Initialize board of the proper format
+		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz) {
+			if (allowableBoardSize[ind_sz] == boardSize)  
 				return initializeParticularBoard(allowableBoardSize[ind_sz]);
-			}
 		}
 		return null;
 	}

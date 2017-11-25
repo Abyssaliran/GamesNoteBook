@@ -13,6 +13,7 @@ import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.AsiaBoard;
+import game.ui.BoardSizePanel;
 import game.ui.GamePanel;
 import game.ui.ScorePanel;
 import game.ui.listeners.MovePieceListener;
@@ -32,11 +33,30 @@ public class HalmaGamePanel extends GamePanel {
 		final HalmaBoardPanel gameBoardPanel = new HalmaBoardPanel(this, game);
 		insertSquares(gameBoardPanel);
 		
-		GridData data = new GridData(SWT.FILL, SWT.BOTTOM, false, true);
+		GridData data;
+		
+		data = new GridData(SWT.FILL, SWT.TOP, false, true);
 		data.widthHint = 100;
 		
+		int[][] sizes = { {8,8}, {10,10}, {16,16} };
+		BoardSizePanel bsp = new BoardSizePanel(control, this, sizes);
+		bsp.setLayoutData(data);
+		
+		data = new GridData(SWT.FILL, SWT.BOTTOM, false, true);
+		data.widthHint = 100;
+
 		ScorePanel sp = new ScorePanel(control, game);
 		sp.setLayoutData(data);
+	}
+	
+	
+	public void resizeBoard(int nV, int nH) {
+		super.resizeBoard(nV, nH);
+		
+		// Новые размеры доски и расстановка фигур.
+		game.initBoard(nV, nH);
+		
+		adorned.resize(nV, nH);
 	}
 }
 
