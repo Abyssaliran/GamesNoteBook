@@ -41,9 +41,13 @@ public class Halma extends Game {
 	}	
 	
 	/**
+	 * Выдать счет для игрока играющего фигурами заданного цвета.
+	 * 
 	 * @param board
+	 *            - доска для вычиления счета.
 	 * @param color
-	 * @return
+	 *            - цвет фигур.
+	 * @return сумма расстояний от фигуры до клетки куда идет фигура.
 	 */
 	static 
 	public int getScore(Board board, PieceColor color) {
@@ -86,18 +90,17 @@ public class Halma extends Game {
 		super.initBoard(nV, nH);
 		
 		// Initialize board of the proper format
-		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz) {
+		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz)  
 			if (allowableBoardSize[ind_sz] == nV)  
 				initializeParticularBoard(allowableBoardSize[ind_sz]);
-		}
 	}
 	
 	public Board getInitBoard1(int boardSize) {
 		// Initialize board of the proper format
-		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz) {
+		for (short ind_sz = 0; ind_sz < Halma.allowableBoardSizeNumb; ++ind_sz)  
 			if (allowableBoardSize[ind_sz] == boardSize)  
 				return initializeParticularBoard(allowableBoardSize[ind_sz]);
-		}
+		
 		return null;
 	}
 

@@ -96,7 +96,7 @@ public class AdornedBoard extends Canvas {
 			GridData data = new GridData(SWT.CENTER, SWT.CENTER, true, true);
 			data.widthHint = 20;
 
-			int style = SWT.CENTER | SWT.TRANSPARENT | SWT.BORDER;
+			int style = SWT.CENTER | SWT.TRANSPARENT;
 
 			for (int k = 1; k <= n; k++) {
 				int start = this.isInverted ? n + 1 : 0;
@@ -251,6 +251,15 @@ public class AdornedBoard extends Canvas {
 		new EmptyAdorn(owner).setLayoutData(data);
 	}
 
+	/**
+	 * Изменить надписи на доске на нового размера доски: <br>
+	 * номера горизонталей и имена вертикалей.
+	 * 
+	 * @param nV
+	 *            - количество вертикалей.
+	 * @param nH
+	 *            - количество горизонталей.
+	 */
 	public void resize(int nV, int nH) {
 		font = ((nV > 8) || (nH > 8)) ? fontSmall : fontLarge;
 

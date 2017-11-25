@@ -29,6 +29,8 @@ public class Vikings extends Game {
 		addPlayer(Vikings.class, new William());
 	}
 	
+	int center;
+
 	/**
 	 * Создание доски заданного размера
 	 * и расстановка фигур для этого размера доски.
@@ -40,22 +42,65 @@ public class Vikings extends Game {
 		super.initBoard(boardSize, boardSize);
 		
 		switch (boardSize) {
-			case  9: initBoard9();  break;
-			case 11: initBoard11(); break;
+			case  9: initBoard( 9,  9); break;
+			case 11: initBoard(11, 11); break;
 		}
 
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Neznaika() );
 	}
 
-	/** 
-	 * Создание доски размером 11х11
-	 * и расстановка фигур для этого размера доски.
-	 * 
-	 * @return доска с расставленными фигурами.
-	 */
-	private void initBoard11() {
-		new Сyning(board.getSquare(5, 5), PieceColor.WHITE);
+	@Override
+	public void initBoard(int nV, int nH) {
+		super.initBoard(nV, nH);
+
+		if (nV == 11) {
+			center = 5;
+			setRhomb(   0, center, PieceColor.BLACK, 1);
+			setRhomb(center,    0, PieceColor.BLACK, 1);
+			setRhomb(nV-1, center, PieceColor.BLACK, 1);
+			setRhomb(center, nH-1, PieceColor.BLACK, 1);
+			
+			setRhomb(center, center, PieceColor.WHITE, 2);
+//			new Сyning(board.getSquare(center, center), PieceColor.WHITE);
+		} else {
+			center = 4;
+			
+			new Сyning(board.getSquare(center, center), PieceColor.WHITE);
+			
+			for(LineDirs dir : LineDirs.ALL) 
+				for (int k = 1; k < 3; k++) {
+					Square square = board.getSquare(center + k * dir.dv, center + k * dir.dh);
+					new Viking(square, PieceColor.WHITE);
+				}
+
+			for(LineDirs dir : LineDirs.ALL)  
+				setBlack(board, center + 4 * dir.dv, center + 4 * dir.dh);
+		}
+	}
+
+	private void setRhomb(int centerV, int centerH, PieceColor color, int n) {
+		int startV = centerV;
+		int size = 1;
+		int maxH = centerH + n + 1;
+		
+		for (int h = centerH - n; h < maxH; h++) {
+			int maxV = startV + size;
+			
+			for (int v = startV; v < maxV; v++) {
+				if (!board.onBoard(v, h)) 
+					continue;
+				
+				Square square = board.getSquare(v, h);
+				
+				if ((v == center) && (h == center))
+					 new Сyning(square, PieceColor.WHITE);
+				else new Viking(square, color);
+			}
+			int delta = (h >= centerH ? -1 : 1);
+			size += 2*delta;
+			startV -= delta;
+		}
 	}
 
 	/** 

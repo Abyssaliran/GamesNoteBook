@@ -30,12 +30,12 @@ public class HalmaGamePanel extends GamePanel {
 	public HalmaGamePanel(Composite parent, int boardSize) {
 		super(parent, new Halma(boardSize));
 		
-		final HalmaBoardPanel gameBoardPanel = new HalmaBoardPanel(this, game);
-		insertSquares(gameBoardPanel);
+		insertSquares( new HalmaBoardPanel(this, game) );
 		
-		GridData data;
-		
-		data = new GridData(SWT.FILL, SWT.TOP, false, true);
+		// 
+		// Возможен выбор размера доски.
+		//
+		GridData data = new GridData(SWT.FILL, SWT.TOP, false, true);
 		data.widthHint = 100;
 		
 		int[][] sizes = { {8,8}, {10,10}, {16,16} };
@@ -47,16 +47,6 @@ public class HalmaGamePanel extends GamePanel {
 
 		ScorePanel sp = new ScorePanel(control, game);
 		sp.setLayoutData(data);
-	}
-	
-	
-	public void resizeBoard(int nV, int nH) {
-		super.resizeBoard(nV, nH);
-		
-		// Новые размеры доски и расстановка фигур.
-		game.initBoard(nV, nH);
-		
-		adorned.resize(nV, nH);
 	}
 }
 

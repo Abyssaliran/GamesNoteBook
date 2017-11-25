@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Group;
 import game.core.Board;
 
 /**
- * Панель для выбора размеров доски для игры.
+ * Панель выбора размеров доски для игры.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
