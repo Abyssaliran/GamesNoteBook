@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseTrackListener;
@@ -176,12 +177,16 @@ public class MovesJornal extends Composite implements Observer {
 		// 
 		// Панель для показа ходов в партии.
 		//
-		data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		ScrolledComposite sc = new ScrolledComposite(this, SWT.NONE);
 		
-		movesPanel = new MovesPanel(this, SWT.NONE);
+		data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		sc.setLayoutData(data);
+	
+		movesPanel = new MovesPanel(sc, SWT.V_SCROLL | SWT.BORDER);
 		movesPanel.setLayout( new GridLayout(4, false) );
 		movesPanel.setBackground(PAPER_COLOR);
-		movesPanel.setLayoutData(data);
+		sc.setContent(movesPanel);
+//		movesPanel.setLayoutData(data);
 
 		//
 		// Панель для выдачи результата игры.
@@ -228,7 +233,7 @@ public class MovesJornal extends Composite implements Observer {
 			nChilds = 0;
 		}
 			
-		// Добавим новые ходв в отображаемый список.
+		// Добавим новые ходы в отображаемый список ходов.
 		for (int k = nChilds; k < moves.size(); k++) 
 			new MoveLabel(movesPanel, k, moves.get(k));
 
