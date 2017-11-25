@@ -12,6 +12,7 @@ public class GameImages {
 	public static Image woodDark;
 	public static Image woodLight;
 	public static Image woodMedium;
+	public static Image papiro;
 
 	static {
 		load( Display.getCurrent() );
@@ -21,5 +22,7 @@ public class GameImages {
 		woodDark   = new Image(display, GameImages.class.getResourceAsStream("wood_dark.png"));
 		woodLight  = new Image(display, GameImages.class.getResourceAsStream("wood_light.png"));
 		woodMedium = new Image(display, GameImages.class.getResourceAsStream("wood_medium.png"));
+		
+		papiro     = new Image(display, GameImages.class.getResourceAsStream("papiro.png"));
 	}  
 } 

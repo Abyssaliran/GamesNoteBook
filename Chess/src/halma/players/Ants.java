@@ -46,10 +46,12 @@ public class Ants extends MovePiecePlayer {
 		// что бы не играть всегда одну и ту же игру.
 		Collections.shuffle(correctMoves);
 		
-		// Сначала приоритет ходам с более длинным шагом (на большее число клеток).
-		// Затем среди выбранных с длинным шагом - ход отстающими фигурами.
+		// Сначала приоритет ходам с более длинным шагом 
+		// (на большее число клеток).
+		// Затем среди выбранных ходов с длинным шагом - 
+		// выбирается ход отстающими фигурами.
 		Comparator<ITransferMove> comparator = 
-				maxStep.thenComparing(fromBack).thenComparing(random);
+				maxStep.thenComparing(fromBack); 
 		
 		Move bestMove = correctMoves
 			.stream()
@@ -91,6 +93,11 @@ public class Ants extends MovePiecePlayer {
 			
 			board.history.setResult(result);
 			
+			// Просим обозревателей доски показать 
+			// положение на доске, сделанный ход и 
+			// результат игры.
+			board.setBoardChanged();
+
 			throw new GameOver(result);
 		}
 			
@@ -108,15 +115,8 @@ public class Ants extends MovePiecePlayer {
 	}
 
 	/**
-	 * Выбор случайного хода по случайному числу
-	 * в диапазоне от -1 до +1.
-	 * 
-	 */
-	Comparator<? super ITransferMove> random = 
-		(move1, move2) ->  (int) Math.round((2 * Math.random() - 1));
-
-	/**
-	 * Приоритет у хода делающего больший шаг к противоположному углу доски. 
+	 * Приоритет у хода делающего больший шаг к цели -
+	 * противоположному углу доски. 
 	 */
 	Comparator<ITransferMove> maxStep = 
 		(move1, move2) -> {
