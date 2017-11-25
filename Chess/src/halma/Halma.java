@@ -2,10 +2,13 @@ package halma;
 
 import game.core.Board;
 import game.core.Game;
+import game.core.Piece;
 import game.core.PieceColor;
+import game.core.Square;
 import game.players.IPlayer;
 import game.players.Neznaika;
 import halma.pieces.Stone;
+import halma.players.Ants;
 
 /**
  * Игра <a href=
@@ -19,6 +22,7 @@ public class Halma extends Game {
 	static {
 		addPlayer(Halma.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(Halma.class, new Neznaika());
+		addPlayer(Halma.class, new Ants());
 	}
 	
 	private static final short   allowableBoardSizeNumb = 3;
@@ -35,6 +39,47 @@ public class Halma extends Game {
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setBlackPlayer( new Neznaika() );
 	}	
+	
+	/**
+	 * @param board
+	 * @param color
+	 * @return
+	 */
+	static 
+	public int getScore(Board board, PieceColor color) {
+		Square goal = getPieceGoal(board, color);
+		
+		int n = board.getPieces(color)
+			.stream()
+			.mapToInt(p -> p.square.distance(goal))
+			.sum();
+		
+		return n;
+	}
+	
+	/**
+	 * В сторону какой клетки должна двигаться заданная фигура.
+	 * 
+	 * @param piece
+	 *            - задання фигура.
+	 * @return клетка в сторону которой она должна двигаться.
+	 */
+	static
+	public Square getPieceGoal(Piece piece) {
+		return getPieceGoal(piece.square.getBoard(), piece.getColor());
+	}
+	
+	static
+	public Square getPieceGoal(Board board, PieceColor color) {
+		return color == PieceColor.BLACK
+				? board.getSquare(0, 0)
+				: board.getSquare(board.nV-1, board.nH-1);
+	}
+	
+	@Override
+	public int getScore(PieceColor color) {
+		return getScore(board, color);
+	}
 	
 	public Board getInitBoard(int boardSize) {
 		

@@ -21,6 +21,11 @@ public class Game {
 	private static 
 	Map<Class<? extends Game>, List<IPlayer>> allPlayers = new HashMap<>();
 	
+	/**
+	 * Доска на которой происходит игра.
+	 */
+	public Board board;
+
 	public Game() {
 		board = new Board();
 	}
@@ -42,8 +47,16 @@ public class Game {
 		
 		players.add(player);
 	}
-
-	public Board board;
+	
+	/**
+	 * Выдать счет для фигур заданного цвета. 
+	 * 
+	 * @param color - цвет фигур.
+	 * @return счет.
+	 */
+	public int getScore(PieceColor color) {
+		return board.getPieces(color).size();
+	}
 	
 	/**
 	 * Получить список всех игрокода для заданной игры.

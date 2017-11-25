@@ -13,6 +13,7 @@ import game.core.PieceColor;
 import game.core.Square;
 import game.ui.GamePanel;
 import game.ui.GreenBoard;
+import game.ui.ScorePanel;
 import game.ui.listeners.PutPieceListener;
 import game.ui.listeners.PutPiecePromptListener;
 import reversi.Reversi;
@@ -40,7 +41,7 @@ public class ReversiGamePanel extends GamePanel {
 		GridData data = new GridData(SWT.FILL, SWT.BOTTOM, false, true);
 		data.widthHint = 100;
 		
-		ScorePanel sp = new ScorePanel(control, gameBoard.board);
+		ScorePanel sp = new ScorePanel(control, game);
 		sp.setLayoutData(data);
 	}
 
