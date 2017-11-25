@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Label;
 import game.core.Board;
 import game.core.History;
 import game.core.Move;
+import game.ui.images.GameImages;
 
 /**
  * Журнал для хранения истории ходов игры.
@@ -35,7 +36,7 @@ public class MovesJornal extends Composite implements Observer {
 	private static final Color SELECT_COLOR = new Color(Display.getCurrent(), 217, 173, 124);
 	private static final Color HEADER_COLOR = new Color(Display.getCurrent(), 217, 173, 124);
 	private static final Color BLACK_COLOR  = new Color(Display.getCurrent(),   0,   0,   0);
-	private static final Color PAPER_COLOR  = new Color(Display.getCurrent(), 240, 255, 240);
+	private static final Color PAPER_COLOR  = new Color(Display.getCurrent(), 255, 210,   0);
 
 	/**
 	 * История игры.
@@ -177,16 +178,15 @@ public class MovesJornal extends Composite implements Observer {
 		// 
 		// Панель для показа ходов в партии.
 		//
-		ScrolledComposite sc = new ScrolledComposite(this, SWT.NONE);
-		
 		data = new GridData(SWT.FILL, SWT.FILL, true, true);
+
+		ScrolledComposite sc = new ScrolledComposite(this, SWT.V_SCROLL | SWT.H_SCROLL);
+		sc.setBackgroundImage( GameImages.papiro );
 		sc.setLayoutData(data);
 	
-		movesPanel = new MovesPanel(sc, SWT.V_SCROLL | SWT.BORDER);
+		movesPanel = new MovesPanel(sc, SWT.TRANSPARENT);
 		movesPanel.setLayout( new GridLayout(4, false) );
-		movesPanel.setBackground(PAPER_COLOR);
 		sc.setContent(movesPanel);
-//		movesPanel.setLayoutData(data);
 
 		//
 		// Панель для выдачи результата игры.
@@ -243,7 +243,7 @@ public class MovesJornal extends Composite implements Observer {
 		Control[] children = movesPanel.getChildren();
 		
 		for (int k = 0; k < children.length; k++) {
-			Color color = (k == curMove ? SELECT_COLOR : PAPER_COLOR);
+			Color color = (k == curMove ? SELECT_COLOR : null);
 			Control control = children[k];
 			control.setBackground(color);
 		}
