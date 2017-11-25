@@ -103,11 +103,16 @@ public class Board extends Observable {
 		}
 	}
 	
+	/**
+	 * Запуск цикла передачи ходов от одного игрока к другому.
+	 * Выход из цикла при завершении игры или
+	 * при передаче хода игроку - человеку.
+	 */
 	public void startGame() {
 		for (;;) {
 			IPlayer player = players.get(moveColor);
 			if (player == IPlayer.HOMO_SAPIENCE)
-				break; // Ход сделает человек мышкой.
+				break; // Ход сделает человек.
 			
 			try { player.doMove(this, moveColor); } 
 			catch (GameOver e) 
