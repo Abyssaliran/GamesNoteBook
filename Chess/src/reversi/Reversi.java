@@ -10,6 +10,7 @@ import game.players.Vinni;
 import reversi.pieces.Hole;
 import reversi.pieces.Stone;
 import reversi.players.Owl;
+import reversi.players.Tiger;
 
 /**
  * Игра 
@@ -29,6 +30,7 @@ public class Reversi extends Game {
 		Game.addPlayer(Reversi.class, IPlayer.HOMO_SAPIENCE);
 		Game.addPlayer(Reversi.class, new Vinni(pieceProvider));
 		Game.addPlayer(Reversi.class, new Owl(pieceProvider));
+		Game.addPlayer(Reversi.class, new Tiger(pieceProvider));
 	}
 	
 	/**
