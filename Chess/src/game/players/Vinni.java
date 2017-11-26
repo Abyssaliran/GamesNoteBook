@@ -1,5 +1,6 @@
 package game.players;
 
+import java.util.Collections;
 import java.util.List;
 
 import game.core.Board;
@@ -16,6 +17,8 @@ import game.core.PieceColor;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Vinni extends PutPiecePlayer {
+	private int maxMoves;
+
 	@Override
 	public String getName() {
 		return "Винни";
@@ -26,6 +29,16 @@ public class Vinni extends PutPiecePlayer {
 		return "Романов В.Ю.";
 	}
 	
+	/**
+	 * Винни - простой игрок для игр в которых ставятся фигуры на доску.
+	 * Он случайным образом выбирает клетку на которую можно поставить фигуру.
+	 */
+	public Vinni(IPieceProvider pieceProvider, int maxMoves) {
+		super(pieceProvider);
+		this.pieceProvider = pieceProvider;
+		this.maxMoves = maxMoves;
+	}
+
 	/**
 	 * Винни - простой игрок для игр в которых ставятся фигуры на доску.
 	 * Он случайным образом выбирает клетку на которую можно поставить фигуру.
@@ -43,7 +56,8 @@ public class Vinni extends PutPiecePlayer {
 			return;
 		
 		// Винни делает случайный ход.
-		Move randomMove = getRandomMove(correctMoves);
+		Collections.shuffle(correctMoves);
+		Move randomMove = correctMoves.get(0);
 		
 		try { randomMove.doMove(); } 
 		catch (GameOver e) {
@@ -70,7 +84,7 @@ public class Vinni extends PutPiecePlayer {
 
 		// Для отладки ограничим количество ходов в игре.
 		// После этого результат игры ничья.
-		if (board.history.getMoves().size() > 80) {
+		if (board.history.getMoves().size() > maxMoves) {
 			// Сохраняем в истории игры последний сделанный ход 
 			// и результат игры.
 			board.history.setResult(GameResult.DRAWN);
@@ -78,15 +92,5 @@ public class Vinni extends PutPiecePlayer {
 			// Сообщаем что игра закончилась ничьей.
 			throw new GameOver(GameResult.DRAWN);
 		}
-	}
-	
-	/**
-	 * Выдать случайную фигуру из списка фигур.
-	 * @param moves - список фигур.
-	 * @return фигура выбранная случайным образом.
-	 */
-	private Move getRandomMove(List<Move> moves) {
-		int random = (int) (Math.random() * moves.size());
-		return moves.get(random);
 	}
 }

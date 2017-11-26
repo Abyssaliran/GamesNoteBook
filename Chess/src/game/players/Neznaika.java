@@ -1,5 +1,6 @@
 package game.players;
 
+import java.util.Collections;
 import java.util.List;
 
 import game.core.Board;
@@ -15,6 +16,15 @@ import game.core.PieceColor;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Neznaika extends MovePiecePlayer {
+	private int maxMoves = 80;
+	
+	public Neznaika() {
+		this(80);
+	}
+	public Neznaika(int maxMoves) {
+		this.maxMoves = maxMoves;
+	}
+
 	@Override
 	public String getName() {
 		return "Незнайка";
@@ -25,16 +35,6 @@ public class Neznaika extends MovePiecePlayer {
 		return "Романов В.Ю.";
 	}
 	
-	/**
-	 * Выдать случайную фигуру из списка фигур.
-	 * @param moves - список фигур.
-	 * @return фигура выбранная случайным образом.
-	 */
-	private Move getRandomMove(List<Move> moves) {
-		int random = (int) (Math.random() * moves.size());
-		return moves.get(random);
-	}
-
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
 		List<Move> correctMoves = getCorrectMoves(board, color);
@@ -46,7 +46,8 @@ public class Neznaika extends MovePiecePlayer {
 			return;
 
 		// Незнайка делает случайный ход.
-		Move randomMove = getRandomMove(correctMoves);
+		Collections.shuffle(correctMoves);
+		Move randomMove = correctMoves.get(0);
 		
 		try { randomMove.doMove(); } 
 		catch (GameOver e) {
@@ -73,7 +74,7 @@ public class Neznaika extends MovePiecePlayer {
 	
 		// Для отладки ограничим количество ходов в игре.
 		// После этого результат игры ничья.
-		if (board.history.getMoves().size() > 80) {
+		if (board.history.getMoves().size() > maxMoves) {
 			// Сохраняем в истории игры последний сделанный ход 
 			// и результат игры.
 			board.history.setResult(GameResult.DRAWN);
