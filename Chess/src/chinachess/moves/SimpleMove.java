@@ -4,6 +4,7 @@ import game.core.GameOver;
 import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
+import game.core.moves.ITransferMove;
 
 /**
  * Простой ход китайских шахмат - перемещение фигуры на пустую клетку.
@@ -13,7 +14,7 @@ import game.core.Square;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class SimpleMove implements Move {
+public class SimpleMove implements ITransferMove {
 	/**
 	 * Какая фигура перемещается.
 	 */
@@ -49,5 +50,15 @@ public class SimpleMove implements Move {
 	@Override
 	public String toString() {
 		return "" + piece + source + "-" + target;
+	}
+
+	@Override
+	public Square getSource() {
+		return source;
+	}
+
+	@Override
+	public Square getTarget() {
+		return target;
 	}
 }

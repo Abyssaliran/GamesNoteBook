@@ -1,5 +1,6 @@
 package chinachess.players;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class SunTzu extends MovePiecePlayer {
 	 * @param moves - список фигур.
 	 * @return фигура выбранная случайным образом.
 	 */
+	@SuppressWarnings("unused")
 	private Move getRandomMove(List<Move> moves) {
 		int random = (int) (Math.random() * moves.size());
 		return moves.get(random);
@@ -53,13 +55,13 @@ public class SunTzu extends MovePiecePlayer {
 		if (correctMoves.isEmpty())
 			return;
 
+		Collections.shuffle(correctMoves);
+		
 		// Пока делает случайный ход.
 		// TODO Дмитрив. Приоритет - делать ход с захватом вражеской фигуры.
 		correctMoves.sort(moveSorter);
 		Move bestMove = correctMoves.get(0);
-		//Условие: если в зоне хода есть фигура другого цвета -> сделать этот ход
-		// если нет, то рандомный ход в направлении вражеского короля.
-		
+				
 		try { bestMove.doMove(); } 
 		catch (GameOver e) {
 			// Сохраняем в истории игры последний сделанный ход 
@@ -111,7 +113,6 @@ class SunTzuBrain extends PlayerBrain implements Comparator<Move> {
 	public int compare(Move m1, Move m2) {
 		int w1 = getMoveWeight(m1);
 		int w2 = getMoveWeight(m2);
-		
 		return w2 - w1;
 	}
 
