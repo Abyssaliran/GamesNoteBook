@@ -17,7 +17,7 @@ import game.core.PieceColor;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Vinni extends PutPiecePlayer {
-	private int maxMoves;
+	private int maxMoves = 80;
 
 	@Override
 	public String getName() {
