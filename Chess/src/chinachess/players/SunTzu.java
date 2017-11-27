@@ -57,8 +57,7 @@ public class SunTzu extends MovePiecePlayer {
 
 		Collections.shuffle(correctMoves);
 		
-		// Пока делает случайный ход.
-		// TODO Дмитрив. Приоритет - делать ход с захватом вражеской фигуры.
+		
 		correctMoves.sort(moveSorter);
 		Move bestMove = correctMoves.get(0);
 				
