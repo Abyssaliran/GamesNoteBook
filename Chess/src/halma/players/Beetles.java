@@ -11,19 +11,19 @@ import game.core.moves.ITransferMove;
 import halma.Halma;
 
 /**
- * Ants - алгоритм "Муравьи".
+ * Beetles - алгоритм "Жуки".
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Ants extends HalmaPlayer {
+public class Beetles extends HalmaPlayer {
 	@Override
 	public String getName() {
-		return "Муравьи";
+		return "Жуки";
 	}
 
 	@Override
 	public String getAuthorName() {
-		return "Романов В.Ю.";
+		return "Лицарев Михаил";
 	}
 
 	@Override
