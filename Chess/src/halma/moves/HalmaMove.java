@@ -11,24 +11,25 @@ import game.core.moves.ITransferMove;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
+abstract
 public class HalmaMove implements ITransferMove  {
 	/**
 	 * Какая фигура перемещается.
 	 */
-	private Piece piece;
+	protected Piece piece;
 	
 	/**
 	 * Откуда перемещается.
 	 */
-	private Square source;
+	protected Square source;
 	
 	/**
 	 * Куда перемещается.
 	 */
-	private Square target;
+	protected Square target;
 
 	/**
-	 * Перемешение фигуры через даданные клетки.
+	 * Перемешение фигуры через заданные клетки.
 	 * @param squares
 	 */
 	public HalmaMove(Square... squares) {
@@ -48,11 +49,6 @@ public class HalmaMove implements ITransferMove  {
 		piece.moveTo(source);
 	}
 	
-	@Override
-	public String toString() {
-		return "" + source + "-" + target;
-	}
-
 	@Override
 	public Square getTarget() {
 		return target;
