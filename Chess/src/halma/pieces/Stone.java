@@ -5,8 +5,8 @@ import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
-
-import halma.moves.HalmaMove;
+import halma.moves.Jump;
+import halma.moves.Step;
 
 /**
  * Фигура для игры <a href=
@@ -26,7 +26,20 @@ public class Stone extends Piece {
 		Square source = square;
 		Square target = squares[0];
 		
-		Board board = square.getBoard();
+		return isCorrectMove(this, source, target);
+	}
+
+	@Override
+	public Move makeMove(Square... squares) {
+		Square source = squares[0];
+		Square target = squares[1];
+		
+		return createMove(source, target);
+	}
+
+	static
+	public boolean isCorrectMove(Stone stone, Square source, Square target) {
+		Board board = stone.square.getBoard();
 		
 		int dv = Math.abs(target.v - source.v);
 		int dh = Math.abs(target.h - source.h);
@@ -55,8 +68,10 @@ public class Stone extends Piece {
 		return true;
 	}
 
-	@Override
-	public Move makeMove(Square... squares) {
-		return new HalmaMove(squares);
+	static
+	public Move createMove(Square source, Square target) {
+		return source.distance(target) == 1
+				? new Step(source, target)
+				: new Jump(source, target);
 	}
 }
