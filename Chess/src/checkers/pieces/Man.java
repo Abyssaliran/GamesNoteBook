@@ -22,18 +22,21 @@ public class Man extends CheckersPiece {
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
-		// Пока используем только умалчиваемую проверку
-		// выполняемую в базовом классе.
-		if (!super.isCorrectMove(squares))
+		Square source = square;     // Клетка где стоит фигура.
+		Square target = squares[0]; // Клетка куда должна пойти фигура.
+		
+		return isCorrectMove(this, source, target);
+	}
+
+	static
+	public boolean isCorrectMove(Man man, Square source, Square target) {
+		// На занятую клетку ходить нельзя.
+		if (!target.isEmpty())
 			return false;
 
-		Square source = square;     // клетка где уже стоит фигура.
-		Square target = squares[0]; // клетка куда хочет пойти фигура.
-		
 		// Вычислим смещение фигуры.
-		boolean isBlack = getColor() == PieceColor.BLACK;
 		int dv = target.v - source.v;
-		int dh = isBlack 
+		int dh = man.isBlack() 
 				? target.h - source.h  // Черная фигура идет вниз (от h=0 до h=7).
 				: source.h - target.h; // Белая фигура идет вверх (от h=7 до h=0).
 		
@@ -60,7 +63,7 @@ public class Man extends CheckersPiece {
 			
 			// Может быть есть ходы с захватом.
 			// В шашках такие ходы обязательны.
-			if (hasCaptures())
+			if (man.hasCaptures())
 				return false;
 			
 			// Все проверки фигура прошла. Ход правильный.
@@ -74,17 +77,17 @@ public class Man extends CheckersPiece {
 			int capturedH = (source.h + target.h) / 2;
 			int capturedV = (source.v + target.v) / 2;
 			
-		    Board board = square.getBoard();
+		    Board board = man.square.getBoard();
 			Square capturedSquare = board.getSquare(capturedV, capturedH);
 		    
-			Piece captured = capturedSquare.getPiece();
-			
-			// Перепрыгнули через пустую клетку.
-			if (captured == null)
+			// Прыгать через пустую клетку нельзя.
+			if (capturedSquare.isEmpty())
 				return false; 
 			
-			// Перепрыгнули через фигуру того же цвета.
-			if (getColor() == captured.getColor())
+			Piece captured = capturedSquare.getPiece();
+			
+			// Прыгать через фигуру того же цвета нельзя.
+			if (man.isFriend(captured))
 				return false;
 			
 			// Все проверки фигура прошла. Ход правильный.
@@ -118,32 +121,33 @@ public class Man extends CheckersPiece {
 
 	@Override
 	public Move makeMove(Square... squares) {
-		Move move = null;
-		
 		Square source = squares[0];
 		Square target = squares[1];	
 		
-		boolean isBlack = getColor() == PieceColor.BLACK;
-		boolean isPromotion = isBlack 
-				? target.h == 7 
-				: target.h == 0;
-		
-		boolean isCapture = Math.abs(target.v - source.v) == 2;
+		return createMove(this, source, target);
+	}
 
-		if (!isCapture){
-		    move = new SimpleMove(isPromotion , source, target);
-		}
+	static
+	public Move createMove(Man man, Square source, Square target) {
+		boolean isCapture   = Math.abs(target.v - source.v) == 2;
+		boolean isPromotion = man.isBlack() ? target.h == 7 : target.h == 0;
+
+		Move move;
+		
+		if (!isCapture) 
+		    move = new SimpleMove(isPromotion, source, target);
 		else {
 			int capturedH = (source.h + target.h) / 2;
 			int capturedV = (source.v + target.v) / 2;
 			
-		    Board board = square.getBoard();
+		    Board board = man.square.getBoard();
 			Square capturedSquare = board.getSquare(capturedV, capturedH);
 		    
 			Piece capturedPiece = capturedSquare.getPiece();
 			
 			move = new Capture(isPromotion, capturedPiece, source, target);
 		}
+		
 		return move;
 	}
 	

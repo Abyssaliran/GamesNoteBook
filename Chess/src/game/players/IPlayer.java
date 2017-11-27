@@ -6,13 +6,13 @@ import game.core.PieceColor;
 import game.core.GameResult;
 
 /**
- * Интерфейс для игроков в шахматы.
+ * Интерфейс для игроков (программ и человека).
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public interface IPlayer {
 	/**
-	 * Простейшая реализация.
+	 * Простейшая реализация игрока.
 	 * Все действия на доске делает человек. 
 	 */
 	IPlayer HOMO_SAPIENCE = new IPlayer() {
@@ -38,14 +38,14 @@ public interface IPlayer {
 	/**
 	 * Выдать имя игрока для отображения имени на панели игры.
 	 * 
-	 * @return - имя игрока.
+	 * @return имя игрока.
 	 */
 	String getName();
 	
 	/**
 	 * Выдать имя автора программы для отображения имени на панели игры.
 	 * 
-	 * @return - имя автора программы.
+	 * @return имя автора программы.
 	 */
 	String getAuthorName();
 	
@@ -57,9 +57,8 @@ public interface IPlayer {
 	 * @param color
 	 *            - фигура какого цвета должна сделать ход.
 	 * @throws GameOver
-	 *             - во время выполнения хода может возникнуть ситуация
-	 *             GameOver.
-	 *             
+	 *             во время выполнения хода может возникнуть ситуация GameOver.
+	 * 
 	 * @see GameResult
 	 */
 	void doMove(Board board, PieceColor color) throws GameOver;

@@ -11,7 +11,7 @@ import game.core.PieceColor;
 import game.core.Square;
 
 /**
- * Базовый класс для программ-игроков ставящих фигури на доскуы.
+ * Базовый класс для программ-игроков ставящих фигури на доску.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
@@ -28,11 +28,13 @@ public class PutPiecePlayer implements IPlayer {
 	}
 
 	/**
-	 * Фигура ставится на доску.
-	 * Выдать все корректные ходы на доске фигурой заданного цвета.
+	 * Фигура ставится на доску. Выдать все корректные ходы на доске фигурой
+	 * заданного цвета.
 	 * 
-	 * @param board - доска на которой идет игра.
-	 * @param color - цвет фигуры которая должна сделать ход.
+	 * @param board
+	 *            - доска на которой идет игра.
+	 * @param color
+	 *            - цвет фигуры которая должна сделать ход.
 	 * @return список допустимых ходов.
 	 */
 	public List<Move> getCorrectMoves(Board board, PieceColor color) {
