@@ -5,6 +5,7 @@ package checkers.pieces;
 
 import checkers.moves.Capture;
 import checkers.moves.SimpleMove;
+import game.core.Board;
 import game.core.Dirs;
 import game.core.Move;
 import game.core.Piece;
@@ -24,13 +25,36 @@ public class King extends CheckersPiece {
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
-		// Пока используем только умалчиваемую проверку
-		// выполняемую в базовом классе.
-		if (!super.isCorrectMove(squares))
-			return false;
-
 		Square source = square;
 		Square target = squares[0];
+
+		return isMoveCorrect(this, source, target);
+	}
+
+	@Override
+	public Move makeMove(Square... squares) {
+		Square source = squares[0];
+		Square target = squares[1];
+
+		return createMove(source, target);
+	}
+
+	/**
+	 * Корректен ли ход королем из клетки source на клетку target.
+	 * 
+	 * @param king
+	 *            - король.
+	 * @param source
+	 *            - откуда идет кололь.
+	 * @param target
+	 *            - куда идет король.
+	 * @return корректен ли ход.
+	 */
+	static
+	public boolean isMoveCorrect(King king, Square source, Square target) {
+		// На занятую клетку ходить нельзя.
+		if (!target.isEmpty())
+			return false;
 
 		if (target.isDiagonal(source)) {
 			if (target.isEmptyDiagonal(source)) {
@@ -38,13 +62,13 @@ public class King extends CheckersPiece {
 				
 				// Проверим может быть есть ходы с захватом фигуры.
 				// В шашках такие ходы-захваты обязательны.
-				if (hasCaptures())
+				if (king.hasCaptures())
 					return false; // Простой ход не делаем.
 				
 				return true;
 			}
 
-			Piece captured = getOneOpponentDiagonalPiece(source, target);
+			Piece captured = getOneEnemyDiagonalPiece(source, target);
 			if (captured != null)
 				return true;
 		}
@@ -55,43 +79,74 @@ public class King extends CheckersPiece {
 		return false;
 	}
 
-	private static Piece getOneOpponentDiagonalPiece(Square a, Square b) {
-		if (!a.isDiagonal(b) || a.isEmpty())
+	/**
+	 * Создать ход королем из клетки source на клетку target.
+	 * 
+	 * @param source
+	 *            - откуда идет король.
+	 * @param target
+	 *            - куда идет король.
+	 * @return ход королем.
+	 */
+	static
+	public Move createMove(Square source, Square target) {
+		Piece captured = getOneEnemyDiagonalPiece(source, target);
+
+		return source.isEmptyDiagonal(target)
+			 ? new SimpleMove(false, source, target) 
+			 : new Capture(false, captured, source, target);
+	}
+
+	/**
+	 * Получить одну БЛИЖАЙШУЮ вражескую фигуру, стоящую на диагонали  
+	 * из клетки source в клетку target, за которой пустая клетка.
+	 * 
+	 * @param source
+	 *            - откуда идет король.
+	 * @param target
+	 *            - куда идет король.
+	 * @return вражеская фигура.
+	 */
+	static
+	private Piece getOneEnemyDiagonalPiece(Square source, Square target) {
+		if (!source.isDiagonal(target) || source.isEmpty())
 			return null;
-		int count = 0;
+		
+		Board board = source.getBoard();
+		Piece piece = source.getPiece();
+
+		int n  = Math.abs(source.v - target.v);
+		int dv = source.v > target.v ? -1 : 1;
+		int dh = source.h > target.h ? -1 : 1;
+		
+		int nEnemies = 0;
 		Piece oneDiagonalPiece = null;
-		int n = Math.abs(a.v - b.v);
-		int dv = a.v > b.v ? -1 : 1;
-		int dh = a.h > b.h ? -1 : 1;
+		
 		for (int k = 1; k <= n - 1; k++) {
-			Square temp = a.getBoard().getSquare(a.v + k * dv, a.h + k * dh);
-			if (!temp.isEmpty()) {
-				if (count == 1)
-					return null;
-				if (a.getPiece().getColor() != temp.getPiece().getColor()) {
-					oneDiagonalPiece = temp.getPiece();
-					count++;
-				}
+			int v = source.v + k * dv;
+			int h = source.h + k * dh;
+			
+			Square tempSquare = board.getSquare(v, h);
+			
+			if (tempSquare.isEmpty()) {
+				// Пустая клетка после 1-й найденой вражеской фигуры?
+				if (nEnemies == 1)
+					return oneDiagonalPiece; // Нашли фигуру, выходим.
+				
+				// Продолжаем движение по пустым клеткам.
+				continue; 
+			}
+			
+			Piece tempPiece = tempSquare.getPiece();
+			
+			if (tempPiece.isEnemy(piece)) {
+				// Нашли вражескую фигуру.
+				oneDiagonalPiece = tempPiece;
+				nEnemies++;
 			}
 		}
-		return oneDiagonalPiece;
-	}
-
-	@Override
-	public Move makeMove(Square... squares) {
-		Square source = squares[0];
-		Square target = squares[1];
-
-		Piece captured = getOneOpponentDiagonalPiece(source, target);
-
-		if (source.isEmptyDiagonal(target))
-			 return new SimpleMove(false, source, target);
-		else return new Capture(false, captured, source, target);
-	}
-
-	@Override
-	public String toString() {
-		return "K";
+		
+		return null;
 	}
 
 	@Override
@@ -119,5 +174,10 @@ public class King extends CheckersPiece {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "K";
 	}
 }
