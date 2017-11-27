@@ -1,28 +1,31 @@
 package checkers.players;
 
 import java.util.Comparator;
+import java.util.List;
 
+import game.core.Board;
 import game.core.Move;
 import game.core.Piece;
+import game.core.PieceColor;
 import game.core.moves.ICaptureMove;
 
 /**
- * Знайка - не пускает фигуры противника в дамки.
+ * Спрутс - встречался Незнайке на Луне.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Znaika extends CheckersPlayer {
+public class Spruts extends CheckersPlayer {
 	private Comparator<? super Move> movesSorter 
 			= (m1, m2) -> getWeight(m2) - getWeight(m1); 
 
 	@Override
 	public String getName() {
-		return "Знайка";
+		return "Спрутс";
 	}
 
 	@Override
 	public String getAuthorName() {
-		return "Романов В.Ю.";
+		return "Ефимова Елена";
 	}
 
 	protected Comparator<? super Move> getComparator() {
@@ -51,5 +54,15 @@ public class Znaika extends CheckersPlayer {
 		// освобожает клетку для создания вражеской дамки.
 		int firstLine = (p.isBlack() ? 0 : 7);
 		return (p.square.h == firstLine) ? -1 : 1;			
+	}
+	
+	@Override
+	public List<Move> getCorrectMoves(Board board, PieceColor color) {
+		// Пока используем метод базового класса.
+		return super.getCorrectMoves(board, color);
+		
+		// TODO реализовать алгоритм сбора составных ходов.
+		// Может быть множество составных ходов выходящих
+		// из одной клетки.
 	}
 }
