@@ -1,5 +1,6 @@
 package reversi.players;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -90,6 +91,8 @@ public class ReversiPlayer extends PutPiecePlayer {
 			board.setBoardChanged();
 			return;
 		}
+		
+		Collections.shuffle(correctMoves);
 		
 		correctMoves.sort( getComparator() );
 		Move bestMove = correctMoves.get(0);
