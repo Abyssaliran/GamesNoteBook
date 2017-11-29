@@ -60,9 +60,12 @@ public class SimpleMove implements ITransferMove {
 	public Square getTarget() {
 		return target;
 	}
+<<<<<<< HEAD
 
 	@Override
 	public Piece getPiece() {
 		return piece;
 	}
+=======
+>>>>>>> refs/heads/china_chess_player-Sun_
 }
