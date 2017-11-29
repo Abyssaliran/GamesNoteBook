@@ -1,20 +1,22 @@
 package chinachess.players;
 
-import java.util.List;
+import java.util.Comparator;
 
-import game.core.Board;
-import game.core.GameOver;
-import game.core.GameResult;
+import chinachess.pieces.King;
 import game.core.Move;
-import game.core.PieceColor;
-import game.players.MovePiecePlayer;
+import game.core.Piece;
+import game.core.Square;
+import game.core.moves.ICaptureMove;
+import game.core.moves.ITransferMove;
 
 /**
  * Сунь-Цзы - первый профессиональный педагог Поднебесной.<br>
- * <a href="https://ok.ru/tantra.yoga/topic/65490423540658">
- * Пять постоянств праведного человека (Конфуций)</a>
+ * <a href="https://ok.ru/tantra.yoga/topic/65490423540658"> Пять постоянств
+ * праведного человека (Конфуций)</a>
  */
-public class Confucious extends MovePiecePlayer {
+public class Confucious extends ChinaChessPlayer {
+	private Comparator<? super Move> brain = (m1, m2) -> getWeight(m2) - getWeight(m1);
+
 	@Override
 	public String getName() {
 		return "Конфуций";
@@ -24,67 +26,52 @@ public class Confucious extends MovePiecePlayer {
 	public String getAuthorName() {
 		return "Осинцев Александр";
 	}
-	
-	/**
-	 * Выдать случайную фигуру из списка фигур.
-	 * @param moves - список фигур.
-	 * @return фигура выбранная случайным образом.
-	 */
-	private Move getRandomMove(List<Move> moves) {
-		int random = (int) (Math.random() * moves.size());
-		return moves.get(random);
-	}
-
-	@Override
-	public void doMove(Board board, PieceColor color) throws GameOver {
-		List<Move> correctMoves = getCorrectMoves(board, color);
-		
-//		if (correctMoves.isEmpty()) // Пат.
-//			throw new GameOver(GameResult.DRAWN);
-		
-		if (correctMoves.isEmpty())
-			return;
-
-		// Пока делает случайный ход.
-		Move randomMove = getRandomMove(correctMoves);
-		
-		try { randomMove.doMove(); } 
-		catch (GameOver e) {
-			// Сохраняем в истории игры последний сделанный ход 
-			// и результат игры.
-			board.history.addMove(randomMove);
-			board.history.setResult(e.result);
-			
-			// Просим обозревателей доски показать 
-			// положение на доске, сделанный ход и 
-			// результат игры.
-			board.setBoardChanged();
-			
-			throw new GameOver(e.result);
-		}
-		
-		// Сохраняем ход в истории игры.
-		board.history.addMove(randomMove);
-
-		// Просим обозревателей доски показать 
-		// положение на доске, сделанный ход и 
-		// результат игры.
-		board.setBoardChanged();
-	
-		// Для отладки ограничим количество ходов в игре.
-		// После этого результат игры ничья.
-		if (board.history.getMoves().size() > 80) {
-			// Сохраняем в истории игры последний сделанный ход 
-			// и результат игры.
-			board.history.setResult(GameResult.DRAWN);
-			
-			// Сообщаем что игра закончилась ничьей.
-			throw new GameOver(GameResult.DRAWN);
-		}
-	}
 
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	@Override
+	Comparator<? super Move> getComparator() {
+		return brain;
+	}
+
+	/**
+	 * Задать вес для хода.
+	 * 
+	 * @param move
+	 *            - ход
+	 * @return оценка хода.
+	 */
+	private int getWeight(Move move) {
+		ITransferMove transfer = (ITransferMove) move;
+
+		Square source = transfer.getSource();
+		Square target = transfer.getTarget();
+		Piece thePiece = source.getPiece();
+
+		if (move instanceof ICaptureMove) {
+			// Ход - взятие фигуры врага.
+			ICaptureMove capture = (ICaptureMove) move;
+
+			Square capturedSquare = capture.getCaptured().get(0);
+			Piece capturedPiece = capturedSquare.getPiece();
+
+			// У захвата короля врага наивысший приоритет.
+			if (capturedPiece instanceof King)
+				return 1000;
+
+			// Пока берем любую фигуру.
+			return 999;
+		}
+
+		// Из всех ходов без взятия фигуры врага лучший ход
+		// который максимально приближает к королю врага.
+		King enemyKing = getEnemyKing(thePiece);
+		int stepWeight = MAX_DISTANCE - distance(target, enemyKing.square);
+
+		return stepWeight;
+		// return getSquareWeight(target);
 	}
 }
