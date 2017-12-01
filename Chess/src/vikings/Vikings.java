@@ -23,7 +23,7 @@ public class Vikings extends Game {
 	
 	static {
 		addPlayer(Vikings.class, IPlayer.HOMO_SAPIENCE);
-		addPlayer(Vikings.class, new Neznaika());
+		addPlayer(Vikings.class, new Neznaika(180));
 		addPlayer(Vikings.class, new Rurik());
 		addPlayer(Vikings.class, new Haraldr());
 		addPlayer(Vikings.class, new William());

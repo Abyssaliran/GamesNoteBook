@@ -74,8 +74,7 @@ public class VikingsPiece extends Piece {
 		return false;
 	}
 
-	public static List<Square> getExits(Piece piece) {
-		Board board = piece.square.getBoard();
+	public static List<Square> getExits(Board board) {
 		int nv = board.nV-1;
 		int nh = board.nH-1;
 		

@@ -4,15 +4,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import game.core.Board;
-import game.core.GameOver;
-import game.core.GameResult;
 import game.core.Move;
 import game.core.Piece;
-import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
 import game.core.moves.ITransferMove;
-import game.players.MovePiecePlayer;
 import vikings.moves.Capture;
 import vikings.pieces.VikingsPiece;
 import vikings.pieces.Сyning;
@@ -22,8 +18,9 @@ import vikings.pieces.Сyning;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Haraldr extends MovePiecePlayer{
-	private Comparator<? super Move> movesSorter = new HaraldrBrain();
+public class Haraldr extends VikingsPlayer {
+	final Comparator<? super Move> brain 
+		= (m1, m2) -> getWeight(m2) - getWeight(m1);
 
 	@Override
 	public String getName() {
@@ -35,139 +32,169 @@ public class Haraldr extends MovePiecePlayer{
 		return "Меркулов";
 	}
 
-	@Override
-	public void doMove(Board board, PieceColor color) throws GameOver {
-		List<Move> correctMoves = getCorrectMoves(board, color);
-		
-//		if (correctMoves.isEmpty()) // Пат.
-//			throw new GameOver(GameResult.DRAWN);
-		
-		if (correctMoves.isEmpty())
-			return;
-
-		correctMoves.sort(movesSorter);
-		Move bestMove = correctMoves.get(0);
-		
-		try { bestMove.doMove(); } 
-		catch (GameOver e) {
-			// Сохраняем в истории игры последний сделанный ход 
-			// и результат игры.
-			board.history.addMove(bestMove);
-			board.history.setResult(e.result);
-			
-			// Просим обозревателей доски показать 
-			// положение на доске, сделанный ход и 
-			// результат игры.
-			board.setBoardChanged();
-			
-			// Распространяем инфрмацию об окончании игры.
-			throw new GameOver(e.result);
-		}
-		
-		// Сохраняем ход в истории игры.
-		board.history.addMove(bestMove);
-
-		// Просим обозревателей доски показать 
-		// положение на доске, сделанный ход и 
-		// результат игры.
-		board.setBoardChanged();
-	
-		// Для отладки ограничим количество ходов в игре.
-		// После этого результат игры ничья.
-		if (board.history.getMoves().size() > 80) {
-			// Сохраняем в истории игры последний сделанный ход 
-			// и результат игры.
-			board.history.setResult(GameResult.DRAWN);
-			
-			// Сообщаем что игра закончилась ничьей.
-			throw new GameOver(GameResult.DRAWN);
-		}
+	protected Comparator<? super Move> getComparator() {
+		return brain;
 	}
 
 	@Override
 	public String toString() {
 		return getName();
 	}
-}
-
-
-/**
- * Алгоритм определения лучших ходов у Харальда.
- * 
- * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
- */
-class HaraldrBrain implements Comparator<Move> {
-	private static final int MAX_DISTANCE = 20;
-
-	@Override
-	public int compare(Move m1, Move m2) {
-		int w1 = getMoveWeight(m1);
-		int w2 = getMoveWeight(m2);
-		
-		return w2 - w1;
-	}
 
 	/**
 	 * Задать вес для хода.
-	 * @param move - ход
+	 * 
+	 * @param move
+	 *            - ход
 	 * @return оценка хода.
 	 */
-	private int getMoveWeight(Move move) {
+	private int getWeight(Move move) {
 		ITransferMove transfer = (ITransferMove) move;
-		
+
 		Square source = transfer.getSource();
 		Square target = transfer.getTarget();
-		Piece thePiece = source.getPiece();
-
-		int nCaptured = 0;
 		
-		if (move instanceof ICaptureMove) {
-			// Ход - взятие фигур врага.
-			Capture capture = (Capture) move;
-			
-			// Есть ли среди захваченых фигур белвй король?
-			List<Piece> captured = capture.getCapturedPieces();
-			boolean isKingCapture = captured.stream().anyMatch(p -> p instanceof Сyning);
-			
-			// Захват вражеского короля получает наибольший приоритет.
-			if (isKingCapture)
+		Piece piece = source.getPiece();
+		Board board = source.getBoard();
+
+		Сyning king = getKing(board);
+		Square kingSquare = king.square;
+
+		List<Square> exits = VikingsPiece.getExits(board);
+
+		boolean isCaptureMove = (move instanceof ICaptureMove);
+
+		int maxDistance = board.maxDistance();
+
+		// -----------------------------
+		// --- Ход черными фигурами. ---
+		// -----------------------------
+		if (piece.isBlack()) {
+			// Ход - захват фигур врага.
+			if (isCaptureMove && isKingCapture((Capture) move))  
+				// Захват белого короля получает наибольший приоритет.
 				return 1000;
 			
-			// Приоритет у хода с бОльшим количеством взятых фигур.
-			nCaptured = captured.size();
-		}
+			// ---------------------------------------------------------
+			// --- Если короля захватить нельзя перекроем ему выход. ---
+			// ---------------------------------------------------------
+			if (isOverlapMove(target, kingSquare))
+				return 1000;
 
-		if (thePiece instanceof Сyning) {
-			// Ход белым королем.
-			List<Square> exits = VikingsPiece.getExits(thePiece);
+			// ---------------------------------
+			// --- Ход - захват белых фигур. ---
+			// ---------------------------------
+			if (isCaptureMove) {
+				// Захват вражеского короля получает наибольший приоритет.
+				Capture capture = (Capture) move;
+				if (isKingCapture(capture))
+					return 1000;
+
+				// Приоритет у хода с бОльшим количеством взятых фигур.
+				return capture.getCapturedPieces().size();
+			}
+
+			// ---------------------------------------------
+			// --- Пытаемся приблизится к белому королю. ---
+			// ---------------------------------------------
+			// Определим расстояние до короля.
+			int distance2King = target.distance(kingSquare);
 			
-			// Поиск ближайшего выхода.
-			Square nearsExit = exits
-					.stream()
-					.min((s1, s2) -> distance(s1, target) - distance(s2, target))
-					.get();
+			// Чем меньше расстояние до короля, тем лучше ход.
+			int moveWeight = maxDistance - distance2King;
 			
-			// Ход королем к ближайшему выходу получает наибольший приоритет.
-			int minDistance = distance(nearsExit, target);
+			// Поиск клетки - ближайшего выхода для короля.
+			Square nearstExit = getNearstExit(kingSquare, exits);
 			
-			if (minDistance == 0)
-				return 1000; // Выход короля - наибольший приоритет.
+			// Если фигура встанет между королем и его ближайшим выходом,
+			// то ход этой фигурой еще лучше.
+			if (nearstExit.distance(target) < nearstExit.distance(kingSquare))
+				moveWeight++;
 			
-			return (MAX_DISTANCE - minDistance);
+			return moveWeight;
 		}
-		
-		return nCaptured; 
-	}
+		// ----------------------------
+		// --- Ход белыми фигурами. ---
+		// ----------------------------
+		else {
+			// --------------------------
+			// --- Ход белого короля. ---
+			// --------------------------
+			if (piece instanceof Сyning) {
+				// Поиск ближайшего выхода.
+				Square nearsExit = getNearstExit(target, exits);
 	
+				// Ход королем к ближайшему выходу 
+				// получает наибольший приоритет.
+				int minDistance = nearsExit.distance(target);
+	
+				if (minDistance == 0)
+					return 1000; // Выход короля - наибольший приоритет.
+
+				// Если нет захвата фигур врага, король движется к выходу.
+				if (!isCaptureMove)
+					return maxDistance - minDistance;
+			}
+	
+			// ----------------------------------------
+			// --- Ход белой фигуры - захват врага. ---
+			// ----------------------------------------
+			if (isCaptureMove) {
+				// Ход - захват фигур врага.
+				Capture capture = (Capture) move;
+	
+				// Приоритет у хода с бОльшим количеством 
+				// захваченных фигур врага.
+				return capture.getCapturedPieces().size();
+			}
+	
+			// ------------------------------------------------------
+			// --- Простой ход белого викинга - поддержка короля. ---
+			// ------------------------------------------------------
+//			return getWhiteVikingMove(target, kingSquare, exits, maxDistance);
+//			return getWhiteVikingMove(target, kingSquare);
+			return isSafeMove(piece, target) ? 1 : -1;
+		}
+	}
+
 	/**
-	 * Выдать расстояние между клетками.
-	 * @param s1 
-	 * @param s2
+	 * Не приведет ли ход фигурой на поле target к потере фигур.
+	 * @param piece - какая фигура идет.
+	 * @param target - куда фигура идет.
 	 * @return
 	 */
-	protected int distance(Square s1, Square s2) {
-		final double dv = Math.abs(s1.v - s2.v);
-		final double dh = Math.abs(s1.h - s2.h);
-		return (int) (dv + dh);
+	private boolean isSafeMove(Piece piece, Square target) {
+		// TODO Меркулов. 
+		return true;
+	}
+
+	int getWhiteVikingMove(Square target, Square kingSquare) {
+		Board board = target.getBoard();
+		
+		List<Square> exits = VikingsPiece.getExits(board);
+
+		// Поиск клетки - ближайшего выхода для короля.
+		Square nearstExit = getNearstExit(target, exits);
+		
+		return board.maxDistance() - nearstExit.distance(target);
+	}
+
+	int getWhiteVikingMove(Square target, Square kingSquare, List<Square> exits, int maxDistance) {
+		// Пытаемся приблизиться к белому королю. 
+		// Определим расстояние до короля.
+		int distance2King = target.distance(kingSquare);
+		
+		// Чем меньше расстояние до короля, тем лучше ход.
+		int moveWeight = maxDistance - distance2King;
+		
+		// Поиск клетки - ближайшего выхода для короля.
+		Square nearstExit = getNearstExit(target, exits);
+		
+		// Если фигура встанет рядом с королем не перекрывая ход к
+		// ближайшему выходу для короля, то ход этой фигурой еще лучше.
+		if (nearstExit.distance(target) < nearstExit.distance(target))
+			moveWeight++;
+		
+		return moveWeight;
 	}
 }
