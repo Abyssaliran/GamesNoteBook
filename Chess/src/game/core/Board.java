@@ -323,4 +323,12 @@ public class Board extends Observable {
 		
 		return allSquares;
 	}
+
+	/**
+	 * Максимальное расстояние между клетками доски.
+	 * @return
+	 */
+	public int maxDistance() {
+		return nH + nV;
+	}
 }
