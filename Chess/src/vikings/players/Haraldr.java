@@ -145,56 +145,51 @@ public class Haraldr extends VikingsPlayer {
 	
 				// Приоритет у хода с бОльшим количеством 
 				// захваченных фигур врага.
-				return capture.getCapturedPieces().size();
+				return 10 + capture.getCapturedPieces().size();
 			}
 	
 			// ------------------------------------------------------
 			// --- Простой ход белого викинга - поддержка короля. ---
 			// ------------------------------------------------------
-//			return getWhiteVikingMove(target, kingSquare, exits, maxDistance);
-//			return getWhiteVikingMove(target, kingSquare);
-			return isSafeMove(piece, target) ? 1 : -1;
+			if (isSafeMove(piece, target))   return 2;
+			if (isAttackMove(piece, target)) return 1;
+
+			return -1; // Мы теряем фигуру и не нападаем на вражескую.
 		}
 	}
 
 	/**
+	 * Это атакующий ход.
+	 * 
+	 * @param piece
+	 *            - какая фигура идет.
+	 * @param target
+	 *            - куда фигура идет.
+	 * @return
+	 */
+	private boolean isAttackMove(Piece piece, Square target) {
+		// TODO Заблоцкий
+		// 1. Наша фигура становится рядом с фигурой противника.
+		// 2. Есть другая наша фигура, которая следующим ходом 
+		//    может встать с другой стороны вражеской фигуры.
+		return false;
+	}
+
+	/**
 	 * Не приведет ли ход фигурой на поле target к потере фигур.
-	 * @param piece - какая фигура идет.
-	 * @param target - куда фигура идет.
+	 * 
+	 * @param piece
+	 *            - какая фигура идет.
+	 * @param target
+	 *            - куда фигура идет.
 	 * @return
 	 */
 	private boolean isSafeMove(Piece piece, Square target) {
-		// TODO Меркулов. 
+		// TODO Меркулов.
+		// Мы не подставляем свою фигуру.
+		// 1. Фигура становится рядом с фигурой противника.
+		// 2. Нет вражеской фигуры, которая следующим ходом 
+		//    может встать с другой стороны нашей фигуры.
 		return true;
-	}
-
-	int getWhiteVikingMove(Square target, Square kingSquare) {
-		Board board = target.getBoard();
-		
-		List<Square> exits = VikingsPiece.getExits(board);
-
-		// Поиск клетки - ближайшего выхода для короля.
-		Square nearstExit = getNearstExit(target, exits);
-		
-		return board.maxDistance() - nearstExit.distance(target);
-	}
-
-	int getWhiteVikingMove(Square target, Square kingSquare, List<Square> exits, int maxDistance) {
-		// Пытаемся приблизиться к белому королю. 
-		// Определим расстояние до короля.
-		int distance2King = target.distance(kingSquare);
-		
-		// Чем меньше расстояние до короля, тем лучше ход.
-		int moveWeight = maxDistance - distance2King;
-		
-		// Поиск клетки - ближайшего выхода для короля.
-		Square nearstExit = getNearstExit(target, exits);
-		
-		// Если фигура встанет рядом с королем не перекрывая ход к
-		// ближайшему выходу для короля, то ход этой фигурой еще лучше.
-		if (nearstExit.distance(target) < nearstExit.distance(target))
-			moveWeight++;
-		
-		return moveWeight;
 	}
 }
