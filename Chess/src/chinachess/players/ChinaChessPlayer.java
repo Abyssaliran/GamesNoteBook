@@ -1,11 +1,11 @@
 package chinachess.players;
 
+import java.security.Guard;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import chinachess.pieces.Bishop;
-import chinachess.pieces.Guardian;
 import chinachess.pieces.Gun;
 import chinachess.pieces.King;
 import chinachess.pieces.Knight;
@@ -27,12 +27,11 @@ import game.players.MovePiecePlayer;
  */
 abstract 
 public class ChinaChessPlayer extends MovePiecePlayer {
+	private static final int maxMoves = 180;
+
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
 			List<Move> correctMoves = getCorrectMoves(board, color);
-			
-	//		if (correctMoves.isEmpty()) // Пат.
-	//			throw new GameOver(GameResult.DRAWN);
 			
 			if (correctMoves.isEmpty())
 				return;
@@ -67,7 +66,7 @@ public class ChinaChessPlayer extends MovePiecePlayer {
 		
 			// Для отладки ограничим количество ходов в игре.
 			// После этого результат игры ничья.
-			if (board.history.getMoves().size() > 80) {
+			if (board.history.getMoves().size() > maxMoves) {
 				// Сохраняем в истории игры последний сделанный ход 
 				// и результат игры.
 				board.history.setResult(GameResult.DRAWN);
@@ -119,43 +118,30 @@ public class ChinaChessPlayer extends MovePiecePlayer {
 	 * @return вражеский король.
 	 */
 	protected King getEnemyKing(Piece piece) {
-		King enemyKing = null;
-		for (Piece p : piece.getEnemies())
-			if (p instanceof King) {
-				enemyKing = (King) p;
-				break;
-			}
-		return enemyKing;
+		return piece.getEnemies()
+		.stream()
+		.filter(enemy -> enemy instanceof King)
+		.map(enemy -> (King) enemy)
+		.findFirst()
+		.get();
 	}
 
 	/**
-	 * Выдать расстояние между клетками.
+	 * Дать вес фигуры
 	 * 
-	 * @param s1
-	 * @param s2
-	 * @return
+	 * @param p
+	 *            - измеряемая фигура.
+	 * @return ценность фигуры.
 	 */
-	protected int distance(Square s1, Square s2) {
-		final double dv = Math.abs(s1.v - s2.v);
-		final double dh = Math.abs(s1.h - s2.h);
-		return (int) (dv + dh);
-	}
-
-	/**
-	 * Получить вес фигуры в китайских шахматах.
-	 * 
-	 * @param piece
-	 *            фигура в китайских шахматах.
-	 * @return вес фигуры.
-	 */
-	public int getPieceWeight(Piece piece) {
-		if (piece instanceof Pawn)      return 30+1;
-		if (piece instanceof Knight)    return 30+2;
-		if (piece instanceof Rook)      return 30+3;
-		if (piece instanceof Gun)       return 30+4;
-		if (piece instanceof Bishop)    return 30+5;
-		if (piece instanceof Guardian)  return 30+6;
-			
+	protected int getWeight(Piece p) {
+		if (p instanceof King)   return 1000;
+		if (p instanceof Guard)  return  900;
+		if (p instanceof Gun)    return  800;
+		if (p instanceof Rook)   return  700;
+		if (p instanceof Bishop) return  600;
+		if (p instanceof Knight) return  500;
+		if (p instanceof Pawn)   return  400;
+		
 		return 0;
 	}
 }

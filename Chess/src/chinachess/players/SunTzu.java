@@ -2,13 +2,15 @@ package chinachess.players;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import chinachess.pieces.King;
+import game.core.Board;
 import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
 import game.core.moves.ITransferMove;
-import chinachess.pieces.King;
 
 /**
  * Сунь-Цзы - автор знаменитого трактата о военной стратегии «Искусство войны».<br>
@@ -17,6 +19,10 @@ import chinachess.pieces.King;
 public class SunTzu extends ChinaChessPlayer {
 	private Comparator<? super Move> brain 
 		= (m1, m2) -> getWeight(m2) - getWeight(m1); 
+		
+	final Comparator<? super Piece> pieceComparator 
+		= (p1, p2) -> getWeight(p2) - getWeight(p1);
+
 	
 	@Override
 	public String getName() {
@@ -28,17 +34,6 @@ public class SunTzu extends ChinaChessPlayer {
 		return "Дмитрив Ярослав";
 	}
 	
-	/**
-	 * Выдать случайную фигуру из списка фигур.
-	 * @param moves - список фигур.
-	 * @return фигура выбранная случайным образом.
-	 */
-	@SuppressWarnings("unused")
-	private Move getRandomMove(List<Move> moves) {
-		int random = (int) (Math.random() * moves.size());
-		return moves.get(random);
-	}
-
 	Comparator<? super Move> getComparator() {
 		return brain;
 	}
@@ -50,15 +45,21 @@ public class SunTzu extends ChinaChessPlayer {
 	
 	/**
 	 * Задать вес для хода.
-	 * @param move - ход
-	 * @return оценка хода.
+	 * 
+	 * @param move
+	 *            - ход фигурой.
+	 * @return вес хода.
 	 */
 	private int getWeight(Move move) {
 		ITransferMove transfer = (ITransferMove) move;
 		
 		Square source = transfer.getSource();
 		Square target = transfer.getTarget();
-		Piece thePiece = source.getPiece();
+		
+		Board board = source.getBoard();
+		Piece piece = source.getPiece();
+
+		final int maxDistance = board.maxDistance();
 
 		if (move instanceof ICaptureMove) {
 			// Ход - взятие фигуры врага.
@@ -71,16 +72,81 @@ public class SunTzu extends ChinaChessPlayer {
 			if (capturedPiece instanceof King)
 				return 1000;
 			
-			// Пока берем любую фигуру.
+			// Берем фигуру только если это выгодно.
+			if (!isSafeCapture(piece, target))
+				return -1;
+			
 			return 999;
 		}
 		
+		// Идем на пустую клетку только если это безопасно.
+		if (!isSafeMove(piece, target))
+			return -1;
+		
 		// Из всех ходов без взятия фигуры врага лучший ход
 		// который максимально приближает к королю врага.
-		King enemyKing = getEnemyKing(thePiece);
-		int stepWeight = MAX_DISTANCE - distance(target, enemyKing.square);
+		King enemyKing = getEnemyKing(piece);
+		int stepWeight = maxDistance - target.distance(enemyKing.square);
+		
+		// Приоритет у тех фигур, которые стоят дальше от короля врага.
+		// Это для того, что бы отстающие фигуры шли первыми.
+		// Тогда наши фигуры наступают вместе и нет "зарвавшихся" фигур.
+		stepWeight += source.distance(enemyKing.square);
 		
 		return stepWeight; 
-//		return getSquareWeight(target);
+	}
+
+
+	/**
+	 * Это безопасный ход?
+	 * @param piece
+	 *            - какая фигура идет.
+	 * @param target
+	 *            - куда фигура идет.
+	 * @return
+	 */
+	private boolean isSafeMove(Piece piece, Square target) {
+		// Собираем врагов атакующих клетку target
+		// и сортируем их по весу. Менее ценные в начале списка.
+		List<Piece> enemies = piece.getEnemies()
+			.stream()
+			.filter(enemy -> enemy.isCorrectMove(target))
+			.sorted(pieceComparator.reversed())
+			.collect( Collectors.toList() );
+			
+		if (enemies.isEmpty())
+			return true; // Враги поле target не атакуют.
+		
+		// Собираем друзей атакующих клетку target
+		// и сортируем их по весу. Менее ценные в начале списка.
+		List<Piece> friends = piece.getFriends()
+			.stream()
+			.filter(friend -> friend.isCorrectMove(target))
+			.sorted(pieceComparator.reversed())
+			.collect( Collectors.toList() );
+			
+		// Не бьет ли клетку фигура меньшей ценности.
+		Piece lowerEnemy = enemies.get(0);
+		if (getWeight(piece) > getWeight(lowerEnemy))
+			return false; // Не подставляем фигуру.
+		
+		// Если друзей атакующих клетку target больше, они защитят.
+		// Себя среди атакующих клетку target не учитываем.
+		return (friends.size()-1) > enemies.size();
+	}
+
+	/**
+	 * Выгодно ли взятие фигурой на клетке target? 
+	 * @param piece
+	 *            - какая фигура идет.
+	 * @param target
+	 *            - куда фигура идет.
+	 * @return
+	 */
+	private boolean isSafeCapture(Piece piece, Square target) {
+		// TODO Дмитрив
+		// По аналогии с ходом isSafeMove определить
+		// выгодно ли взятие.
+		return true;
 	}
 }

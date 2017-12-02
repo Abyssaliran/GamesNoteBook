@@ -69,7 +69,7 @@ public class Confucious extends ChinaChessPlayer {
 		// Из всех ходов без взятия фигуры врага лучший ход
 		// который максимально приближает к королю врага.
 		King enemyKing = getEnemyKing(thePiece);
-		int stepWeight = MAX_DISTANCE - distance(target, enemyKing.square);
+		int stepWeight = MAX_DISTANCE - target.distance(enemyKing.square);
 
 		return stepWeight;
 		// return getSquareWeight(target);
