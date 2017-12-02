@@ -169,7 +169,7 @@ public class William extends VikingsPlayer {
 	 * @return
 	 */
 	private boolean isAttackMove(Piece piece, Square target) {
-		// TODO Заблоцкий
+		// TODO Заблоцкий 
 		// 1. Наша фигура становится рядом с фигурой противника.
 		// 2. Есть другая наша фигура, которая следующим ходом 
 		//    может встать с другой стороны вражеской фигуры.
