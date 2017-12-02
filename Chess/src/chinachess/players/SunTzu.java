@@ -144,7 +144,7 @@ public class SunTzu extends ChinaChessPlayer {
 	 * @return
 	 */
 	private boolean isSafeCapture(Piece piece, Square target) {
-		// TODO Дмитрив
+		// TODO Дмитрив 
 		// По аналогии с ходом isSafeMove определить
 		// выгодно ли взятие.
 		return true;
