@@ -1,14 +1,18 @@
 package checkers.players;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import game.core.Board;
 import game.core.GameOver;
 import game.core.GameResult;
 import game.core.Move;
+import game.core.Piece;
 import game.core.PieceColor;
+import game.core.Square;
 import game.players.MovePiecePlayer;
 
 /**
@@ -18,6 +22,27 @@ import game.players.MovePiecePlayer;
  */
 abstract 
 public class CheckersPlayer extends MovePiecePlayer {
+	
+	@Override
+	public List<Move> getCorrectMoves(Board board, PieceColor color) {
+		List<Move> correctMoves = new ArrayList<>();
+				
+		for (Piece p : board.getPieces(color)) {
+			// Собрали все клетки-цели на которые допустим ход фигуры р.
+			List<Square> targets = board.getSquares()
+					.stream()
+					.filter(s -> p.isCorrectMove(s))
+					.collect( Collectors.toList() );
+			
+			for (Square target : targets) {
+				Square source = p.square;
+				Move correctMove = p.makeMove(source, target);
+				correctMoves.add( correctMove );
+			}				
+		}
+		
+		return correctMoves;
+	}
 	
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
