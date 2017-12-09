@@ -29,7 +29,7 @@ public class Pawn extends ChessPiece {
 		Square target = squares[0];
 		
 		int dv = Math.abs(target.v - source.v);
-		int dh = (getColor() == PieceColor.WHITE) 
+		int dh = isWhite()
 				? source.h - target.h 
 				: target.h - source.h;
 		
@@ -56,13 +56,13 @@ public class Pawn extends ChessPiece {
 		if (!target.isEmpty())
 			return false;
 		
-		boolean isStartPosition = // Откуда пошла пешка.
-					(getColor() == PieceColor.WHITE) 
-						? source.h == 6 : source.h == 1;  
+		// Пошла ли пешка с начальной позиции.
+		boolean isStartPosition = isWhite() ? source.h == 6 : source.h == 1;  
 		
-		int upper = isStartPosition ? 2 : 1; // Насколько может пойти.
+		// Насколько клеток может пойти пешка.
+		int upper = isStartPosition ? 2 : 1; 
 		
-		if (upper == 2) {
+		if (isStartPosition && (dh == 2)) {
 			// Пешка прыгает с начальной позиции.
 			
 			// Не пытается ли пешка перепыгнуть через фигуру (барьер)?
@@ -85,10 +85,8 @@ public class Pawn extends ChessPiece {
 		Square source = squares[0];
 		Square target = squares[1];
 		
-		boolean isLastHorizontal = (
-				getColor() == PieceColor.WHITE 
-					? target.h == 0 
-					: target.h == 7);
+		boolean isLastHorizontal = isWhite()
+					? target.h == 0 : target.h == 7;
 		
 		if (isLastHorizontal) // Ход на последнюю горизонталь.
 			return new Promotion(squares);
