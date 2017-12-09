@@ -1,12 +1,9 @@
 package checkers.players;
 
 import java.util.Comparator;
-import java.util.List;
 
-import game.core.Board;
 import game.core.Move;
 import game.core.Piece;
-import game.core.PieceColor;
 import game.core.moves.ICaptureMove;
 
 /**
@@ -54,15 +51,5 @@ public class Spruts extends CheckersPlayer {
 		// освобожает клетку для создания вражеской дамки.
 		int firstLine = (p.isBlack() ? 0 : 7);
 		return (p.square.h == firstLine) ? -1 : 1;			
-	}
-	
-	@Override
-	public List<Move> getCorrectMoves(Board board, PieceColor color) {
-		// Пока используем метод базового класса.
-		return super.getCorrectMoves(board, color);
-		
-		// TODO реализовать алгоритм сбора составных ходов.
-		// Может быть множество составных ходов выходящих
-		// из одной клетки.
 	}
 }

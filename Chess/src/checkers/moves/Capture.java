@@ -44,6 +44,13 @@ public class Capture extends SimpleMove implements ICaptureMove {
 		capturedSquare = captured.square;
 	}
 	
+	public Capture(boolean isPromotion, Piece piece, Piece captured,  Square... squares) {
+		super(isPromotion, piece, squares);
+		
+		this.captured = captured;
+		capturedSquare = captured.square;
+	}
+
 	@Override
 	public void doMove() throws GameOver {
 		super.doMove();
@@ -59,8 +66,8 @@ public class Capture extends SimpleMove implements ICaptureMove {
 
 	@Override
 	public void undoMove() {
-		capturedSquare.setPiece(captured);
 		super.undoMove();
+		capturedSquare.setPiece(captured);
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package checkers.pieces;
 
+import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
@@ -45,4 +46,7 @@ public class CheckersPiece extends Piece {
 			.map(p -> (CheckersPiece) p)
 			.anyMatch(p -> p.hasCapture());
 	}
+
+	abstract
+	public Move createMove(CheckersPiece piece, Square square, Square target);
 }

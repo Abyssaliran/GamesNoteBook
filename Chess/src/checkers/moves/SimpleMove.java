@@ -50,6 +50,15 @@ public class SimpleMove implements ITransferMove {
 		piece = source.getPiece();
 	}
 
+	public SimpleMove(boolean isPromotion, Piece piece, Square... squares) {
+		this.isPromotion = isPromotion;
+
+		source = squares[0];
+		target = squares[1];
+
+		this.piece = piece;
+	}
+
 	@Override
 	public Square getTarget() {
 		return target;
