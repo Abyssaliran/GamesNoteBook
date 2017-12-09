@@ -29,6 +29,7 @@ import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.core.moves.CompositeMove;
 import game.core.moves.ICaptureMove;
 import game.core.moves.IPutMove;
 import game.core.moves.ITransferMove;
@@ -218,21 +219,32 @@ public class GameBoard extends Canvas
 		Move move = (Move) board.history.getCurMove();
 		
 		if (move == null) return;
+		
+		if (move instanceof CompositeMove) {
+			@SuppressWarnings("unchecked")
+			CompositeMove<ITransferMove> cm = (CompositeMove<ITransferMove>) move;
+			for (ITransferMove m : cm.getMoves())
+				markLastTransferMove(gc, m);
+		}
 			
 		if (move instanceof ITransferMove) {
 			ITransferMove m = (ITransferMove) move;
-			Square source = m.getSource();
-			Square target = m.getTarget();
+			markLastTransferMove(gc, m);
+		}
+	}
+
+	private void markLastTransferMove(GC gc, ITransferMove m) {
+		Square source = m.getSource();
+		Square target = m.getTarget();
+		
+		gc.setLineWidth(3);
+		markLine(gc, source, target, lastMoveColor);
+		
+		if (m instanceof ICaptureMove) {
+			ICaptureMove capture = (ICaptureMove) m;
 			
-			gc.setLineWidth(3);
-			markLine(gc, source, target, lastMoveColor);
-			
-			if (move instanceof ICaptureMove) {
-				ICaptureMove capture = (ICaptureMove) move;
-				
-				for (Square s : capture.getCaptured())
-					markCross(gc, s, lastMoveColor);
-			}
+			for (Square s : capture.getCaptured())
+				markCross(gc, s, lastMoveColor);
 		}
 	}
 
