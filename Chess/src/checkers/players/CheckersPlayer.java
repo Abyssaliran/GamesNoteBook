@@ -84,7 +84,7 @@ public class CheckersPlayer extends MovePiecePlayer {
 	 * @param allTracks
 	 *            - список всех возможных длинных ходов.
 	 */
-	void collectTracks(CheckersPiece piece, Square square, CompositeMove track, List<Move> allTracks) {
+	void collectTracks(CheckersPiece piece, Square square, game.core.moves.CompositeMove<Capture> track, List<Move> allTracks) {
 		List<Square> targets = new ArrayList<>();
 		
 		// Смотрим по всем диагоналям возможность захвата фигуры.
@@ -117,10 +117,10 @@ public class CheckersPlayer extends MovePiecePlayer {
 		else {
 			// У длинного хода track фигуры есть еще ходы-взятия.
 			for (Square target : targets) {
-				Move capture = piece.createMove(piece, square, target);
+				Capture capture = (Capture) piece.createMove(piece, square, target);
 
-				CompositeMove newBranch = track.getClone();
-				newBranch.addCapture((Capture) capture);
+				game.core.moves.CompositeMove<Capture> newBranch = track.getClone();
+				newBranch.addMove(capture);
 
 				collectTracks(piece, target, newBranch, allTracks);
 			}
@@ -194,7 +194,8 @@ public class CheckersPlayer extends MovePiecePlayer {
 	}
 
 	/**
-	 * Метод возвращяющий алгоритм для сравнения ходов и выбора лучшего хода.
+	 * Метод возвращяющий алгоритм для сравнения ходов 
+	 * и выбора лучшего хода.
 	 * 
 	 * @return алгоритм сравнения ходов.
 	 */
