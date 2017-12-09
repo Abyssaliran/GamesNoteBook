@@ -59,20 +59,19 @@ public class CompositeMove<T extends ITransferMove> implements ITransferMove {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		for (Move move : moves)
 			try {
 				move.doMove();
 			} catch (GameOver e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new GameOver(e.result);
 			}
 	}
 
 	@Override
 	public void undoMove() {
-		for (Move move : moves)
-			move.undoMove();
+		for (int k = moves.size()-1; k >= 0; k--)
+			moves.get(k).undoMove();
 	}
 
 	@Override
