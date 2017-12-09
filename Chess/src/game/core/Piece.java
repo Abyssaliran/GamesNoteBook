@@ -73,7 +73,7 @@ public class Piece {
 	 * @param s - проверяемая клетка.
 	 * @return
 	 */
-	protected boolean hasEnemy(Square s) {
+	public boolean hasEnemy(Square s) {
 		if (s.isEmpty())
 			return false;
 		
@@ -85,7 +85,7 @@ public class Piece {
 	 * @param s - проверяемая клетка.
 	 * @return
 	 */
-	protected boolean hasFriend(Square s) {
+	public boolean hasFriend(Square s) {
 		if (s.isEmpty())
 			return false;
 		
@@ -97,7 +97,7 @@ public class Piece {
 	 * @param d - проверяемое направление
 	 * @return
 	 */
-	protected boolean hasEnemy(Dirs d) {
+	public boolean hasEnemy(Dirs d) {
 		Square s = square.getBoard().getSquare(square.v + d.dv, square.h + d.dh);
 		
 		if (s.isEmpty())
@@ -111,7 +111,7 @@ public class Piece {
 	 * @param d - проверяемое направление
 	 * @return
 	 */
-	protected boolean hasFriend(Dirs d) {
+	public boolean hasFriend(Dirs d) {
 		Square s = square.getBoard().getSquare(square.v + d.dv, square.h + d.dh);
 		
 		if (s.isEmpty())
