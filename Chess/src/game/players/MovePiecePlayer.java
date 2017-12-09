@@ -2,6 +2,7 @@ package game.players;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import game.core.Board;
 import game.core.Move;
@@ -28,7 +29,11 @@ public class MovePiecePlayer implements IPlayer {
 		List<Move> correctMoves = new ArrayList<>();
 				
 		for (Piece p : board.getPieces(color)) {
-			List<Square> targets = board.getPieceTargets(p);
+			// Собрали все клетки-цели на которые допустим ход фигуры р.
+			List<Square> targets = board.getSquares()
+					.stream()
+					.filter(s -> p.isCorrectMove(s))
+					.collect( Collectors.toList() );
 			
 			for (Square target : targets) {
 				Square source = p.square;

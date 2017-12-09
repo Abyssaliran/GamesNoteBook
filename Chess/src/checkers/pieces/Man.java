@@ -15,7 +15,6 @@ import game.core.Square;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Man extends CheckersPiece {
-	
 	public Man(Square square, PieceColor color) {
 		super(square, color);
 	}
@@ -70,31 +69,33 @@ public class Man extends CheckersPiece {
 			return true;						
 		}
 		else 
-		if (Math.abs(dh) == 2) {
-			// Ход на две клетки - это простой ход с захватом.
-			
-			// Смотрим клетку, через которую перепрыгнули.
-			int capturedH = (source.h + target.h) / 2;
-			int capturedV = (source.v + target.v) / 2;
-			
-		    Board board = man.square.getBoard();
-			Square capturedSquare = board.getSquare(capturedV, capturedH);
-		    
-			// Прыгать через пустую клетку нельзя.
-			if (capturedSquare.isEmpty())
-				return false; 
-			
-			Piece captured = capturedSquare.getPiece();
-			
-			// Прыгать через фигуру того же цвета нельзя.
-			if (man.isFriend(captured))
-				return false;
-			
-			// Все проверки фигура прошла. Ход правильный.
-			return true;						
-		}
+		if (Math.abs(dh) == 2)  
+			// Ход на две клетки - это простой ход с захватом?
+			return man.isCapture(man, source, target);						
 		
 		return false;
+	}
+
+	public boolean isCapture(CheckersPiece man, Square source, Square target) {
+		// Смотрим клетку, через которую перепрыгнули.
+		int capturedH = (source.h + target.h) / 2;
+		int capturedV = (source.v + target.v) / 2;
+		
+		Board board = man.square.getBoard();
+		Square capturedSquare = board.getSquare(capturedV, capturedH);
+		
+		// Прыгать через пустую клетку нельзя.
+		if (capturedSquare.isEmpty())
+			return false; 
+		
+		Piece captured = capturedSquare.getPiece();
+		
+		// Прыгать через фигуру того же цвета нельзя.
+		if (man.isFriend(captured))
+			return false;
+		
+		// Все проверки фигура прошла. Ход правильный.
+		return true;
 	}
 	
 	@Override
@@ -127,15 +128,14 @@ public class Man extends CheckersPiece {
 		return createMove(this, source, target);
 	}
 
-	static
-	public Move createMove(Man man, Square source, Square target) {
+	public Move createMove(CheckersPiece man, Square source, Square target) {
 		boolean isCapture   = Math.abs(target.v - source.v) == 2;
 		boolean isPromotion = man.isBlack() ? target.h == 7 : target.h == 0;
 
 		Move move;
 		
 		if (!isCapture) 
-		    move = new SimpleMove(isPromotion, source, target);
+		    move = new SimpleMove(isPromotion, man, source, target);
 		else {
 			int capturedH = (source.h + target.h) / 2;
 			int capturedV = (source.v + target.v) / 2;
@@ -145,7 +145,7 @@ public class Man extends CheckersPiece {
 		    
 			Piece capturedPiece = capturedSquare.getPiece();
 			
-			move = new Capture(isPromotion, capturedPiece, source, target);
+			move = new Capture(isPromotion, man, capturedPiece, source, target);
 		}
 		
 		return move;

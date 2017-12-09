@@ -36,7 +36,7 @@ public class King extends CheckersPiece {
 		Square source = squares[0];
 		Square target = squares[1];
 
-		return createMove(source, target);
+		return createMove(this, source, target);
 	}
 
 	/**
@@ -88,13 +88,12 @@ public class King extends CheckersPiece {
 	 *            - куда идет король.
 	 * @return ход королем.
 	 */
-	static
-	public Move createMove(Square source, Square target) {
+	public Move createMove(CheckersPiece piece, Square source, Square target) {
 		Piece captured = getOneEnemyDiagonalPiece(source, target);
 
 		return source.isEmptyDiagonal(target)
-			 ? new SimpleMove(false, source, target) 
-			 : new Capture(false, captured, source, target);
+			 ? new SimpleMove(false, piece, source, target) 
+			 : new Capture(false, piece, captured, source, target);
 	}
 
 	/**

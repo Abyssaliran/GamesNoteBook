@@ -1,14 +1,22 @@
 package checkers.players;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import checkers.moves.Capture;
+import checkers.moves.CompositeMove;
+import checkers.pieces.CheckersPiece;
 import game.core.Board;
+import game.core.Dirs;
 import game.core.GameOver;
 import game.core.GameResult;
 import game.core.Move;
+import game.core.Piece;
 import game.core.PieceColor;
+import game.core.Square;
 import game.players.MovePiecePlayer;
 
 /**
@@ -19,6 +27,106 @@ import game.players.MovePiecePlayer;
 abstract 
 public class CheckersPlayer extends MovePiecePlayer {
 	
+	@Override
+	public List<Move> getCorrectMoves(Board board, PieceColor color) {
+		List<Move> correctMoves = new ArrayList<>();
+				
+		for (Piece p : board.getPieces(color)) {
+			CheckersPiece piece = (CheckersPiece) p;
+			
+			// Собрали все клетки-цели на которые допустим ход фигуры р.
+			List<Square> targets = board.getSquares()
+					.stream()
+					.filter(s -> piece.isCorrectMove(s))
+					.collect( Collectors.toList() );
+			
+			if (targets.isEmpty())
+				continue;
+			
+			Square source = piece.square;
+
+			// Соберем клетки на которые делаются ходы со взятием фигур.
+			List<Square> captureSquares = targets
+					.stream()
+					.filter(target -> target.distance(source) == 4)
+					.collect( Collectors.toList() );
+
+			if (captureSquares.isEmpty()) 
+				// Ходов со взятием фигур нет.
+				for (Square target : targets) {
+					Move correctMove = piece.makeMove(source, target);
+					correctMoves.add( correctMove );
+				}	
+			else { 
+				// Длинные ходы фигуры piece со взятием фигур.
+				List<Move> allTracks = new ArrayList<>();
+				
+				// Основа для всех длинных ходов фигуры piece.
+				CompositeMove trackBase = new CompositeMove(piece);
+				
+				collectTracks(piece, source, trackBase, allTracks);
+				correctMoves.addAll(allTracks);
+			}
+		}
+		
+		return correctMoves;
+	}
+	
+	/**
+	 * Собрать все длинные ходы простой фигуры.
+	 * 
+	 * @param piece
+	 *            - какая фигура идет.
+	 * @param square
+	 *            - откуда фигура идет.
+	 * @param track
+	 *            - предшествующие хода длинного хода.
+	 * @param allTracks
+	 *            - список всех возможных длинных ходов.
+	 */
+	void collectTracks(CheckersPiece piece, Square square, game.core.moves.CompositeMove<Capture> track, List<Move> allTracks) {
+		List<Square> targets = new ArrayList<>();
+		
+		// Смотрим по всем диагоналям возможность захвата фигуры.
+		for (Dirs dir : Dirs.DIAGONAL) {
+			if (!square.hasNext(dir))
+				continue;
+			
+			Square nextSquare = square.next(dir);
+
+			// Нет вражеской фигуры для перепрыгивания. 
+			if (!piece.hasEnemy(nextSquare))
+				continue; 
+			
+			// Вражеская фигура на краю доски.
+			if (!nextSquare.hasNext(dir))
+				continue; 
+			
+			// Клетка куда прыгаем пуста.
+			Square jumpSquare = nextSquare.next(dir);
+			
+			if (jumpSquare.isEmpty() && track.isAcceptable(jumpSquare))
+				targets.add(jumpSquare);
+		}
+		
+		if (targets.isEmpty() && !track.isEmpty()) 
+			// По всем диагоналям из клетки square больше ходов-взятий нет.
+			// Клетка square - лист в дереве возможных длинных ходов.
+			// Добавляем ход track в список допустимых длинных ходов. 
+			allTracks.add(track);
+		else {
+			// У длинного хода track фигуры есть еще ходы-взятия.
+			for (Square target : targets) {
+				Capture capture = (Capture) piece.createMove(piece, square, target);
+
+				game.core.moves.CompositeMove<Capture> newBranch = track.getClone();
+				newBranch.addMove(capture);
+
+				collectTracks(piece, target, newBranch, allTracks);
+			}
+		}
+	}
+
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
 		List<Move> correctMoves = getCorrectMoves(board, color);
@@ -86,7 +194,8 @@ public class CheckersPlayer extends MovePiecePlayer {
 	}
 
 	/**
-	 * Метод возвращяющий алгоритм для сравнения ходов и выбора лучшего хода.
+	 * Метод возвращяющий алгоритм для сравнения ходов 
+	 * и выбора лучшего хода.
 	 * 
 	 * @return алгоритм сравнения ходов.
 	 */
