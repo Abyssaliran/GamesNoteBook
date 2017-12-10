@@ -4,6 +4,7 @@ import checkers.moves.Capture;
 import checkers.moves.SimpleMove;
 import game.core.Board;
 import game.core.Dirs;
+import game.core.ITrackPiece;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -14,7 +15,7 @@ import game.core.Square;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Man extends CheckersPiece {
+public class Man extends CheckersPiece implements ITrackPiece {
 	public Man(Square square, PieceColor color) {
 		super(square, color);
 	}
@@ -99,7 +100,7 @@ public class Man extends CheckersPiece {
 	}
 	
 	@Override
-	protected boolean hasCapture() {
+	protected boolean hasCapture(Square square) {
 		// Смотрим по всем диагоналям возможность захвата фигуры.
 		for (Dirs d : Dirs.DIAGONAL) {
 			if (!square.hasNext(d))
@@ -154,5 +155,10 @@ public class Man extends CheckersPiece {
 	@Override
 	public String toString() {
 		return "";
+	}
+
+	@Override
+	public boolean hasCorrectMoveFrom(Square square) {
+		return hasCapture(square);
 	}
 }

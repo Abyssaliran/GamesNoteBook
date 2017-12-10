@@ -4,10 +4,12 @@ import org.eclipse.swt.graphics.Cursor;
 
 import game.core.Board;
 import game.core.GameOver;
-import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.core.moves.CompositeMove;
+import game.core.moves.ITrackMove;
+import game.core.moves.ITransferMove;
 import game.ui.GameBoard;
 
 /**
@@ -15,7 +17,7 @@ import game.ui.GameBoard;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class TrackPieceListener implements IGameListner {
+public class TrackPieceListener<T extends ITransferMove> implements IGameListner {
 	/**
 	 * Выбранная для перемещения фигура.
 	 */
@@ -41,6 +43,8 @@ public class TrackPieceListener implements IGameListner {
 	 * Панель на которой рисуется доска.
 	 */
 	private GameBoard boardPanel;
+	
+	private CompositeMove<T> track = null;
 
 	/**
 	 * Создать слушателя мыши для панели доски на которой перемещяются фигуры.
@@ -92,14 +96,32 @@ public class TrackPieceListener implements IGameListner {
 		// будут сделаны классом реализующим интерфейс Move.
 		selectedSquare.setPiece(selectedPiece);
 		
-		if (selectedPiece.isCorrectMove(mouseSquare)) {
-			// Ход на заданную клетку правильный.
-			// Создадим экземпляр хода и выполним его.
-			Move move = selectedPiece.makeMove(selectedSquare, mouseSquare);
-			try {
-				move.doMove();
-			} catch (GameOver e) {
-				// Сохраним экземпляр кода и истории партии.
+		if (selectedPiece.isCorrectMove(mouseSquare)) 
+			doMove(mouseSquare);
+
+		selectedPiece = null;
+		selectedSquare = null;
+		
+		// Восстановим курсор (с изображением стрелки).
+		boardPanel.setCursor(savedCursor);
+
+		// Пусть слушатели изменений на доске 
+		// нарисуют новое состояние доски.
+		board.setBoardChanged();
+		boardPanel.redraw();
+	}
+
+	private void doMove(Square mouseSquare){
+		// Ход на заданную клетку допустим.
+		// Создадим экземпляр хода и выполним его.
+		@SuppressWarnings("unchecked")
+		T move = (T) selectedPiece.makeMove(selectedSquare, mouseSquare);
+		
+		if (!(move instanceof ITrackMove)) {
+			// Простой ход.
+			try { move.doMove(); } 
+			catch (GameOver e) {
+				// Сохраним экземпляр хода в истории игры.
 				board.history.addMove(move);
 				board.history.setResult(e.result);
 
@@ -114,25 +136,75 @@ public class TrackPieceListener implements IGameListner {
 				board.setBoardChanged();
 				boardPanel.redraw();
 			}
-			
-			// Сохраним экземпляр кода и истории партии.
-			board.history.addMove(move);
-			
-			// TODO Реализовать запрос фигуры для превращения пешки.
 
-			// Теперь ходить должен противник. 
+			// Сохраним ход в истории игры.
+			board.history.addMove(move);
+
+			// Пусть слушатели изменений на доске
+			// нарисуют новое состояние доски.
+			board.setBoardChanged();
+			boardPanel.redraw();
+			
+			// Теперь ходить должен противник.
 			board.changeMoveColor();
 		}
+		else {
+			// Простой ход фигурой - часть составного хода фигурой
+			// (последовательности простых ходов той же фигурой).
+			ITrackMove trackMove = (ITrackMove) move;
+			if (track == null) {
+				// Первый ход в серии ходов.
+				track = new CompositeMove<T>(move);
+			}
+			else
+			if (!track.isAcceptable(mouseSquare))
+				// На эту клетку уже ходили.
+				// Избегаем хождения фигурой по кругу.
+				return;
+			else {
+				// Добавим простой ход в серию ходов.
+				track.undoMove();
+				track.addMove(move);
+			}
+			
+			// Делаем последовательность простых ходов.
+			try { track.doMove(); } 
+			catch (GameOver e) {
+				// Конец игры.
+				// Сохраним экземпляр хода в истории игры.
+				board.history.addMove(track);
+				board.history.setResult(e.result);
 
-		selectedPiece = null;
-		selectedSquare = null;
-		
-		// Восстановим курсор (с изображением стрелки).
-		boardPanel.setCursor(savedCursor);
+				selectedPiece = null;
+				selectedSquare = null;
+				
+				// Восстановим курсор (с изображением стрелки).
+				boardPanel.setCursor(savedCursor);
 
-		// Пусть слушатели изменений на доске 
-		// нарисуют новое состояние доски.
-		board.setBoardChanged();
-		boardPanel.redraw();
+				// Пусть слушатели изменений на доске 
+				// нарисуют новое состояние доски.
+				board.setBoardChanged();
+				boardPanel.redraw();
+			}
+			
+			// Пусть слушатели изменений на доске
+			// нарисуют новое состояние доски.
+			board.setBoardChanged();
+			boardPanel.redraw();
+
+			if (trackMove.hasNext()) 
+				return;
+			
+			// 
+			// Последний простой ход в последовательности ходов.
+			//
+			// Сохраним экземпляр хода в истории игры.
+			board.history.addMove(track);
+			
+			track = null;
+			
+			// Теперь ходить должен противник.
+			board.changeMoveColor();
+		}
 	}
 }

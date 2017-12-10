@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import checkers.Checkers;
+import checkers.moves.Capture;
 import checkers.pieces.King;
 import checkers.pieces.Man;
 import checkers.ui.images.CheckersImages;
@@ -15,7 +16,7 @@ import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
 import game.ui.GamePanel;
-import game.ui.listeners.MovePieceListener;
+import game.ui.listeners.TrackPieceListener;
 
 /**
  * Панель для игры в шашки.
@@ -63,7 +64,8 @@ class CheckersBoardPanel extends EuropeBoard {
 	public CheckersBoardPanel(Composite composite, Game game) {
 		super(composite, game.board);
 		
-		listener = new MovePieceListener(this);
+//		listener = new MovePieceListener(this);
+		listener = new TrackPieceListener<Capture>(this);
 	}
 
 	@Override

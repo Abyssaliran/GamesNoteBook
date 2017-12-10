@@ -149,7 +149,7 @@ public class King extends CheckersPiece {
 	}
 
 	@Override
-	protected boolean hasCapture() {
+	protected boolean hasCapture(Square square) {
 		// Двигаемся по всем диагоналям.
 		for (Dirs d : Dirs.DIAGONAL) {
 			Square s = square;

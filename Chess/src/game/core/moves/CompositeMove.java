@@ -51,11 +51,11 @@ public class CompositeMove<T extends ITransferMove> implements ITransferMove {
 	/**
 	 * Добавить простой ход фигурой фигуры к последовательности ходов.
 	 * 
-	 * @param capture
+	 * @param move
 	 *            - простой ход фигурой
 	 */
-	public void addMove(T capture) {
-		moves.add(capture);
+	public void addMove(T move) {
+		moves.add(move);
 	}
 
 	@Override
@@ -103,14 +103,17 @@ public class CompositeMove<T extends ITransferMove> implements ITransferMove {
 	}
 	
 	/**
-	 * @param square - Допустим ли ход на эту клетку 
+	 * Допустим ли ход на клетку square.
+	 * 
+	 * @param square
+	 *            - проверяемая клетка.
 	 * @return
 	 */
 	public boolean isAcceptable(Square square) {
 		// Если фигура уже была на этой клетке, то ход недопустим.
 		return !moves
 				.stream()
-				.anyMatch(c -> c.getSource() == square);
+				.anyMatch(move -> move.getSource() == square);
 	}
 	
 	@Override

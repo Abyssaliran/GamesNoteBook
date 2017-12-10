@@ -30,7 +30,7 @@ public class CheckersPiece extends Piece {
 	 * Имеет ли фигура ход с захватом фигур противника.
 	 * @return
 	 */
-	protected abstract boolean hasCapture();
+	protected abstract boolean hasCapture(Square square);
 
 	/**
 	 * Имеются ли на шашечной доске фигуры, 
@@ -44,7 +44,7 @@ public class CheckersPiece extends Piece {
 		return getFriends()
 			.stream()
 			.map(p -> (CheckersPiece) p)
-			.anyMatch(p -> p.hasCapture());
+			.anyMatch(p -> p.hasCapture(p.square));
 	}
 
 	abstract
