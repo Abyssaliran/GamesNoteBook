@@ -30,7 +30,6 @@ import vikings.ui.images.VikingImages;
  * <b>Блокнот настольных игр.</b></br></br>
  * 
  * Запись и просмотр партии в настольной игре.
- * Сохранение партии в файл и чтение из файла.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
@@ -53,15 +52,11 @@ public class GamesNotebook {
 		addChessTab(display, gamesFolder);
 		addCheckersTab(display, gamesFolder);
 		addChinaChessTab(display, gamesFolder);
-		addViking9Tab(display, gamesFolder);
-//		addViking11Tab(display, gamesFolder);
+		addVikingTab(display, gamesFolder);
 		addTamerlanChessTab(display, gamesFolder);
 		addReversiTab(display, gamesFolder);
-//		addReversiHoleTab(display, gamesFolder);
 		addGoTab(display, gamesFolder);
 		addHalma8x8Tab(display, gamesFolder);
-//		addHalma10x10Tab(display, gamesFolder);
-//		addHalma16x16Tab(display, gamesFolder);
 		
 	    shell.open();
 		while (!shell.isDisposed()) {
@@ -130,17 +125,17 @@ public class GamesNotebook {
 	}
 
 	/**
-	 * Инициализируем закладку для игры Викинги на доске 9х9.
+	 * Инициализируем закладку для игры Викинги.
 	 * 
 	 * @param display - монитор на котором рисуется закладки.
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
-	private static void addViking9Tab(final Display display, TabFolder gamesFolder) {
+	private static void addVikingTab(final Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, VikingImages.icoVikings9
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
-		tabItem.setText("Викинги-9");
+		tabItem.setText("Викинги");
 		tabItem.setControl( new VikingsGamePanel(gamesFolder, 9) );
 		tabItem.setImage(tabImage);
 	}
