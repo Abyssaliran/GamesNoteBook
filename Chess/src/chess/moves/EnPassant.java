@@ -4,6 +4,7 @@ import game.core.Square;
 
 /**
  * Ход европейских шахмат - взятие пешки на проходе.
+ * TODO Zhdanov
  *  
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
