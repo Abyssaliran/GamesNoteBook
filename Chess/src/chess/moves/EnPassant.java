@@ -30,7 +30,7 @@ public class EnPassant extends Capture implements ICapture {
 	}
 
 	@Override
-	public void restotePiece() {
+	public void restorePiece() {
 		// TODO Auto-generated method stub
 		
 	}

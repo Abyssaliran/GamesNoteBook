@@ -77,7 +77,7 @@ public class Capture extends SimpleMove
 	}
 
 	@Override
-	public void restotePiece() {
+	public void restorePiece() {
 		// TODO Auto-generated method stub
 		
 	}

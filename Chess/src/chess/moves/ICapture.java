@@ -22,5 +22,5 @@ public interface ICapture {
 	/**
 	 * Восттановить на доске фигуру противника.
 	 */
-	void restotePiece();
+	void restorePiece();
 }
