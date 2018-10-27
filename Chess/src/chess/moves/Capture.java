@@ -16,8 +16,8 @@ import game.core.moves.ICaptureMove;
 public class Capture extends SimpleMove 
 	implements ICaptureMove, ICapture 
 {
-	private Piece capturedPiece;
-	private Square capturedSquare;
+	protected Piece capturedPiece;
+	protected Square capturedSquare;
 
 	/**
 	 * Ход - захват фигуры.
@@ -64,6 +64,7 @@ public class Capture extends SimpleMove
 		super.doMove();
 	}
 
+
 	@Override
 	public void undoMove() {
 		super.undoMove();
@@ -73,7 +74,7 @@ public class Capture extends SimpleMove
 	@Override
 	public void removePiece() {
 		// TODO Auto-generated method stub
-		
+		int x = 0;
 	}
 
 	@Override
@@ -81,6 +82,7 @@ public class Capture extends SimpleMove
 		// TODO Auto-generated method stub
 		
 	}
+
 	
 	@Override
 	public String toString() {

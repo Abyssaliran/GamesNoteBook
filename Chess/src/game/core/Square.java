@@ -47,8 +47,13 @@ public class Square {
 	 * @param piece -  какую фигуру поставить.
 	 */
 	public void setPiece(Piece piece) {
+		setPiece(piece, this);
+	}
+	
+	public void setPiece(Piece piece, Square square)
+	{
 		this.piece = piece;
-		piece.square = this;
+		piece.square = square;
 	}
 
 	/**

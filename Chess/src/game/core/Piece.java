@@ -64,7 +64,7 @@ public class Piece {
 		
 		square.piece = null;
 		
-		target.piece = this;
+		target.setPiece(this);
 		square = target;
 	}
 

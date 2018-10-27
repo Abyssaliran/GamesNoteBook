@@ -40,10 +40,10 @@ public class Board extends Observable {
 	 */
 	private PieceColor moveColor = PieceColor.WHITE;
 	
-	Map<PieceColor, IPlayer> players = new HashMap<>(); 
+	Map<PieceColor, IPlayer> players = new HashMap<>();
 	{
 		setWhitePlayer(IPlayer.HOMO_SAPIENCE);
-		setBlackPlayer( new Neznaika() );
+		setBlackPlayer(IPlayer.HOMO_SAPIENCE);
 	}
 
 	public Board() {

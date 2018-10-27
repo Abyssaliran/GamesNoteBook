@@ -38,6 +38,7 @@ public class GamesNotebook {
 		final Display display = new Display();
 		
 		final Shell shell = new Shell(display);
+		
 		shell.setBackgroundMode(SWT.INHERIT_FORCE);
 		
 		shell.setSize(800, 600);
@@ -49,21 +50,22 @@ public class GamesNotebook {
 		
 		TabFolder gamesFolder = new TabFolder(shell, SWT.TOP);
 		
-		addChessTab(display, gamesFolder);
-		addCheckersTab(display, gamesFolder);
-		addChinaChessTab(display, gamesFolder);
-		addVikingTab(display, gamesFolder);
-		addTamerlanChessTab(display, gamesFolder);
-		addReversiTab(display, gamesFolder);
-		addGoTab(display, gamesFolder);
-		addHalma8x8Tab(display, gamesFolder);
 		
+		//Добавление вкладок
+		addChessTab(display, gamesFolder);
+		//addCheckersTab(display, gamesFolder);
+		//addChinaChessTab(display, gamesFolder);
+		//addVikingTab(display, gamesFolder);
+		//addTamerlanChessTab(display, gamesFolder);
+		//addReversiTab(display, gamesFolder);
+		//addGoTab(display, gamesFolder);
+		//addHalma8x8Tab(display, gamesFolder);
 	    shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
-		display.dispose();
+		display.dispose(); //Удалить экземпляр класса после завершения цикла опроса
 	} 
 
 	private static void addTamerlanChessTab(Display display, TabFolder gamesFolder) {
