@@ -43,7 +43,7 @@ public class Board extends Observable {
 	Map<PieceColor, IPlayer> players = new HashMap<>();
 	{
 		setWhitePlayer(IPlayer.HOMO_SAPIENCE);
-		setBlackPlayer(IPlayer.HOMO_SAPIENCE);
+		setBlackPlayer(new Neznaika());
 	}
 
 	public Board() {
