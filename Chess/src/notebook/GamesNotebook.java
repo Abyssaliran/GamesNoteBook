@@ -53,13 +53,13 @@ public class GamesNotebook {
 		
 		//Добавление вкладок
 		addChessTab(display, gamesFolder);
-		//addCheckersTab(display, gamesFolder);
-		//addChinaChessTab(display, gamesFolder);
-		//addVikingTab(display, gamesFolder);
-		//addTamerlanChessTab(display, gamesFolder);
-		//addReversiTab(display, gamesFolder);
-		//addGoTab(display, gamesFolder);
-		//addHalma8x8Tab(display, gamesFolder);
+		addCheckersTab(display, gamesFolder);
+		addChinaChessTab(display, gamesFolder);
+		addVikingTab(display, gamesFolder);
+		addTamerlanChessTab(display, gamesFolder);
+		addReversiTab(display, gamesFolder);
+		addGoTab(display, gamesFolder);
+		addHalma8x8Tab(display, gamesFolder);
 	    shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())

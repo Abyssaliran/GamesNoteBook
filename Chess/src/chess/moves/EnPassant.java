@@ -18,15 +18,14 @@ public class EnPassant extends Capture implements ICapture {
 	
 	public Square m_EnpassantCapturedSquare;
 	public EnPassant(Square[] squares, Square enemy_square) {
-		super(squares);		
-		capturedSquare = enemy_square;
-		capturedPiece = enemy_square.getPiece();
+		super(squares);			
+		setCapturedSquare(enemy_square);
+		setCapturedPiece(enemy_square.getPiece());
 	}
 
 	@Override
 	//Сделать ход
 	public void doMove() {
-		capturedPiece.remove();
 		super.doMove();
 	}
 
@@ -34,7 +33,6 @@ public class EnPassant extends Capture implements ICapture {
 	//Отменить ход
 	public void undoMove() {
 		super.undoMove();		
-		capturedSquare.setPiece(capturedPiece);		
 	}
 
 	@Override
@@ -48,8 +46,7 @@ public class EnPassant extends Capture implements ICapture {
 	@Override
 	//Восстановить фигуру
 	public void restorePiece() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 		
 	}
 }

@@ -66,6 +66,11 @@ public class Pawn extends ChessPiece {
 		return null;
 	}
 
+	
+	/* Shortly speaking, this method returns the possible ways where exactly could move a selected chess piece.
+	 * Class MovePiecePromptListener has a method called "mouseMove", which is declared in interface IMouseMoveListener.
+	 *By focusing on some chess piece on the board, each square on the board will be checked (namely 64 times) through the loop, which is implemented in the method mentioned before. 
+	 */
 	@Override
 	public boolean isCorrectMove(Square... squares) {
 		// Пока используем только умалчиваемую проверку
@@ -75,14 +80,7 @@ public class Pawn extends ChessPiece {
 		
 		Square source = square;
 		Square target = squares[0];
-		
-		
-		
-		//Взятие на проходе: Подобная ситуация становится возможной только в
-		//тех случаях, когда пешка располагается на пятой (для белых пешек) или четвертой (для черных пешек) горизонтали,
-		//а поле, которое пересекает пешка противника, находится у нее под боем.
 
-		
 		int dv = Math.abs(target.v - source.v);
 		int dh = isWhite()
 				? source.h - target.h 
@@ -93,9 +91,7 @@ public class Pawn extends ChessPiece {
 		if (dv != 0) {
 			// Есть смещение пешки по вертикали. 
 			// Возможно это взятие пешкой вражеской фигуры.
-			
-			
-			
+						
 			if (dv > 1)
 			   return false; // Смещение больше, чем на 1 клетку
 			

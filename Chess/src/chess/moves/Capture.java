@@ -16,8 +16,8 @@ import game.core.moves.ICaptureMove;
 public class Capture extends SimpleMove 
 	implements ICaptureMove, ICapture 
 {
-	protected Piece capturedPiece;
-	protected Square capturedSquare;
+	private Piece capturedPiece;
+	private Square capturedSquare;
 
 	/**
 	 * Ход - захват фигуры.
@@ -74,7 +74,6 @@ public class Capture extends SimpleMove
 	@Override
 	public void removePiece() {
 		// TODO Auto-generated method stub
-		int x = 0;
 	}
 
 	@Override
@@ -87,5 +86,18 @@ public class Capture extends SimpleMove
 	@Override
 	public String toString() {
 		return "" + piece + source + "x" + target;
+	}
+	
+	public Piece getCapturedPiece() {
+		return capturedPiece;
+	}
+	public Square getCapturedSquare() {
+		return capturedSquare;
+	}
+	public void setCapturedPiece(Piece capturedPiece) {
+		this.capturedPiece = capturedPiece;
+	}
+	public void setCapturedSquare(Square capturedSquare) {
+		this.capturedSquare = capturedSquare;
 	}
 }

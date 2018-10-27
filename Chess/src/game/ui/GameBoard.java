@@ -549,7 +549,7 @@ public class GameBoard extends Canvas
 	public void mouseMove(MouseEvent e) {
 		Square s = getSquare(e);
 		
-		if (s != null && s.getPiece() != null)
+		if (s != null)
 			mouseMoveListener.mouseMove(s);
 	}
 }
