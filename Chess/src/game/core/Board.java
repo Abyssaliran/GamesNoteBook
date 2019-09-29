@@ -38,9 +38,9 @@ public class Board extends Observable {
 	/**
 	 * Цвет фигуры которая должна сделать ход.
 	 */
-	private PieceColor moveColor = PieceColor.WHITE;
+	protected PieceColor moveColor = PieceColor.WHITE;
 	
-	Map<PieceColor, IPlayer> players = new HashMap<>();
+	protected Map<PieceColor, IPlayer> players = new HashMap<>();
 	{
 		setWhitePlayer(IPlayer.HOMO_SAPIENCE);
 		setBlackPlayer(new Neznaika());

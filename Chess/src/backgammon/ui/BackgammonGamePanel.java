@@ -1,34 +1,36 @@
 package backgammon.ui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 import backgammon.Backgammon;
+import backgammon.BackgammonBoard;
+import backgammon.pieces.Stone;
 import backgammon.ui.images.BackgammonImages;
 import game.core.Game;
 import game.core.IPieceProvider;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import game.ui.GameBoard;
 import game.ui.GamePanel;
-import game.ui.GreenBoard;
 import game.ui.ScorePanel;
+import game.ui.images.GameImages;
 import game.ui.listeners.MovePieceListener;
 import game.ui.listeners.MovePiecePromptListener;
-import backgammon.pieces.Stone;
 
 /**
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class BackgammonGamePanel extends GamePanel {
-	private static final Color GREEN = new Color(null, 0, 192, 0);
-
 	public BackgammonGamePanel(Composite composite) {
 		super(composite, new Backgammon());
-		setBackground(GREEN);
 
 		BackgammonBoardPanel gameBoard = new BackgammonBoardPanel(this, game);
 		insertSquares(gameBoard);
@@ -38,37 +40,99 @@ public class BackgammonGamePanel extends GamePanel {
 
 		ScorePanel sp = new ScorePanel(control, game);
 		sp.setLayoutData(data);
+
+		CubesPanel cp = new CubesPanel(control, (Backgammon) game);
+		cp.setLayoutData(data);
+	}
+}
+
+/**
+ * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+ */
+class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
+	/**
+	 * Создать доску для игры в нарды.
+	 * 
+	 * @param composite - составной элемент содержащий доску.
+	 * @param game      - игра
+	 */
+	public BackgammonBoardPanel(Composite composite, Game game) {
+		super(composite, game.board);
+
+		// Слушатель мыши для постановки новой фигуры на доску.
+		listener = new MovePieceListener(this);
+
+		// Слушатель мыши для отрисовки подсказки на доске -
+		// можно ли ставить фигуру на клетку на доски.
+		mouseMoveListener = new MovePiecePromptListener(this);
 	}
 
-	/**
-	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
-	 */
-	public class BackgammonBoardPanel extends GreenBoard implements IPieceProvider {
-		/**
-		 * Создать доску для игры в нарды.
-		 * 
-		 * @param composite - составной элемент содержащий доску.
-		 * @param game      - игра
-		 */
-		public BackgammonBoardPanel(Composite composite, Game game) {
-			super(composite, game.board);
+	@Override
+	public Piece getPiece(Square square, PieceColor color) {
+		return new Stone(square, color);
+	}
 
-			// Слушатель мыши для постановки новой фигуры на доску.
-			listener = new MovePieceListener(this);
+	@Override
+	public Image getPieceImage(Piece piece, PieceColor color) {
+		return color == PieceColor.WHITE 
+				? BackgammonImages.imageStoneWhite 
+				: BackgammonImages.imageStoneBlack;
+	}
 
-			// Слушатель мыши для отрисовки подсказки на доске -
-			// можно ли ставить фигуру на клетку на доски.
-			mouseMoveListener = new MovePiecePromptListener(this);
-		}
+	private final Color BLACK_COLOR = new Color(null, 0, 0, 0);
 
-		@Override
-		public Piece getPiece(Square square, PieceColor color) {
-			return new Stone(square, color);
-		}
+	@Override
+	protected void drawBackground(GC gc, Rectangle area) {
+		Rectangle bounds = GameImages.woodLight.getBounds();
+		
+		gc.drawImage(GameImages.woodLight, 
+				0, 0, bounds .width, bounds.height, 
+				area.x, area.y, area.width, area.height);
 
-		@Override
-		public Image getPieceImage(Piece piece, PieceColor color) {
-			return color == PieceColor.WHITE ? BackgammonImages.imageStoneWhite : BackgammonImages.imageStoneBlack;
-		}
+		gc.setForeground(BLACK_COLOR);
+		gc.drawRectangle(area.x, area.y, area.width, area.height);
+	}
+
+	@Override
+	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
+		boolean isOdd    = (v % 2 == 0);
+		boolean isTop    = (h <= 4);
+		boolean isMiddle = (5 <= h) & (h <= 6);
+		boolean isBottom = (7 <= h);
+
+		boolean topDark    = isTop && isOdd;
+		boolean bottomDark = isBottom && !isOdd;
+		boolean isDark     = !isMiddle && (topDark || bottomDark);
+		
+		int vMiddle = board.nV / 2;
+
+		int sw = squareWidth;
+		int sh = squareHeight;
+		
+		int x = v * squareWidth;
+		int y = h * squareHeight;
+		
+		Image wood = isDark ? GameImages.woodDark : GameImages.woodMedium;
+		Rectangle bounds = wood.getBounds();
+		
+		gc.drawImage(wood, 
+		             0, 0, bounds.width, bounds.height, 
+			         x, y, sw, sh);
+
+		if ((v == 0) || (v == vMiddle)) gc.drawLine(x, y, x, y + sh);
+		if (v == board.nV - 1) gc.drawLine(x + sw, y, x + sw, y + sh);
+
+		if (h == 0) gc.drawLine(x, y, x + sw, y);
+		if (h == board.nH-1) gc.drawLine(x, y + sh, x + sw, y + sh);
+	}
+	
+	@Override
+	public void mouseUp(MouseEvent e) {
+		super.mouseUp(e);
+		
+		// Человек сделал ход.
+		BackgammonBoard b = (BackgammonBoard)board;
+		b.dropCubes();
+		b.setBoardChanged();
 	}
 }

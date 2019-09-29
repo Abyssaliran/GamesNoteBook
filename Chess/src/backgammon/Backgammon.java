@@ -7,8 +7,9 @@ import game.players.IPlayer;
 import game.players.Neznaika;
 
 /**
- * Правила игры:
- * https://ru.wikipedia.org/wiki/Короткие_нарды
+ * Правила игры в короткие нарды:
+ * 
+ * <a href="https://ru.wikipedia.org/wiki/Короткие_нарды">Короткие_нарды</a>
  */
 public class Backgammon extends Game {
 	static {
@@ -16,7 +17,12 @@ public class Backgammon extends Game {
 		Game.addPlayer(Backgammon.class, new Neznaika());
 	}
 
+	private BackgammonBoard backgamonBoard;
+
 	public Backgammon() {
+		backgamonBoard = new BackgammonBoard();
+		board  = backgamonBoard;
+			
 		initBoardDefault();
 		
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );

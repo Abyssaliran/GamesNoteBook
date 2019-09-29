@@ -3,8 +3,6 @@ package backgammon.ui.images;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
-import reversi.ui.images.ReversiImages;
-
 public class BackgammonImages {
 	public static Image iconBackgammon;
 	public static Image imageStoneWhite;
