@@ -1,6 +1,3 @@
-/**
- * 
- */
 package game.ui;
 
 import game.core.History;
@@ -32,10 +29,10 @@ public class HistoryPanel extends Canvas
 	private static final Font font = new Font(Display.getCurrent(), "mono", 10,
 			SWT.NORMAL);
 
-	private static Color WHITE = new Color(null, 255, 255, 255);
-	private static Color BLACK = new Color(null,   0,   0,   0);
+	private static final Color WHITE = new Color(null, 255, 255, 255);
+	private static final Color BLACK = new Color(null,   0,   0,   0);
 
-	History history;
+	final History history;
 
 	/**
 	 * Создать панель для изображения последовательности ходов в партии.

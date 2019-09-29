@@ -1,6 +1,6 @@
 package chess.moves;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import chess.pieces.Queen;
@@ -17,7 +17,7 @@ import game.core.moves.ICaptureMove;
 public class Promotion extends SimpleMove 
 	implements ICaptureMove
 {
-	private Piece pawn;
+	private final Piece pawn;
 	private Piece capturedPiece;
 	private Queen promotedPiece;
 
@@ -34,7 +34,7 @@ public class Promotion extends SimpleMove
 	@Override
 	public List<Square> getCaptured() {
 		return capturedPiece == null
-				? Arrays.asList() : Arrays.asList(target);
+				? Collections.emptyList() : Collections.singletonList(target);
 	}
 
 	/* 

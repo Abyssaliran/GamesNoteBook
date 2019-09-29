@@ -25,7 +25,6 @@ public class Chess extends Game {
 
 	/**
 	 * Расстановка шахматных фигур в начальную позицию.
-	 * @return доска с расставленными фигурами.
 	 */
 	public Chess() {
 		initBoardDefault();

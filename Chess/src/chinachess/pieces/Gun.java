@@ -1,6 +1,3 @@
-/**
- * 
- */
 package chinachess.pieces;
 
 import chinachess.moves.Capture;
@@ -76,9 +73,7 @@ public class Gun extends ChinaChessPiece {
 			if (nBarier != 1) return false;
 			
 			// Барьер далеко.
-			if (!barier.isNear(square))	return false;
-
-			return true;
+			return barier.isNear(square);
 		}
 		
 		// Стреляем по вертикали?
@@ -98,11 +93,8 @@ public class Gun extends ChinaChessPiece {
 			
 			if (nBarier != 1) // Барьеров слишом много.
 				return false;
-			
-			if (!barier.isNear(square))
-				return false; // Барьер далеко.
 
-			return true;
+			return barier.isNear(square); // Барьер далеко.
 		}
 			
 		return false;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package game.core;
 
 import java.util.List;
@@ -140,7 +137,6 @@ public class Piece {
 
 	/**
 	 * Вернуть список своих фигур для этой фигуры.
-	 * @param piece - фигура для которой выдем ее друзей.
 	 * @return - список друзей.
 	 */
 	public List<Piece> getFriends() {
@@ -149,7 +145,6 @@ public class Piece {
 
 	/**
 	 * Вернуть список своих фигур для этой фигуры.
-	 * @param piece - фигура для которой выдем ее друзей.
 	 * @return - список друзей.
 	 */
 	public List<Piece> getEnemies() {

@@ -15,8 +15,8 @@ import game.ui.GamePanel;
 import game.ui.GreenBoard;
 import game.ui.listeners.MovePieceListener;
 import vikings.Vikings;
+import vikings.pieces.Cyning;
 import vikings.pieces.Viking;
-import vikings.pieces.Сyning;
 import vikings.ui.images.VikingImages;
 
 /**
@@ -80,10 +80,10 @@ class VikingsBoardPanel extends GreenBoard {
 				? VikingImages.imageVikingWhite
 				: VikingImages.imageVikingBlack;
 		
-		if (piece instanceof Сyning)
+		if (piece instanceof Cyning)
 			return color == PieceColor.WHITE 
-				? VikingImages.imageСyningWhite
-				: VikingImages.imageСyningBlack;
+				? VikingImages.imageCyningWhite
+				: VikingImages.imageCyningBlack;
 		
 		return null;
 	}

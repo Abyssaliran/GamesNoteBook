@@ -1,6 +1,6 @@
 package chess.moves;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import game.core.Piece;
@@ -36,7 +36,7 @@ public class Capture extends SimpleMove
 	
 	@Override
 	public List<Square> getCaptured() {
-		return Arrays.asList(capturedSquare);
+		return Collections.singletonList(capturedSquare);
 	}
 
 	/**

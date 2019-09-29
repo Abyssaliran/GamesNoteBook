@@ -37,7 +37,7 @@ public class Pawn extends ChessPiece {
 			{
 				if(enemy.getClass() == Pawn.class)
 				{
-					flgMakeDoubleMove = (boolean)((Pawn) enemy).IfMakeDoubleMove();
+					flgMakeDoubleMove = ((Pawn) enemy).IfMakeDoubleMove();
 				}
 				
 				if(
@@ -161,7 +161,7 @@ public class Pawn extends ChessPiece {
 		if (isLastHorizontal) // Ход на последнюю горизонталь.
 			return new Promotion(squares);	
 		
-		if (Math.abs(target.v - source.v) == 1) // Ход по диагонали.
+		if (dv == 1) // Ход по диагонали.
 		{
 			Piece target_location = squares[1].getPiece();
 			Square enemy_square = GetEnemyPieceForEnPassantMove(source, target);

@@ -7,8 +7,8 @@ import game.core.PieceColor;
 import game.core.Square;
 import game.players.IPlayer;
 import game.players.Neznaika;
+import vikings.pieces.Cyning;
 import vikings.pieces.Viking;
-import vikings.pieces.Сyning;
 import vikings.players.Haraldr;
 import vikings.players.Rurik;
 import vikings.players.William;
@@ -29,14 +29,13 @@ public class Vikings extends Game {
 		addPlayer(Vikings.class, new William());
 	}
 	
-	int center;
+	private int center;
 
 	/**
 	 * Создание доски заданного размера
 	 * и расстановка фигур для этого размера доски.
 	 * 
 	 * @param boardSize - размер доски.
-	 * @return доска с расставленными фигурами.
 	 */
 	public Vikings(int boardSize) {
 		super.initBoard(boardSize, boardSize);
@@ -66,7 +65,7 @@ public class Vikings extends Game {
 		} else {
 			center = 4;
 			
-			new Сyning(board.getSquare(center, center), PieceColor.WHITE);
+			new Cyning(board.getSquare(center, center), PieceColor.WHITE);
 			
 			for(LineDirs dir : LineDirs.ALL) 
 				for (int k = 1; k < 3; k++) {
@@ -94,7 +93,7 @@ public class Vikings extends Game {
 				Square square = board.getSquare(v, h);
 				
 				if ((v == center) && (h == center))
-					 new Сyning(square, PieceColor.WHITE);
+					 new Cyning(square, PieceColor.WHITE);
 				else new Viking(square, color);
 			}
 			int delta = (h >= centerH ? -1 : 1);
@@ -106,13 +105,11 @@ public class Vikings extends Game {
 	/** 
 	 * Создание доски размером 9х9
 	 * и расстановка фигур для этого размера доски.
-	 * 
-	 * @return доска с расставленными фигурами.
 	 */
 	private void initBoard9() {
 		int c = 4;
 		
-		new Сyning(board.getSquare(c, c), PieceColor.WHITE);
+		new Cyning(board.getSquare(c, c), PieceColor.WHITE);
 		
 		for(LineDirs dir : LineDirs.ALL) 
 			for (int k = 1; k < 3; k++) {

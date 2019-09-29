@@ -1,10 +1,6 @@
-/**
- * 
- */
 package game.ui;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -38,9 +34,9 @@ public class AdornedBoard extends Canvas {
 	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
 	 */
 	private class BoardAdorns extends Canvas {
-		private boolean isInverted;
-		private boolean isNumbers;
-		private boolean isVertical;
+		private final boolean isInverted;
+		private final boolean isNumbers;
+		private final boolean isVertical;
 
 		/**
 		 * Поле с обозначениями для горизонталей и вертикалей (номер или буква)
@@ -124,15 +120,13 @@ public class AdornedBoard extends Canvas {
 	 * 
 	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
 	 */
-	private class EmptyAdorn extends Canvas {
+	private static class EmptyAdorn extends Canvas {
 		public EmptyAdorn(Composite parent) {
 			super(parent, SWT.TRANSPARENT);
 			setLayout(new FillLayout(SWT.HORIZONTAL));
 		}
 	}
 
-	private Canvas owner;
-	
 	private BoardAdorns top;
 	private BoardAdorns left;
 	private BoardAdorns right;
@@ -142,17 +136,12 @@ public class AdornedBoard extends Canvas {
 	 * Создать доску с обозначениями для горизонталей и вертикалей (номер или
 	 * буква).
 	 * 
-	 * @param parent
+	 * @param parent родительский управляющий элемент.
 	 */
 	public AdornedBoard(Composite parent) {
 		super(parent, SWT.BORDER_SOLID);
 	}
 
-	public AdornedBoard(Composite parent, Color color) {
-		super(parent, SWT.BORDER_SOLID);
-		setBackground(color);
-	}
-	
 	/**
 	 * Очистить составной элемент.
 	 * 
@@ -186,16 +175,16 @@ public class AdornedBoard extends Canvas {
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
 		setLayout(layout);
-		
-		owner = new Canvas(this, SWT.BORDER);
+
+		Canvas owner = new Canvas(this, SWT.BORDER);
 		owner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		initMainPanel(owner, boardPanel);
 	}
 
 	/**
-	 * @param owner
-	 * @param adornedControl
+	 * @param owner - родительский управляющий элемент.
+	 * @param adornedControl - элемент к которому добавляют надмиси.
 	 */
 	private void initMainPanel(Canvas owner, GameBoard adornedControl) {
 		// Сетевая планировка доски 3х3 ячейки.

@@ -1,6 +1,6 @@
 package chinachess.moves;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import chinachess.pieces.King;
@@ -19,8 +19,8 @@ import game.core.moves.ICaptureMove;
  * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
  */
 public class Capture extends SimpleMove implements ICaptureMove {
-	private Square capturedSquare;
-	private Piece  capturedPiece;
+	private final Square capturedSquare;
+	private final Piece  capturedPiece;
 
 	public Capture(Square[] squares) {
 		super(squares);
@@ -51,6 +51,6 @@ public class Capture extends SimpleMove implements ICaptureMove {
 
 	@Override
 	public List<Square> getCaptured() {
-		return Arrays.asList(capturedSquare);
+		return Collections.singletonList(capturedSquare);
 	}
 }

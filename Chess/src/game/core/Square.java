@@ -11,17 +11,17 @@ public class Square {
 	/**
 	 * Вертикаль клетки.
 	 */
-	public int v;
+	public final int v;
 
 	/**
 	 * Горизонталь клетки.
 	 */
-	public int h;
+	public final int h;
 
 	/**
 	 * Доска на которой расположена клетка.
 	 */
-	private Board board;
+	private final Board board;
 
 	/**
 	 * Фигура которая, возможно, стоит на клетке.
@@ -250,10 +250,6 @@ public class Square {
 	 * Выдать расстояние между клетками доски - 
 	 * сумму расстояний по вертикали и горизонтали.
 	 * 
-	 * @param source
-	 *            - клетка откуда идет фигура.
-	 * @param target
-	 *            - клетка куда идет фигура.
 	 * @return Расстояние между клетками <b>target</b> и <b>source</b>.
 	 */
 	public int distance(Square s) {

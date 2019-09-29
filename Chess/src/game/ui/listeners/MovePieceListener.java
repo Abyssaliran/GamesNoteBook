@@ -35,12 +35,12 @@ public class MovePieceListener implements IGameListner {
 	/**
 	 * Доска на которой происходят изменения.
 	 */
-	private Board board;
+	private final Board board;
 	
 	/**
 	 * Панель на которой рисуется доска.
 	 */
-	private GameBoard boardPanel;
+	private final GameBoard boardPanel;
 
 	/**
 	 * Создать слушателя мыши для панели доски на которой перемещяются фигуры.

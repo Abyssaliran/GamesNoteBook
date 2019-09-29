@@ -59,10 +59,10 @@ public class King extends ChessPiece {
 			Piece pieceH = board.getSquare(kingV+3, kingH).getPiece();
 			if (!(pieceH instanceof Rook))
 				return false; // На вертикали H не ладья.
-			
+
 			if (pieceH.getColor() != getColor())
 				return false; // На вертикали H ладья противника.
-			
+
 			return true;
 		}
 		

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package halma.ui;
 
 import org.eclipse.swt.SWT;

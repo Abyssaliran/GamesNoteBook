@@ -32,7 +32,7 @@ public class MovePiecePlayer implements IPlayer {
 			// Собрали все клетки-цели на которые допустим ход фигуры р.
 			List<Square> targets = board.getSquares()
 					.stream()
-					.filter(s -> p.isCorrectMove(s))
+					.filter(p::isCorrectMove)
 					.collect( Collectors.toList() );
 			
 			for (Square target : targets) {

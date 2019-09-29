@@ -17,7 +17,7 @@ import game.core.moves.ITransferMove;
  * <a href="http://militera.lib.ru/science/sun-tszy/01.html">Сунь-Цзы. Искусство войны</a>
  */
 public class SunTzu extends ChinaChessPlayer {
-	private Comparator<? super Move> brain 
+	private final Comparator<? super Move> brain
 		= (m1, m2) -> getWeight(m2) - getWeight(m1); 
 		
 	final Comparator<? super Piece> pieceComparator 

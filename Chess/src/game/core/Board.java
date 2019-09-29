@@ -33,14 +33,14 @@ public class Board extends Observable {
 	/**
 	 * История партии (последовательность ходов игры).
 	 */
-	public History history = new History(this);
+	public final History history = new History(this);
 	
 	/**
 	 * Цвет фигуры которая должна сделать ход.
 	 */
 	private PieceColor moveColor = PieceColor.WHITE;
 	
-	Map<PieceColor, IPlayer> players = new HashMap<>();
+	final Map<PieceColor, IPlayer> players = new HashMap<>();
 	{
 		setWhitePlayer(IPlayer.HOMO_SAPIENCE);
 		setBlackPlayer(new Neznaika());
@@ -126,13 +126,13 @@ public class Board extends Observable {
 	/**
 	 * Дать цвет противоположный заданному цвету.
 	 * 
-	 * @param сolor
+	 * @param color
 	 *            - заданный цвет фигуры.
 	 * @return противоположный цвет фигур.
 	 */
 	static
-	public PieceColor getOponentColor(PieceColor сolor) {
-		return сolor == PieceColor.WHITE 
+	public PieceColor getOponentColor(PieceColor color) {
+		return color == PieceColor.WHITE
 				? PieceColor.BLACK : PieceColor.WHITE;
 	}
 	
@@ -172,9 +172,7 @@ public class Board extends Observable {
 		if (h < 0) return false;
 		
 		if (v > nV-1) return false;
-		if (h > nH-1) return false;
-		
-		return true;
+		return h <= nH - 1;
 	}
 
 	/**
@@ -196,7 +194,7 @@ public class Board extends Observable {
 	 * 
 	 * @param v - вертикаль
 	 * @param h - горизонталь
-	 * @return
+	 * @return пустая или нет
 	 */
 	public boolean isEmpty(int v, int h) {
 		return getSquare(v, h).isEmpty();
@@ -229,7 +227,7 @@ public class Board extends Observable {
 	/**
 	 * Выдать игрока белыми фигурами.
 	 * 
-	 * @return
+	 * @return Игрок белыми фигурами.
 	 */
 	public IPlayer getWhitePlayer() {
 		return players.get(PieceColor.WHITE);
@@ -237,7 +235,7 @@ public class Board extends Observable {
 
 	/**
 	 * Выдать игрока черными фигурами.
-	 * @return
+	 * @return игрок черными фигурами.
 	 */
 	public IPlayer getBlackPlayer() {
 		return players.get(PieceColor.BLACK);
@@ -326,7 +324,7 @@ public class Board extends Observable {
 
 	/**
 	 * Максимальное расстояние между клетками доски.
-	 * @return
+	 * @return максимальное расстояние.
 	 */
 	public int maxDistance() {
 		return nH + nV;

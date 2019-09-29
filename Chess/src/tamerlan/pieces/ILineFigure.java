@@ -10,13 +10,9 @@ import game.core.Square;
 public interface ILineFigure {
 
 	static boolean isCorrectMove(Square source, Square target) {
-		
 		if (source.isEmptyVertical(target))
 			return true;
-		
-		if (source.isEmptyHorizontal(target))
-			return true;
 
-		return false;
+		return source.isEmptyHorizontal(target);
 	}
 }

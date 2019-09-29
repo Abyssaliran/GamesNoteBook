@@ -1,6 +1,3 @@
-/**
- * 
- */
 package chinachess.pieces;
 
 import chinachess.moves.Capture;

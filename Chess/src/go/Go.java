@@ -2,9 +2,6 @@ package go;
 
 import game.core.Game;
 import game.core.IPieceProvider;
-import game.core.Piece;
-import game.core.PieceColor;
-import game.core.Square;
 import game.players.IPlayer;
 import game.players.Vinni;
 import go.pieces.GoPiece;
@@ -15,12 +12,7 @@ import go.pieces.GoPiece;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Go extends Game {
-	private static IPieceProvider pieceProvider = new IPieceProvider() {
-		@Override
-		public Piece getPiece(Square square, PieceColor color) {
-			return new GoPiece(square, color);
-		}
-	};
+	private static final IPieceProvider pieceProvider = (square, color) -> new GoPiece(square, color);
 	
 	static {
 		Game.addPlayer(Go.class, IPlayer.HOMO_SAPIENCE);

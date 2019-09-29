@@ -16,7 +16,7 @@ import game.core.PieceColor;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Neznaika extends MovePiecePlayer {
-	private int maxMoves = 80;
+	private final int maxMoves;
 	
 	public Neznaika() {
 		this(80);

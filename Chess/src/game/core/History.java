@@ -17,7 +17,7 @@ public class History {
 	/**
 	 * Список ходов сделанных на доске.
 	 */
-	List<Move> moves = new ArrayList<>();
+    final List<Move> moves = new ArrayList<>();
 
 	/**
 	 * Доска на которой идет игра.
@@ -166,7 +166,7 @@ public class History {
 	}
 	
 	public String toString() {
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		
 		int k = 0;
 		
@@ -175,10 +175,10 @@ public class History {
 			String number = (!odd ? "" : "" + (1+k/2) + ". ");
 			String nl = (!odd ? "\n" : "");
 			
-			s += String.format("%s%s %s", number, m, nl);
+			s.append(String.format("%s%s %s", number, m, nl));
 			k++;
 		}
 		
-		return s;
+		return s.toString();
 	}
 }

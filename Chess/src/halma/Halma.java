@@ -32,7 +32,6 @@ public class Halma extends Game {
 	
 	/**
 	 * Creates game board with proper sizes allowable for the Game.
-	 * @return Board with allocated figures
 	 */
 	public Halma(int boardSize) {
 		super.initBoard(boardSize, boardSize);

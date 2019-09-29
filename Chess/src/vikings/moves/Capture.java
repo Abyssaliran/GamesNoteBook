@@ -9,8 +9,8 @@ import game.core.GameResult;
 import game.core.Piece;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
+import vikings.pieces.Cyning;
 import vikings.pieces.VikingsPiece;
-import vikings.pieces.Сyning;
 
 /**
  * <pre>
@@ -38,7 +38,7 @@ public class Capture extends SimpleMove implements ICaptureMove {
 	/**
 	 * Захваченные фигуры противника.
 	 */
-	private List<Piece> captured;
+	private final List<Piece> captured;
 
 	public Capture(List<Piece> captured, Square[] squares) {
 		super(squares);
@@ -65,11 +65,11 @@ public class Capture extends SimpleMove implements ICaptureMove {
 		captured.forEach(p -> p.square.removePiece());
 
 		// Дошел ли белый король до выхода?
-		if ((piece instanceof Сyning) && VikingsPiece.isExit(piece.square)) 
+		if ((piece instanceof Cyning) && VikingsPiece.isExit(piece.square))
 			throw new GameOver(GameResult.WHITE_WIN);
 		
 		// Есть ли среди захваченных фигур белый король?
-		if (captured.stream().anyMatch(p -> p instanceof Сyning))
+		if (captured.stream().anyMatch(p -> p instanceof Cyning))
 			throw new GameOver(GameResult.BLACK_WIN);
 	}
 	
@@ -115,7 +115,7 @@ public class Capture extends SimpleMove implements ICaptureMove {
 	 */
 	static
 	private boolean isCaptured(Piece piece, Square source, Square target) {
-		return piece instanceof Сyning 
+		return piece instanceof Cyning
 			   ? isKingCaptured(piece, source, target)
 			   : isPieceCaptured(piece, source, target);
 	}
@@ -139,11 +139,8 @@ public class Capture extends SimpleMove implements ICaptureMove {
 			return true;
 
 		// Есть ли окружение фигуры с 2-х сторон по вертикали?
-		if (isCaptureSide(piece, source, target, Dirs.UP) && 
-		    isCaptureSide(piece, source, target, Dirs.DOWN))
-			return true;
-		
-		return false;
+		return isCaptureSide(piece, source, target, Dirs.UP) &&
+				isCaptureSide(piece, source, target, Dirs.DOWN);
 	}
 
 	/**
@@ -164,13 +161,10 @@ public class Capture extends SimpleMove implements ICaptureMove {
 			return false;
 		
 		// Есть ли окружение короля с 4-х сторон.
-		if (isCaptureSide(king, source, target, Dirs.LEFT)  && 
-			isCaptureSide(king, source, target, Dirs.RIGHT) &&
-		    isCaptureSide(king, source, target, Dirs.UP)    && 
-		    isCaptureSide(king, source, target, Dirs.DOWN))
-			return true;
-		
-		return false;
+		return isCaptureSide(king, source, target, Dirs.LEFT) &&
+				isCaptureSide(king, source, target, Dirs.RIGHT) &&
+				isCaptureSide(king, source, target, Dirs.UP) &&
+				isCaptureSide(king, source, target, Dirs.DOWN);
 	}
 
 	/**
@@ -192,7 +186,7 @@ public class Capture extends SimpleMove implements ICaptureMove {
 	 */
 	static
 	private boolean isCaptureSide(Piece piece, Square source, Square target, Dirs dir) {
-		boolean isKing = (piece instanceof Сyning);
+		boolean isKing = (piece instanceof Cyning);
 		
 		// В этом направлении край доски, клетки нет. 
 		// Окружение на краю доски возможно только для короля.

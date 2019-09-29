@@ -1,6 +1,3 @@
-/**
- * 
- */
 package checkers.pieces;
 
 import checkers.moves.Capture;
@@ -62,10 +59,7 @@ public class King extends CheckersPiece {
 				
 				// Проверим может быть есть ходы с захватом фигуры.
 				// В шашках такие ходы-захваты обязательны.
-				if (king.hasCaptures())
-					return false; // Простой ход не делаем.
-				
-				return true;
+				return !king.hasCaptures(); // Простой ход не делаем.
 			}
 
 			Piece captured = getOneEnemyDiagonalPiece(source, target);

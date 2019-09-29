@@ -16,7 +16,7 @@ public class CompositeMove<T extends ITransferMove> implements ITransferMove {
 	/**
 	 * Последовательность простых ходов.
 	 */
-	private ArrayList<T> moves;
+	private final ArrayList<T> moves;
 	
 	/**
 	 * фигура которая делает ход.
@@ -121,11 +121,11 @@ public class CompositeMove<T extends ITransferMove> implements ITransferMove {
 		if (moves.isEmpty())
 			return "????";
 		
-		String s = "" + moves.get(0).getSource();
+		StringBuilder s = new StringBuilder("" + moves.get(0).getSource());
 		
 		for (T c : moves)  
-			s += "x" + c.getTarget();
+			s.append("x").append(c.getTarget());
 		 
-		return s;
+		return s.toString();
 	}
 }

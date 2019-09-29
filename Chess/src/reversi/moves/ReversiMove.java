@@ -21,18 +21,18 @@ public class ReversiMove implements IPutMove, ICaptureMove {
 	/**
 	 * Клетка на которую ставится фигура.
 	 */
-	Square target;
+    final Square target;
 	
 	/**
 	 * Клетки на которых стоят захваченные в плен вражеские фигуры.
 	 * Эти пленные фигуры поменяют цвет и будут вовать на нашей стороне.
 	 */
-	List<Square> captured;
+    final List<Square> captured;
 
 	/**
 	 * Фигура которая делает ход.
 	 */
-	private Piece piece;
+	private final Piece piece;
 
 	/**
 	 * Создать ход игры в реверси.

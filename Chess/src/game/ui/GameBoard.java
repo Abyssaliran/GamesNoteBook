@@ -11,7 +11,6 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -49,12 +48,12 @@ public class GameBoard extends Canvas
     /**
      * Цвет для отрисовки последнего хода.
      */
-    private Color lastMoveColor = new Color(null, 255, 0, 0);
+    private final Color lastMoveColor = new Color(null, 255, 0, 0);
 
     /**
      * Цвет для отрисовки захвата фигур.
      */
-    private Color lastCaptureColor = new Color(null, 0, 0, 255);
+    private final Color lastCaptureColor = new Color(null, 0, 0, 255);
 
     /**
      * Цвет для подсказок правильных ходов.
@@ -64,7 +63,7 @@ public class GameBoard extends Canvas
 	/**
 	 * Доска с фигурами для игры отрисовываемая на этой панели.
 	 */
-	public Board board;
+	public final Board board;
 
 
 	/**
@@ -99,15 +98,12 @@ public class GameBoard extends Canvas
 		});
 		
 		// Добавим слушателя колеса мыши.
-		addMouseWheelListener(new MouseWheelListener() {
-			@Override
-			public void mouseScrolled(MouseEvent e) {
-				if (e.count > 0)
-					board.history.toPrevMove();
-				else board.history.toNextMove();
-				
-				board.setBoardChanged();
-			}
+		addMouseWheelListener(e -> {
+			if (e.count > 0)
+				 board.history.toPrevMove();
+			else board.history.toNextMove();
+
+			board.setBoardChanged();
 		});
 
 		board.setBoardChanged();
@@ -216,7 +212,7 @@ public class GameBoard extends Canvas
 		List<Move> moves = board.history.getMoves();
 		if (moves.isEmpty()) return;
 		
-		Move move = (Move) board.history.getCurMove();
+		Move move = board.history.getCurMove();
 		
 		if (move == null) return;
 		
@@ -259,7 +255,7 @@ public class GameBoard extends Canvas
 		List<Move> moves = board.history.getMoves();
 		if (moves.isEmpty()) return;
 		
-		Move move = (Move) board.history.getCurMove();
+		Move move = board.history.getCurMove();
 		
 		if (move == null) return;
 			
@@ -406,10 +402,6 @@ public class GameBoard extends Canvas
 	 *            - графический контекст.
 	 * @param source
 	 *            - откуда линия.
-	 * @param target
-	 *            - куда линия.
-	 * @param color
-	 *            - цвет линии.
 	 */
 	public void markCross(GC gc, Square source, Color color) {
 		int sw = getSquareWidth();
@@ -479,8 +471,6 @@ public class GameBoard extends Canvas
 	 * <b> !!! Этот метод должен быть переопределен для игр<br>
 	 * !!! в которых фигуры ставятся на доску. </b>
 	 * 
-	 * @param piece
-	 *            - фигура для которой нужно выдать изображение.
 	 * @param color
 	 *            - цвет фигуры.
 	 * @return - изображение фигуры.
@@ -537,7 +527,7 @@ public class GameBoard extends Canvas
 	 * Используются для отрисовки на доске подсказок 
 	 * для всех допустимых ходов этой фигуры.
 	 */
-	public List<Square> prompted = new ArrayList<>();
+	public final List<Square> prompted = new ArrayList<>();
 	
 	/**
 	 * Слушатель события перемещения мыши.

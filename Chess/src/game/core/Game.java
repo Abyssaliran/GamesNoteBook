@@ -18,13 +18,13 @@ public class Game {
 	/**
 	 * Карта для регистрации игроков для каждой из игр.
 	 */
-	private static 
+	private static final
 	Map<Class<? extends Game>, List<IPlayer>> allPlayers = new HashMap<>();
 	
 	/**
 	 * Доска на которой происходит игра.
 	 */
-	public Board board;
+	public final Board board;
 
 	public Game() {
 		board = new Board();
@@ -38,13 +38,13 @@ public class Game {
 	 */
 	public static void addPlayer(Class<? extends Game> game, IPlayer player) {
 		List<IPlayer> players = allPlayers.get(game);
-		
+
 		if (players == null) {
 			// Игроков для данной игры еще не добавляли.
 			players = new ArrayList<>();
 			allPlayers.put(game, players);
 		}
-		
+
 		players.add(player);
 	}
 	

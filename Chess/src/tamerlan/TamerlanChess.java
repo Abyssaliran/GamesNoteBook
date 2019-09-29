@@ -17,7 +17,7 @@ import tamerlan.pieces.WarMachine;
 import tamerlan.playres.Bayezid;
 import tamerlan.playres.Nasir;
 import tamerlan.playres.Tamerlan;
-import tamerlan.playres.Tuqtamısh;
+import tamerlan.playres.Tuqtamish;
 
 /**
  * Расстановка фигур для <a href=
@@ -32,7 +32,7 @@ public class TamerlanChess extends Game {
 		addPlayer(TamerlanChess.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(TamerlanChess.class, new Neznaika());
 		addPlayer(TamerlanChess.class, new Tamerlan());
-		addPlayer(TamerlanChess.class, new Tuqtamısh());
+		addPlayer(TamerlanChess.class, new Tuqtamish());
 		addPlayer(TamerlanChess.class, new Bayezid());
 		addPlayer(TamerlanChess.class, new Nasir());
 	}

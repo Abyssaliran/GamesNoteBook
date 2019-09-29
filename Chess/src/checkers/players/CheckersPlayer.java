@@ -37,7 +37,7 @@ public class CheckersPlayer extends MovePiecePlayer {
 			// Собрали все клетки-цели на которые допустим ход фигуры р.
 			List<Square> targets = board.getSquares()
 					.stream()
-					.filter(s -> piece.isCorrectMove(s))
+					.filter(piece::isCorrectMove)
 					.collect( Collectors.toList() );
 			
 			if (targets.isEmpty())

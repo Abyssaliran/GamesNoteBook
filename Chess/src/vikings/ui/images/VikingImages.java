@@ -12,10 +12,10 @@ public class VikingImages {
 	public static Image icoVikings9;
 	public static Image icoVikings11;
 
-	public static Image imageСyningBlack;
+	public static Image imageCyningBlack;
 	public static Image imageVikingBlack;
 	
-	public static Image imageСyningWhite;
+	public static Image imageCyningWhite;
 	public static Image imageVikingWhite;
 
 	static {
@@ -26,10 +26,10 @@ public class VikingImages {
 		icoVikings9  = new Image(display, VikingImages.class.getResourceAsStream("icoVikings9.png"));
 		icoVikings11 = new Image(display, VikingImages.class.getResourceAsStream("icoVikings11.png"));
 
-		imageСyningBlack  = new Image(display, VikingImages.class.getResourceAsStream("bСyning.png"));
+		imageCyningBlack = new Image(display, VikingImages.class.getResourceAsStream("bСyning.png"));
 		imageVikingBlack  = new Image(display, VikingImages.class.getResourceAsStream("bViking.png"));
 		
-		imageСyningWhite  = new Image(display, VikingImages.class.getResourceAsStream("wСyning.png"));
+		imageCyningWhite = new Image(display, VikingImages.class.getResourceAsStream("wСyning.png"));
 		imageVikingWhite  = new Image(display, VikingImages.class.getResourceAsStream("wViking.png"));
 	}
 }

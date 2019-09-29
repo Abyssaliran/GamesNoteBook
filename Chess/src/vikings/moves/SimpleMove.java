@@ -5,8 +5,8 @@ import game.core.GameResult;
 import game.core.Piece;
 import game.core.Square;
 import game.core.moves.ITransferMove;
+import vikings.pieces.Cyning;
 import vikings.pieces.VikingsPiece;
-import vikings.pieces.Сyning;
 
 /**
  * Простой ход викингов - перемещение фигуры на пустую клетку.
@@ -17,17 +17,17 @@ public class SimpleMove implements ITransferMove {
 	/**
 	 * Какая фигура перемещается.
 	 */
-	protected Piece piece;
+	protected final Piece piece;
 
 	/**
 	 * Откуда перемещается.
 	 */
-	protected Square source;
+	protected final Square source;
 
 	/**
 	 * Куда перемещается.
 	 */
-	protected Square target;
+	protected final Square target;
 
 	/**
 	 * Простой ход без захвата фигур противника.
@@ -62,7 +62,7 @@ public class SimpleMove implements ITransferMove {
 		piece.moveTo(target);
 		
 		// Белый король добрался до выхода.
-		if ((piece instanceof Сyning) && VikingsPiece.isExit(target) )
+		if ((piece instanceof Cyning) && VikingsPiece.isExit(target) )
 			throw new GameOver(GameResult.WHITE_WIN);
 	}
 

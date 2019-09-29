@@ -49,7 +49,7 @@ public class Beetles extends HalmaPlayer {
 	 * Приоритет у хода делающего больший шаг к цели -
 	 * противоположному углу доски. 
 	 */
-	Comparator<ITransferMove> maxStep = 
+    final Comparator<ITransferMove> maxStep =
 		(move1, move2) -> {
 			// Направление шага.
 			int dir = move1.getPiece().isWhite() ? 1 : -1;
@@ -64,7 +64,7 @@ public class Beetles extends HalmaPlayer {
 	 * Приоритет у хода с более дальней позиции (отстающими фигурами).</br>
 	 * Тогда будет больше фигур пригодных для "перепрыгивания".
 	 */
-	Comparator<ITransferMove> fromBack = 
+    final Comparator<ITransferMove> fromBack =
 		(move1, move2) -> {
 			Square goal = Halma.getPieceGoal(move1.getPiece());
 	

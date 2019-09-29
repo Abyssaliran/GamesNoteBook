@@ -1,6 +1,3 @@
-/**
- * 
- */
 package checkers.moves;
 
 import java.util.HashMap;
@@ -22,19 +19,19 @@ public class SimpleMove implements ITransferMove {
 	/**
 	 * Откуда пошла фигура.
 	 */
-	protected Square source;
+	protected final Square source;
 
-	private Map<Piece, Piece> kings = new HashMap<>();
+	private final Map<Piece, Piece> kings = new HashMap<>();
 
 	/**
 	 * Куда пошла фигура.
 	 */
-	protected Square target;
+	protected final Square target;
 
 	/**
 	 * Бало ли превращение шащки в дамку?
 	 */
-	protected boolean isPromotion;
+	protected final boolean isPromotion;
 
 	/**
 	 * Какая фигура пошла.

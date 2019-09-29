@@ -1,6 +1,3 @@
-/**
- * 
- */
 package chinachess.pieces;
 
 import chinachess.moves.Capture;
@@ -42,11 +39,7 @@ public class Bishop extends ChinaChessPiece {
 		
 		//Если dv должно быть равно dh, 
 		//то справедливо что любое из них не должно быть больше 2
-		if (dh > 2)
-			return false;
-		
-		
-		return true;
+		return dh <= 2;
 	}
 
 	@Override

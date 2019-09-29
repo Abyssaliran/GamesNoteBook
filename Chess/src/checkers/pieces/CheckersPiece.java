@@ -28,7 +28,7 @@ public class CheckersPiece extends Piece {
 
 	/**
 	 * Имеет ли фигура ход с захватом фигур противника.
-	 * @return
+	 * @return есть ли захват фигуры.
 	 */
 	protected abstract boolean hasCapture(Square square);
 
@@ -37,7 +37,7 @@ public class CheckersPiece extends Piece {
 	 * которые могут захватить фигуры противника.
 	 * Тогда простые ходы без захвата недопустимы.
 	 * 
-	 * @return
+	 * @return есть ли захват фигуры.
 	 */
 	protected boolean hasCaptures() {
 		// Получить все фигуры того же цвета.

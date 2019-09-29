@@ -15,7 +15,7 @@ public class MovePiecePromptListener implements IMouseMoveListener {
 	/**
 	 * Панель, на которой рисуется доска.
 	 */
-	private GameBoard boardPanel;
+	private final GameBoard boardPanel;
 	
 	/**
 	 * Слушатель MovePiecePromptListener определяет клетки, на которые может
@@ -23,10 +23,6 @@ public class MovePiecePromptListener implements IMouseMoveListener {
 	 * 
 	 * @param boardPanel
 	 *            - панель для отрисовки доски.
-	 * @param prompted
-	 *            - клетки, на которые возможен ход фигурой находящейся под
-	 *            мышкой. Эти клетки при перерисовке панели доски должны быть
-	 *            помечены. Например, красной рамкой.
 	 */
 	public MovePiecePromptListener(GameBoard boardPanel) {
 		this.boardPanel = boardPanel;

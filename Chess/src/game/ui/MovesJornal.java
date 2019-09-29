@@ -41,20 +41,20 @@ public class MovesJornal extends Composite implements Observer {
 	/**
 	 * История игры.
 	 */
-	private History history;
+	private final History history;
 	
 	/**
 	 * Панель для имен игроков
 	 */
-	private Label headerPanel;
-	private MovesPanel movesPanel;
-	private Label resultPanel;
+	private final Label headerPanel;
+	private final MovesPanel movesPanel;
+	private final Label resultPanel;
 	
 	/**
 	 * 
 	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
 	 */
-	class MovesPanel extends Composite {
+	static class MovesPanel extends Composite {
 
 		public MovesPanel(Composite parent, int style) {
 			super(parent, style);
@@ -76,9 +76,9 @@ public class MovesJornal extends Composite implements Observer {
 	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
 	 */
 	private class MoveLabel {
-		private Move move;
+		private final Move move;
 		
-		private Label label;
+		private final Label label;
 
 		/**
 		 * Управляющий элемент представляющий ход и сам ход в игре. 

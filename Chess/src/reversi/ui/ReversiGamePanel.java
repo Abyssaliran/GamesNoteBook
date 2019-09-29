@@ -52,7 +52,7 @@ public class ReversiGamePanel extends GamePanel {
 	 * 
 	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
 	 */
-	public class ReversiBoardPanel extends GreenBoard implements IPieceProvider {
+	public static class ReversiBoardPanel extends GreenBoard implements IPieceProvider {
 		/**
 		 * Создать доску для игры в реверси.
 		 * 

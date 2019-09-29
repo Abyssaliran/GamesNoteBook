@@ -29,13 +29,13 @@ public class ScorePanel extends Canvas implements Observer {
 	private static final Color COLOR_TEXT  = new Color(null,   0,   0,   0);
 	private static final Color COLOR_FRAME = new Color(null,   0,   0, 255);
 
-	private Label whiteScore;
-	private Label blackScore;
+	private final Label whiteScore;
+	private final Label blackScore;
 
-	private int wScore = 0;
-	private int bScore = 0;
+	private int wScore;
+	private int bScore;
 	
-	private Game game;
+	private final Game game;
 
 	public ScorePanel(Composite parent, Game game) {
 		super(parent, SWT.NONE);

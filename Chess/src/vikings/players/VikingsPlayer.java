@@ -12,8 +12,8 @@ import game.core.PieceColor;
 import game.core.Square;
 import game.players.MovePiecePlayer;
 import vikings.moves.Capture;
+import vikings.pieces.Cyning;
 import vikings.pieces.VikingsPiece;
-import vikings.pieces.Сyning;
 
 /**
  * Баховый класс для всех программ-игроков ишры Викинги.
@@ -22,15 +22,10 @@ import vikings.pieces.Сyning;
  */
 abstract 
 public class VikingsPlayer extends MovePiecePlayer {
-	private int maxMoves = 180;
 
-	public VikingsPlayer() {
+	VikingsPlayer() {
 	}
-	
-	public VikingsPlayer(int maxMoves) {
-		this.maxMoves = maxMoves;
-	}
-	
+
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
 			List<Move> correctMoves = getCorrectMoves(board, color);
@@ -69,7 +64,8 @@ public class VikingsPlayer extends MovePiecePlayer {
 		
 			// Для отладки ограничим количество ходов в игре.
 			// После этого результат игры ничья.
-			if (board.history.getMoves().size() > maxMoves) {
+		int maxMoves = 180;
+		if (board.history.getMoves().size() > maxMoves) {
 				// Сохраняем в истории игры последний сделанный ход 
 				// и результат игры.
 				board.history.setResult(GameResult.DRAWN);
@@ -81,7 +77,7 @@ public class VikingsPlayer extends MovePiecePlayer {
 
 	/**
 	 * Алгоритм выбора лучшего хода реализуется в клессах - потомках.
-	 * @return
+	 * @return получить алгоритм сравнеия
 	 */
 	abstract protected Comparator<? super Move> getComparator();
 
@@ -90,12 +86,12 @@ public class VikingsPlayer extends MovePiecePlayer {
 	 * 
 	 * @param capture
 	 *            - ход-захват фигур.
-	 * @return
+	 * @return захвачен ли белый король
 	 */
 	protected boolean isKingCapture(Capture capture) {
 		return capture.getCapturedPieces()
 				.stream()
-				.anyMatch(p -> p instanceof Сyning);
+				.anyMatch(p -> p instanceof Cyning);
 	}
 
 	/**
@@ -150,19 +146,18 @@ public class VikingsPlayer extends MovePiecePlayer {
 	protected Square getNearstExit(Square square, List<Square> exits) {
 		return exits
 		.stream()
-		.min((s1, s2) -> s1.distance(square) - s2.distance(square))
+		.min(Comparator.comparingInt(s -> s.distance(square)))
 		.get();
 	}
 
 	/**
 	 * @return Преследуем короля, как основную фигуру для захвата
-	 * @param King piece
 	 */
-	protected Сyning getKing(Board board) {
+	protected Cyning getKing(Board board) {
 		return board.getPieces(PieceColor.WHITE)
 			.stream()
-			.filter(p -> p instanceof Сyning)
-			.map(p -> (Сyning) p)
+			.filter(p -> p instanceof Cyning)
+			.map(p -> (Cyning) p)
 			.findAny()
 			.get();
 	}

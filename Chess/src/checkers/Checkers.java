@@ -26,8 +26,6 @@ public class Checkers extends Game {
 
 	/**
 	 * Расстановка фигур шашек в начальную позицию.
-	 * 
-	 * @return доска с расставленными фигурами.
 	 */
 	public Checkers() {
 		initBoardDefault();

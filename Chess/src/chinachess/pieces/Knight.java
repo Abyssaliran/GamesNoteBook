@@ -1,6 +1,3 @@
-/**
- * 
- */
 package chinachess.pieces;
 
 import chinachess.moves.Capture;
@@ -64,10 +61,7 @@ public class Knight extends ChinaChessPiece {
 		
 		// Клетка на пути не пустая?
 		Board board = target.getBoard();
-		if (!board.isEmpty(vBarier, hBarier))
-			return false;
-
-		return true;
+		return board.isEmpty(vBarier, hBarier);
 	}
 
 	@Override

@@ -10,8 +10,8 @@ import game.core.Square;
 import game.core.moves.ICaptureMove;
 import game.core.moves.ITransferMove;
 import vikings.moves.Capture;
+import vikings.pieces.Cyning;
 import vikings.pieces.VikingsPiece;
-import vikings.pieces.Сyning;
 
 /**
  * William - викинг в Нормандии 1066 год.
@@ -57,8 +57,7 @@ public class William extends VikingsPlayer {
 		
 		Piece piece = source.getPiece();
 		Board board = source.getBoard();
-
-		Сyning king = getKing(board);
+		Cyning king = getKing(board);
 		Square kingSquare = king.square;
 
 		List<Square> exits = VikingsPiece.getExits(board);
@@ -121,7 +120,7 @@ public class William extends VikingsPlayer {
 			// --------------------------
 			// --- Ход белого короля. ---
 			// --------------------------
-			if (piece instanceof Сyning) {
+			if (piece instanceof Cyning) {
 				// Поиск ближайшего выхода.
 				Square nearsExit = getNearstExit(target, exits);
 	

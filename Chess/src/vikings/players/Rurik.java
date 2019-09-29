@@ -10,8 +10,8 @@ import game.core.Square;
 import game.core.moves.ICaptureMove;
 import game.core.moves.ITransferMove;
 import vikings.moves.Capture;
+import vikings.pieces.Cyning;
 import vikings.pieces.VikingsPiece;
-import vikings.pieces.Сyning;
 
 /**
  * Rurik - викинг в Новгороде 862 год.
@@ -64,7 +64,7 @@ public class Rurik extends VikingsPlayer {
 			
 			// Есть ли среди захваченых фигур белвй король?
 			List<Piece> captured = capture.getCapturedPieces();
-			boolean isKingCapture = captured.stream().anyMatch(p -> p instanceof Сyning);
+			boolean isKingCapture = captured.stream().anyMatch(p -> p instanceof Cyning);
 			
 			// Захват вражеского короля получает наибольший приоритет.
 			if (isKingCapture)
@@ -74,14 +74,14 @@ public class Rurik extends VikingsPlayer {
 			nCaptured = captured.size();
 		}
 
-		if (piece instanceof Сyning) {
+		if (piece instanceof Cyning) {
 			// Ход белым королем.
 			List<Square> exits = VikingsPiece.getExits(board);
 			
 			// Поиск ближайшего выхода.
 			Square nearsExit = exits
 				.stream()
-				.min((s1, s2) -> s1.distance(target) - s2.distance(target))
+				.min(Comparator.comparingInt(s -> s.distance(target)))
 				.get();
 			
 			// Ход королем к ближайшему выходу получает наибольший приоритет.

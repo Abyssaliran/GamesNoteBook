@@ -14,8 +14,8 @@ import vikings.moves.SimpleMove;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Сyning extends VikingsPiece {
-	public Сyning(Square square, PieceColor color) {
+public class Cyning extends VikingsPiece {
+	public Cyning(Square square, PieceColor color) {
 		super(square, color);
 	}
 
@@ -43,11 +43,8 @@ public class Сyning extends VikingsPiece {
 		
 		if (square.isEmptyVertical(target))
 			return true;
-		
-		if (square.isEmptyHorizontal(target))
-			return true;
-		
-		return false;
+
+		return square.isEmptyHorizontal(target);
 	}
 	
 	@Override

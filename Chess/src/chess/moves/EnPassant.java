@@ -1,10 +1,5 @@
 package chess.moves;
 
-import java.util.List;
-
-import chess.pieces.Pawn;
-import game.core.Board;
-import game.core.Piece;
 import game.core.Square;
 
 /**

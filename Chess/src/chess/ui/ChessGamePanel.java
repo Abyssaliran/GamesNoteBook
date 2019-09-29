@@ -1,6 +1,3 @@
-/**
- * 
- */
 package chess.ui;
 
 import java.util.HashMap;
@@ -44,14 +41,12 @@ public class ChessGamePanel extends GamePanel {
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 class ChessBoardPanel extends EuropeBoard {
-	private static Map<Class<? extends Piece>, Image> whites;
-	private static Map<Class<? extends Piece>, Image> blacks;
-	
-	private static Map<PieceColor, Map<Class<? extends Piece>, Image>> pieceImages;
+
+    private static final Map<PieceColor, Map<Class<? extends Piece>, Image>> pieceImages;
 
 	static {
-		whites = new HashMap<>();
-		blacks = new HashMap<>();
+        Map<Class<? extends Piece>, Image> whites = new HashMap<>();
+        Map<Class<? extends Piece>, Image> blacks = new HashMap<>();
 
 		pieceImages = new HashMap<>();
 		pieceImages.put(PieceColor.WHITE, whites);

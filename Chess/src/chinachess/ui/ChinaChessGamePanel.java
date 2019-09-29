@@ -1,6 +1,3 @@
-/**
- * 
- */
 package chinachess.ui;
 
 import java.util.HashMap;
@@ -46,14 +43,12 @@ public class ChinaChessGamePanel extends GamePanel {
  *
  */
 class ChinaChessBoardPanel extends AsiaBoardWithCastle {
-	private static Map<Class<? extends Piece>, Image> whites;
-	private static Map<Class<? extends Piece>, Image> blacks;
-	
-	private static Map<PieceColor, Map<Class<? extends Piece>, Image>> pieceImages;
+
+    private static final Map<PieceColor, Map<Class<? extends Piece>, Image>> pieceImages;
 
 	static {
-		whites = new HashMap<>();
-		blacks = new HashMap<>();
+        Map<Class<? extends Piece>, Image> whites = new HashMap<>();
+        Map<Class<? extends Piece>, Image> blacks = new HashMap<>();
 
 		pieceImages = new HashMap<>();
 		pieceImages.put(PieceColor.WHITE, whites);

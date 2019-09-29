@@ -11,7 +11,6 @@ public interface IGameListner {
 	/**
 	 * Единственный экземпляр пустой реализации слушателя доски.
 	 */
-	public final static
 	IGameListner EMPTY = new IGameListner() {
 		@Override
 		public void mouseDown(Square s, int button) {}

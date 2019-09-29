@@ -2,7 +2,6 @@ package reversi;
 
 import game.core.Game;
 import game.core.IPieceProvider;
-import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 import game.players.IPlayer;
@@ -19,12 +18,7 @@ import reversi.players.Tiger;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Reversi extends Game {
-	private static IPieceProvider pieceProvider = new IPieceProvider() {
-		@Override
-		public Piece getPiece(Square square, PieceColor color) {
-			return new Stone(square, color);
-		}
-	};
+	private static final IPieceProvider pieceProvider = (square, color) -> new Stone(square, color);
 	
 	static {
 		Game.addPlayer(Reversi.class, IPlayer.HOMO_SAPIENCE);

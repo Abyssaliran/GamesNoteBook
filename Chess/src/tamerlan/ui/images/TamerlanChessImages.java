@@ -40,7 +40,7 @@ public class TamerlanChessImages {
 	}
 
 	private static void load(final Display display) {
-		iconTamerlanChess = new Image(display, TamerlanChessImages.class.getResourceAsStream("TamerlanChess.gif"));;
+		iconTamerlanChess = new Image(display, TamerlanChessImages.class.getResourceAsStream("TamerlanChess.gif"));
 
 		imageKingBlack   		= new Image(display, TamerlanChessImages.class.getResourceAsStream("bKingZurich.gif"));
 		imageQueenBlack  		= new Image(display, TamerlanChessImages.class.getResourceAsStream("bQueenZurich.gif"));

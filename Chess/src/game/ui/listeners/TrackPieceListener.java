@@ -37,12 +37,12 @@ public class TrackPieceListener<T extends ITransferMove> implements IGameListner
 	/**
 	 * Доска на которой происходят изменения.
 	 */
-	private Board board;
+	private final Board board;
 	
 	/**
 	 * Панель на которой рисуется доска.
 	 */
-	private GameBoard boardPanel;
+	private final GameBoard boardPanel;
 	
 	private CompositeMove<T> track = null;
 
@@ -154,7 +154,7 @@ public class TrackPieceListener<T extends ITransferMove> implements IGameListner
 			ITrackMove trackMove = (ITrackMove) move;
 			if (track == null) {
 				// Первый ход в серии ходов.
-				track = new CompositeMove<T>(move);
+				track = new CompositeMove<>(move);
 			}
 			else
 			if (!track.isAcceptable(mouseSquare))

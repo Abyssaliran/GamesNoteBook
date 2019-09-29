@@ -18,7 +18,7 @@ public class NoPromptListener implements IMouseMoveListener {
 	/**
 	 * Панель на которой отрисовывается доска.
 	 */
-	private GameBoard boardPanel;
+	private final GameBoard boardPanel;
 
 	/**
 	 * @param boardPanel 

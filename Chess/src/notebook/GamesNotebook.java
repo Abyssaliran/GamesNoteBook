@@ -85,7 +85,7 @@ public class GamesNotebook {
 	 * @param gamesFolder - контейнер для добавления закладки.
 	 */
 	private static void addCheckersTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, CheckersImages.iconCheсkers
+		Image tabImage = new Image(display, CheckersImages.iconCheckers
 				.getImageData().scaledTo(20, 20));
 		
 		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);

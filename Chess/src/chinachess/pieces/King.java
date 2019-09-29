@@ -68,11 +68,8 @@ public class King extends ChinaChessPiece{
 				
 		// Допустимы только ходы на одну клетку
 		// по вертикали и горизонтали.
-		if (((dh == 1) && (dv == 0)) ||
-            ((dh == 0) && (dv == 1)) )
-			return true;
-		
-		return false;
+		return ((dh == 1) && (dv == 0)) ||
+				((dh == 0) && (dv == 1));
 	}
 
 	@Override

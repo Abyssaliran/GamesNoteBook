@@ -1,9 +1,6 @@
-/**
- * 
- */
 package checkers.moves;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import game.core.Board;
@@ -27,12 +24,12 @@ public class Capture extends SimpleMove
 	/**
 	 * Захваченая фигура.
 	 */
-	Piece captured;
+	final Piece captured;
 	
 	/**
 	 * Клетка где стоит захваченная фигура. 
 	 */
-	private Square capturedSquare;
+	private final Square capturedSquare;
 
 	/**
 	 * Создание хода представляющего взятие одной фигуры.
@@ -90,6 +87,6 @@ public class Capture extends SimpleMove
 
 	@Override
 	public List<Square> getCaptured() {
-		return Arrays.asList(capturedSquare);
+		return Collections.singletonList(capturedSquare);
 	}
 }

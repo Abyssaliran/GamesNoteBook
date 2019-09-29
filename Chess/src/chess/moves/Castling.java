@@ -10,8 +10,8 @@ import game.core.Square;
  */
 public class Castling extends SimpleMove {
 
-	private Square rookSource;
-	private Square rookTarget;
+	private final Square rookSource;
+	private final Square rookTarget;
 
 	public Castling(Square[] squares) {
 		super(squares);
