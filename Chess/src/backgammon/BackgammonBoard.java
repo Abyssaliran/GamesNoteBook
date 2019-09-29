@@ -42,10 +42,9 @@ public class BackgammonBoard extends Board {
 //		
 //		setBoardChanged();
 		
-		// Пока всегда первыми ходят белыею
+		// Пока всегда первыми ходят белые.ы
 		moveColor = PieceColor.WHITE;
 		
-		System.out.format("%n%nBackgammonBoard.startGame() %n"); 
 		for (;;) {
 			IPlayer player = players.get(moveColor);
 
