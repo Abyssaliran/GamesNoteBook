@@ -33,14 +33,14 @@ public class Board extends Observable {
 	/**
 	 * История партии (последовательность ходов игры).
 	 */
-	public final History history = new History(this);
+	public History history = new History(this);
 	
 	/**
 	 * Цвет фигуры которая должна сделать ход.
 	 */
-	private PieceColor moveColor = PieceColor.WHITE;
+	protected PieceColor moveColor = PieceColor.WHITE;
 	
-	final Map<PieceColor, IPlayer> players = new HashMap<>();
+	protected final Map<PieceColor, IPlayer> players = new HashMap<>();
 	{
 		setWhitePlayer(IPlayer.HOMO_SAPIENCE);
 		setBlackPlayer(new Neznaika());

@@ -8,6 +8,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
+import backgammon.ui.BackgammonGamePanel;
+import backgammon.ui.images.BackgammonImages;
 import checkers.ui.CheckersGamePanel;
 import checkers.ui.images.CheckersImages;
 import chess.ui.ChessGamePanel;
@@ -52,6 +54,7 @@ public class GamesNotebook {
 		
 		
 		//Добавление вкладок
+		addBackgammonTab(display, gamesFolder);
 		addChessTab(display, gamesFolder);
 		addCheckersTab(display, gamesFolder);
 		addChinaChessTab(display, gamesFolder);
@@ -67,6 +70,16 @@ public class GamesNotebook {
 		}
 		display.dispose(); //Удалить экземпляр класса после завершения цикла опроса
 	} 
+
+	private static void addBackgammonTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, BackgammonImages.iconBackgammon
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("Нарды");
+		tabItem.setControl( new BackgammonGamePanel(gamesFolder) );
+		tabItem.setImage(tabImage);
+	}
 
 	private static void addTamerlanChessTab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, TamerlanChessImages.iconTamerlanChess

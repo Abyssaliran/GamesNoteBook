@@ -24,7 +24,7 @@ public class Game {
 	/**
 	 * Доска на которой происходит игра.
 	 */
-	public final Board board;
+	public Board board;
 
 	public Game() {
 		board = new Board();
