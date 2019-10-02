@@ -31,8 +31,13 @@ public class Backgammon extends Game {
 
 	@Override
 	public void initBoardDefault() {
-		super.initBoard(12, 12);
+		// + по одной колонке для захваченных фигур противника
+		// и для своих сброшенных с доски фигур.
+		super.initBoard(12+1+1, 12);
 		
+		//
+		// Белые
+		//
 		new Stone( board.getSquare(0, 0), PieceColor.WHITE);
 		new Stone( board.getSquare(0, 1), PieceColor.WHITE);
 		new Stone( board.getSquare(0, 2), PieceColor.WHITE);
@@ -43,15 +48,18 @@ public class Backgammon extends Game {
 		new Stone( board.getSquare(4,10), PieceColor.WHITE);
 		new Stone( board.getSquare(4,11), PieceColor.WHITE);
 
-		new Stone( board.getSquare(6, 7), PieceColor.WHITE);
-		new Stone( board.getSquare(6, 8), PieceColor.WHITE);
-		new Stone( board.getSquare(6, 9), PieceColor.WHITE);
-		new Stone( board.getSquare(6,10), PieceColor.WHITE);
-		new Stone( board.getSquare(6,11), PieceColor.WHITE);
+		new Stone( board.getSquare(7, 7), PieceColor.WHITE);
+		new Stone( board.getSquare(7, 8), PieceColor.WHITE);
+		new Stone( board.getSquare(7, 9), PieceColor.WHITE);
+		new Stone( board.getSquare(7,10), PieceColor.WHITE);
+		new Stone( board.getSquare(7,11), PieceColor.WHITE);
 
-		new Stone( board.getSquare(11, 0), PieceColor.WHITE);
-		new Stone( board.getSquare(11, 1), PieceColor.WHITE);
+		new Stone( board.getSquare(12, 0), PieceColor.WHITE);
+		new Stone( board.getSquare(12, 1), PieceColor.WHITE);
 
+		//
+		// Черные
+		//
 		new Stone( board.getSquare(0, 7), PieceColor.BLACK);
 		new Stone( board.getSquare(0, 8), PieceColor.BLACK);
 		new Stone( board.getSquare(0, 9), PieceColor.BLACK);
@@ -62,12 +70,12 @@ public class Backgammon extends Game {
 		new Stone( board.getSquare(4, 1), PieceColor.BLACK);
 		new Stone( board.getSquare(4, 2), PieceColor.BLACK);
 
-		new Stone( board.getSquare(6, 0), PieceColor.BLACK);
-		new Stone( board.getSquare(6, 1), PieceColor.BLACK);
-		new Stone( board.getSquare(6, 2), PieceColor.BLACK);
-		new Stone( board.getSquare(6, 3), PieceColor.BLACK);
-		new Stone( board.getSquare(6, 4), PieceColor.BLACK);
+		new Stone( board.getSquare(7, 0), PieceColor.BLACK);
+		new Stone( board.getSquare(7, 1), PieceColor.BLACK);
+		new Stone( board.getSquare(7, 2), PieceColor.BLACK);
+		new Stone( board.getSquare(7, 3), PieceColor.BLACK);
+		new Stone( board.getSquare(7, 4), PieceColor.BLACK);
 
-		new Stone( board.getSquare(11,10), PieceColor.BLACK);
-		new Stone( board.getSquare(11,11), PieceColor.BLACK);
+		new Stone( board.getSquare(12,10), PieceColor.BLACK);
+		new Stone( board.getSquare(12,11), PieceColor.BLACK);
 	}}
