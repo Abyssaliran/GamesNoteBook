@@ -31,7 +31,9 @@ public class Backgammon extends Game {
 
 	@Override
 	public void initBoardDefault() {
-		super.initBoard(12+1, 12);
+		// + по одной колонке для захваченных фигур противника
+		// и для своих сброшенных с доски фигур.
+		super.initBoard(12+1+1, 12);
 		
 		//
 		// Белые

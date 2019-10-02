@@ -50,6 +50,8 @@ public class BackgammonGamePanel extends GamePanel {
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
+	private final Color BLACK_COLOR = new Color(null, 0, 0, 0);
+
 	/**
 	 * Создать доску для игры в нарды.
 	 * 
@@ -79,8 +81,6 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 				: BackgammonImages.imageStoneBlack;
 	}
 
-	private final Color BLACK_COLOR = new Color(null, 0, 0, 0);
-
 	@Override
 	protected void drawBackground(GC gc, Rectangle area) {
 		Rectangle bounds = GameImages.woodLight.getBounds();
@@ -97,14 +97,19 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
 		boolean isOdd = (v % 2 == 0);
 		
-		boolean isBar           = (v == 6);
+		// Для хранения захваченных фигур противника.
+		boolean isBar  = (v == 6);
+		
+		// Для хранения своих фигур сброшенных с доски.
+		boolean isForBearing = (v == 13);
+		
 		boolean hasLeftBorder   = (v == 0) || isBar || (v == 7);
-		boolean hasRightBorder  = (v == board.nV-1);
+		boolean hasRightBorder  = isForBearing || (v == board.nV-2);
 		boolean hasTopBorder    = (h == 0);
 		boolean hasBottomBorder = (h == board.nH-1);
 		
 		boolean isTopSide    = (h <= 4);
-		boolean isMiddleSide = (5 <= h) & (h <= 6);
+		boolean isMiddleSide = (5 <= h) && (h <= 6);
 		boolean isBottomSide = (7 <= h);
 		
 		boolean topDark    = isTopSide && isOdd;
@@ -120,7 +125,7 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 		Image wood = isDark ? GameImages.woodDark : GameImages.woodMedium;
 		Rectangle bounds = wood.getBounds();
 		
-		if (!isBar)
+		if (!isBar && !isForBearing)
 			gc.drawImage(wood, 
 		             0, 0, bounds.width, bounds.height, 
 			         x, y, sw, sh);
