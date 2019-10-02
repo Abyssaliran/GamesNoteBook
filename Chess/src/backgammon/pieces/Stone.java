@@ -20,8 +20,9 @@ public class Stone extends Piece implements ITrackPiece {
 		int step1 = board.cube1.getValue();
 		int step2 = board.cube2.getValue();
 		
+		
 		//
-		// Проверяем клетку откуда идем.
+		// Проверяем клетку из которой делаем ход.
 		//
 		int topH = board.isTopSide(square) ? 1 : -1;
 
@@ -36,6 +37,9 @@ public class Stone extends Piece implements ITrackPiece {
 		// Проверяем клетку куда идем.
 		//
 		Square target = squares[0];
+		
+		if (board.isBar(target))
+			return false;
 		
 		// В нардах нельзя фигурой ходить на поле 
 		// уже занятое фигурой любого цвета.

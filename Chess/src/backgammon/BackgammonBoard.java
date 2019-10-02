@@ -71,4 +71,26 @@ public class BackgammonBoard extends Board {
 	public boolean isTopSide(Square s) {
 		return s.h < nH / 2;
 	}
+	
+	/**
+	 * Это клетка для выкладывания захваченных фигур противника?
+	 * Находится на вертикали расположеннй в середине доски.
+	 */
+	public boolean isBar(Square s) {
+		return s.v == 6;
+	}
+	
+	/**
+	 * Это клетка для выкладывания захваченных белых фигур противника?
+	 * 
+	 * @param s - проверяемая клетка доски.
+	 * @param color - для фигур какого цвета проверка.
+	 * @return
+	 */
+	public boolean isBarColor(Square s, PieceColor color) {
+		boolean isTheSide = (color == PieceColor.WHITE) 
+				? s.h <= nH/2 : nH/2 > s.h;
+				
+		return isBar(s) && isTheSide;
+	}
 }
