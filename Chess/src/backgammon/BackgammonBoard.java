@@ -42,7 +42,7 @@ public class BackgammonBoard extends Board {
 //		
 //		setBoardChanged();
 		
-		// Пока всегда первыми ходят белые.ы
+		// Пока всегда первыми ходят белые.
 		moveColor = PieceColor.WHITE;
 		
 		for (;;) {
