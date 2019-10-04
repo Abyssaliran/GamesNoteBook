@@ -8,6 +8,9 @@ import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 
+/**
+ * Фигура для игры в нарды.
+ */
 public class Stone extends Piece implements ITrackPiece {
 	public Stone(Square square, PieceColor color) {
 		super(square, color);
@@ -20,8 +23,10 @@ public class Stone extends Piece implements ITrackPiece {
 		int step1 = board.cube1.getValue();
 		int step2 = board.cube2.getValue();
 		
+		PieceColor color = getColor();
+		
 		//
-		// Проверяем клетку откуда идем.
+		// Проверяем клетку из которой делаем ход.
 		//
 		int topH = board.isTopSide(square) ? 1 : -1;
 
@@ -36,6 +41,16 @@ public class Stone extends Piece implements ITrackPiece {
 		// Проверяем клетку куда идем.
 		//
 		Square target = squares[0];
+		
+		// Сама фигура пойти на клетку для хранения захваченных фигур 
+		// (сдаться в плен) не может.
+		if (board.isBar(target))
+			return false;
+		
+		// Пока все фигуры такого же цвета не дома,
+		// сбрасывать фигуру с доски нельзя.
+		if (board.isForBearing(target) && !board.allInHome(color))
+			return false;
 		
 		// В нардах нельзя фигурой ходить на поле 
 		// уже занятое фигурой любого цвета.

@@ -50,6 +50,8 @@ public class BackgammonGamePanel extends GamePanel {
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
+	private final Color BLACK_COLOR = new Color(null, 0, 0, 0);
+
 	/**
 	 * Создать доску для игры в нарды.
 	 * 
@@ -79,8 +81,6 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 				: BackgammonImages.imageStoneBlack;
 	}
 
-	private final Color BLACK_COLOR = new Color(null, 0, 0, 0);
-
 	@Override
 	protected void drawBackground(GC gc, Rectangle area) {
 		Rectangle bounds = GameImages.woodLight.getBounds();
@@ -95,17 +95,27 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 
 	@Override
 	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
-		boolean isOdd    = (v % 2 == 0);
-		boolean isTop    = (h <= 4);
-		boolean isMiddle = (5 <= h) & (h <= 6);
-		boolean isBottom = (7 <= h);
-
-		boolean topDark    = isTop && isOdd;
-		boolean bottomDark = isBottom && !isOdd;
-		boolean isDark     = !isMiddle && (topDark || bottomDark);
+		boolean isOdd = (v % 2 == 0);
 		
-		int vMiddle = board.nV / 2;
-
+		// Для хранения захваченных фигур противника.
+		boolean isBar  = (v == 6);
+		
+		// Для хранения своих фигур сброшенных с доски.
+		boolean isForBearing = (v == 13);
+		
+		boolean hasLeftBorder   = (v == 0) || isBar || (v == 7);
+		boolean hasRightBorder  = isForBearing || (v == board.nV-2);
+		boolean hasTopBorder    = (h == 0);
+		boolean hasBottomBorder = (h == board.nH-1);
+		
+		boolean isTopSide    = (h <= 4);
+		boolean isMiddleSide = (5 <= h) && (h <= 6);
+		boolean isBottomSide = (7 <= h);
+		
+		boolean topDark    = isTopSide && isOdd;
+		boolean bottomDark = isBottomSide && !isOdd;
+		boolean isDark     = !isMiddleSide && (topDark || bottomDark);
+		
 		int sw = squareWidth;
 		int sh = squareHeight;
 		
@@ -115,15 +125,16 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 		Image wood = isDark ? GameImages.woodDark : GameImages.woodMedium;
 		Rectangle bounds = wood.getBounds();
 		
-		gc.drawImage(wood, 
+		if (!isBar && !isForBearing)
+			gc.drawImage(wood, 
 		             0, 0, bounds.width, bounds.height, 
 			         x, y, sw, sh);
 
-		if ((v == 0) || (v == vMiddle)) gc.drawLine(x, y, x, y + sh);
-		if (v == board.nV - 1) gc.drawLine(x + sw, y, x + sw, y + sh);
+		if (hasLeftBorder)  gc.drawLine(x, y, x, y + sh);
+		if (hasRightBorder) gc.drawLine(x + sw, y, x + sw, y + sh);
 
-		if (h == 0) gc.drawLine(x, y, x + sw, y);
-		if (h == board.nH-1) gc.drawLine(x, y + sh, x + sw, y + sh);
+		if (hasTopBorder)    gc.drawLine(x, y, x + sw, y);
+		if (hasBottomBorder) gc.drawLine(x, y + sh, x + sw, y + sh);
 	}
 	
 	@Override
