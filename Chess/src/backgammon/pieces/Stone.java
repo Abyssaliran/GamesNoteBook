@@ -26,21 +26,12 @@ public class Stone extends Piece implements ITrackPiece {
 		PieceColor color = getColor();
 		
 		//
-		// Проверяем клетку из которой делаем ход.
-		//
-		int topH = board.isTopSide(square) ? 1 : -1;
-
-		// Проверяем есть ди фигура над клеткой
-		// с которой делается ход.
-		// Самая ли верхняя это фигура,
-		if (board.onBoard(square.v, square.h + topH))
-			if (!board.isEmpty(square.v, square.h + topH))
-				return false; // Сверху стоит фигура. 
-		
-		//
 		// Проверяем клетку куда идем.
 		//
 		Square target = squares[0];
+		
+		if (target == square)
+			return false;
 		
 		// Сама фигура пойти на клетку для хранения захваченных фигур 
 		// (сдаться в плен) не может.
@@ -52,22 +43,21 @@ public class Stone extends Piece implements ITrackPiece {
 		if (board.isForBearing(target) && !board.allInHome(color))
 			return false;
 		
-		// В нардах нельзя фигурой ходить на поле 
-		// уже занятое фигурой любого цвета.
-		if (!target.isEmpty())
-			return false;	
+		// На пустую клетку пойти можно.
+		if (target.isEmpty())
+			return true;	
 
-		int bottomH = board.isTopSide(target) ? -1 : 1;
+		BackgammonGroup targetPiece = (BackgammonGroup)target.getPiece();
 
-		// Проверяем есть ли фигура ПОД клеткой 
-		// на которую ставим фигуру.
-		if (!board.onBoard(target.v, target.h + bottomH))
-			return true; // Ставим фигуру на край доски.
+		// На клетку со своими фигурами пойти можно.
+		if (targetPiece.isFriend(this))
+			return true;	
 		
-		if (board.isEmpty(target.v, target.h + bottomH))
-			return false; // Нет фигуры на которую можно поставить.
+		// Врага-одночку можно захватить в плен.
+//        if (targetPiece.pieces.size() == 1)
+//        	return true;
 		
-		return true;	
+		return false;	
 	}
 
 	@Override

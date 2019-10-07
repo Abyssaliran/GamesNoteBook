@@ -70,7 +70,7 @@ public class BackgammonBoard extends Board {
 	 * @return расположение.
 	 */
 	public boolean isTopSide(Square s) {
-		return s.h < nH/2;
+		return s.h == 0;
 	}
 	
 	/**
@@ -102,12 +102,11 @@ public class BackgammonBoard extends Board {
 	/**
 	 * Расположена ли заданная клетка в правой части доски.
 	 * @param s - заданная клетка
-	 * @return расположение.
+	 * @return расположение клетки.
 	 */
 	public boolean isRightSide(Square s) {
 		return (nV/2-1 < s.v) && (s.v < nV-1);
 	}
-
 	
 	/**
 	 * Это клетка для сбрасывания своих фигур с доски?
@@ -126,7 +125,7 @@ public class BackgammonBoard extends Board {
 	 */
 	public boolean isBar4Color(Square s, PieceColor color) {
 		boolean isTheSide = (color == PieceColor.WHITE) 
-				? s.h <= nH/2 : nH/2 > s.h;
+				? s.h == 0 : s.h == 1;
 				
 		return isBar(s) && isTheSide;
 	}
@@ -152,7 +151,7 @@ public class BackgammonBoard extends Board {
 	 */
 	public boolean isForBearing(Square s, PieceColor color) {
 		boolean isTheSide = (color == PieceColor.WHITE) 
-				? s.h <= nH/2 : nH/2 > s.h;
+				? s.h == 1 : s.h == 0;
 				
 		return isForBearing(s) && isTheSide;
 	}
@@ -171,18 +170,23 @@ public class BackgammonBoard extends Board {
 		return true;
 	}
 
-	public boolean isInHome(Piece p) {
-		return isPieceSide(p) && isRightSide(p.square);
-	}
-
-
 	/**
-	 * Находится ли фигура во своем дворе?
+	 * Находится ли фигура во своем дворе
+	 * (на подходе к своему дому)?
 	 * @param p - проверяемая фигура.
 	 * @return во дворе или нет.
 	 */
 	public boolean isInInner(Piece p) {
 		return isPieceSide(p) && isLeftSide(p.square);
+	}
+
+	/**
+	 * Находится ли фигура дома?
+	 * @param p - проверяемая фигура.
+	 * @return дома или нет
+	 */
+	public boolean isInHome(Piece p) {
+		return isPieceSide(p) && isRightSide(p.square);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package backgammon;
 
+import backgammon.pieces.BackgammonGroup;
 import backgammon.pieces.Stone;
 import game.core.Game;
 import game.core.PieceColor;
@@ -31,6 +32,42 @@ public class Backgammon extends Game {
 
 	@Override
 	public void initBoardDefault() {
+		// + по одной колонке для захваченных фигур противника
+		// и для своих сброшенных с доски фигур.
+		super.initBoard(12+1+1, 2);
+		
+//		initDebugPosition();
+		
+		initDefaultPosition();
+	}
+
+	public void initDebugPosition() {
+		new BackgammonGroup( board.getSquare(0, 0), PieceColor.WHITE,  5);
+		new BackgammonGroup( board.getSquare(1, 0), PieceColor.WHITE,  6);
+		new BackgammonGroup( board.getSquare(2, 0), PieceColor.WHITE,  7);
+		new BackgammonGroup( board.getSquare(3, 0), PieceColor.WHITE,  8);
+		new BackgammonGroup( board.getSquare(4, 0), PieceColor.WHITE,  9);
+		new BackgammonGroup( board.getSquare(5, 0), PieceColor.WHITE, 10);
+		
+		new BackgammonGroup( board.getSquare(0, 1), PieceColor.BLACK, 10);
+	}
+
+	/**
+	 * Умаличиваемая позиуия для игры в короткие нарды.
+	 */
+	public void initDefaultPosition() {
+		new BackgammonGroup( board.getSquare( 0, 0), PieceColor.WHITE, 5);
+		new BackgammonGroup( board.getSquare( 4, 1), PieceColor.WHITE, 3);
+		new BackgammonGroup( board.getSquare( 7, 1), PieceColor.WHITE, 5);
+		new BackgammonGroup( board.getSquare(12, 0), PieceColor.WHITE, 2);
+		
+		new BackgammonGroup( board.getSquare( 0, 1), PieceColor.BLACK, 5);
+		new BackgammonGroup( board.getSquare( 4, 0), PieceColor.BLACK, 3);
+		new BackgammonGroup( board.getSquare( 7, 0), PieceColor.BLACK, 5);
+		new BackgammonGroup( board.getSquare(12, 1), PieceColor.BLACK, 2);
+	}
+
+	public void initBoardDefault1() {
 		// + по одной колонке для захваченных фигур противника
 		// и для своих сброшенных с доски фигур.
 		super.initBoard(12+1+1, 12);
@@ -78,4 +115,5 @@ public class Backgammon extends Game {
 
 		new Stone( board.getSquare(12,10), PieceColor.BLACK);
 		new Stone( board.getSquare(12,11), PieceColor.BLACK);
-	}}
+	}
+}

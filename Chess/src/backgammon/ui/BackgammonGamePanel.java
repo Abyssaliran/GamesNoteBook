@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import backgammon.Backgammon;
 import backgammon.BackgammonBoard;
+import backgammon.pieces.BackgammonGroup;
 import backgammon.pieces.Stone;
 import backgammon.ui.images.BackgammonImages;
 import game.core.Game;
@@ -50,7 +51,9 @@ public class BackgammonGamePanel extends GamePanel {
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
-	private final Color BLACK_COLOR = new Color(null, 0, 0, 0);
+	private final static Color BLACK_COLOR = new Color(null,   0,   0,  0);
+	private final static Color DARK_COLOR  = new Color(null, 139,  69, 19);
+	private final static Color LIGHT_COLOR = new Color(null, 244, 164, 96);
 
 	/**
 	 * Создать доску для игры в нарды.
@@ -94,6 +97,91 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 	}
 
 	@Override
+	protected void drawPiece(GC gc, int v, int h, int squareWidth, int squareHeight) {
+		BackgammonGroup group = (BackgammonGroup) board.getSquare(v, h).getPiece();
+		
+		if (group == null) return;
+		
+		boolean isTop = (h == 0);
+		int dir = isTop ? +1 : -1;
+
+		int shift = squareWidth/16;
+		int pieceSize = squareWidth - 2*shift;
+		int pieceSize2 = pieceSize/2;
+
+		int step = pieceSize + shift;
+		
+		int x = v * squareWidth  + shift;
+		int y = h * squareHeight + (isTop ? shift : squareHeight - pieceSize);
+		int yStart = y;
+
+		// Фигуры выставляются слоями;
+		// 5 фигур на 1-м уровне, 4 фигуры на втором, ...
+		int levelSize = 5;
+
+		for (int kPiece = 0; kPiece < group.pieces.size(); kPiece++) {
+			int level = (1+kPiece) / levelSize;
+
+			Piece piece = group.pieces.get(kPiece); 
+			Image image = getPieceImage(piece, piece.getColor());
+			Rectangle bounds = image.getBounds();
+			
+			gc.drawImage(image, 
+				0, 0, bounds.width, bounds.height, 
+				x, y, pieceSize, pieceSize);
+			y += dir * step;
+			
+			boolean isNextLevel = (1+kPiece) % levelSize == 0;
+			if (isNextLevel) {
+				// Начинаем выкладывать на следующем уровне
+				// со сдвигом на половину фигуры.
+				int levelShift = dir * pieceSize2 * level;
+				
+				y = yStart + levelShift;
+//				levelSize--;
+			}
+		}
+		System.out.println();
+	}
+
+	int getPromptY(Square square) {
+		if (square.isEmpty())
+			return 5;
+		
+		BackgammonGroup group = (BackgammonGroup) square.getPiece();
+		
+		boolean isTop = (square.h == 0);
+		int dir = isTop ? +1 : -1;
+		
+		int sw = getSquareWidth();
+		int sh = getSquareHeight();
+
+		int shift = sw/16;
+		int pieceSize = sw - 2*shift;
+
+		int step = pieceSize + shift;
+		
+		int y = square.h * sh + (isTop ? shift : sh - pieceSize);
+		int n = group.pieces.size();
+		
+		y += n * dir * step;
+
+		return y;
+	}
+	
+	@Override
+	public void markSquare(GC gc, Square square, Color markColor) {
+		int v = square.v;
+		int sw = getSquareWidth();
+	
+		gc.setBackground(markColor);
+		int d = 10;
+		int x = v*sw + (sw-d)/2;
+		int y = getPromptY(square);
+		gc.fillOval(x, y, d, d);
+	}
+
+	@Override
 	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
 		boolean isOdd = (v % 2 == 0);
 		
@@ -108,13 +196,12 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 		boolean hasTopBorder    = (h == 0);
 		boolean hasBottomBorder = (h == board.nH-1);
 		
-		boolean isTopSide    = (h <= 4);
-		boolean isMiddleSide = (5 <= h) && (h <= 6);
-		boolean isBottomSide = (7 <= h);
+		boolean isTopSide    = (h == 0);
+		boolean isBottomSide = (h == 1);
 		
 		boolean topDark    = isTopSide && isOdd;
 		boolean bottomDark = isBottomSide && !isOdd;
-		boolean isDark     = !isMiddleSide && (topDark || bottomDark);
+		boolean isDark     = topDark || bottomDark;
 		
 		int sw = squareWidth;
 		int sh = squareHeight;
@@ -122,14 +209,14 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 		int x = v * squareWidth;
 		int y = h * squareHeight;
 		
-		Image wood = isDark ? GameImages.woodDark : GameImages.woodMedium;
-		Rectangle bounds = wood.getBounds();
+		if (!isBar && !isForBearing) {
+			int[] upTriangle   = {x, y,    x+sw, y,    x+sw/2, y+sh+4};
+			int[] downTriangle = {x, y+sh, x+sw, y+sh, x+sw/2, y-4};
+			
+			gc.setBackground(isDark ? DARK_COLOR : LIGHT_COLOR);
+			gc.fillPolygon(isBottomSide ? downTriangle : upTriangle);
+		}
 		
-		if (!isBar && !isForBearing)
-			gc.drawImage(wood, 
-		             0, 0, bounds.width, bounds.height, 
-			         x, y, sw, sh);
-
 		if (hasLeftBorder)  gc.drawLine(x, y, x, y + sh);
 		if (hasRightBorder) gc.drawLine(x + sw, y, x + sw, y + sh);
 

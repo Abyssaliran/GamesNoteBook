@@ -144,14 +144,14 @@ public class GameBoard extends Canvas
 	/**
 	 * @return высота клетки.
 	 */
-	private int getSquareHeight() {
+	protected int getSquareHeight() {
 		return getClientArea().height / board.nH;
 	}
 
 	/**
 	 * @return ширина клетки.
 	 */
-	private int getSquareWidth() {
+	protected int getSquareWidth() {
 		return getClientArea().width  / board.nV;
 	}
 
@@ -331,7 +331,7 @@ public class GameBoard extends Canvas
 	 * @param squareHeight
 	 *            - высота клетки
 	 */
-	private void drawPiece(GC gc, int v, int h, int squareWidth, int squareHeight) {
+	protected void drawPiece(GC gc, int v, int h, int squareWidth, int squareHeight) {
 		Piece piece = board.getSquare(v, h).getPiece();
 		if (piece == null) return;
 

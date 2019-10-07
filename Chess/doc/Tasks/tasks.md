@@ -40,7 +40,7 @@
     + [Сёги wiki](https://ru.wikipedia.org/wiki/Сёги)
     + [Сёги правила](http://shogi.by/shogi/1/#zones)
     + [Сёги фигуры](https://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D1%82%D0%B5%D0%B3%D0%BE%D1%80%D0%B8%D1%8F:%D0%A4%D0%B8%D0%B3%D1%83%D1%80%D1%8B_%D1%81%D1%91%D0%B3%D0%B8)
-+ Участники: Андрей Жовсан, Анна Айрапетян
++ Участники: Андрей Жосан, Анна Айрапетян
 + Ветки: **shogi**
 
 ## 8. Сокобан
@@ -55,7 +55,7 @@
 
 ## 9. Реализация интерфейса пользователя настольных игр с помощью библиотеки GWT
 
-+ Сайтsы проекта: 
++ Сайты проекта: 
     + [GWT project](http://www.gwtproject.org/)  
     + [GWT Eclipse Plugin](https://marketplace.eclipse.org/content/gwt-eclipse-plugin?mpc=true&mpc_state=#group-details)
 + Участники: Артем Маханкин, Андрей Лисин
