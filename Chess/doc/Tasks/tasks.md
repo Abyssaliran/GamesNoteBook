@@ -55,11 +55,17 @@
 
 ## 9. Реализация интерфейса пользователя настольных игр с помощью библиотеки GWT
 
-+ Сайтsы проекта: 
++ Сайты проекта: 
     + [GWT project](http://www.gwtproject.org/)  
     + [GWT Eclipse Plugin](https://marketplace.eclipse.org/content/gwt-eclipse-plugin?mpc=true&mpc_state=#group-details)
 + Участники: Артем Маханкин, Андрей Лисин
 - Ветки:  **gwt**
+
+## 10. Калах
+
++ Участники: Игорь Владимиров
+- Ветки:  **kalah**
+
 
 
  
