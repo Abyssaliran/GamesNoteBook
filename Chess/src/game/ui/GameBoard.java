@@ -144,14 +144,14 @@ public class GameBoard extends Canvas
 	/**
 	 * @return высота клетки.
 	 */
-	private int getSquareHeight() {
+	protected int getSquareHeight() {
 		return getClientArea().height / board.nH;
 	}
 
 	/**
 	 * @return ширина клетки.
 	 */
-	private int getSquareWidth() {
+	protected int getSquareWidth() {
 		return getClientArea().width  / board.nV;
 	}
 
@@ -164,8 +164,8 @@ public class GameBoard extends Canvas
 	 *            - новое изображение курсора.
 	 */
 	public void imageToCursor(Image image) {
-		int sw = getSquareWidth();
-		int sh = getSquareHeight();
+		int sw = getPieceWidth();
+		int sh = getPieceHeight();
 		
 		int pw = sw - sw/8; // Ширина фигуры в клетке.
 		int ph = sh - sh/8; // Высота фигуры в клетке.
@@ -331,7 +331,7 @@ public class GameBoard extends Canvas
 	 * @param squareHeight
 	 *            - высота клетки
 	 */
-	private void drawPiece(GC gc, int v, int h, int squareWidth, int squareHeight) {
+	protected void drawPiece(GC gc, int v, int h, int squareWidth, int squareHeight) {
 		Piece piece = board.getSquare(v, h).getPiece();
 		if (piece == null) return;
 
@@ -431,8 +431,8 @@ public class GameBoard extends Canvas
 	 *            - цвет рамки.
 	 */
 	public void markSquares(GC gc, Square source, Square target, Color color) {
-		int sw = getSquareWidth();
-		int sh = getSquareHeight();
+		int sw = getPieceWidth();
+		int sh = getPieceHeight();
 
 		int v1 = sw * source.v + sw/2;
 		int h1 = sh * source.h + sh/2;
@@ -443,6 +443,14 @@ public class GameBoard extends Canvas
 		gc.setForeground(color);
 		gc.drawRectangle(v1 * sw, h1 * sh, sw, sh);
 		gc.drawRectangle(v2 * sw, h2 * sh, sw, sh);
+	}
+
+	protected int getPieceHeight() {
+		return getSquareHeight();
+	}
+
+	protected int getPieceWidth() {
+		return getSquareWidth();
 	}
 
 	/**

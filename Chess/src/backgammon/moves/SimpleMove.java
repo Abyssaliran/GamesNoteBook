@@ -1,19 +1,35 @@
 package backgammon.moves;
 
+import backgammon.pieces.BackgammonGroup;
 import backgammon.pieces.Stone;
 import game.core.Piece;
 import game.core.Square;
 import game.core.moves.ITransferMove;
 
 public class SimpleMove implements ITransferMove {
-	private Stone piece;
-	private Square source;
-	private Square target;
-
-	public SimpleMove(Stone piece, Square source, Square target) {
-		this.piece = piece;
+	/**
+	 * Фигура которая делает ход.
+	 */
+	protected BackgammonGroup piece;
+	
+	protected Square source;
+	protected Square target;
+	
+	public SimpleMove(Square source, Square target) {
 		this.source = source;
 		this.target = target;
+
+		piece = (BackgammonGroup) source.getPiece();
+	}
+	
+	@Override
+	public Square getSource() {
+		return source;
+	}
+	
+	@Override
+	public Square getTarget() {
+		return target;
 	}
 
 	@Override
@@ -23,26 +39,36 @@ public class SimpleMove implements ITransferMove {
 
 	@Override
 	public void doMove() {
-		piece.moveTo(target);
+		doMove(source, target);
 	}
-
+	
 	@Override
 	public void undoMove() {
-		piece.moveTo(source);
+		doMove(target, source);
+	}
+
+	static
+	public void doMove(Square source, Square target) {
+		BackgammonGroup sourceGroup = (BackgammonGroup) source.getPiece();
+		
+		Stone stone = sourceGroup.pushStone();
+
+		if (sourceGroup.isEmpty())
+			sourceGroup.remove();
+		
+		BackgammonGroup targetGroup;
+
+		if (target.isEmpty())
+			targetGroup = new BackgammonGroup(target, stone);
+		else {
+			targetGroup = (BackgammonGroup) target.getPiece();
+			targetGroup.add(stone);
+		}
+		target.setPiece(targetGroup);
 	}
 
 	@Override
 	public String toString() {
-		return "" + piece + source + "-" + target;
-	}
-
-	@Override
-	public Square getSource() {
-		return source;
-	}
-
-	@Override
-	public Square getTarget() {
-		return target;
+		return "" + source + "-" + target;
 	}
 }

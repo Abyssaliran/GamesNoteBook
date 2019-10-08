@@ -1,7 +1,10 @@
 package backgammon.pieces;
 
+import java.util.List;
+
 import backgammon.BackgammonBoard;
 import backgammon.moves.SimpleMove;
+import game.core.Group;
 import game.core.ITrackPiece;
 import game.core.Move;
 import game.core.Piece;
@@ -12,6 +15,8 @@ import game.core.Square;
  * Фигура для игры в нарды.
  */
 public class Stone extends Piece implements ITrackPiece {
+	Group<Stone> group;
+	
 	public Stone(Square square, PieceColor color) {
 		super(square, color);
 	}
@@ -23,25 +28,41 @@ public class Stone extends Piece implements ITrackPiece {
 		int step1 = board.cube1.getValue();
 		int step2 = board.cube2.getValue();
 		
-		PieceColor color = getColor();
+		List<Square> way = board.getWay(this);
 		
-		//
-		// Проверяем клетку из которой делаем ход.
-		//
-		int topH = board.isTopSide(square) ? 1 : -1;
+		Square bar = board.getBar4Piece(this);
+		
+		if (!bar.isEmpty()) {
+			// Есть пленные фигуры. Ход возможен только ими.
+			BackgammonGroup barGroup = (BackgammonGroup) bar.getPiece();
+			
+			if (!barGroup.contains(this))
+				return false;
 
-		// Проверяем есть ди фигура над клеткой
-		// с которой делается ход.
-		// Самая ли верхняя это фигура,
-		if (board.onBoard(square.v, square.h + topH))
-			if (!board.isEmpty(square.v, square.h + topH))
-				return false; // Сверху стоит фигура. 
+			List<Square> wayFromBar = board.getWayFromBar(this);
+		}
 		
+		PieceColor color = getColor();
+		Square target = squares[0];
+		
+//		way.forEach(s -> System.out.format("%s ", s.getPiece()));
+//		System.out.println();
+		
+		int i00 = way.indexOf(board.getSquare(0, 0));
+
+		int iSource = way.indexOf(square);
+		int iTarget = way.indexOf(target);
+		
+		if (iTarget <= iSource)
+			// Назад фигуры не ходят.
+			return false;
+		
+		if (target == square)
+			return false; 
+	
 		//
 		// Проверяем клетку куда идем.
 		//
-		Square target = squares[0];
-		
 		// Сама фигура пойти на клетку для хранения захваченных фигур 
 		// (сдаться в плен) не может.
 		if (board.isBar(target))
@@ -52,28 +73,28 @@ public class Stone extends Piece implements ITrackPiece {
 		if (board.isForBearing(target) && !board.allInHome(color))
 			return false;
 		
-		// В нардах нельзя фигурой ходить на поле 
-		// уже занятое фигурой любого цвета.
-		if (!target.isEmpty())
-			return false;	
+		// На пустую клетку пойти можно.
+		if (target.isEmpty())
+			return true;	
 
-		int bottomH = board.isTopSide(target) ? -1 : 1;
+		BackgammonGroup targetPiece = (BackgammonGroup)target.getPiece();
 
-		// Проверяем есть ли фигура ПОД клеткой 
-		// на которую ставим фигуру.
-		if (!board.onBoard(target.v, target.h + bottomH))
-			return true; // Ставим фигуру на край доски.
+		// На клетку со своими фигурами пойти можно.
+		if (targetPiece.isFriend(this))
+			return true;	
 		
-		if (board.isEmpty(target.v, target.h + bottomH))
-			return false; // Нет фигуры на которую можно поставить.
+		// Врага-одночку можно захватить в плен.
+		// TODO реализовать ход Capture - взятие в плен фигуры противника.
+//        if (targetPiece.pieces.size() == 1)
+//        	return true;
 		
-		return true;	
+		return false;	
 	}
 
 	@Override
 	public Move makeMove(Square... squares) {
 		Square target = squares[1];
-		return new SimpleMove(this, square, target);
+		return new SimpleMove(square, target);
 	}
 
 	@Override
@@ -83,6 +104,6 @@ public class Stone extends Piece implements ITrackPiece {
 	
 	@Override
 	public String toString() {
-		return "";
+		return "s[" + square + "]";
 	}
 }
