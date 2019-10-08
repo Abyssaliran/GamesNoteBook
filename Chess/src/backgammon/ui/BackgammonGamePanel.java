@@ -85,6 +85,13 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 	}
 
 	@Override
+	protected int getPieceHeight() {
+		// Сохраняем пропорции фигуры используемой курсором,
+		// поскольку в нардах высота и ширина поля различаются.
+		return getPieceWidth();
+	}
+
+	@Override
 	protected void drawBackground(GC gc, Rectangle area) {
 		Rectangle bounds = GameImages.woodLight.getBounds();
 		
@@ -119,10 +126,10 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 		// 5 фигур на 1-м уровне, 4 фигуры на втором, ...
 		int levelSize = 5;
 
-		for (int kPiece = 0; kPiece < group.pieces.size(); kPiece++) {
+		for (int kPiece = 0; kPiece < group.size(); kPiece++) {
 			int level = (1+kPiece) / levelSize;
 
-			Piece piece = group.pieces.get(kPiece); 
+			Piece piece = group.getPiece(kPiece); 
 			Image image = getPieceImage(piece, piece.getColor());
 			Rectangle bounds = image.getBounds();
 			
@@ -144,14 +151,14 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 		System.out.println();
 	}
 
-	int getPromptY(Square square) {
-		if (square.isEmpty())
-			return 5;
+	int getPieceY(Square square) {
+		boolean isTop = (square.h == 0);
 		
 		BackgammonGroup group = (BackgammonGroup) square.getPiece();
-		
-		boolean isTop = (square.h == 0);
-		int dir = isTop ? +1 : -1;
+		int nStones = group == null ? 0 : group.size();
+
+		// Вверх или вниз выставляются фигуры в клетке.
+		int dir = isTop ? +1 : -1; 
 		
 		int sw = getSquareWidth();
 		int sh = getSquareHeight();
@@ -161,10 +168,9 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 
 		int step = pieceSize + shift;
 		
-		int y = square.h * sh + (isTop ? shift : sh - pieceSize);
-		int n = group.pieces.size();
+		int y = square.h * sh + (isTop ? pieceSize/2 : sh - pieceSize/2);
 		
-		y += n * dir * step;
+		y += nStones * dir * step;
 
 		return y;
 	}
@@ -177,8 +183,13 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 		gc.setBackground(markColor);
 		int d = 10;
 		int x = v*sw + (sw-d)/2;
-		int y = getPromptY(square);
+		int y = getPieceY(square);
 		gc.fillOval(x, y, d, d);
+	}
+	
+	@Override
+	protected void markLastTransferMove(GC gc) {
+		// Пометку последнего хода не делаем.
 	}
 
 	@Override
