@@ -33,7 +33,7 @@ public class GamesListPanel extends Composite {
 		GridData data;
 		
 		// 
-		// Панель для показа игроков партии и авторов программ.
+		// Панель для показа списка найденных в БД игр.
 		//
 		data = new GridData(SWT.FILL, SWT.TOP, false, false);
 		data.widthHint  = 260;
