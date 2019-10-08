@@ -16,6 +16,8 @@ import chess.ui.ChessGamePanel;
 import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessGamePanel;
 import chinachess.ui.images.ChinaChessImages;
+import game.db.ui.GameDBPanel;
+import game.db.ui.images.GameDBImages;
 import go.ui.GoGamePanel;
 import go.ui.images.GoImages;
 import halma.ui.HalmaGamePanel;
@@ -43,7 +45,7 @@ public class GamesNotebook {
 		
 		shell.setBackgroundMode(SWT.INHERIT_FORCE);
 		
-		shell.setSize(800, 600);
+		shell.setSize(900, 600);
 		shell.setText("Games Notebook");
 		shell.setImage(NotebookImages.iconNotebook);
 		
@@ -63,13 +65,25 @@ public class GamesNotebook {
 		addReversiTab(display, gamesFolder);
 		addGoTab(display, gamesFolder);
 		addHalma8x8Tab(display, gamesFolder);
-	    shell.open();
+		addGameDBTab(display, gamesFolder);
+		    
+		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
 		display.dispose(); //Удалить экземпляр класса после завершения цикла опроса
 	} 
+
+	private static void addGameDBTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, GameDBImages.icoGameDB
+				.getImageData().scaledTo(20, 20));
+		
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setText("База игр");
+		tabItem.setControl( new GameDBPanel(gamesFolder) );
+		tabItem.setImage(tabImage);
+	}
 
 	private static void addBackgammonTab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, BackgammonImages.iconBackgammon
