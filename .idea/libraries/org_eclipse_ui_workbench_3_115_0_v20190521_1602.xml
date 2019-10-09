@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="org.eclipse.ui.workbench_3.115.0.v20190521-1602">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Chess/libs/org.eclipse.ui.workbench_3.115.0.v20190521-1602.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
