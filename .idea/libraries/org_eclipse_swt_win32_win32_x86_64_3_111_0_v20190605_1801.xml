@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/Chess/libs/org.eclipse.swt.win32.win32.x86_64_3.111.0.v20190605-1801.jar!/" />
       <root url="jar://$PROJECT_DIR$/Chess/libs/org.eclipse.swt_3.111.0.v20190605-1801.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Chess/libs/org.eclipse.jface_3.16.0.v20190528-0922.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
