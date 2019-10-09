@@ -4,6 +4,7 @@ import java.util.List;
 
 import backgammon.BackgammonBoard;
 import backgammon.moves.SimpleMove;
+import backgammon.moves.Capture;
 import game.core.Group;
 import game.core.ITrackPiece;
 import game.core.Move;
@@ -59,6 +60,11 @@ public class Stone extends Piece implements ITrackPiece {
 		
 		if (target == square)
 			return false; 
+		
+		if (iTarget != iSource + step1 && 
+				iTarget != iSource + step2 &&
+				iTarget != iSource + step1 + step2)
+			return false;
 	
 		//
 		// Проверяем клетку куда идем.
@@ -85,8 +91,8 @@ public class Stone extends Piece implements ITrackPiece {
 		
 		// Врага-одночку можно захватить в плен.
 		// TODO реализовать ход Capture - взятие в плен фигуры противника.
-//        if (targetPiece.pieces.size() == 1)
-//        	return true;
+        if (targetPiece.size() == 1)
+        	return true;
 		
 		return false;	
 	}
@@ -94,6 +100,11 @@ public class Stone extends Piece implements ITrackPiece {
 	@Override
 	public Move makeMove(Square... squares) {
 		Square target = squares[1];
+		BackgammonGroup targetPiece = (BackgammonGroup)target.getPiece();
+		
+		if (!target.isEmpty() && targetPiece.isEnemy(this) && targetPiece.size() == 1)
+			return new Capture(square, target);
+		
 		return new SimpleMove(square, target);
 	}
 
