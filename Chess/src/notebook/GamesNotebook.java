@@ -56,6 +56,7 @@ public class GamesNotebook {
 		
 		
 		//Добавление вкладок
+		addGameDBTab(display, gamesFolder);
 		addBackgammonTab(display, gamesFolder);
 		addChessTab(display, gamesFolder);
 		addCheckersTab(display, gamesFolder);
@@ -65,7 +66,6 @@ public class GamesNotebook {
 		addReversiTab(display, gamesFolder);
 		addGoTab(display, gamesFolder);
 		addHalma8x8Tab(display, gamesFolder);
-		addGameDBTab(display, gamesFolder);
 		    
 		shell.open();
 		while (!shell.isDisposed()) {
