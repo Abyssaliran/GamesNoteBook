@@ -1,13 +1,5 @@
 package notebook;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
-
 import backgammon.ui.BackgammonGamePanel;
 import backgammon.ui.images.BackgammonImages;
 import checkers.ui.CheckersGamePanel;
@@ -18,13 +10,23 @@ import chinachess.ui.ChinaChessGamePanel;
 import chinachess.ui.images.ChinaChessImages;
 import game.db.ui.GameDBPanel;
 import game.db.ui.images.GameDBImages;
+import game.tourney.ui.CompetitionPanel;
 import go.ui.GoGamePanel;
 import go.ui.images.GoImages;
 import halma.ui.HalmaGamePanel;
 import halma.ui.images.HalmaImages;
 import notebook.ui.images.NotebookImages;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import reversi.Reversi;
 import reversi.ui.ReversiGamePanel;
 import reversi.ui.images.ReversiImages;
+import tamerlan.TamerlanChess;
 import tamerlan.ui.TamerlanChessGamePanel;
 import tamerlan.ui.images.TamerlanChessImages;
 import vikings.ui.VikingsGamePanel;
@@ -45,7 +47,7 @@ public class GamesNotebook {
 		
 		shell.setBackgroundMode(SWT.INHERIT_FORCE);
 		
-		shell.setSize(900, 600);
+		shell.setSize(1000, 600);
 		shell.setText("Games Notebook");
 		shell.setImage(NotebookImages.iconNotebook);
 		
@@ -54,9 +56,7 @@ public class GamesNotebook {
 		
 		TabFolder gamesFolder = new TabFolder(shell, SWT.TOP);
 		
-		
-		//Добавление вкладок
-		addGameDBTab(display, gamesFolder);
+		// Добавление вкладок
 		addBackgammonTab(display, gamesFolder);
 		addChessTab(display, gamesFolder);
 		addCheckersTab(display, gamesFolder);
@@ -66,14 +66,38 @@ public class GamesNotebook {
 		addReversiTab(display, gamesFolder);
 		addGoTab(display, gamesFolder);
 		addHalma8x8Tab(display, gamesFolder);
-		    
+
+		addGameDBTab(display, gamesFolder);
+		addCompetitionTamerlanTab(display, gamesFolder);
+		addCompetitionReversiTab(display, gamesFolder);
+
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
 		display.dispose(); //Удалить экземпляр класса после завершения цикла опроса
-	} 
+	}
+
+	private static void addCompetitionReversiTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, ReversiImages.icoReversi
+				.getImageData().scaledTo(20, 20));
+
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setControl( new CompetitionPanel(gamesFolder, Reversi.class) );
+		tabItem.setText("Турниры");
+		tabItem.setImage(tabImage);
+	}
+
+	private static void addCompetitionTamerlanTab(Display display, TabFolder gamesFolder) {
+		Image tabImage = new Image(display, TamerlanChessImages.iconTamerlanChess
+				.getImageData().scaledTo(20, 20));
+
+		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+		tabItem.setControl( new CompetitionPanel(gamesFolder, TamerlanChess.class) );
+		tabItem.setText("Турниры");
+		tabItem.setImage(tabImage);
+	}
 
 	private static void addGameDBTab(Display display, TabFolder gamesFolder) {
 		Image tabImage = new Image(display, GameDBImages.icoGameDB
