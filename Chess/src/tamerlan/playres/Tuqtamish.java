@@ -26,7 +26,12 @@ public class Tuqtamish extends TamerlanChessPlayer {
 	public String getAuthorName() {
 		return "Романов В.Ю.";
 	}
-	
+
+	@Override
+	public String toString() {
+		return getName();
+	}
+
 	@Override
 	Comparator<? super Move> getComparator() {
 		return brain;
