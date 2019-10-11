@@ -18,7 +18,7 @@ public class Game {
 	/**
 	 * Карта для регистрации игроков для каждой из игр.
 	 */
-	private static final
+	public static final
 	Map<Class<? extends Game>, List<IPlayer>> allPlayers = new HashMap<>();
 	
 	/**

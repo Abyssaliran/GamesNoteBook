@@ -193,7 +193,7 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 	}
 
 	@Override
-	public void drawSquare(GC gc, int v, int h, int squareWidth, int squareHeight) {
+	public void drawSquare(GC gc, int v, int h, int sw, int sh) {
 		boolean isOdd = (v % 2 == 0);
 		
 		// Для хранения захваченных фигур противника.
@@ -214,11 +214,8 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 		boolean bottomDark = isBottomSide && !isOdd;
 		boolean isDark     = topDark || bottomDark;
 		
-		int sw = squareWidth;
-		int sh = squareHeight;
-		
-		int x = v * squareWidth;
-		int y = h * squareHeight;
+		int x = v * sw;
+		int y = h * sh;
 		
 		if (!isBar && !isForBearing) {
 			int[] upTriangle   = {x, y,    x+sw, y,    x+sw/2, y+sh+4};

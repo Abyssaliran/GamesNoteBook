@@ -316,7 +316,6 @@ public class BackgammonBoard extends Board {
 	
 	/**
 	 * Умалчиваемая позиция для игры в короткие нарды.
-	 * @param backgammon TODO
 	 */
 	public void initDefaultPosition() {
 		new BackgammonGroup( getSquare( 0, 0), PieceColor.WHITE, 5);
