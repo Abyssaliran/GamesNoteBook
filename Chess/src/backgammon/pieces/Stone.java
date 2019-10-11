@@ -48,6 +48,8 @@ public class Stone extends Piece implements ITrackPiece {
 		
 //		way.forEach(s -> System.out.format("%s ", s.getPiece()));
 //		System.out.println();
+		if (color != board.getMoveColor())
+			return false;
 		
 		int i00 = way.indexOf(board.getSquare(0, 0));
 
