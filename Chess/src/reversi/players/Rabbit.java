@@ -9,25 +9,25 @@ import game.core.moves.IPutMove;
 import java.util.Comparator;
 
 /**
- * Сова - игрок в реверси.
+ * Кролик - самый умный.
  * Знает что фигуры в углах доски окружить невозможно.
  * Знает что фигуры на краях окружить сложнее чем в центре доски.
  * Выбирает ход с захватом максимального количества фигур врага.
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class Piglet extends ReversiPlayer {
+public class Rabbit extends ReversiPlayer {
 	final Comparator<? super Move> brain
 		= (m1, m2) -> getMoveWeight(m2) - getMoveWeight(m1);
 
 	@Override
 	public String getName() {
-		return "Пятачок";
+		return "Кролик";
 	}
 
 	@Override
 	public String getAuthorName() {
-		return "Медведенко";
+		return "Степан Медведенко";
 	}
 
 	@Override
@@ -36,11 +36,11 @@ public class Piglet extends ReversiPlayer {
 	}
 
 	/**
-	 * Сова - игрок в реверси. Знает что фигуры в углах доски окружить
+	 * Кролик - игрок в реверси. Знает что фигуры в углах доски окружить
 	 * невозможно. Знает что фигуры на краях окружить сложнее чем в центре
 	 * доски. Выбирает ход с захватом максимального количества фигур врага.
 	 */
-	public Piglet(IPieceProvider pieceProvider) {
+	public Rabbit(IPieceProvider pieceProvider) {
 		super(pieceProvider);
 		this.pieceProvider = pieceProvider;
 	}
