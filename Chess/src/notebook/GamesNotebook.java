@@ -10,6 +10,7 @@ import chinachess.ui.ChinaChessGamePanel;
 import chinachess.ui.images.ChinaChessImages;
 import game.db.ui.GameDBPanel;
 import game.db.ui.images.GameDBImages;
+import game.editor.PositionEditor;
 import game.tourney.ui.CompetitionPanel;
 import go.ui.GoGamePanel;
 import go.ui.images.GoImages;
@@ -42,7 +43,6 @@ import vikings.ui.images.VikingImages;
 public class GamesNotebook {
 	public static void main(String[] args) {
 		final Display display = new Display();
-		
 		final Shell shell = new Shell(display);
 		
 		shell.setBackgroundMode(SWT.INHERIT_FORCE);
@@ -51,25 +51,36 @@ public class GamesNotebook {
 		shell.setText("Games Notebook");
 		shell.setImage(NotebookImages.iconNotebook);
 		
-		FillLayout layout = new FillLayout();
-		shell.setLayout(layout);
-		
-		TabFolder gamesFolder = new TabFolder(shell, SWT.TOP);
-		
-		// Добавление вкладок
-		addBackgammonTab(display, gamesFolder);
-		addChessTab(display, gamesFolder);
-		addCheckersTab(display, gamesFolder);
-		addChinaChessTab(display, gamesFolder);
-		addVikingTab(display, gamesFolder);
-		addTamerlanChessTab(display, gamesFolder);
-		addReversiTab(display, gamesFolder);
-		addGoTab(display, gamesFolder);
-		addHalma8x8Tab(display, gamesFolder);
+		shell.setLayout(new FillLayout());
 
-		addGameDBTab(display, gamesFolder);
-		addCompetitionTamerlanTab(display, gamesFolder);
-		addCompetitionReversiTab(display, gamesFolder);
+		TabFolder mainFolder = new TabFolder(shell, SWT.BOTTOM);
+
+		TabFolder toolsFolder = new TabFolder(mainFolder, SWT.TOP);
+		TabItem toolsItem = new TabItem(mainFolder, SWT.NONE);
+		toolsItem.setControl(toolsFolder);
+		toolsItem.setText("Инструменты");
+
+		TabFolder gamesFolder = new TabFolder(mainFolder, SWT.TOP);
+		TabItem gamesItem = new TabItem(mainFolder, SWT.NONE);
+		gamesItem.setControl(gamesFolder);
+		gamesItem.setText("Игры");
+
+		// Добавление вкладок - игр.
+		addBackgammonTab(gamesFolder);
+		addChessTab(gamesFolder);
+		addCheckersTab(gamesFolder);
+		addChinaChessTab(gamesFolder);
+		addVikingTab(gamesFolder);
+		addTamerlanChessTab(gamesFolder);
+		addReversiTab(gamesFolder);
+		addGoTab(gamesFolder);
+		addHalma8x8Tab(gamesFolder);
+
+		// Добавление вкладок - инструментов.
+		addEditorTab(toolsFolder);
+		addGameDBTab(toolsFolder);
+		addCompetitionTamerlanTab(toolsFolder);
+		addCompetitionReversiTab(toolsFolder);
 
 		shell.open();
 		while (!shell.isDisposed()) {
@@ -79,220 +90,136 @@ public class GamesNotebook {
 		display.dispose(); //Удалить экземпляр класса после завершения цикла опроса
 	}
 
-	private static void addCompetitionReversiTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, ReversiImages.icoReversi
-				.getImageData().scaledTo(20, 20));
+	private static void addEditorTab(TabFolder folder) {
+		ChessGamePanel panel = new ChessGamePanel(folder);
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl(panel);
+		tabItem.setText("Редактор");
 
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
-		tabItem.setControl( new CompetitionPanel(gamesFolder, Reversi.class) );
-		tabItem.setText("Турниры");
-		tabItem.setImage(tabImage);
+		new PositionEditor(panel);
 	}
 
-	private static void addCompetitionTamerlanTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, TamerlanChessImages.iconTamerlanChess
-				.getImageData().scaledTo(20, 20));
-
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
-		tabItem.setControl( new CompetitionPanel(gamesFolder, TamerlanChess.class) );
+	private static void addCompetitionReversiTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new CompetitionPanel(folder, Reversi.class) );
+		tabItem.setImage(smallIcon(ReversiImages.icoReversi));
 		tabItem.setText("Турниры");
-		tabItem.setImage(tabImage);
 	}
 
-	private static void addGameDBTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, GameDBImages.icoGameDB
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+	private static void addCompetitionTamerlanTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new CompetitionPanel(folder, TamerlanChess.class) );
+		tabItem.setImage(smallIcon(TamerlanChessImages.iconTamerlanChess));
+		tabItem.setText("Турниры");
+	}
+
+	private static void addGameDBTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new GameDBPanel(folder) );
+		tabItem.setImage(smallIcon(GameDBImages.icoGameDB));
 		tabItem.setText("База игр");
-		tabItem.setControl( new GameDBPanel(gamesFolder) );
-		tabItem.setImage(tabImage);
 	}
 
-	private static void addBackgammonTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, BackgammonImages.iconBackgammon
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+	private static void addBackgammonTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new BackgammonGamePanel(folder) );
+		tabItem.setImage(smallIcon(BackgammonImages.iconBackgammon));
 		tabItem.setText("Нарды");
-		tabItem.setControl( new BackgammonGamePanel(gamesFolder) );
-		tabItem.setImage(tabImage);
 	}
 
-	private static void addTamerlanChessTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, TamerlanChessImages.iconTamerlanChess
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+	private static void addTamerlanChessTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl(new TamerlanChessGamePanel(folder));
+		tabItem.setImage(smallIcon(TamerlanChessImages.iconTamerlanChess));
 		tabItem.setText("Тамерлан");
-		tabItem.setControl( new TamerlanChessGamePanel(gamesFolder) );
-		tabItem.setImage(tabImage);
 	}
 
 	/**
 	 * Инициализируем закладку для шашек.
 	 * 
-	 * @param display - монитор на котором рисуется закладки.
-	 * @param gamesFolder - контейнер для добавления закладки.
+	 * @param folder - контейнер для добавления закладки.
 	 */
-	private static void addCheckersTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, CheckersImages.iconCheckers
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+	private static void addCheckersTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new CheckersGamePanel(folder) );
+		tabItem.setImage(smallIcon(CheckersImages.iconCheckers));
 		tabItem.setText("Шашки");
-		tabItem.setControl( new CheckersGamePanel(gamesFolder) );
-		tabItem.setImage(tabImage);
 	}
 
 	/**
 	 * Инициализируем закладку для китайских шахмат.
 	 * 
-	 * @param display - монитор на котором рисуется закладки.
-	 * @param gamesFolder - контейнер для добавления закладки.
+	 * @param folder - контейнер для добавления закладки.
 	 */
-	private static void addChinaChessTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, ChinaChessImages.iconChinaChess
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+	private static void addChinaChessTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new ChinaChessGamePanel(folder) );
+		tabItem.setImage(smallIcon(ChinaChessImages.iconChinaChess));
 		tabItem.setText("Сянци");
-		tabItem.setControl( new ChinaChessGamePanel(gamesFolder) );
-		tabItem.setImage(tabImage);
 	}
 
 	/**
 	 * Инициализируем закладку для европейских шахмат.
 	 * 
-	 * @param display - монитор на котором рисуется закладки.
-	 * @param gamesFolder - контейнер для добавления закладки.
+	 * @param folder - контейнер для добавления закладки.
 	 */
-	private static void addChessTab(final Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, ChessImages.icoChess
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+	private static void addChessTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new ChessGamePanel(folder) );
+		tabItem.setImage(smallIcon(ChessImages.icoChess));
 		tabItem.setText("Шахматы");
-		tabItem.setControl( new ChessGamePanel(gamesFolder) );
-		tabItem.setImage(tabImage);
 	}
 
 	/**
 	 * Инициализируем закладку для игры Викинги.
 	 * 
-	 * @param display - монитор на котором рисуется закладки.
-	 * @param gamesFolder - контейнер для добавления закладки.
+	 * @param folder - контейнер для добавления закладки.
 	 */
-	private static void addVikingTab(final Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, VikingImages.icoVikings9
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+	private static void addVikingTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new VikingsGamePanel(folder, 9) );
+		tabItem.setImage(smallIcon(VikingImages.icoVikings9));
 		tabItem.setText("Викинги");
-		tabItem.setControl( new VikingsGamePanel(gamesFolder, 9) );
-		tabItem.setImage(tabImage);
-	}
-
-	/**
-	 * Инициализируем закладку для игры Викинги на доске 11х11.
-	 * 
-	 * @param display - монитор на котором рисуется закладки.
-	 * @param gamesFolder - контейнер для добавления закладки.
-	 */
-	static void addViking11Tab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, VikingImages.icoVikings11
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
-		tabItem.setText("Викинги-11");
-		tabItem.setControl( new VikingsGamePanel(gamesFolder, 11) );
-		tabItem.setImage(tabImage);
 	}
 
 	/**
 	 * Инициализируем закладку для игры Реверси.
 	 * 
-	 * @param display - монитор на котором рисуется закладки.
-	 * @param gamesFolder - контейнер для добавления закладки.
+	 * @param folder - контейнер для добавления закладки.
 	 */
-	private static void addReversiTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, ReversiImages.icoReversi
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+	private static void addReversiTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new ReversiGamePanel(folder, 0) );
+		tabItem.setImage(smallIcon(ReversiImages.icoReversi));
 		tabItem.setText("Реверси");
-		tabItem.setControl( new ReversiGamePanel(gamesFolder, 0) );
-		tabItem.setImage(tabImage);
-	}
-
-	/**
-	 * Инициализируем закладку для игры Реверси 
-	 * со случайными отверсиями на доске.
-	 * 
-	 * @param display - монитор на котором рисуется закладки.
-	 * @param gamesFolder - контейнер для добавления закладки.
-	 */
-	static void addReversiHoleTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, ReversiImages.icoReversiX
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
-		tabItem.setText("Реверси Х");
-		tabItem.setControl( new ReversiGamePanel(gamesFolder, 1) );
-		tabItem.setImage(tabImage);
 	}
 
 	/**
 	 * Инициализируем закладку для игры Го. 
 	 * 
-	 * @param display - монитор на котором рисуется закладки.
-	 * @param gamesFolder - контейнер для добавления закладки.
+	 * @param folder - контейнер для добавления закладки.
 	 */
-	private static void addGoTab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, GoImages.icoGo
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+	private static void addGoTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new GoGamePanel(folder, 8) );
+		tabItem.setImage(smallIcon(GoImages.icoGo));
 		tabItem.setText("Го");
-		tabItem.setControl( new GoGamePanel(gamesFolder, 8) );
-		tabItem.setImage(tabImage);
 	}
 
 	/**
 	 * Инициализируем закладку для игры Халма 
 	 * со случайными отверсиями на доске.
 	 * 
-	 * @param display - монитор на котором рисуется закладки.
-	 * @param gamesFolder - контейнер для добавления закладки.
+	 * @param folder - контейнер для добавления закладки.
 	 */
-	private static void addHalma8x8Tab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, HalmaImages.icoHalma
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
+	private static void addHalma8x8Tab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new HalmaGamePanel(folder, 8) );
+		tabItem.setImage(smallIcon(HalmaImages.icoHalma));
 		tabItem.setText("Халма 8x8");
-		tabItem.setControl( new HalmaGamePanel(gamesFolder, 8) );
-		tabItem.setImage(tabImage);
 	}
 
-	static void addHalma10x10Tab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, HalmaImages.icoHalma
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
-		tabItem.setText("Халма 10x10");
-		tabItem.setControl( new HalmaGamePanel(gamesFolder, 10) );
-		tabItem.setImage(tabImage);
+	private static Image smallIcon(Image image) {
+		return new Image(Display.getCurrent(), image.getImageData().scaledTo(20, 20));
 	}
-	
-	static void addHalma16x16Tab(Display display, TabFolder gamesFolder) {
-		Image tabImage = new Image(display, HalmaImages.icoHalma
-				.getImageData().scaledTo(20, 20));
-		
-		TabItem tabItem = new TabItem(gamesFolder, SWT.NONE);
-		tabItem.setText("Халма 16x16");
-		tabItem.setControl( new HalmaGamePanel(gamesFolder, 16) );
-		tabItem.setImage(tabImage);
-	}
-	
-} 
+}

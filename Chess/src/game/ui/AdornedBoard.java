@@ -1,17 +1,20 @@
 package game.ui;
 
+import game.core.Board;
+import game.core.BoardWithBoxes;
+import game.core.Piece;
+import game.ui.images.GameImages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.*;
 
-import game.ui.images.GameImages;
+import java.util.List;
+
+import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
 
 /**
  * Доска с обозначениями для горизонталей и вертикалей (номер или буква).
@@ -26,106 +29,11 @@ public class AdornedBoard extends Canvas {
 
 	private static final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-	private int nV, nH; 
+	private int nV, nH;
 
-	/**
-	 * Нумерация вертикалей и горизонталей доски.
-	 * 
-	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
-	 */
-	private class BoardAdorns extends Canvas {
-		private final boolean isInverted;
-		private final boolean isNumbers;
-		private final boolean isVertical;
-
-		/**
-		 * Поле с обозначениями для горизонталей и вертикалей (номер или буква)
-		 * 
-		 * @param parent
-		 *            родительский управляющий элемент.
-		 * @param n
-		 *            сколько колонок или строк
-		 * @param isVertical
-		 *            вертикально или горизотельно расположены надписи?
-		 * @param isInverted
-		 *            в порядке убывания или возрастания идут обозначения?
-		 * @param isNumbers
-		 *            обозначения цифры или буквы?
-		 */
-		public BoardAdorns(Composite parent, int n, boolean isVertical,
-				boolean isInverted, boolean isNumbers) {
-			super(parent, SWT.TRANSPARENT);
-
-			setBackgroundMode(SWT.INHERIT_DEFAULT);
-			
-			this.isInverted = isInverted;
-			this.isNumbers  = isNumbers;
-			this.isVertical = isVertical;
-
-			resize(n);
-		}
-
-		/**
-		 * Добавить к доске с новыми размерами номера горизонталей
-		 * или имена вертикалей (буквы).
-		 * 
-		 * @param n
-		 *            - новые размеры доски.
-		 */
-		public void resize(int n) {
-			clear(this);
-			
-			GridLayout layout = isVertical 
-					? new GridLayout(1, true)
-					: new GridLayout(n, true);
-					
-			layout.marginHeight = 0;
-			layout.marginWidth = 0;
-			layout.marginTop = 0;
-			layout.marginLeft = 0;
-			layout.marginRight = 0;
-			layout.marginBottom = 0;
-			layout.horizontalSpacing = 0;
-			layout.makeColumnsEqualWidth = true;
-			setLayout(layout);
-			
-			GridData data = new GridData(SWT.CENTER, SWT.CENTER, true, true);
-			data.widthHint = 20;
-
-			int style = SWT.CENTER | SWT.TRANSPARENT;
-
-			for (int k = 1; k <= n; k++) {
-				int start = this.isInverted ? n + 1 : 0;
-				int delta = this.isInverted ? -1 : 1;
-
-				int i = start + delta * k;
-				String text = ""
-						+ (this.isNumbers ? i : alphabet.substring(i - 1, i));
-
-				Label adorn = new Label(this, style);
-				adorn.setFont(font);
-				adorn.setText(text);
-				adorn.setBackground(null);
-				adorn.setLayoutData(data);
-			}
-			
-			layout();
-			update();
-			redraw();
-		}
-	}
-
-	/**
-	 * Пустое прозрачное поле.
-	 * 
-	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
-	 */
-	private static class EmptyAdorn extends Canvas {
-		public EmptyAdorn(Composite parent) {
-			super(parent, SWT.TRANSPARENT);
-			setLayout(new FillLayout(SWT.HORIZONTAL));
-		}
-	}
+	private GameBoard boardPanel;
+	private PieceBoxPanel topPieceBoxPanel;
+	private PieceBoxPanel bottomPieceBoxPanel;
 
 	private BoardAdorns top;
 	private BoardAdorns left;
@@ -143,20 +51,6 @@ public class AdornedBoard extends Canvas {
 	}
 
 	/**
-	 * Очистить составной элемент.
-	 * 
-	 * @param composite
-	 *            - очищаемый элемент.
-	 */
-	public void clear(Composite composite) {
-		Control[] children = composite.getChildren();
-		int length = children.length;
-		
-		for (int i = length - 1; i >= 0; i--)  
-			children[i].dispose();
-	}
-
-	/**
 	 * Встроить в доску с нумераций вертикалей и горизонталей доску с клетками
 	 * на доске. Для этих клеток будет выполняться нумерация.
 	 * 
@@ -164,22 +58,31 @@ public class AdornedBoard extends Canvas {
 	 *            - встраиваемая доска.
 	 */
 	public void insertSquares(GameBoard boardPanel) {
-		nV = boardPanel.board.nV;
-		nH = boardPanel.board.nH;
+		this.boardPanel = boardPanel;
+		Board board = boardPanel.board;
+
+		nV = board.nV;
+		nH = board.nH;
 		
 		font = ((nV > 8) || (nH > 8)) ? fontSmall : fontLarge;
-				
-		GridLayout layout = new GridLayout(2, false);
+
+		GridLayout layout = new GridLayout(1, false);
 		layout.verticalSpacing = 0;
 		layout.horizontalSpacing = 0;
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
 		setLayout(layout);
 
+		topPieceBoxPanel = new PieceBoxPanel(this);
+		topPieceBoxPanel.setVisible(false);
+
 		Canvas owner = new Canvas(this, SWT.BORDER);
 		owner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+
 		initMainPanel(owner, boardPanel);
+
+		bottomPieceBoxPanel = new PieceBoxPanel(this);
+		bottomPieceBoxPanel.setVisible(false);
 	}
 
 	/**
@@ -257,5 +160,175 @@ public class AdornedBoard extends Canvas {
 
 		top.resize(nV);
 		bottom.resize(nV);
+	}
+
+	/**
+	 * Показать на экрне содержимое ящиков с фигурами.
+     */
+	public void updatePieceBoxes() {
+		if (!(boardPanel.board instanceof BoardWithBoxes))
+			return;
+
+		BoardWithBoxes boardWithBoxes = (BoardWithBoxes) boardPanel.board;
+
+		topPieceBoxPanel.setPieceBox(boardWithBoxes.topBox);
+		bottomPieceBoxPanel.setPieceBox(boardWithBoxes.bottomBox);
+	}
+
+	/**
+	 * Очистить составной элемент.
+	 *
+	 * @param composite
+	 *            - очищаемый элемент.
+	 */
+	private void clear(Composite composite) {
+		Control[] children = composite.getChildren();
+		int length = children.length;
+
+		for (int i = length - 1; i >= 0; i--)
+			children[i].dispose();
+	}
+
+	/**
+	 * Панель для отображения содержимого ящика фигур.
+	 * @see game.core.BoardWithBoxes
+	 */
+	private class PieceBoxPanel extends Composite {
+		PieceBoxPanel(Composite parent) {
+			super(parent, SWT.BORDER);
+
+			GridLayout layout = new GridLayout(nV, true);
+			layout.marginHeight = 0;
+			setLayout(layout);
+		}
+
+		/**
+		 * Показать на экране фигуры в ящике фигур.
+		 * @param pieceBox ящик фигур.
+		 */
+		void setPieceBox(List<Piece> pieceBox) {
+			setBackgroundImage( boardPanel.getBackgroundImage() );
+
+			clear(this);
+			setVisible(true);
+
+            GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
+            setLayoutData(data);
+
+            pieceBox.forEach(p -> {
+                Button tool = new Button(this, SWT.TRANSPARENT);
+                Image pieceImage = boardPanel.getPieceImage(p, p.getColor());
+                Image pieceIcon = sizeImage(pieceImage, 40);
+                tool.setImage(pieceIcon);
+                tool.addSelectionListener(widgetSelectedAdapter(e -> boardPanel.listener.setPiece(p)));
+            });
+
+			layout();
+			update();
+			redraw();
+		}
+
+		private Image sizeImage(Image image, int size) {
+			return new Image(Display.getCurrent(), image.getImageData().scaledTo(size, size));
+		}
+	}
+
+	/**
+	 * Нумерация вертикалей и горизонталей доски.
+	 *
+	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+	 */
+	private class BoardAdorns extends Canvas {
+		private final boolean isInverted;
+		private final boolean isNumbers;
+		private final boolean isVertical;
+
+		/**
+		 * Поле с обозначениями для горизонталей и вертикалей (номер или буква)
+		 *
+		 * @param parent
+		 *            родительский управляющий элемент.
+		 * @param n
+		 *            сколько колонок или строк
+		 * @param isVertical
+		 *            вертикально или горизотельно расположены надписи?
+		 * @param isInverted
+		 *            в порядке убывания или возрастания идут обозначения?
+		 * @param isNumbers
+		 *            обозначения цифры или буквы?
+		 */
+		BoardAdorns(Composite parent, int n, boolean isVertical,
+					boolean isInverted, boolean isNumbers) {
+			super(parent, SWT.TRANSPARENT);
+
+			setBackgroundMode(SWT.INHERIT_DEFAULT);
+
+			this.isInverted = isInverted;
+			this.isNumbers  = isNumbers;
+			this.isVertical = isVertical;
+
+			resize(n);
+		}
+
+		/**
+		 * Добавить к доске с новыми размерами номера горизонталей
+		 * или имена вертикалей (буквы).
+		 *
+		 * @param n
+		 *            - новые размеры доски.
+		 */
+		void resize(int n) {
+			clear(this);
+
+			GridLayout layout = isVertical
+					? new GridLayout(1, true)
+					: new GridLayout(n, true);
+
+			layout.marginHeight = 0;
+			layout.marginWidth = 0;
+			layout.marginTop = 0;
+			layout.marginLeft = 0;
+			layout.marginRight = 0;
+			layout.marginBottom = 0;
+			layout.horizontalSpacing = 0;
+			layout.makeColumnsEqualWidth = true;
+			setLayout(layout);
+
+			GridData data = new GridData(SWT.CENTER, SWT.CENTER, true, true);
+			data.widthHint = 20;
+
+			int style = SWT.CENTER | SWT.TRANSPARENT;
+
+			for (int k = 1; k <= n; k++) {
+				int start = this.isInverted ? n + 1 : 0;
+				int delta = this.isInverted ? -1 : 1;
+
+				int i = start + delta * k;
+				String text = ""
+						+ (this.isNumbers ? i : alphabet.substring(i - 1, i));
+
+				Label adorn = new Label(this, style);
+				adorn.setFont(font);
+				adorn.setText(text);
+				adorn.setBackground(null);
+				adorn.setLayoutData(data);
+			}
+
+			layout();
+			update();
+			redraw();
+		}
+	}
+
+	/**
+	 * Пустое прозрачное поле.
+	 *
+	 * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
+	 */
+	private static class EmptyAdorn extends Canvas {
+		EmptyAdorn(Composite parent) {
+			super(parent, SWT.TRANSPARENT);
+			setLayout(new FillLayout(SWT.HORIZONTAL));
+		}
 	}
 }

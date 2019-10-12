@@ -20,14 +20,17 @@ public class Piece {
 	 */
 	public Square square;
 	
+    public Piece() {
+    }
+
 	public Piece(Square square, PieceColor color) {
 		this.square = square;
 		this.color = color;
-		
+
 		square.setPiece(this);
 	}
-	
-	/**
+
+    /**
 	 * @return вернуть цвет фигуры.
 	 */
 	public PieceColor getColor() {

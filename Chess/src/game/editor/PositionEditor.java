@@ -1,92 +1,70 @@
 package game.editor;
 
-import chess.ui.ChessBoardPanel;
-import game.core.Board;
-import game.core.Game;
-import game.core.Piece;
-import game.core.PieceColor;
-import game.ui.AdornedBoard;
+import game.core.*;
+import game.ui.GameBoard;
 import game.ui.GamePanel;
-import game.ui.MovesJornal;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-
-import java.util.List;
 
 /**
  * Редактор начальных позиций игр.
  */
-public class PositionEditor extends Composite {
-    private final Game game;
+public class PositionEditor {
     private final Board board;
+    private final GameBoard boardPanel;
 
-    /**
-     * Экземпляры белых фигур.
-     */
-    private final List<Piece> whitePieces;
+    public PositionEditor(GamePanel gamePanel) {
+        boardPanel = gamePanel.gameBoard;
 
-    /**
-     * Экземпляры черных фигур.
-     */
-    private final List<Piece> blackPieces;
-
-    private final GamePanel gamePanel;
-    private final Composite boardParent;
-
-    public PositionEditor(Composite parent, GamePanel gamePanel) {
-        super(parent, SWT.NONE);
-        this.gamePanel = gamePanel;
-
-        game = gamePanel.game;
-
+        Game game = gamePanel.game;
         board = game.board;
-        whitePieces = game.getPieces(PieceColor.WHITE);
-        blackPieces = game.getPieces(PieceColor.BLACK);
 
-        FillLayout layout = new FillLayout(SWT.VERTICAL);
-        layout.spacing = 5;
-        setLayout(layout);
+        // Создаем для редактора доску с ящиками для фигур.
+        // В ящиках фигуры подготовленные для расстановки на доске.
+        BoardWithBoxes editorBoard = new BoardWithBoxes();
+        editorBoard.reset(game.board.nV, game.board.nV);
+        editorBoard.topBox = game.getPieces(PieceColor.BLACK);
+        editorBoard.bottomBox = game.getPieces(PieceColor.WHITE);
+        game.board = editorBoard;
+        gamePanel.gameBoard.board = editorBoard;
 
-        boardParent = gamePanel.adorned.getParent();
-//        addBoardAndHistory(this, game);
+        // Задаем слушателя нажатий мыши на клетки доски.
+        boardPanel.listener = new EditorListener();
 
-        new PieceBoxes(this, game);
-    }
-
-    private Composite addBoardAndHistory(Composite parent, Game game) {
-        Composite container = new Composite(this, SWT.NONE);
-//        container.setLayout(new GridLayout(2, false));
-
-//        AdornedBoard adornedBoard = gamePanel.adorned;
-//        adornedBoard.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-//        adornedBoard.insertSquares(gameBoard);
-//
-//        MovesJornal jornal = new MovesJornal(container, board.history);
-//        jornal.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
-
-        return container;
+        // Показываем фигуры в панели инструментов редактора.
+        gamePanel.adorned.updatePieceBoxes();
     }
 
     /**
-     * Ящик с фигурами для расстановки их на доске.
+     * Слушатель нажатий мыши на клетки доски.
      */
-    class PieceBoxes extends Composite {
-        public PieceBoxes(Composite parent, Game game) {
-            super(parent, SWT.BORDER);
-            setLayout(new GridLayout(1, true));
+    private class EditorListener implements game.ui.listeners.IGameListner {
+        /**
+         * Фигура выбранная в панели инструментов редактора позиции.
+         */
+        private Piece piece;
 
-            List<Piece> whites = game.getPieces(PieceColor.WHITE);
-            for (Piece piece: whites) {
-                Image pieceImage = gamePanel.gameBoard.getPieceImage(piece, piece.getColor());
+        /**
+         * Задать фигуру для слушателя.
+         * @param p - фигура.
+         */
+        @Override
+        public void setPiece(Piece p) {
+            piece = p;
 
-                Button button = new Button(boardParent, SWT.PUSH);
-                button.setImage(pieceImage);
-            }
+            // Зададим изображение курсора такое как избражение у фигуры.
+            boardPanel.pieceToCursor(piece);
+
+            // Пусть слушатели изменений на доске
+            // нарисуют новое состояние доски.
+            board.setBoardChanged();
+            boardPanel.redraw();
+        }
+
+        @Override
+        public void mouseDown(Square s, int button) {
+        }
+
+        @Override
+        public void mouseUp(Square s, int button) {
         }
     }
 }
