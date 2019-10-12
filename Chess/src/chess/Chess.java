@@ -21,6 +21,25 @@ public class Chess extends Game {
 	static {
 		addPlayer(Chess.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(Chess.class, new Neznaika());
+
+		addPieces();
+	}
+
+	static
+	protected  void addPieces() {
+		addPiece(PieceColor.WHITE, new Pawn());
+		addPiece(PieceColor.WHITE, new Rook());
+		addPiece(PieceColor.WHITE, new Knight());
+		addPiece(PieceColor.WHITE, new Bishop());
+		addPiece(PieceColor.WHITE, new Queen());
+		addPiece(PieceColor.WHITE, new King());
+
+		addPiece(PieceColor.BLACK, new Pawn());
+		addPiece(PieceColor.BLACK, new Rook());
+		addPiece(PieceColor.BLACK, new Knight());
+		addPiece(PieceColor.BLACK, new Bishop());
+		addPiece(PieceColor.BLACK, new Queen());
+		addPiece(PieceColor.BLACK, new King());
 	}
 
 	/**

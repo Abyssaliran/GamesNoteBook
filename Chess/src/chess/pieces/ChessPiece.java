@@ -15,7 +15,11 @@ public class ChessPiece extends Piece {
 		super(square, color);
 	}
 
-	@Override
+    public ChessPiece() {
+        super();
+    }
+
+    @Override
 	public boolean isCorrectMove(Square... squares) {
 		Square target = squares[0];
 		

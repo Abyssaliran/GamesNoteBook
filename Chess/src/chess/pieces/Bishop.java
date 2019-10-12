@@ -16,7 +16,11 @@ public class Bishop extends ChessPiece {
 		super(square, color);
 	}
 
-	@Override
+    public Bishop() {
+
+    }
+
+    @Override
 	public boolean isCorrectMove(Square... squares) {
 		// Пока используем только умалчиваемую проверку
 		// выполняемую в базовом классе.

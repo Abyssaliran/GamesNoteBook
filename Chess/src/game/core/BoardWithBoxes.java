@@ -15,10 +15,10 @@ public class BoardWithBoxes extends Board {
     /**
      * Верхний ящик фигур.
      */
-    protected List<Piece> topBox = new ArrayList<>();
+    public List<Piece> topBox = new ArrayList<>();
 
     /**
      * Нижний ящик фигур.
      */
-    protected List<Piece> bottomBox = new ArrayList<>();
+    public List<Piece> bottomBox = new ArrayList<>();
 }

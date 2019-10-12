@@ -19,7 +19,11 @@ public class King extends ChessPiece {
 		super(square, color);
 	}
 
-	@Override
+    public King() {
+
+    }
+
+    @Override
 	public boolean isCorrectMove(Square... squares) {
 		// Пока используем только умалчиваемую проверку
 		// выполняемую в базовом классе.

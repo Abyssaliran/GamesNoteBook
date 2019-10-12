@@ -22,7 +22,11 @@ public class Pawn extends ChessPiece {
 		super(square, color);
 	}
 	private boolean flgMakeDoubleMove;
-	
+
+	public Pawn() {
+		super();
+	}
+
 	public Square GetEnemyPieceForEnPassantMove(Square source, Square target)
 	{
 		int dv = Math.abs(target.v - source.v);
