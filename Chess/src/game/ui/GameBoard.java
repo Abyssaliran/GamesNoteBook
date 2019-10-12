@@ -63,7 +63,7 @@ public class GameBoard extends Canvas
 	/**
 	 * Доска с фигурами для игры отрисовываемая на этой панели.
 	 */
-	public final Board board;
+	public Board board;
 
 
 	/**

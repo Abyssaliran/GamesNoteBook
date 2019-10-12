@@ -21,11 +21,31 @@ import game.core.Game;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class GamePanel extends Composite {
-	protected GameControlPanel control;
-	protected AdornedBoard adorned;
-	protected MovesJornal jornal;
-	
+	/**
+	 * Игра которая отображается на доске.
+	 */
 	public Game game;
+
+	/**
+	 * Панель для управления игрой:
+	 * выбор патрнеров, размера доски, показ текущего счета.
+	 */
+	public GameControlPanel control;
+
+	/**
+	 * Журнал с записанными ходами партии.
+	 */
+	public MovesJornal jornal;
+
+	/**
+	 * Доска без нумерации вертикалей и горизонталей.
+	 */
+	public GameBoard gameBoard;
+
+	/**
+	 * Доска с нумерацией вертикалей и горизонталей.
+	 */
+	public AdornedBoard adorned;
 
 	public GamePanel(Composite parent, Game game) {
 		super(parent, SWT.TRANSPARENT);
@@ -56,7 +76,8 @@ public class GamePanel extends Composite {
 	 * @param gameBoard
 	 *            - вставляемая доска с клетками.
 	 */
-	protected void insertSquares(GameBoard gameBoard) {
+	public void insertSquares(GameBoard gameBoard) {
+		this.gameBoard = gameBoard;
 		adorned.insertSquares(gameBoard);
 		
 		jornal = new MovesJornal(this, gameBoard.board.history);
