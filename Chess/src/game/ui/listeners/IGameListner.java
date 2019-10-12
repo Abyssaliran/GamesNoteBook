@@ -1,5 +1,6 @@
 package game.ui.listeners;
 
+import game.core.Piece;
 import game.core.Square;
 
 /**
@@ -32,4 +33,11 @@ public interface IGameListner {
 	 * @param button - номер кнопки.
 	 */
 	void mouseUp(Square s, int button);
+
+	/**
+	 * Задать фигуру для слушателя нажатий мыши на клетки доски.
+	 * @param p - фигура.
+	 */
+    default void setPiece(Piece p) {
+	}
 }

@@ -3,21 +3,18 @@ package game.ui;
 import game.core.Board;
 import game.core.BoardWithBoxes;
 import game.core.Piece;
+import game.ui.images.GameImages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-
-import game.ui.images.GameImages;
+import org.eclipse.swt.widgets.*;
 
 import java.util.List;
+
+import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
 
 /**
  * Доска с обозначениями для горизонталей и вертикалей (номер или буква).
@@ -167,7 +164,7 @@ public class AdornedBoard extends Canvas {
 
 	/**
 	 * Показать на экрне содержимое ящиков с фигурами.
-	 */
+     */
 	public void updatePieceBoxes() {
 		if (!(boardPanel.board instanceof BoardWithBoxes))
 			return;
@@ -210,30 +207,30 @@ public class AdornedBoard extends Canvas {
 		 * @param pieceBox ящик фигур.
 		 */
 		void setPieceBox(List<Piece> pieceBox) {
-			clear(this);
-
-			setVisible(true);
-
-			GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
-			setLayoutData(data);
 			setBackgroundImage( boardPanel.getBackgroundImage() );
 
-			pieceBox.forEach(p -> {
-				Label label = new Label(this, SWT.NONE);
-				Image pieceImage = boardPanel.getPieceImage(p, p.getColor());
-				Image pieceIcon = smallIcon(pieceImage, 40);
-				label.setImage(pieceIcon);
-			});
+			clear(this);
+			setVisible(true);
+
+            GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
+            setLayoutData(data);
+
+            pieceBox.forEach(p -> {
+                Button tool = new Button(this, SWT.TRANSPARENT);
+                Image pieceImage = boardPanel.getPieceImage(p, p.getColor());
+                Image pieceIcon = sizeImage(pieceImage, 40);
+                tool.setImage(pieceIcon);
+                tool.addSelectionListener(widgetSelectedAdapter(e -> boardPanel.listener.setPiece(p)));
+            });
 
 			layout();
 			update();
 			redraw();
 		}
 
-		private Image smallIcon(Image image, int size) {
+		private Image sizeImage(Image image, int size) {
 			return new Image(Display.getCurrent(), image.getImageData().scaledTo(size, size));
 		}
-
 	}
 
 	/**

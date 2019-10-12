@@ -505,7 +505,7 @@ public class GameBoard extends Canvas
 	/**
 	 * Слушатель нажатий кнопок мыши над клетками доски.
 	 */
-	protected IGameListner listener = IGameListner.EMPTY;
+	public IGameListner listener = IGameListner.EMPTY;
 	
 	@Override
 	public void mouseDown(MouseEvent e) {

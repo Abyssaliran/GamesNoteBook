@@ -1,43 +1,70 @@
 package game.editor;
 
 import game.core.*;
-import game.ui.AdornedBoard;
 import game.ui.GameBoard;
 import game.ui.GamePanel;
-
-import java.util.List;
 
 /**
  * Редактор начальных позиций игр.
  */
 public class PositionEditor {
-    private final Game game;
     private final Board board;
-
-    /**
-     * Экземпляры белых фигур.
-     */
-//    private final List<Piece> whitePieces;
-
-    /**
-     * Экземпляры черных фигур.
-     */
-//    private final List<Piece> blackPieces;
+    private final GameBoard boardPanel;
 
     public PositionEditor(GamePanel gamePanel) {
-        game = gamePanel.game;
+        boardPanel = gamePanel.gameBoard;
+
+        Game game = gamePanel.game;
         board = game.board;
 
-        // Создаем доску с ящиками для фигур.
+        // Создаем для редактора доску с ящиками для фигур.
         // В ящиках фигуры подготовленные для расстановки на доске.
-        BoardWithBoxes boardForEdit = new BoardWithBoxes();
-        boardForEdit.topBox = game.getPieces(PieceColor.BLACK);
-        boardForEdit.bottomBox = game.getPieces(PieceColor.WHITE);
-        boardForEdit.reset(game.board.nV, game.board.nV);
-        game.board = boardForEdit;
+        BoardWithBoxes editorBoard = new BoardWithBoxes();
+        editorBoard.reset(game.board.nV, game.board.nV);
+        editorBoard.topBox = game.getPieces(PieceColor.BLACK);
+        editorBoard.bottomBox = game.getPieces(PieceColor.WHITE);
+        game.board = editorBoard;
+        gamePanel.gameBoard.board = editorBoard;
 
-        AdornedBoard adorned = gamePanel.adorned;
-        gamePanel.gameBoard.board = boardForEdit;
-        adorned.updatePieceBoxes();
+        // Задаем слушателя нажатий мыши на клетки доски.
+        boardPanel.listener = new EditorListener();
+
+        // Показываем фигуры в панели инструментов редактора.
+        gamePanel.adorned.updatePieceBoxes();
+    }
+
+    /**
+     * Слушатель нажатий мыши на клетки доски.
+     */
+    private class EditorListener implements game.ui.listeners.IGameListner {
+        /**
+         * Фигура выбранная в панели инструментов редактора позиции.
+         */
+        private Piece piece;
+
+        /**
+         * Задать фигуру для слушателя.
+         * @param p - фигура.
+         */
+        @Override
+        public void setPiece(Piece p) {
+            piece = p;
+
+            // Зададим изображение курсора такое как избражение у фигуры.
+            boardPanel.pieceToCursor(piece);
+
+            // Пусть слушатели изменений на доске
+            // нарисуют новое состояние доски.
+            board.setBoardChanged();
+            boardPanel.redraw();
+        }
+
+        @Override
+        public void mouseDown(Square s, int button) {
+        }
+
+        @Override
+        public void mouseUp(Square s, int button) {
+        }
     }
 }
