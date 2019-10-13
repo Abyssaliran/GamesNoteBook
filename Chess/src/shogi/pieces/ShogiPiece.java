@@ -1,8 +1,11 @@
 package shogi.pieces;
 
+import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import shogi.moves.Capture;
+import shogi.moves.SimpleMove;
 
 abstract
 public class ShogiPiece extends Piece {
@@ -19,10 +22,17 @@ public class ShogiPiece extends Piece {
 		if (target.isEmpty()) 
 			return true;
 		
-		return false;
-		
-//		// Если идем на клетку, занятую фигурой 
-//		// того же цвета, то ход не корректен.
-//		return getColor() != target.getPiece().getColor();
+		// Если идем на клетку, занятую фигурой 
+		// того же цвета, то ход не корректен.
+		return getColor() != target.getPiece().getColor();
+	}
+
+	@Override
+	public Move makeMove(Square... squares) {
+		Square source = squares[0];
+		Square target = squares[1];
+
+		return target.isEmpty() ? new SimpleMove(this, source, target)
+				                : new Capture(squares);
 	}
 }

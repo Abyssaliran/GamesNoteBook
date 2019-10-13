@@ -3,6 +3,8 @@ package game.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.players.IPlayer;
+
 /**
  * Доска для ящиками для фигур. Может использоваться для:
  * <ul>
@@ -21,4 +23,13 @@ public class BoardWithBoxes extends Board {
      * Нижний ящик фигур.
      */
     public List<Piece> bottomBox = new ArrayList<>();
+    
+    @Override
+	public void startGame() {
+		topBox.clear();
+		bottomBox.clear();
+		setBoardChanged();
+		
+		super.startGame();
+	}
 }

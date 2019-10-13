@@ -1,9 +1,7 @@
 package shogi.pieces;
 
-import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
-import shogi.moves.SimpleMove;
 
 public class King extends ShogiPiece {
 	public King(Square square, PieceColor color) {
@@ -18,14 +16,6 @@ public class King extends ShogiPiece {
 			return false;
 		
 		return true;
-	}
-
-	@Override
-	public Move makeMove(Square... squares) {
-		Square source = squares[0];
-		Square target = squares[1];
-
-		return new SimpleMove(this, source, target);
 	}
 	
 	@Override

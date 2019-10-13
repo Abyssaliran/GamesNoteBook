@@ -1,12 +1,7 @@
 package shogi.moves;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import checkers.pieces.King;
 import game.core.GameOver;
 import game.core.Piece;
-import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.ITransferMove;
 

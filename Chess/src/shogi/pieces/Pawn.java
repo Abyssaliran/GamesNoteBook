@@ -30,6 +30,6 @@ public class Pawn extends ShogiPiece {
 	
 	@Override
 	public String toString() {
-		return "S";
+		return "P";
 	}
 }

@@ -1,29 +1,36 @@
 package game.ui;
 
-import game.core.Board;
-import game.core.BoardWithBoxes;
-import game.core.Piece;
-import game.ui.images.GameImages;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 
-import java.util.List;
-
-import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
+import game.core.Board;
+import game.core.BoardWithBoxes;
+import game.core.Piece;
+import game.ui.images.GameImages;
 
 /**
  * Доска с обозначениями для горизонталей и вертикалей (номер или буква).
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-public class AdornedBoard extends Canvas {
-	private static final Font fontSmall = new Font(Display.getCurrent(), "mono", 10,	SWT.BOLD);
-	private static final Font fontLarge = new Font(Display.getCurrent(), "mono", 12,	SWT.BOLD);
+public class AdornedBoard extends Canvas implements Observer {
+	private static final Font fontSmall = new Font(Display.getCurrent(), "mono", 10, SWT.BOLD);
+	private static final Font fontLarge = new Font(Display.getCurrent(), "mono", 12, SWT.BOLD);
 
 	private static Font font = fontSmall;
 
@@ -83,6 +90,8 @@ public class AdornedBoard extends Canvas {
 
 		bottomPieceBoxPanel = new PieceBoxPanel(this);
 		bottomPieceBoxPanel.setVisible(false);
+
+		board.addObserver(this);
 	}
 
 	/**
@@ -176,6 +185,14 @@ public class AdornedBoard extends Canvas {
 	}
 
 	/**
+	 * Обновилось доска (и возможно ящики фигур).
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		updatePieceBoxes();
+	}
+
+	/**
 	 * Очистить составной элемент.
 	 *
 	 * @param composite
@@ -194,12 +211,24 @@ public class AdornedBoard extends Canvas {
 	 * @see game.core.BoardWithBoxes
 	 */
 	private class PieceBoxPanel extends Composite {
+		int pieceSize = 30;
+
 		PieceBoxPanel(Composite parent) {
 			super(parent, SWT.BORDER);
 
 			GridLayout layout = new GridLayout(nV, true);
 			layout.marginHeight = 0;
+			layout.verticalSpacing = 0;
+			layout.horizontalSpacing = 0;
 			setLayout(layout);
+			
+	        GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
+	        if (boardPanel.board instanceof BoardWithBoxes)
+	        	data.heightHint = pieceSize;
+            setLayoutData(data);
+
+	        Label empty = new Label(this, SWT.BORDER);
+			empty.setText("_");
 		}
 
 		/**
@@ -213,14 +242,24 @@ public class AdornedBoard extends Canvas {
 			setVisible(true);
 
             GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
+			data.heightHint = pieceSize + (pieceBox.size() / nV)* pieceSize;
+			data.verticalIndent = 0;
+			data.horizontalIndent = 0;
+			data.verticalSpan = 0;
             setLayoutData(data);
 
             pieceBox.forEach(p -> {
-                Button tool = new Button(this, SWT.TRANSPARENT);
                 Image pieceImage = boardPanel.getPieceImage(p, p.getColor());
-                Image pieceIcon = sizeImage(pieceImage, 40);
-                tool.setImage(pieceIcon);
-                tool.addSelectionListener(widgetSelectedAdapter(e -> boardPanel.listener.setPiece(p)));
+                Image pieceIcon = sizeImage(pieceImage, pieceSize);
+
+            	Canvas canvas = new Canvas(this, SWT.TRANSPARENT);
+            	canvas.addPaintListener (e -> e.gc.drawImage (pieceIcon, 0, 0));
+            	canvas.addMouseListener(new MouseAdapter() {
+            		@Override
+            		public void mouseUp(MouseEvent e) {
+            			boardPanel.listener.setPiece(p);
+            		}
+            	});
             });
 
 			layout();
