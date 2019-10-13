@@ -1,5 +1,13 @@
 package notebook;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+
 import backgammon.ui.BackgammonGamePanel;
 import backgammon.ui.images.BackgammonImages;
 import checkers.ui.CheckersGamePanel;
@@ -17,16 +25,11 @@ import go.ui.images.GoImages;
 import halma.ui.HalmaGamePanel;
 import halma.ui.images.HalmaImages;
 import notebook.ui.images.NotebookImages;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import reversi.Reversi;
 import reversi.ui.ReversiGamePanel;
 import reversi.ui.images.ReversiImages;
+import shogi.ui.ShogiGamePanel;
+import shogi.ui.images.ShogiImages;
 import tamerlan.TamerlanChess;
 import tamerlan.ui.TamerlanChessGamePanel;
 import tamerlan.ui.images.TamerlanChessImages;
@@ -55,17 +58,18 @@ public class GamesNotebook {
 
 		TabFolder mainFolder = new TabFolder(shell, SWT.BOTTOM);
 
-		TabFolder toolsFolder = new TabFolder(mainFolder, SWT.TOP);
-		TabItem toolsItem = new TabItem(mainFolder, SWT.NONE);
-		toolsItem.setControl(toolsFolder);
-		toolsItem.setText("Инструменты");
-
 		TabFolder gamesFolder = new TabFolder(mainFolder, SWT.TOP);
 		TabItem gamesItem = new TabItem(mainFolder, SWT.NONE);
 		gamesItem.setControl(gamesFolder);
 		gamesItem.setText("Игры");
 
+		TabFolder toolsFolder = new TabFolder(mainFolder, SWT.TOP);
+		TabItem toolsItem = new TabItem(mainFolder, SWT.NONE);
+		toolsItem.setControl(toolsFolder);
+		toolsItem.setText("Инструменты");
+		
 		// Добавление вкладок - игр.
+		addShogiTab(gamesFolder);
 		addBackgammonTab(gamesFolder);
 		addChessTab(gamesFolder);
 		addCheckersTab(gamesFolder);
@@ -118,6 +122,13 @@ public class GamesNotebook {
 		tabItem.setControl( new GameDBPanel(folder) );
 		tabItem.setImage(smallIcon(GameDBImages.icoGameDB));
 		tabItem.setText("База игр");
+	}
+
+	private static void addShogiTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new ShogiGamePanel(folder) );
+		tabItem.setImage(smallIcon(ShogiImages.icoShogi));
+		tabItem.setText("Сеги");
 	}
 
 	private static void addBackgammonTab(TabFolder folder) {

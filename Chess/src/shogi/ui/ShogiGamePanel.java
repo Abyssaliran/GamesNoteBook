@@ -1,0 +1,111 @@
+package shogi.ui;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
+
+import game.core.Game;
+import game.core.Piece;
+import game.core.PieceColor;
+import game.ui.GamePanel;
+import game.ui.WoodBoard;
+import game.ui.images.GameImages;
+import game.ui.listeners.MovePieceListener;
+import shogi.Shogi;
+import shogi.pieces.Bishop;
+import shogi.pieces.GeneralGold;
+import shogi.pieces.GeneralSilver;
+import shogi.pieces.King;
+import shogi.pieces.Knight;
+import shogi.pieces.Lance;
+import shogi.pieces.Pawn;
+import shogi.pieces.Rook;
+import shogi.ui.images.ShogiImages;
+
+/**
+ * Панель для игры в японские шахматы.
+ */
+public class ShogiGamePanel extends GamePanel {
+	public ShogiGamePanel(Composite parent) {
+		super(parent, new Shogi());
+		
+		insertSquares( new ShogiBoardPanel(this, game) );
+		
+	    adorned.updatePieceBoxes();
+	}
+}
+
+/**
+ * Панель для доски японские шахмат.
+ *
+ */
+class ShogiBoardPanel extends WoodBoard {
+
+    private static final Map<PieceColor, Map<Class<? extends Piece>, Image>> pieceImages;
+
+	static {
+        Map<Class<? extends Piece>, Image> whites = new HashMap<>();
+        Map<Class<? extends Piece>, Image> blacks = new HashMap<>();
+
+		pieceImages = new HashMap<>();
+		pieceImages.put(PieceColor.WHITE, whites);
+		pieceImages.put(PieceColor.BLACK, blacks);
+
+		// Инициализируем карту изображений белых фигур.
+		//
+		whites.put(King.class,          ShogiImages.wKing);
+		whites.put(GeneralGold.class,   ShogiImages.wGeneralGold);
+		whites.put(GeneralSilver.class, ShogiImages.wGeneralSilver);
+		whites.put(Knight.class,        ShogiImages.wKnight);
+		whites.put(Lance.class,         ShogiImages.wLance);
+		whites.put(Rook.class,          ShogiImages.wRook);
+		whites.put(Bishop.class,        ShogiImages.wBishop);
+		whites.put(Pawn.class,          ShogiImages.wPawn);
+		
+		// Инициализируем карту изображений черных фигур.
+		//
+		blacks.put(King.class,          ShogiImages.bKing);
+		blacks.put(GeneralGold.class,   ShogiImages.bGeneralGold);
+		blacks.put(GeneralSilver.class, ShogiImages.bGeneralSilver);
+		blacks.put(Knight.class,        ShogiImages.bKnight);
+		blacks.put(Lance.class,         ShogiImages.bLance);
+		blacks.put(Rook.class,          ShogiImages.bRook);
+		blacks.put(Bishop.class,        ShogiImages.bBishop);
+		blacks.put(Pawn.class,          ShogiImages.bPawn);
+	}
+		
+	public ShogiBoardPanel(Composite composite, Game game) {
+		super(composite, game.board, GameImages.woodDark);
+		
+		listener = new MovePieceListener(this);
+		
+		setPromptColor( new Color(null, 0, 100, 0));
+	}
+	
+	protected void drawPiece(GC gc, int v, int h, int squareWidth, int squareHeight) {
+		Piece piece = board.getSquare(v, h).getPiece();
+		if (piece == null) return;
+
+		
+		int x = v * squareWidth;
+		int y = h * squareHeight;
+		
+		Image image = getPieceImage(piece, piece.getColor());
+		Rectangle bounds = image.getBounds();
+		gc.drawImage(image, 
+				0, 0, bounds.width, bounds.height, 
+				x, y, squareWidth, squareHeight);
+	}
+
+	@Override
+	public Image getPieceImage(Piece piece, PieceColor color) {
+		return pieceImages
+				.get(color)
+				.get(piece.getClass());
+	}
+}
