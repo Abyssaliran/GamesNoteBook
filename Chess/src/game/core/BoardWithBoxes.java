@@ -3,8 +3,6 @@ package game.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import game.players.IPlayer;
-
 /**
  * Доска для ящиками для фигур. Может использоваться для:
  * <ul>
