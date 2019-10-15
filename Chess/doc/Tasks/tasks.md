@@ -72,3 +72,8 @@
 
 + Матошенко Василий
 - Ветки: *audio*
+
+## 12. Прорыв
++ [Правила](https://www.chessprogramming.org/Breakthrough_(Game))
++ Участники: Гаца Павел
+- Ветки: **break**
