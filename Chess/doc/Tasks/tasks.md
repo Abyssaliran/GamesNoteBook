@@ -77,3 +77,8 @@
 + [Правила](https://www.chessprogramming.org/Breakthrough_(Game))
 + Участники: Гаца Павел
 - Ветки: **break**
+
+## 13. Шахматы Фишера
+ + [Правила](https://www.chessprogramming.org/Chess960)
+ + Довлет Киржинов
+ - Ветка: *fisher*
