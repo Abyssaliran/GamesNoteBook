@@ -71,7 +71,7 @@
 ## 11. Аудиоплейер
 
 + Матошенко Василий
-- Ветки: *audio*
+- Ветки: **audio**
 
 ## 12. Прорыв
 + [Правила](https://www.chessprogramming.org/Breakthrough_(Game))
@@ -81,4 +81,4 @@
 ## 13. Шахматы Фишера
  + [Правила](https://www.chessprogramming.org/Chess960)
  + Довлет Киржинов
- - Ветка: *fisher*
+ - Ветка: **fisher**
