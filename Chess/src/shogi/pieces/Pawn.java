@@ -28,6 +28,8 @@ public class Pawn extends ShogiPiece {
 		return new SimpleMove(this, source, target);
 	}
 	
+	//test push
+	
 	@Override
 	public String toString() {
 		return "P";
