@@ -17,7 +17,7 @@ public class GeneralGold extends ShogiPiece {
 		
 		return true;
 	}
-
+// test
 	@Override
 	public String toString() {
 		return "G";
