@@ -17,6 +17,7 @@ public class GeneralSilver extends ShogiPiece {
 		
 		return true;
 	}
+	//testik
 
 	@Override
 	public String toString() {

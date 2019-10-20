@@ -15,9 +15,19 @@ public class GeneralGold extends ShogiPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		Square source = square;
+		Square target = squares[0];
+		
+		int dh = isWhite() ? source.h - target.h : target.h - source.h;
+		int dv = Math.abs(source.v-target.v);
+		
+		if (Math.abs(dh) > 1 || dv > 1 || (dh < 0 && dv == 1)) {
+			return false;
+		}
+		
 		return true;
 	}
-
+// test
 	@Override
 	public String toString() {
 		return "G";

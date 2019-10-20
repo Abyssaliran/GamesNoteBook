@@ -15,7 +15,16 @@ public class Lance extends ShogiPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		Square target = squares[0];
+		Square source = square;
+		
+		int dh = isWhite() ? source.h - target.h : target.h - source.h;
+		
+		if (square.isEmptyVertical(target) && dh > 0) {
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override

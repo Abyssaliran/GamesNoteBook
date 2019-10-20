@@ -14,8 +14,14 @@ public class Knight extends ShogiPiece {
 		// выполняемую в базовом классе.
 		if (!super.isCorrectMove(squares))
 			return false;
+		//реализован ход конём только вперёд
+		Square target = squares[0];
 		
-		return true;
+		int dh = (-1)*(target .h - square.h);
+		int dv = Math.abs(target .v - square.v);
+
+		return (dh == 2 && dv == 1);
+	
 	}
 
 	@Override

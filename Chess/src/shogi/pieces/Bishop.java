@@ -13,8 +13,10 @@ public class Bishop extends ShogiPiece {
 		// выполняемую в базовом классе.
 		if (!super.isCorrectMove(squares))
 			return false;
+		//реализовано движение слона по диагонали в любую сторону
+		Square target = squares[0];
+		return square.isEmptyDiagonal(target);
 		
-		return true;
 	}
 
 	@Override

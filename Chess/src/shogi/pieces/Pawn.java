@@ -17,6 +17,16 @@ public class Pawn extends ShogiPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
+		Square source = square;
+		Square target = squares[0];
+		
+		int dh = isWhite() ? source.h - target.h : target.h - source.h;
+		int dv = Math.abs(source.v-target.v);
+		
+		if (!(dv == 0 && dh == 1)) {
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -27,6 +37,8 @@ public class Pawn extends ShogiPiece {
 
 		return new SimpleMove(this, source, target);
 	}
+	
+	//test push
 	
 	@Override
 	public String toString() {
