@@ -1,6 +1,7 @@
 package tools.db;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
@@ -15,16 +16,26 @@ public class ConsoleDBStart {
 		log.info("ConsoleDBStart start");
 				
 		String ROOT = new File(".").getAbsolutePath();
-		
-		//dbHtmlReportDemo();
 		log.info("Current dir: " + ROOT);
 		
+		createTable();
+//		dbHtmlReportDemo();
+		
+//		try {
+//			PGNLoader.writePGNtoDb(new File("./src/game/db/resource/Alekhine.pgn"));
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+		log.info("ConsoleDBStart end");
+	}
+
+	private static void createTable() {
 		try {
-			PGNLoader.writePGNtoDb(new File("./src/game/db/resource/Alekhine.pgn"));
-		} catch (SQLException e) {
+			PGNLoader.createTable();
+		} catch (SQLException | FileNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		log.info("ConsoleDBStart end");
 	}
 	
 	static void dbHtmlReportDemo() {
