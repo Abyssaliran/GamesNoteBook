@@ -33,7 +33,6 @@ public class ConsoleDBStart {
 		try {
 			PGNLoader.createTable();
 		} catch (SQLException | FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

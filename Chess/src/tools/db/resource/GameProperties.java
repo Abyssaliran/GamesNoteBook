@@ -46,12 +46,13 @@ public class GameProperties extends TreeMap<String, String> {
 		StringWriter ss = new StringWriter();
 		PrintWriter w = new PrintWriter(ss);
 
+		w.format("DROP TABLE IF EXISTS %s; %n", tableName);
 		w.format("CREATE TABLE %s ( %n", tableName);
     	
     	Arrays.stream(MAIN_PROPERTIS)
     	      .forEach(e -> w.format(" %s VARCHAR(50) NOT NULL, %n", e));
     	
-    	w.format(" moves LONGVARCHAR NULL %n)");
+    	w.format(" moves VARCHAR(50) NOT NULL %n)");
     	
     	return ss.toString();
     }

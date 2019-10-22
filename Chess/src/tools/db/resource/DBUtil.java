@@ -13,16 +13,16 @@ import java.util.Locale;
 public class DBUtil {
 
 	public static Connection getConnection() throws SQLException {
-//		Connection con = getConnectionH2();
-		Connection con = getConnectionHSQLDB();
-		con.setAutoCommit(true);
-		
+		Connection con = getConnectionH2();
+//		Connection con = getConnectionHSQLDB();
+//		con.setAutoCommit(true);
+
 		return con;
 	}
 
 	public static Connection getConnectionH2() throws SQLException {
 		String drv = "org.h2.Driver";
-		String url = "jdbc:h2:~/test";
+		String url = "jdbc:h2:GamesH2";
 		String uid = "sa";
 		String pwd = "";
 		try {
@@ -32,13 +32,13 @@ public class DBUtil {
 			return null;
 		}
 		return DriverManager.getConnection(url, uid, pwd);
-//		return DriverManager.getConnection("jdbc:h2:gamesnotebook");
 	}
 
 	public static Connection getConnectionHSQLDB() throws SQLException {
 		String drv = "org.hsqldb.jdbc.JDBCDriver";
-//	String url = "jdbc:hsqldb:file:/opt/db/testdb";
-		String url = "jdbc:hsqldb:mem:mymemdb";
+		String url = "jdbc:hsqldb:file:GamesHSQLDB";
+//     	String url = "jdbc:hsqldb:file:/opt/db/testdb";
+//		String url = "jdbc:hsqldb:mem:mymemdb";
 		String uid = "SA";
 		String pwd = "";
 		try {
@@ -50,14 +50,11 @@ public class DBUtil {
 		return DriverManager.getConnection(url, uid, pwd);
 	}
 
-
 	/**
 	 * Output result set of any query to HTML file.
 	 * 
-	 * @param message
-	 *            comment for the result set.
-	 * @param rs
-	 *            the result set.
+	 * @param message comment for the result set.
+	 * @param rs      the result set.
 	 */
 	public static void outResultSet(String message, ResultSet rs, PrintWriter w) {
 		w.println("<h3> " + message + " </h3>");
@@ -92,7 +89,7 @@ public class DBUtil {
 					String columnValue = rs.getString(k);
 					if (columnValue == null)
 						columnValue = "";
-					
+
 					columnValue = columnValue.replace("<", "&lt;");
 					columnValue = columnValue.replace(">", "&gt;");
 
@@ -113,9 +110,87 @@ public class DBUtil {
 	public static void dumpResultSet(String message, ResultSet rs) throws FileNotFoundException {
 		File f = new File(".", message + ".html");
 		PrintWriter pw = new PrintWriter(f);
+
+		outHTMLHeader(message, pw);
 		
-		pw.format("<html>%n<body>%n%n");
 		outResultSet(message, rs, pw);
+		
 		pw.format("</body>%n</html>%n%n");
-	} 
+		pw.close();
+	}
+
+	private static void outHTMLHeader(String title, PrintWriter w) {
+		w.println("<html>");
+		w.println("<meta ");
+		w.println("http-equiv=\"Content-Type\" ");
+		w.println(" content=\"text/html; charset=windows-1251\" ");
+		w.println(">");
+		w.println("<title>" + title + "</title>");
+
+		w.println("<style>");
+		w.println("<!--");
+		generateStyles(w);
+		w.println("-->");
+		w.println("</style>");
+
+		w.println("</head>");
+		w.println("<body>");
+	}
+
+	protected static void generateStyles(PrintWriter w) {
+		w.println("body { ");
+		w.println("   background-color: #ccccff;");
+		w.println("}");
+		w.println();
+
+		w.println("h1 { ");
+		w.println("   color: red;");
+		w.println("   font-size: 14pt;");
+		w.println("   text-align: center;");
+		w.println("}");
+		w.println();
+
+		w.println("h2 { ");
+		w.println("   color: navy;");
+		w.println("   font-size: 12pt;");
+		w.println("   text-align: center;");
+		w.println("}");
+		w.println();
+
+		w.println("h3 { ");
+		w.println("   color: maroon;");
+		w.println("   font-size: 11pt;");
+		w.println("}");
+		w.println();
+
+		w.println("table { ");
+		w.println("   color: navy;");
+		w.println("   background-color: gold;");
+
+		w.println("   border-color:  black;");
+		w.println("   border-left:   solid;");
+		w.println("   border-right:  solid;");
+		w.println("   border-top:    solid;");
+		w.println("   border-bottom: solid;");
+		w.println("   border-left-width:   thin;");
+		w.println("   border-right-width:  thin;");
+		w.println("   border-top-width:    thin;");
+		w.println("   border-bottom-width: thin;");
+		w.println("}");
+		w.println();
+
+		w.println("tr { ");
+		w.println("   background-color: LightYellow;");
+		w.println("}");
+		w.println();
+
+		w.println(".trTitle { ");
+		w.println("   color: Yellow;");
+		w.println("   background-color: olive;");
+		w.println("   border-color:  black;");
+		w.println("   border-right:  solid;");
+		w.println("   border-right-width:  thin;");
+		w.println("}");
+		w.println();
+	}
 }

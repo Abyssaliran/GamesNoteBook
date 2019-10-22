@@ -5,17 +5,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Класс для загрузки в базу данных файлов в формате PGN.
@@ -23,44 +27,56 @@ import java.util.stream.Collectors;
 public class PGNLoader {
 	private static Logger log = Logger.getLogger(PGNLoader.class.toString());
 
-	final private File pgnFile;
-
 	final private static String TABLE_NAME = "GAMES";
+
+	private File pgnFile;
 
 	PGNLoader(File pgnFile) {
 		this.pgnFile = pgnFile;
 	}
 
 	public static void createTable() throws SQLException, FileNotFoundException {
-		Connection connection = DBUtil.getConnectionH2();
+		Connection connection = DBUtil.getConnection();
 
 		String sql = GameProperties.INSTANCE.createTableSQL(TABLE_NAME);
 		log.info(sql);
 
-		PreparedStatement statement = connection.prepareStatement(sql);
-		int[] res = statement.executeBatch();
+		Statement statement = connection.createStatement();
+		statement.executeUpdate(sql);
+		statement.close();
 		
 		connection.commit();
-		
 		connection.close();
+		
+		dumpTable(TABLE_NAME);
 	}
+	
 	public static void dumpTable(String tableName) throws SQLException, FileNotFoundException {
 		String sql = String.format("SELECT * FROM %s;", TABLE_NAME);
 		log.info(sql);
 		
-		Connection connection = DBUtil.getConnectionH2();
+		Connection connection = DBUtil.getConnection();
 
-		PreparedStatement statement = connection.prepareStatement(sql);
+		Statement statement = connection.createStatement();
 		ResultSet rs = statement.executeQuery(sql);
-		statement.execute();
 
 		DBUtil.dumpResultSet(tableName + "_content", rs);
 		
 		connection.close();
-}
+	}
+
+	public static Stream<String> getLinesStream(String fileName) {
+		Stream<String> lines = null;
+		try {
+			lines = Files.lines(Paths.get(fileName), Charset.defaultCharset());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return lines;
+	}
 
 	public static void writePGNtoDb(File pgnFile) throws SQLException {
-		Connection connection = DBUtil.getConnectionH2();
+		Connection connection = DBUtil.getConnection();
 		
 		PreparedStatement statement = connection.prepareStatement("insert into " + TABLE_NAME
 				+ "(event, site, game_date, round, white, black, result, nic, moves) " 
