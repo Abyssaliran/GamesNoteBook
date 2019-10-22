@@ -1,23 +1,33 @@
 package tools.db;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import tools.db.report.HTMLReporter;
 import tools.db.report.HTMLReporterDefault;
+import tools.db.resource.PGNLoader;
 
 public class ConsoleDBStart {
 	private static Logger log = Logger.getLogger(ConsoleDBStart.class.toString());
  
-	public static void main(String[] args) {
-		log.info("ConsoleDBStart start"); 
+	public static void main(String[] args){
+		log.info("ConsoleDBStart start");
 				
-		dbHtmlReportDemo();
+		String ROOT = new File(".").getAbsolutePath();
 		
+		//dbHtmlReportDemo();
+		log.info("Current dir: " + ROOT);
+		
+		try {
+			PGNLoader.writePGNtoDb(new File("./src/game/db/resource/Alekhine.pgn"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		log.info("ConsoleDBStart end");
 	}
 	
-	private static void dbHtmlReportDemo() {
+	static void dbHtmlReportDemo() {
 		File htmlReports = new File("./html_reports");
 		htmlReports.mkdirs();
 		
