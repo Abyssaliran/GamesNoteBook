@@ -97,6 +97,14 @@
 + Участники: Илья Гневашев
 + Ветка: **renju**
 
+## 17. Аримаа
+
++ Участники: Максим Новгради
++ [Правила на русском](http://www.iggamecenter.com/info/ru/arimaa.html)  
+  [Правила](https://www.chessprogramming.org/Arimaa)
++ Ветка: **arimaa**
+
+
 
 
 
