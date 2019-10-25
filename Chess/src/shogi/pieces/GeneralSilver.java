@@ -15,7 +15,20 @@ public class GeneralSilver extends ShogiPiece {
 		if (!super.isCorrectMove(squares))
 			return false;
 		
-		return true;
+		Square target = squares[0];
+
+		int GeneralSilverV = square.v;
+		int GeneralSilverH = square.h;
+
+		int dv = target.v - GeneralSilverV;
+		int dh = target.h - GeneralSilverH;
+		if ((dh > 0 && dv == 0) || dh == 0)
+			return false;
+		
+		if (square.isNear(target))		
+			return true;
+		
+		return false;
 	}
 	//testik
 
