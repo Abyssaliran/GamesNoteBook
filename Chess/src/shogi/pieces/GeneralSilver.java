@@ -20,8 +20,8 @@ public class GeneralSilver extends ShogiPiece {
 		int GeneralSilverV = square.v;
 		int GeneralSilverH = square.h;
 
-		int dv = target.v - GeneralSilverV;
-		int dh = target.h - GeneralSilverH;
+		int dv =  target.v - GeneralSilverV;
+		int dh = isWhite() ? target.h - GeneralSilverH : GeneralSilverH - target.h;
 		if ((dh > 0 && dv == 0) || dh == 0)
 			return false;
 		

@@ -17,7 +17,7 @@ public class Knight extends ShogiPiece {
 		//реализован ход конём только вперёд
 		Square target = squares[0];
 		
-		int dh = (-1)*(target .h - square.h);
+		int dh = isWhite() ? (-1)*(target .h - square.h) : target .h - square.h;
 		int dv = Math.abs(target .v - square.v);
 
 		return (dh == 2 && dv == 1);
