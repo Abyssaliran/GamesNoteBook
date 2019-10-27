@@ -18,7 +18,10 @@ public class Heap extends Piece {
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
-		return nBalls != 0;
+		if ((square.v == 0) || (square.v == 7))
+			return false; // Из калаха фигуры не ходят
+		
+		return nBalls != 0; // Из пустой клетки фигуры не ходят
 	}
 
 	@Override
