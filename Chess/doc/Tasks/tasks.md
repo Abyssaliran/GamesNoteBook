@@ -104,7 +104,11 @@
   [Правила](https://www.chessprogramming.org/Arimaa)
 + Ветка: **arimaa**
 
+## 18. Синтезатор
 
++ Участники: Momot
++ Ветка: **midi**
++ [ MIDI API](https://docs.oracle.com/javase/7/docs/technotes/guides/sound/programmer_guide/chapter1.html#111880) 
 
 
 
