@@ -25,6 +25,7 @@ import halma.ui.images.HalmaImages;
 import kalah.ui.KalahGamePanel;
 import kalah.ui.images.KalahImages;
 import notebook.ui.images.NotebookImages;
+import renju.ui.RenjuGamePanel;
 import reversi.Reversi;
 import reversi.ui.ReversiGamePanel;
 import reversi.ui.images.ReversiImages;
@@ -87,6 +88,7 @@ public class GamesNotebook {
 		gamesItem.setText("Игры");
 
 		// Добавление вкладок - игр.
+		addRenjuTab(gamesFolder);
 		addFisherTab(gamesFolder);
 		addBreakThroughTab(gamesFolder);
 		addKalahTab(gamesFolder);
@@ -102,6 +104,13 @@ public class GamesNotebook {
 		addHalma8x8Tab(gamesFolder);
 	}
 	
+	private static void addRenjuTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new RenjuGamePanel(folder) );
+		tabItem.setImage(smallIcon(GoImages.icoGo));
+		tabItem.setText("Рендзю");
+	}
+
 	private static void addFisherTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
 		tabItem.setControl( new FisherGamePanel(folder) );
