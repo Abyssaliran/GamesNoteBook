@@ -65,7 +65,7 @@ public class Game {
 	}
 
 	protected static void addPiece(PieceColor color, Piece piece) {
-		piece.color = color;
+		piece.setColor(color);
 
 		List<Piece> pieces = allPieces.get(color);
 		if (pieces == null) {

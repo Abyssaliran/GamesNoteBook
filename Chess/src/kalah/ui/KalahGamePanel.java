@@ -8,16 +8,21 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
+import game.core.Board;
 import game.core.Game;
+import game.core.GameOver;
+import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
+import game.core.Square;
 import game.ui.GameBoard;
 import game.ui.GamePanel;
 import game.ui.ScorePanel;
 import game.ui.images.GameImages;
-import game.ui.listeners.PutPieceListener;
-import kalah.Heap;
+import game.ui.listeners.IGameListner;
+
 import kalah.Kalah;
+import kalah.pieces.Heap;
 import kalah.ui.images.KalahImages;
 
 public class KalahGamePanel extends GamePanel {
@@ -39,8 +44,8 @@ public class KalahGamePanel extends GamePanel {
 		public KalahBoardPanel(Composite composite, Game game) {
 			super(composite, game.board);
 
-			// Слушатель мыши для постановки новой фигуры на доску.
-			listener = new PutPieceListener(this);
+			// Слушатель мыши для выбора клетки.
+			listener = new KalahListener(this);
 		}
 
 		@Override
@@ -111,8 +116,51 @@ public class KalahGamePanel extends GamePanel {
 		}
 
 		public void initDefaultPosition() {
-			// TODO Auto-generated method stub
+		}
+	}
+	
+	/**
+	 * Слушатель нажатия мышкой на клетки доски.
+	 */
+	class KalahListener implements IGameListner {
+		private GameBoard boardPanel;
 
+		public KalahListener(GameBoard boardPanel) {
+			this.boardPanel = boardPanel;
+		}
+
+		@Override
+		public void mouseDown(Square s, int button) {}
+
+		@Override
+		public void mouseUp(Square mouseSquare, int button) {
+			Piece piece = mouseSquare.getPiece();
+			if (piece == null)
+				return;
+			
+			Move move = piece.makeMove(mouseSquare);
+
+			Board board = mouseSquare.getBoard();
+
+			try {
+				move.doMove();
+			} catch (GameOver e) {
+				// Сохраним экземпляр кода и истории партии.
+				board.history.addMove(move);
+				board.history.setResult(e.result);
+
+				// Пусть слушатели изменений на доске 
+				// нарисуют новое состояние доски.
+				board.setBoardChanged();
+				boardPanel.redraw();
+				return;
+			}
+			board.history.addMove(move);
+			board.setBoardChanged();
+			
+			boardPanel.redraw();
+			
+			board.changeMoveColor();
 		}
 	}
 }
