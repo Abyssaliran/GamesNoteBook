@@ -1,0 +1,49 @@
+package breakthrough.pieces;
+
+import breakthrough.moves.SimpleMove;
+import game.core.Move;
+import game.core.Piece;
+import game.core.PieceColor;
+import game.core.Square;
+
+/**
+ * Правила:
+ * https://www.chessprogramming.org/Breakthrough_(Game)
+ */
+public class Pawn extends Piece {
+	public Pawn(Square square, PieceColor color) {
+		super(square, color);
+	}
+
+	@Override
+	public boolean isCorrectMove(Square... squares) {
+		Square target = squares[0];
+		Piece targetPiece = target.getPiece();
+		
+		if (targetPiece != null) 
+//			if (targetPiece.getColor() == getColor())
+				return false; // На клетки занятые фигурами не ходим.
+		
+		boolean isWhite = getColor() == PieceColor.WHITE;
+		int step = isWhite ? -1 : 1;
+
+		// Смещение по вертикали.
+		int dv = Math.abs(square.v - target.v);
+		int dh = target.h - square.h;
+		
+		if (dv > 1) // Слишком сместились в сторону.
+			return false;
+		
+		return dh == step; // Один шаг для пешки этого цвета
+	}
+
+	@Override
+	public Move makeMove(Square... squares) {
+		return new SimpleMove(squares);
+	}
+	
+	@Override
+	public String toString() {
+		return "";
+	}
+}

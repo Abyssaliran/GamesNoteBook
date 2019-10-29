@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.TabItem;
 
 import backgammon.ui.BackgammonGamePanel;
 import backgammon.ui.images.BackgammonImages;
+import breakthrough.ui.BreakThroughGamePanel;
 import checkers.ui.CheckersGamePanel;
 import checkers.ui.images.CheckersImages;
 import chess.ui.ChessGamePanel;
@@ -85,6 +86,7 @@ public class GamesNotebook {
 		gamesItem.setText("Игры");
 
 		// Добавление вкладок - игр.
+		addBreakThroughTab(gamesFolder);
 		addKalahTab(gamesFolder);
 		addShogiTab(gamesFolder);
 		addBackgammonTab(gamesFolder);
@@ -94,10 +96,17 @@ public class GamesNotebook {
 		addVikingTab(gamesFolder);
 		addTamerlanChessTab(gamesFolder);
 		addReversiTab(gamesFolder);
-		addGoTab(gamesFolder);
+//		addGoTab(gamesFolder);
 		addHalma8x8Tab(gamesFolder);
 	}
 	
+	private static void addBreakThroughTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new BreakThroughGamePanel(folder) );
+		tabItem.setImage(smallIcon(ChessImages.imagePawnBlack));
+		tabItem.setText("Прорыв");
+	}
+
 	private static void addKalahTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
 		tabItem.setControl( new KalahGamePanel(folder) );
