@@ -1,6 +1,7 @@
 package renju.moves;
 
 import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
@@ -23,6 +24,9 @@ public class RenjuMove implements Move {
 	@Override
 	public void doMove() throws GameOver {
 		target.setPiece(piece);
+		
+		if (isGameOver())
+			throw new GameOver( GameResult.win(piece) );
 	}
 
 	@Override
@@ -34,4 +38,11 @@ public class RenjuMove implements Move {
 	public String toString() {
 		return "" + target;
 	}
+
+	private boolean isGameOver() {
+		// TODO Илья Гневашев. Проверить завершение игры (5 фишек в ряд).
+		return false;
+	}
+
+
 }
