@@ -17,6 +17,7 @@ import chess.ui.ChessGamePanel;
 import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessGamePanel;
 import chinachess.ui.images.ChinaChessImages;
+import fisher.ui.FisherGamePanel;
 import go.ui.GoGamePanel;
 import go.ui.images.GoImages;
 import halma.ui.HalmaGamePanel;
@@ -86,6 +87,7 @@ public class GamesNotebook {
 		gamesItem.setText("Игры");
 
 		// Добавление вкладок - игр.
+		addFisherTab(gamesFolder);
 		addBreakThroughTab(gamesFolder);
 		addKalahTab(gamesFolder);
 		addShogiTab(gamesFolder);
@@ -100,6 +102,13 @@ public class GamesNotebook {
 		addHalma8x8Tab(gamesFolder);
 	}
 	
+	private static void addFisherTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new FisherGamePanel(folder) );
+		tabItem.setImage(smallIcon(ChessImages.imageKingBlack));
+		tabItem.setText("Фишер");
+	}
+
 	private static void addBreakThroughTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
 		tabItem.setControl( new BreakThroughGamePanel(folder) );
