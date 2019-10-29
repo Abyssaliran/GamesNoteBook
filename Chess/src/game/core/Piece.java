@@ -13,15 +13,14 @@ public class Piece {
 	/**
 	 * Цвет фигуры.
 	 */
-	PieceColor color;
+	private PieceColor color;
 
 	/**
 	 * Клетка на которой стоит фигура.
 	 */
 	public Square square;
 	
-    public Piece() {
-    }
+    public Piece() { }
 
 	public Piece(Square square, PieceColor color) {
 		this.square = square;

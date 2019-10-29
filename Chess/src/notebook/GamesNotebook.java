@@ -20,6 +20,8 @@ import go.ui.GoGamePanel;
 import go.ui.images.GoImages;
 import halma.ui.HalmaGamePanel;
 import halma.ui.images.HalmaImages;
+import kalah.ui.KalahGamePanel;
+import kalah.ui.images.KalahImages;
 import notebook.ui.images.NotebookImages;
 import reversi.Reversi;
 import reversi.ui.ReversiGamePanel;
@@ -83,6 +85,7 @@ public class GamesNotebook {
 		gamesItem.setText("Игры");
 
 		// Добавление вкладок - игр.
+		addKalahTab(gamesFolder);
 		addShogiTab(gamesFolder);
 		addBackgammonTab(gamesFolder);
 		addChessTab(gamesFolder);
@@ -94,6 +97,14 @@ public class GamesNotebook {
 		addGoTab(gamesFolder);
 		addHalma8x8Tab(gamesFolder);
 	}
+	
+	private static void addKalahTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl( new KalahGamePanel(folder) );
+		tabItem.setImage(smallIcon(KalahImages.icoKalah));
+		tabItem.setText("Калах");
+	}
+
 	private static void addShogiTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
 		tabItem.setControl( new ShogiGamePanel(folder) );

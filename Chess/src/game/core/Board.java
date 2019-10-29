@@ -258,7 +258,7 @@ public class Board extends Observable {
 				Piece p = s.getPiece();
 				if (p == null) continue;
 				
-				if (p.color != color)
+				if (p.getColor() != color)
 					continue;
 				
 				pieces.add(p);
@@ -267,6 +267,27 @@ public class Board extends Observable {
 		return pieces;
 	}
 	
+	/**
+	 * Выдать список всех расположенных на доске фигур заданного цвета.
+	 * 
+	 * @return - список фигур.
+	 */
+	public List<Piece> getAllPieces() {
+		List<Piece> pieces = new ArrayList<>();		
+
+		for (int v = 0; v < nV; v++)
+			for (int h = 0; h < nH; h++) {
+				Square s = getSquare(v, h);
+				
+				Piece p = s.getPiece();
+				if (p == null) continue;
+				
+				pieces.add(p);
+			}
+		
+		return pieces;
+	}
+
 	/**
 	 * Выдать список всех пустых клеток доски.
 	 * 
