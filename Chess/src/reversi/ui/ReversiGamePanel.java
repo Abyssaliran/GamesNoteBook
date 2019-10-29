@@ -34,9 +34,6 @@ public class ReversiGamePanel extends GamePanel {
 	public ReversiGamePanel(Composite composite, int nHoles) {
 		super(composite, new Reversi(nHoles));
 		setBackground(GREEN);
-		
-		ReversiBoardPanel gameBoard = new ReversiBoardPanel(this, game, nHoles);
-		insertSquares( gameBoard );
 
 		GridData data = new GridData(SWT.FILL, SWT.BOTTOM, false, true);
 		data.widthHint = 100;

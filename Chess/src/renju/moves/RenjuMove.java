@@ -1,0 +1,37 @@
+package renju.moves;
+
+import game.core.GameOver;
+import game.core.Move;
+import game.core.Piece;
+import game.core.Square;
+import renju.piece.Stone;
+
+public class RenjuMove implements Move {
+	private Stone piece;
+	private Square target;
+
+	public RenjuMove(Stone stone, Square[] squares) {
+		piece = stone;
+		target = squares[0];
+	}
+
+	@Override
+	public Piece getPiece() {
+		return piece;
+	}
+
+	@Override
+	public void doMove() throws GameOver {
+		target.setPiece(piece);
+	}
+
+	@Override
+	public void undoMove() {
+		target.removePiece();
+	}
+
+	@Override
+	public String toString() {
+		return "" + target;
+	}
+}
