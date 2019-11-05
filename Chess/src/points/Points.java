@@ -1,25 +1,26 @@
-package renju;
+package points;
 
 import game.core.Game;
 import game.core.IPieceProvider;
 import game.core.PieceColor;
 import game.players.IPlayer;
 import game.players.Vinni;
+import points.pieces.Stone;
 
-import renju.piece.Stone;
-
-public class Renju extends Game {
-	private static final int BOARD_SIZE = 15;
+/**
+ * Игра на окружение фигур противника.
+ */
+public class Points extends Game {
+	private static final int BOARD_SIZE = 20;
 	
 	private static final IPieceProvider pieceProvider = (square, color) -> new Stone(square, color);
 
 	static {
-		Game.addPlayer(Renju.class, IPlayer.HOMO_SAPIENCE);
-		Game.addPlayer(Renju.class, new Vinni(pieceProvider, BOARD_SIZE * BOARD_SIZE));
-		Game.addPlayer(Renju.class, new Buratino(pieceProvider));
+		Game.addPlayer(Points.class, IPlayer.HOMO_SAPIENCE);
+		Game.addPlayer(Points.class, new Vinni(pieceProvider, BOARD_SIZE * BOARD_SIZE));
 	}
 
-	public Renju() {
+	public Points() {
 		initBoardDefault();
 
 		board.setWhitePlayer(IPlayer.HOMO_SAPIENCE);
