@@ -4,6 +4,7 @@ import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
+import points.moves.PointMove;
 
 public class Stone extends Piece {
 	public Stone(Square square, PieceColor color) {
