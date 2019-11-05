@@ -1,4 +1,4 @@
-package renju.piece;
+package renju.pieces;
 
 import game.core.Move;
 import game.core.Piece;

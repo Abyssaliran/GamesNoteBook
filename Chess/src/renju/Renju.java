@@ -5,8 +5,8 @@ import game.core.IPieceProvider;
 import game.core.PieceColor;
 import game.players.IPlayer;
 import game.players.Vinni;
-
-import renju.piece.Stone;
+import renju.pieces.Stone;
+import renju.players.Buratino;
 
 public class Renju extends Game {
 	private static final int BOARD_SIZE = 15;

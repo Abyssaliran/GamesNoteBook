@@ -7,7 +7,7 @@ import game.core.GameResult;
 import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
-import renju.piece.Stone;
+import renju.pieces.Stone;
 
 public class RenjuMove implements Move {
 
@@ -83,7 +83,7 @@ public class RenjuMove implements Move {
 				int v = vPiece;
 				int h = hPiece;
 						
-				while(board.onBoard(v, h)) {
+				while(board.onBoard(v + d.dv, h + d.dh)) {
 					v += d.dv;
 					h += d.dh;
 					

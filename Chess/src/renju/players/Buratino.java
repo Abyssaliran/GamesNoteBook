@@ -1,4 +1,4 @@
-package renju;
+package renju.players;
 
 import java.util.Collections;
 import java.util.Comparator;
