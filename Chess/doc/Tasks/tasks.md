@@ -110,5 +110,13 @@
 + Ветка: **midi**
 + [ MIDI API](https://docs.oracle.com/javase/7/docs/technotes/guides/sound/programmer_guide/chapter1.html#111880) 
 
+## 19. Точки
+
++ Участники: Алексей Голосов
++ Ветка: **points**
+
+## 20. Алгоритмы игры в Renju
+
++ Участники: Васильева Юлия и Багров Андрей
 
 
