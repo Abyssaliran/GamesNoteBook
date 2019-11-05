@@ -11,7 +11,7 @@ import game.core.Square;
 import game.ui.AsiaBoard;
 import game.ui.listeners.PutPieceListener;
 import game.ui.listeners.PutPiecePromptListener;
-import renju.piece.Stone;
+import points.pieces.Stone;
 import reversi.ui.images.ReversiImages;
 
 public class PointsBoardPanel extends AsiaBoard implements IPieceProvider  {
