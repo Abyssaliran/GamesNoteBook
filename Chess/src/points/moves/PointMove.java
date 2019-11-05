@@ -1,10 +1,11 @@
-package points.pieces;
+package points.moves;
 
 import game.core.GameOver;
 import game.core.GameResult;
 import game.core.Move;
 import game.core.Piece;
 import game.core.Square;
+import points.pieces.Stone;
 
 public class PointMove implements Move {
 	private Stone piece;
@@ -39,7 +40,7 @@ public class PointMove implements Move {
 	}
 
 	private boolean isGameOver() {
-		// TODO Илья Гневашев. Проверить завершение игры (5 фишек в ряд).
+		// TODO Алексей Голосов. Проверить завершение игры.
 		return false;
 	}
 }
