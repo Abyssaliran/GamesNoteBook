@@ -77,9 +77,9 @@ public class PGNLoader {
         PreparedStatement statement = connection.prepareStatement("insert into " + TABLE_NAME
                 + "(event, site, date, round, white, black, result, moves) "
                 + "values(?,?,?,?,?,?,?,?)");
-        List<String> pgn = readFile(pgnFile);
-        List<GameProperties> games = pgn.stream().map(PGNLoader::createEntity).collect(Collectors.toList());
-        games.forEach(game -> {
+        List<String> games = readFile(pgnFile);
+        List<GameProperties> gamePropertiesList = games.stream().map(PGNLoader::createEntity).collect(Collectors.toList());
+        gamePropertiesList.forEach(game -> {
             int i = 0;
             for (String property : GameProperties.MAIN_PROPERTIES) {
                 try {
@@ -130,7 +130,7 @@ public class PGNLoader {
     }
 
     private static GameProperties createEntity(String game) {
-        GameProperties gameProperties = GameProperties.INSTANCE;
+        GameProperties gameProperties = new GameProperties();
         Arrays.stream(GameProperties.MAIN_PROPERTIES).forEach(
                 property -> gameProperties.put(property, findTagValue(game, "\\[" + property + ".*\\]")));
         gameProperties.put("Moves", findMoves(game));

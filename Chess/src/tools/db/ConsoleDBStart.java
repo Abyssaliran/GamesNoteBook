@@ -6,9 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import tools.db.report.HTMLReporter;
@@ -21,11 +19,10 @@ public class ConsoleDBStart {
     public static void main(String[] args) {
         log.info("ConsoleDBStart start");
 
-        String ROOT = new File(".").getAbsolutePath();
+        final String ROOT = new File(".").getAbsolutePath();
         log.info("Current dir: " + ROOT);
 
         createTable();
-//		dbHtmlReportDemo();
         try (Stream<Path> stream = Files.walk(Paths.get("./Chess/src/tools/db/resource/"))) {
             stream.filter(Files::isRegularFile)
                     .map(Path::toFile)
@@ -33,10 +30,8 @@ public class ConsoleDBStart {
                         final String path = i.getAbsolutePath();
                         if (path.endsWith(".zip")) {
                             try (ZipInputStream zin = new ZipInputStream(new FileInputStream(path))) {
-                                ZipEntry entry;
-                                while ((entry = zin.getNextEntry()) != null) {
-                                    File pgn = new File("./Chess/src/tools/db/resource/", entry.getName());
-                                    PGNLoader.writePGNtoDb( new InputStreamReader(zin));
+                                while ((zin.getNextEntry()) != null) {
+                                    PGNLoader.writePGNtoDb(new InputStreamReader(zin));
                                 }
                             } catch (Exception ex) {
                                 System.out.println(ex.getMessage());
