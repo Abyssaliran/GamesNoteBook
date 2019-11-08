@@ -6,7 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import tools.db.report.HTMLReporter;
@@ -23,19 +24,26 @@ public class ConsoleDBStart {
         log.info("Current dir: " + ROOT);
 
         createTable();
-        try (Stream<Path> stream = Files.walk(Paths.get("./Chess/src/tools/db/resource/"))) {
-            stream.filter(Files::isRegularFile)
+        try {
+            Files.walk(Paths.get("./Chess/src/tools/db/resource/"))
+                    .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .forEach(i -> {
                         final String path = i.getAbsolutePath();
-                        if (path.endsWith(".zip")) {
-                            try (ZipInputStream zin = new ZipInputStream(new FileInputStream(path))) {
-                                while ((zin.getNextEntry()) != null) {
-                                    PGNLoader.writePGNtoDb(new InputStreamReader(zin));
+                        try {
+                            if (path.endsWith(".zip")) {
+                                ZipFile zipFile = new ZipFile(path);
+                                ZipInputStream zin = new ZipInputStream(new FileInputStream(path));
+                                ZipEntry entry;
+                                while ((entry = zin.getNextEntry()) != null) {
+                                    if (entry.getName().endsWith(".pgn")) {
+                                        PGNLoader.writePGNtoDb(new InputStreamReader(zipFile.getInputStream(entry)));
+                                    }
                                 }
-                            } catch (Exception ex) {
-                                System.out.println(ex.getMessage());
+
                             }
+                        } catch (IOException | SQLException e) {
+                            e.printStackTrace();
                         }
                         if (path.endsWith(".pgn")) {
                             try {
@@ -48,6 +56,7 @@ public class ConsoleDBStart {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         log.info("ConsoleDBStart end");
     }
 
