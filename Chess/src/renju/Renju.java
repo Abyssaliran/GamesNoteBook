@@ -8,6 +8,7 @@ import game.players.Vinni;
 import renju.pieces.Stone;
 import renju.players.Buratino;
 import renju.players.Karabas;
+import renju.players.KarabasClever;
 
 public class Renju extends Game {
 	private static final int BOARD_SIZE = 15;
@@ -19,6 +20,7 @@ public class Renju extends Game {
 		Game.addPlayer(Renju.class, new Vinni(pieceProvider, BOARD_SIZE * BOARD_SIZE));
 		Game.addPlayer(Renju.class, new Buratino(pieceProvider));
 		Game.addPlayer(Renju.class, new Karabas(pieceProvider));
+		Game.addPlayer(Renju.class, new KarabasClever(pieceProvider));
 	}
 
 	public Renju() {
