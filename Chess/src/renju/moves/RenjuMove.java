@@ -48,6 +48,11 @@ public class RenjuMove implements Move {
 	public Piece getPiece() {
 		return piece;
 	}
+	
+	public Square getSquare()
+	{
+		return target;
+	}
 
 	@Override
 	public void doMove() throws GameOver {
