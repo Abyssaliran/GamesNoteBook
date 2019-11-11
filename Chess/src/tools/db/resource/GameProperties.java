@@ -13,7 +13,7 @@ public class GameProperties extends TreeMap<String, String> {
 	
 	public static final GameProperties INSTANCE = new GameProperties();
 
-	static final String[] MAIN_PROPERTIS = { 
+	static final String[] MAIN_PROPERTIES = {
 			"Event", // (Название турнира или матча)
 			"Site",  // (Место проведения партии)
 			"Date",  // (Дата начала партии)
@@ -26,7 +26,7 @@ public class GameProperties extends TreeMap<String, String> {
 	String movesText = "";
 
 	public boolean isMain(String tag) {
-		return 0 <= Arrays.binarySearch(MAIN_PROPERTIS, tag);
+		return 0 <= Arrays.binarySearch(MAIN_PROPERTIES, tag);
 	}
 
 	public void save(PrintWriter w) {
@@ -49,10 +49,10 @@ public class GameProperties extends TreeMap<String, String> {
 		w.format("DROP TABLE IF EXISTS %s; %n", tableName);
 		w.format("CREATE TABLE %s ( %n", tableName);
     	
-    	Arrays.stream(MAIN_PROPERTIS)
+    	Arrays.stream(MAIN_PROPERTIES)
     	      .forEach(e -> w.format(" %s VARCHAR(50) NOT NULL, %n", e));
     	
-    	w.format(" moves VARCHAR(50) NOT NULL %n)");
+    	w.format(" moves VARCHAR(4095) NOT NULL %n)");
     	
     	return ss.toString();
     }
