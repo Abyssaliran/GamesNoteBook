@@ -3,15 +3,21 @@ package shogi.ui;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
+import game.core.Square;
+import game.ui.GameBoard;
 import game.ui.GamePanel;
 import game.ui.WoodBoard;
 import game.ui.images.GameImages;
@@ -25,6 +31,7 @@ import shogi.pieces.Knight;
 import shogi.pieces.Lance;
 import shogi.pieces.Pawn;
 import shogi.pieces.Rook;
+import shogi.pieces.ShogiPiece;
 import shogi.ui.images.ShogiImages;
 
 /**
@@ -47,14 +54,20 @@ public class ShogiGamePanel extends GamePanel {
 class ShogiBoardPanel extends WoodBoard {
 
     private static final Map<PieceColor, Map<Class<? extends Piece>, Image>> pieceImages;
+    private static final Map<PieceColor, Map<Class<? extends Piece>, Image>> transformedPieceImages;
 
 	static {
         Map<Class<? extends Piece>, Image> whites = new HashMap<>();
         Map<Class<? extends Piece>, Image> blacks = new HashMap<>();
+        Map<Class<? extends Piece>, Image> transformedWhites = new HashMap<>();
+        Map<Class<? extends Piece>, Image> transformedBlacks = new HashMap<>();
 
 		pieceImages = new HashMap<>();
+		transformedPieceImages = new HashMap<>();
 		pieceImages.put(PieceColor.WHITE, whites);
 		pieceImages.put(PieceColor.BLACK, blacks);
+		transformedPieceImages.put(PieceColor.WHITE, transformedWhites);
+		transformedPieceImages.put(PieceColor.BLACK, transformedBlacks);
 
 		// Инициализируем карту изображений белых фигур.
 		//
@@ -77,6 +90,17 @@ class ShogiBoardPanel extends WoodBoard {
 		blacks.put(Rook.class,          ShogiImages.bRook);
 		blacks.put(Bishop.class,        ShogiImages.bBishop);
 		blacks.put(Pawn.class,          ShogiImages.bPawn);
+		
+		// Инициализируем карту изображений трансформированных белых фигур.
+		//
+		transformedWhites.put(Lance.class,         ShogiImages.wTLance);
+		transformedWhites.put(Pawn.class,          ShogiImages.wTPawn);
+		
+		// Инициализируем карту изображений трансформированных черных фигур.
+		//
+		transformedBlacks.put(Lance.class,         ShogiImages.bTLance);
+		transformedBlacks.put(Pawn.class,          ShogiImages.bTPawn);
+		
 	}
 		
 	public ShogiBoardPanel(Composite composite, Game game) {
@@ -88,7 +112,7 @@ class ShogiBoardPanel extends WoodBoard {
 	}
 	
 	protected void drawPiece(GC gc, int v, int h, int squareWidth, int squareHeight) {
-		Piece piece = board.getSquare(v, h).getPiece();
+		ShogiPiece piece = (ShogiPiece) board.getSquare(v, h).getPiece();
 		if (piece == null) return;
 
 		
@@ -104,8 +128,29 @@ class ShogiBoardPanel extends WoodBoard {
 
 	@Override
 	public Image getPieceImage(Piece piece, PieceColor color) {
-		return pieceImages
-				.get(color)
-				.get(piece.getClass());
+		ShogiPiece shogiPiece = (ShogiPiece) piece;
+		
+		if(!shogiPiece.isTransformed) {
+			return pieceImages
+					.get(color)
+					.get(piece.getClass());
+		} else {
+			return transformedPieceImages
+					.get(color)
+					.get(piece.getClass());
+		}
+		
+	}
+	
+	
+	
+	@Override
+	public void mouseUp(MouseEvent e) {		
+		if(this.getCursor() != null) {
+			this.getCursor().dispose();
+			this.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_ARROW));
+		}
+		
+		super.mouseUp(e);
 	}
 }
