@@ -5,7 +5,6 @@ import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 import shogi.moves.Capture;
-import shogi.moves.Promotion;
 import shogi.moves.SimpleMove;
 
 abstract
