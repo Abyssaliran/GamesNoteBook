@@ -6,6 +6,7 @@ import game.core.GameOver;
 import game.core.GameResult;
 import game.core.Move;
 import game.core.Piece;
+import game.core.PieceColor;
 import game.core.Square;
 import renju.pieces.Stone;
 
@@ -107,10 +108,23 @@ public class RenjuMove implements Move {
 			
 			// В этом  направлении (одном из 4-х) стоит достаточно наших фигур.
 			// Мы ставим пятую фигуру.
-			if (lineCount >= 4)
+			if (lineCount >= 5)
 				return true;
+			if (lineCount >=5) {
+				//GameResult.win(piece);
+				// System.out.println("Game Over" + Gameover);
+				//GameOver(GameResult result);
+				//GameResult.GameOver();
+				GameResult();
+			}
 		}
 		
 		return false;
 	}
+
+	private void GameResult() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
