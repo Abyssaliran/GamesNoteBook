@@ -5,12 +5,15 @@ import java.util.Comparator;
 import java.util.List;
 
 import game.core.Board;
+import game.core.Dirs;
 import game.core.GameOver;
 import game.core.GameResult;
 import game.core.IPieceProvider;
 import game.core.Move;
+import game.core.Piece;
 import game.core.PieceColor;
 import game.players.PutPiecePlayer;
+import renju.moves.RenjuMove;
 
 /**
  * Буратино ставит фишку в клетку где у фишки будет максимальное число соседей 
@@ -20,6 +23,8 @@ public class Buratino extends PutPiecePlayer {
 	private int MAX_MOVES = 15 * 15;
 
 	final Comparator<? super Move> brain = (m1, m2) -> getMoveWeight(m2) - getMoveWeight(m1);
+	
+	private Board localBoard;
 	
 	@Override
 	public String getName() {
@@ -38,7 +43,35 @@ public class Buratino extends PutPiecePlayer {
 	}
 
 	private int getMoveWeight(Move m1) {
-		return 0;
+		//Получим координаты хода.
+				int hPiece=((RenjuMove)m1).getSquare().h;  // горизонталь 
+				int vPiece=((RenjuMove)m1).getSquare().v;  // вертикаль
+				Piece piece=((RenjuMove)m1).getPiece();
+				int PieceMaxCount=0;
+				
+				
+				for (Dirs[] dir : RenjuMove.allDirs) {
+					
+					for (Dirs d : dir) {// Две стороны одного направления.
+						int PieceCount = 0;
+						int v = vPiece;
+						int h = hPiece;
+								
+						while(localBoard.onBoard(v + d.dv, h + d.dh) && (Math.abs(vPiece-v)<=4) && (Math.abs(hPiece-h)<=4)) {
+							v += d.dv;
+							h += d.dh;
+							
+							Piece p = localBoard.getSquare(v, h).getPiece();
+							if (p!=null && p.isFriend(piece))
+								PieceCount++; 
+						}
+						if (PieceMaxCount<PieceCount)
+							PieceMaxCount=PieceCount;
+					}
+					
+				}
+				return PieceMaxCount;
+
 	}
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
