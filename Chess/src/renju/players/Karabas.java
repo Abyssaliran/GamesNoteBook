@@ -12,69 +12,85 @@ import game.core.IPieceProvider;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
+import game.core.Square;
+import game.players.IPlayer;
 import game.players.PutPiecePlayer;
 import renju.moves.RenjuMove;
 
 /**
- * Буратино ставит фишку в клетку где у фишки будет максимальное число соседей 
- * такого же цвета, как и цвет фишки которую ставят.
+ * Карабас ставит фишку в клетку где у фишки будет максимальное число фигур по всем направлениям 
+ * и такого же цвета, как и цвет фишки которую ставят.
+ * TODO Багров. Реализовать алгоритм игры в рендзю.
  */
-public class Buratino extends PutPiecePlayer {
-	private int MAX_MOVES = 15 * 15;
-
+public class Karabas extends PutPiecePlayer implements IPlayer {
+	private int MAX_MOVES = 20 * 20;
 	final Comparator<? super Move> brain = (m1, m2) -> getMoveWeight(m2) - getMoveWeight(m1);
-	
-	private Board localBoard;
-	
+
+	private Board local_board;
+	private PieceColor local_color;
+
 	@Override
 	public String getName() {
-		return "Буратино";
+		return "Карабас";
 	}
 	
 	@Override
 	public String getAuthorName() {
-		return "Гневашев";
+		return "Багров";
+	}
+	
+	public Karabas(IPieceProvider pieceProvider) {
+		super(pieceProvider);
+	}
+
+
+	
+	private int getMoveWeight(Move m1) {
+		
+		//Получим координаты хода.
+		int hPiece=((RenjuMove)m1).getSquare().h;//горизонталь (x)
+		int vPiece=((RenjuMove)m1).getSquare().v;//вертикаль (y)
+		Piece piece=((RenjuMove)m1).getPiece();
+		int PieceCount_max=0;
+		
+		
+		for (Dirs[] dir : RenjuMove.allDirs) {
+			
+			for (Dirs d : dir) {// Две стороны одного направления.
+				int PieceCount = 0;
+				int v = vPiece;
+				int h = hPiece;
+						
+				while(local_board.onBoard(v + d.dv, h + d.dh) && (Math.abs(vPiece-v)<=4) && (Math.abs(hPiece-h)<=4)) {
+					v += d.dv;
+					h += d.dh;
+					
+//					if (local_board.isEmpty(v, h))
+//						break; // Дошли до пустого поля.
+					
+					
+					Piece p = local_board.getSquare(v, h).getPiece();
+					if (p!=null&&p.isFriend(piece))
+						PieceCount++; 
+				}
+				if (PieceCount_max<PieceCount)
+					PieceCount_max=PieceCount;
+			}
+			
+		}
+		return PieceCount_max;
 	}
 	
 
-	public Buratino(IPieceProvider pieceProvider) {
-		super(pieceProvider);
-		this.pieceProvider = pieceProvider;
-	}
+	
 
-	private int getMoveWeight(Move m1) {
-		//Получим координаты хода.
-				int hPiece=((RenjuMove)m1).getSquare().h;  // горизонталь 
-				int vPiece=((RenjuMove)m1).getSquare().v;  // вертикаль
-				Piece piece=((RenjuMove)m1).getPiece();
-				int PieceMaxCount=0;
-				
-				
-				for (Dirs[] dir : RenjuMove.allDirs) {
-					
-					for (Dirs d : dir) {// Две стороны одного направления.
-						int PieceCount = 0;
-						int v = vPiece;
-						int h = hPiece;
-								
-						while(localBoard.onBoard(v + d.dv, h + d.dh) && (Math.abs(vPiece-v)<=4) && (Math.abs(hPiece-h)<=4)) {
-							v += d.dv;
-							h += d.dh;
-							
-							Piece p = localBoard.getSquare(v, h).getPiece();
-							if (p!=null && p.isFriend(piece))
-								PieceCount++; 
-						}
-						if (PieceMaxCount<PieceCount)
-							PieceMaxCount=PieceCount;
-					}
-					
-				}
-				return PieceMaxCount;
-
-	}
+	
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
+		
+		local_board=board;
+		local_color=color;
+		
 		List<Move> correctMoves = getCorrectMoves(board, color);
 
 		if (correctMoves.isEmpty())
@@ -86,10 +102,12 @@ public class Buratino extends PutPiecePlayer {
 		correctMoves.sort(brain);
 		
 		Move bestMove = correctMoves.get(0);
-
+		
 		try {
 			bestMove.doMove();
 		} catch (GameOver e) {
+			
+			
 			// Сохраняем в истории игры последний сделанный ход
 			// и результат игры.
 			board.history.addMove(bestMove);

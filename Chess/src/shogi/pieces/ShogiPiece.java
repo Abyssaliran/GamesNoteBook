@@ -9,7 +9,10 @@ import shogi.moves.SimpleMove;
 
 abstract
 public class ShogiPiece extends Piece {
-	public boolean isTransformaed = false;
+	public boolean isTransformed = false; //Трансформирована ли фигура в данный момент
+	public boolean isTransformable = false; //Трансформируема ли фигура
+	
+	public Square transformSquare;
 
 	public ShogiPiece(Square square, PieceColor color) {
 		super(square, color);
@@ -31,8 +34,9 @@ public class ShogiPiece extends Piece {
 	public Move makeMove(Square... squares) {
 		Square source = squares[0];
 		Square target = squares[1];
-
+		
 		return target.isEmpty() ? new SimpleMove(this, source, target)
 				                : new Capture(squares);
+		
 	}
 }

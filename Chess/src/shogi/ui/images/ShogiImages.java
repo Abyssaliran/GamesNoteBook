@@ -25,6 +25,9 @@ public class ShogiImages {
 	public static Image wBishop;
 	public static Image wRook;
 	public static Image wPawn;
+	
+	public static Image wTPawn;
+	public static Image wTLance;
 
 	public static Image bKing;
 	public static Image bGeneralSilver;
@@ -34,6 +37,8 @@ public class ShogiImages {
 	public static Image bBishop;
 	public static Image bRook;
 	public static Image bPawn;
+	public static Image bTPawn;
+	public static Image bTLance;
 
 	private static Image imageKing;
 	private static Image imageGeneralGold;
@@ -43,6 +48,8 @@ public class ShogiImages {
 	private static Image imageBishop;
 	private static Image imageRook;
 	private static Image imagePawn;
+	private static Image imageTPawn;
+	private static Image imageTLance;
 
 	static {
 		Device display = Display.getCurrent();
@@ -60,6 +67,11 @@ public class ShogiImages {
 		imageBishop        = new Image(display, ShogiImages.class.getResourceAsStream("ShogiBishop.jpg"));
 		imageRook          = new Image(display, ShogiImages.class.getResourceAsStream("ShogiRook.png"));
 		imagePawn          = new Image(display, ShogiImages.class.getResourceAsStream("ShogiPawn.jpg"));
+		
+		//Трансформированные
+		
+		imageTPawn = new Image(display, ShogiImages.class.getResourceAsStream("ShogiTransformedPawn.jpg"));
+		imageTLance         = new Image(display, ShogiImages.class.getResourceAsStream("ShogiTransformedLance.jpg"));
 
 		wKing          = merge(imageWoodUp, imageKing);
 		wGeneralGold   = merge(imageWoodUp, imageGeneralGold);
@@ -69,6 +81,8 @@ public class ShogiImages {
 		wBishop        = merge(imageWoodUp, imageBishop);
 		wRook          = merge(imageWoodUp, imageRook);
 		wPawn          = merge(imageWoodUp, imagePawn);
+		wTPawn          = merge(imageWoodUp, imageTPawn);
+		wTLance         = merge(imageWoodUp, imageTLance);
 
 		bKing          = merge(imageWoodDown, imageKing);
 		bGeneralGold   = merge(imageWoodDown, imageGeneralGold);
@@ -78,6 +92,9 @@ public class ShogiImages {
 		bBishop        = merge(imageWoodDown, imageBishop);
 		bRook          = merge(imageWoodDown, imageRook);
 		bPawn          = merge(imageWoodDown, imagePawn);
+		bTPawn          = merge(imageWoodDown, imageTPawn);
+		bTLance         = merge(imageWoodDown, imageLance);
+		
 	}	
 
 	private static Image merge(Image image1, Image image2) {

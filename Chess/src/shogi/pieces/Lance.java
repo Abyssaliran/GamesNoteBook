@@ -6,6 +6,7 @@ import game.core.Square;
 public class Lance extends ShogiPiece {
 	public Lance(Square square, PieceColor color) {
 		super(square, color);
+		isTransformable = true;
 	}
 	
 	@Override
@@ -19,16 +20,28 @@ public class Lance extends ShogiPiece {
 		Square source = square;
 		
 		int dh = isWhite() ? source.h - target.h : target.h - source.h;
+		int dv = Math.abs(source.v-target.v);
 		
-		if (square.isEmptyVertical(target) && dh > 0) {
-			return true;
+		if(isTransformed == false) {
+			if (square.isEmptyVertical(target) && dh > 0) {
+				return true;
+			}
+			
+			return false;
+			
+		} else {
+			return GeneralGold.generalGoldMove(dh, dv);
 		}
 		
-		return false;
 	}
 
 	@Override
 	public String toString() {
-		return "L";
+		if(isTransformed == false) {
+			return "L";
+		} else {
+			return "+L";
+		}
+		
 	}
 }
