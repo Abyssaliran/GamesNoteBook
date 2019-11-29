@@ -7,7 +7,7 @@ import game.core.Piece;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
 import game.core.moves.ITransferMove;
-import tamerlan.pieces.King;
+import tamerlan.pieces.*;
 
 /**
  * Тохтамыш - хан Золотой Орды.
@@ -59,9 +59,39 @@ public class Tuqtamish extends TamerlanChessPlayer {
 			// У захвата короля врага наивысший приоритет.
 			if (capturedPiece instanceof King)
 				return 1000;
-			
+            /**
+             * mean pieces weights
+             * 'pawn': 1,
+             * 'knight': 3.5,
+             * 'bishop': 3,
+             * 'rook': 5,
+             * 'queen': 9,
+             * 'giraf': 12.5,
+             * 'visir': 6.5,
+             * 'warmachine': 8.5
+             */
+            double[] values = {12.5, 9, 8.5, 6.5, 5, 3.5, 3, 1};
+            int[] values_correct = new int[8];
+            for (int i = 0; i < values.length; i++) {
+                values_correct[i] = (int) (870 + values[i] * 5);
+            }
+            if (capturedPiece instanceof Giraffe)
+                return values_correct[0];
+            if (capturedPiece instanceof Queen)
+                return values_correct[1];
+            if (capturedPiece instanceof WarMachine)
+                return values_correct[2];
+            if (capturedPiece instanceof Vizir)
+                return values_correct[3];
+            if (capturedPiece instanceof Rook)
+                return values_correct[4];
+            if (capturedPiece instanceof Knight)
+                return values_correct[5];
+            if (capturedPiece instanceof Bishop)
+                return values_correct[6];
+
 			// Пока берем любую фигуру.
-			return 999;
+            return values_correct[7];
 		}
 		
 		// Из всех ходов без взятия фигуры врага лучший ход
