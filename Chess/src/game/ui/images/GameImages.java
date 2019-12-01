@@ -30,13 +30,14 @@ public class GameImages {
 		
 		papiro     = new Image(display, GameImages.class.getResourceAsStream("papiro.png"));
 
-		cubes = new Image[6];
-		cubes[0]   = new Image(display, GameImages.class.getResourceAsStream("cube1.png"));
-		cubes[1]   = new Image(display, GameImages.class.getResourceAsStream("cube2.png"));
-		cubes[2]   = new Image(display, GameImages.class.getResourceAsStream("cube3.png"));
-		cubes[3]   = new Image(display, GameImages.class.getResourceAsStream("cube4.png"));
-		cubes[4]   = new Image(display, GameImages.class.getResourceAsStream("cube5.png"));
-		cubes[5]   = new Image(display, GameImages.class.getResourceAsStream("cube6.png"));
+		cubes = new Image[7];
+		cubes[0]   = new Image(display, GameImages.class.getResourceAsStream("cube0.png"));
+		cubes[1]   = new Image(display, GameImages.class.getResourceAsStream("cube1.png"));
+		cubes[2]   = new Image(display, GameImages.class.getResourceAsStream("cube2.png"));
+		cubes[3]   = new Image(display, GameImages.class.getResourceAsStream("cube3.png"));
+		cubes[4]   = new Image(display, GameImages.class.getResourceAsStream("cube4.png"));
+		cubes[5]   = new Image(display, GameImages.class.getResourceAsStream("cube5.png"));
+		cubes[6]   = new Image(display, GameImages.class.getResourceAsStream("cube6.png"));
 	}
 	
 	/**
@@ -47,6 +48,6 @@ public class GameImages {
 	 */
 	static
 	public Image getCubeImage(int n) {
-		return cubes[n-1];
+		return cubes[n];
 	}
 } 

@@ -11,6 +11,10 @@ public class Cube implements IRandomGenerator {
 
 	private int value;
 	
+	public Cube(int a) {
+		value = a;
+	}
+	
 	public Cube() {
 		drop();
 	}

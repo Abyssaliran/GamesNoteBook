@@ -22,6 +22,8 @@ import game.players.IPlayer;
 public class BackgammonBoard extends Board {
 	public Cube cube1 = new Cube();
 	public Cube cube2 = new Cube();
+	public Cube cube3 = new Cube(0);
+	public Cube cube4 = new Cube(0);
 	
 	/**
 	 * Последовательность клеток - путь черных фигур.
@@ -269,6 +271,19 @@ public class BackgammonBoard extends Board {
 	public boolean allInHome(PieceColor color) {
 		for (Piece p : getPieces(color))
 			if (!isInHome(p))
+				return false;
+		
+		return true;
+	}
+	
+	/**
+	 * Можем ли мы начать выводить фигуры
+	 * @param color - цвет фигуры.
+	 * @return все ли дома
+	 */
+	public boolean outPiece(PieceColor color) {
+		for (Piece p : getPieces(color))
+			if (!isInHome(p) && !isForBearing(p.square, color))
 				return false;
 		
 		return true;
