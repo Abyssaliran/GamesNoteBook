@@ -49,7 +49,6 @@ public class Buratino extends PutPiecePlayer {
 				Piece piece=((RenjuMove)m1).getPiece();
 				int PieceMaxCount=0;
 				
-				
 				for (Dirs[] dir : RenjuMove.allDirs) {
 					
 					for (Dirs d : dir) {// Две стороны одного направления.
@@ -75,6 +74,8 @@ public class Buratino extends PutPiecePlayer {
 	}
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
+		localBoard = board;
+
 		List<Move> correctMoves = getCorrectMoves(board, color);
 
 		if (correctMoves.isEmpty())
