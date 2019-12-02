@@ -3,6 +3,8 @@ package backgammon.moves;
 import backgammon.BackgammonBoard;
 import backgammon.pieces.BackgammonGroup;
 import backgammon.pieces.Stone;
+import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Piece;
 import game.core.Square;
 
@@ -35,7 +37,6 @@ public class Capture extends SimpleMove {
 
 	@Override
 	public void doMove() {
-		// TODO Поставить захваченную фигуру на клетку для пленных (bar).
 		BackgammonBoard board = (BackgammonBoard) source.getBoard();
 		
 		Square square4Enemy = board.getBar4Piece(enemy);
@@ -43,7 +44,6 @@ public class Capture extends SimpleMove {
 		enemy.remove();
 		square4Enemy.setPiece(enemy);
 		
-		// TODO Поставить свою фигуру на место захваченной в плен.
 		super.doMove();
 	}
 	

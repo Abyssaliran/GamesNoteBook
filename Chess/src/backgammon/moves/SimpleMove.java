@@ -2,6 +2,8 @@ package backgammon.moves;
 
 import backgammon.pieces.BackgammonGroup;
 import backgammon.pieces.Stone;
+import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Piece;
 import game.core.Square;
 import game.core.moves.ITransferMove;

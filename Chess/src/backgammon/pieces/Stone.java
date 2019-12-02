@@ -4,7 +4,10 @@ import java.util.List;
 
 import backgammon.BackgammonBoard;
 import backgammon.moves.SimpleMove;
+import backgammon.moves.BackgammonCompositeMove;
 import backgammon.moves.Capture;
+import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Group;
 import game.core.ITrackPiece;
 import game.core.Move;
@@ -33,39 +36,35 @@ public class Stone extends Piece implements ITrackPiece {
 		
 		Square bar = board.getBar4Piece(this);
 		
-		if (!bar.isEmpty()) {
-			// Есть пленные фигуры. Ход возможен только ими.
-			BackgammonGroup barGroup = (BackgammonGroup) bar.getPiece();
-			
-			if (!barGroup.contains(this))
-				return false;
-
-			List<Square> wayFromBar = board.getWayFromBar(this);
-		}
-		
 		PieceColor color = getColor();
 		Square target = squares[0];
-		
-//		way.forEach(s -> System.out.format("%s ", s.getPiece()));
-//		System.out.println();
-		if (color != board.getMoveColor())
-			return false;
 		
 		int i00 = way.indexOf(board.getSquare(0, 0));
 
 		int iSource = way.indexOf(square);
 		int iTarget = way.indexOf(target);
 		
+		if (!bar.isEmpty()) {
+			// Есть пленные фигуры. Ход возможен только ими.
+			BackgammonGroup barGroup = (BackgammonGroup) bar.getPiece();
+			                                                     
+			if (!barGroup.contains(this))
+				return false;
+			
+			iSource = -1;
+		}
+		
+		if (color != board.getMoveColor())
+			return false;
+		
 		if (iTarget <= iSource)
-			// Назад фигуры не ходят.
 			return false;
 		
 		if (target == square)
 			return false; 
 		
 		if (iTarget != iSource + step1 && 
-				iTarget != iSource + step2 &&
-				iTarget != iSource + step1 + step2)
+				iTarget != iSource + step2)
 			return false;
 	
 		//
@@ -78,7 +77,7 @@ public class Stone extends Piece implements ITrackPiece {
 		
 		// Пока все фигуры такого же цвета не дома,
 		// сбрасывать фигуру с доски нельзя.
-		if (board.isForBearing(target) && !board.allInHome(color))
+		if (board.isForBearing(target) && !board.outPiece(color))
 			return false;
 		
 		// На пустую клетку пойти можно.
@@ -101,6 +100,7 @@ public class Stone extends Piece implements ITrackPiece {
 
 	@Override
 	public Move makeMove(Square... squares) {
+		Square square = squares[0];
 		Square target = squares[1];
 		BackgammonGroup targetPiece = (BackgammonGroup)target.getPiece();
 		
@@ -108,6 +108,7 @@ public class Stone extends Piece implements ITrackPiece {
 			return new Capture(square, target);
 		
 		return new SimpleMove(square, target);
+//		return new BackgammonCompositeMove(3, 3, square, target);
 	}
 
 	@Override

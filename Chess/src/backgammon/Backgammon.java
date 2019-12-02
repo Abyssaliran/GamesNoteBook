@@ -24,7 +24,7 @@ public class Backgammon extends Game {
 		initBoardDefault();
 		
 		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
-		board.setBlackPlayer( new Neznaika() );
+		board.setBlackPlayer( IPlayer.HOMO_SAPIENCE );
 	}
 
 	@Override

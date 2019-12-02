@@ -26,7 +26,9 @@ public class CubesPanel extends Canvas implements Observer {
 
 	private CubePanel cube1Panel;
 	private CubePanel cube2Panel;
-
+	private CubePanel cube3Panel;
+	private CubePanel cube4Panel;
+	
 	private Backgammon game;
 
 	public CubesPanel(GameControlPanel parent, Backgammon game) {
@@ -35,9 +37,9 @@ public class CubesPanel extends Canvas implements Observer {
 		this.game = game;
 		
 		FillLayout layout = new FillLayout(SWT.HORIZONTAL);
-		layout.spacing = 10;
-		layout.marginWidth = 5;
-		layout.marginHeight = 5;
+		layout.spacing = 5;
+		layout.marginWidth = 2;
+		layout.marginHeight = 2;
 		setLayout(layout);
 		
 		Group group = new Group(this, SWT.SHADOW_IN);
@@ -48,6 +50,8 @@ public class CubesPanel extends Canvas implements Observer {
 		BackgammonBoard board = (BackgammonBoard) game.board;
 		cube1Panel = new CubePanel(group, board.cube1);
 		cube2Panel = new CubePanel(group, board.cube2);
+		cube3Panel = new CubePanel(group, board.cube3);
+		cube4Panel = new CubePanel(group, board.cube4);
 		
 		game.board.addObserver(this);
 	}
@@ -61,5 +65,20 @@ public class CubesPanel extends Canvas implements Observer {
 		
 		cube2Panel.cube = board.cube2;
 		cube2Panel.update();
+		
+		if (board.cube1.getValue() == board.cube2.getValue()) {
+			cube3Panel.cube = board.cube1;
+			cube3Panel.update();
+			
+			cube4Panel.cube = board.cube2;
+			cube4Panel.update();
+		} else {
+			cube3Panel.cube = board.cube3;
+			cube3Panel.update();
+			
+			cube4Panel.cube = board.cube4;
+			cube4Panel.update();
+		}
+		
 	}
 }

@@ -3,9 +3,12 @@ package backgammon.moves;
 import java.util.ArrayList;
 import java.util.List;
 
+import backgammon.moves.SimpleMove;
+import backgammon.pieces.BackgammonGroup;
 import game.core.GameOver;
 import game.core.Move;
 import game.core.Piece;
+import game.core.Square;
 
 /**
  * Серия ходов в нардах.
@@ -26,6 +29,13 @@ public class BackgammonCompositeMove implements Move {
 	 */
 	public List<Move> moves = new ArrayList<>();
 	
+	public BackgammonCompositeMove(int cube1, int cube2, Square square, Square target) {
+		this.cube1Value = cube1;
+		this.cube2Value = cube2;
+		
+		this.moves.add(new SimpleMove(square, target));
+	}
+
 	@Override
 	public Piece getPiece() {
 		return null;
