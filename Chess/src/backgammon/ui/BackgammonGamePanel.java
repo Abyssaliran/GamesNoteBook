@@ -148,7 +148,6 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 //				levelSize--;
 			}
 		}
-		System.out.println();
 	}
 
 	int getPieceY(Square square) {
@@ -238,7 +237,7 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 		
 		// Человек сделал ход.
 		BackgammonBoard b = (BackgammonBoard)board;
-		b.dropCubes();
+		//b.dropCubes();
 		b.setBoardChanged();
 	}
 }

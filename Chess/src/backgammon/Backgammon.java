@@ -12,7 +12,7 @@ import game.players.Neznaika;
 public class Backgammon extends Game {
 	static {
 		Game.addPlayer(Backgammon.class, IPlayer.HOMO_SAPIENCE);
-		Game.addPlayer(Backgammon.class, new Neznaika(100));
+		Game.addPlayer(Backgammon.class, new Neznaika());
 	}
 
 	private BackgammonBoard backgamonBoard;
@@ -31,7 +31,7 @@ public class Backgammon extends Game {
 	public void initBoardDefault() {
 		// + по одной колонке для захваченных фигур противника
 		// и для своих сброшенных с доски фигур.
-		super.initBoard(12+1+1, 2);
+		super.initBoard(14, 2);
 		
 //		initDebugPosition();
 		backgamonBoard.initDefaultPosition();

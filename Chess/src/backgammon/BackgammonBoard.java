@@ -25,26 +25,9 @@ public class BackgammonBoard extends Board {
 	public Cube cube3 = new Cube(0);
 	public Cube cube4 = new Cube(0);
 	
-	/**
-	 * Последовательность клеток - путь черных фигур.
-	 * Черные двигаются по часовой стрелке.
-	 */
 	List<Square> blackWay;
-	
-	/**
-	 * Путь пленной черной фигуры.
-	 */
 	List<Square> blackWayFromBar;
-
-	/**
-	 *  Путь у белых фигур как у черных, 
-	 *  но против часовой стрелки.
-	 */
 	List<Square> whiteWay;
-	
-	/**
-	 * Путь пленной белой фигуры.
-	 */
 	List<Square> whiteWayFromBar;
 	
 	public void initWays() {
@@ -111,7 +94,7 @@ public class BackgammonBoard extends Board {
 	}
 	
 	public BackgammonBoard() {
-		reset(12+2, 2);
+		reset(14, 2);
 		
 		initWays();
 		
@@ -121,6 +104,14 @@ public class BackgammonBoard extends Board {
 	public void dropCubes() {
 		cube1.drop();
 		cube2.drop();
+		
+		if (cube1.getValue() == cube2.getValue()) {
+			cube3.setValue(cube1.getValue());
+			cube4.setValue(cube2.getValue());
+		} else {
+			cube3.setValue(0);
+			cube4.setValue(0);
+		}
 	}
 
 	/**
@@ -130,16 +121,9 @@ public class BackgammonBoard extends Board {
 		do { dropCubes(); }
 		while (cube1.getValue() == cube2.getValue());
 	}
-	
+
+	@Override
 	public void startGame() {
-//		// Выбираем случайным образом очередность хода.
-//		dropCubes4Start();
-//		moveColor = (cube1.getValue() > cube2.getValue())
-//				? PieceColor.WHITE : PieceColor.BLACK;
-//		
-//		setBoardChanged();
-		
-		// Пока всегда первыми ходят белые.
 		moveColor = PieceColor.WHITE;
 		
 		for (;;) {
@@ -157,6 +141,27 @@ public class BackgammonBoard extends Board {
 				{ break; }
 
 			moveColor = getOponentColor(moveColor);
+		}
+
+	}
+
+	
+	@Override
+	public void changeMoveColor() {
+		for (;;) {
+			if (cube1.getValue() + cube2.getValue() + cube3.getValue() + cube4.getValue() == 0) {
+				moveColor = getOponentColor(moveColor);
+				dropCubes();
+			}
+			
+			IPlayer player = players.get(moveColor);
+			if (player == IPlayer.HOMO_SAPIENCE)
+				break;
+			
+			try { player.doMove(this, moveColor); } 
+			catch (GameOver e) 
+				{ break; }
+			
 		}
 	}
 
@@ -347,14 +352,9 @@ public class BackgammonBoard extends Board {
 	}
 
 	public void initDebugPosition() {
-		new BackgammonGroup( getSquare(0, 0), PieceColor.WHITE,  5);
-		new BackgammonGroup( getSquare(1, 0), PieceColor.WHITE,  6);
-		new BackgammonGroup( getSquare(2, 0), PieceColor.WHITE,  7);
-		new BackgammonGroup( getSquare(3, 0), PieceColor.WHITE,  8);
-		new BackgammonGroup( getSquare(4, 0), PieceColor.WHITE,  9);
-		new BackgammonGroup( getSquare(5, 0), PieceColor.WHITE, 10);
+		new BackgammonGroup( getSquare(12, 1), PieceColor.WHITE,  15);
 		
-		new BackgammonGroup( getSquare(0, 1), PieceColor.BLACK, 10);
+		new BackgammonGroup( getSquare(12, 0), PieceColor.BLACK, 15);
 
 		initWays();
 	}

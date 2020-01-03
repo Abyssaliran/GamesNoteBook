@@ -4,10 +4,7 @@ import java.util.List;
 
 import backgammon.BackgammonBoard;
 import backgammon.moves.SimpleMove;
-import backgammon.moves.BackgammonCompositeMove;
 import backgammon.moves.Capture;
-import game.core.GameOver;
-import game.core.GameResult;
 import game.core.Group;
 import game.core.ITrackPiece;
 import game.core.Move;
@@ -38,8 +35,6 @@ public class Stone extends Piece implements ITrackPiece {
 		
 		PieceColor color = getColor();
 		Square target = squares[0];
-		
-		int i00 = way.indexOf(board.getSquare(0, 0));
 
 		int iSource = way.indexOf(square);
 		int iTarget = way.indexOf(target);
@@ -64,7 +59,8 @@ public class Stone extends Piece implements ITrackPiece {
 			return false; 
 		
 		if (iTarget != iSource + step1 && 
-				iTarget != iSource + step2)
+				iTarget != iSource + step2 &&
+				iTarget != iSource + step1 + step2)
 			return false;
 	
 		//
@@ -91,7 +87,6 @@ public class Stone extends Piece implements ITrackPiece {
 			return true;	
 		
 		// Врага-одночку можно захватить в плен.
-		// TODO реализовать ход Capture - взятие в плен фигуры противника.
         if (targetPiece.size() == 1)
         	return true;
 		
@@ -102,13 +97,35 @@ public class Stone extends Piece implements ITrackPiece {
 	public Move makeMove(Square... squares) {
 		Square square = squares[0];
 		Square target = squares[1];
-		BackgammonGroup targetPiece = (BackgammonGroup)target.getPiece();
 		
+		BackgammonGroup targetPiece = (BackgammonGroup)target.getPiece();
+		BackgammonBoard board = (BackgammonBoard) square.getBoard();
+		
+		List<Square> way = board.getWay(this);
+		
+		int step1 = board.cube1.getValue();
+		int step2 = board.cube2.getValue();
+		int step3 = board.cube3.getValue();
+		int step4 = board.cube4.getValue();
+		
+		int diff = Math.abs(way.indexOf(square) - way.indexOf(target));
+		
+		if (diff == step1) {
+			board.cube1.setValue(board.cube3.getValue());
+			board.cube3.setValue(0);
+		} else if (diff == step2) {
+			board.cube2.setValue(board.cube4.getValue());
+			board.cube4.setValue(0);
+		} else if (diff == step1 + step2) {
+			board.cube1.setValue(board.cube3.getValue());
+			board.cube2.setValue(board.cube4.getValue());
+			board.cube3.setValue(0);
+			board.cube4.setValue(0);
+		} 
 		if (!target.isEmpty() && targetPiece.isEnemy(this) && targetPiece.size() == 1)
 			return new Capture(square, target);
 		
 		return new SimpleMove(square, target);
-//		return new BackgammonCompositeMove(3, 3, square, target);
 	}
 
 	@Override
