@@ -103,20 +103,20 @@ public class Stone extends Piece implements ITrackPiece {
 		
 		List<Square> way = board.getWay(this);
 		
-		int step1 = board.cube1.getValue();
-		int step2 = board.cube2.getValue();
-		int step3 = board.cube3.getValue();
-		int step4 = board.cube4.getValue();
+		int cube1 = board.cube1.getValue();
+		int cube2 = board.cube2.getValue();
+		int cube3 = board.cube3.getValue();
+		int cube4 = board.cube4.getValue();
 		
 		int diff = Math.abs(way.indexOf(square) - way.indexOf(target));
 		
-		if (diff == step1) {
+		if (diff == cube1) {
 			board.cube1.setValue(board.cube3.getValue());
 			board.cube3.setValue(0);
-		} else if (diff == step2) {
+		} else if (diff == cube2) {
 			board.cube2.setValue(board.cube4.getValue());
 			board.cube4.setValue(0);
-		} else if (diff == step1 + step2) {
+		} else if (diff == cube1 + cube2) {
 			board.cube1.setValue(board.cube3.getValue());
 			board.cube2.setValue(board.cube4.getValue());
 			board.cube3.setValue(0);

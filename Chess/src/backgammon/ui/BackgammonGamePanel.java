@@ -124,7 +124,7 @@ class BackgammonBoardPanel extends GameBoard implements IPieceProvider {
 
 		// Фигуры выставляются слоями;
 		// 5 фигур на 1-м уровне, 4 фигуры на втором, ...
-		int levelSize = 5;
+		int levelSize = 6;
 
 		for (int kPiece = 0; kPiece < group.size(); kPiece++) {
 			int level = (1+kPiece) / levelSize;

@@ -12,14 +12,7 @@ import game.core.Square;
  * Ход с захватом одинокой вражеской фигуры в плен.
  */
 public class Capture extends SimpleMove {
-	/**
-	 * Фигура которая делает ход.
-	 */
 	private BackgammonGroup piece;
-	
-	/**
-	 * Вражеская фигура захваченная в плен.
-	 */
 	private BackgammonGroup enemy;
 	
 	public Capture(Square source, Square target) {
@@ -37,13 +30,19 @@ public class Capture extends SimpleMove {
 
 	@Override
 	public void doMove() {
+		BackgammonGroup enemyGroup;
 		BackgammonBoard board = (BackgammonBoard) source.getBoard();
-		
 		Square square4Enemy = board.getBar4Piece(enemy);
 		
+		Stone enemyStone = enemy.pushStone();
 		enemy.remove();
-		square4Enemy.setPiece(enemy);
-		
+		if (square4Enemy.isEmpty())
+			enemyGroup = new BackgammonGroup(square4Enemy, enemyStone);
+		else {
+			enemyGroup = (BackgammonGroup) square4Enemy.getPiece();
+			enemyGroup.add(enemyStone);
+		}
+		square4Enemy.setPiece(enemyGroup);
 		super.doMove();
 	}
 	
