@@ -114,9 +114,26 @@ public class BackgammonBoard extends Board {
 		}
 	}
 
-	/**
-	 * Бросание кубиков чтобы определить кто пойдет первым.
-	 */
+	public Boolean isAnyValidMoves(PieceColor color) {
+		for (int v = 0; v < nV; v++)
+			for (int h = 0; h < nH; h++) {
+				Square source = getSquare(v, h);
+				Piece piece = source.getPiece();
+				if (piece == null)
+					continue;
+				
+				if (piece.getColor() == color) {
+					for (int new_v = 0; new_v < nV; new_v++)
+						for (int new_h = 0; new_h < nH; new_h++) {
+							if (piece.isCorrectMove(getSquare(new_v, new_h))) {
+								return true;
+							}
+				}
+			}
+		}
+		return false;
+	}
+	
 	public void dropCubes4Start() {
 		do { dropCubes(); }
 		while (cube1.getValue() == cube2.getValue());
@@ -149,7 +166,8 @@ public class BackgammonBoard extends Board {
 	@Override
 	public void changeMoveColor() {
 		for (;;) {
-			if (cube1.getValue() + cube2.getValue() + cube3.getValue() + cube4.getValue() == 0) {
+			if (cube1.getValue() + cube2.getValue() + cube3.getValue() + cube4.getValue() == 0
+				|| isAnyValidMoves(moveColor) == false) {
 				moveColor = getOponentColor(moveColor);
 				dropCubes();
 			}

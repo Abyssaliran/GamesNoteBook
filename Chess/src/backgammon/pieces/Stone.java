@@ -58,9 +58,16 @@ public class Stone extends Piece implements ITrackPiece {
 		if (target == square)
 			return false; 
 		
+		
+		if (board.isForBearing(target) && 
+				board.outPiece(color) &&
+				(iTarget < iSource + step1 ||
+				 iTarget < iSource + step2)) {
+			 return true;
+		 }
+		
 		if (iTarget != iSource + step1 && 
-				iTarget != iSource + step2 &&
-				iTarget != iSource + step1 + step2)
+				iTarget != iSource + step2)
 			return false;
 	
 		//
@@ -108,7 +115,19 @@ public class Stone extends Piece implements ITrackPiece {
 		int cube3 = board.cube3.getValue();
 		int cube4 = board.cube4.getValue();
 		
+		PieceColor color = getColor();
+		
 		int diff = Math.abs(way.indexOf(square) - way.indexOf(target));
+		
+		if (board.isForBearing(target) && board.outPiece(color)) {
+			if (diff < cube1) {
+				board.cube1.setValue(board.cube3.getValue());
+				board.cube3.setValue(0);
+			} else if (diff < cube2) {
+				board.cube2.setValue(board.cube4.getValue());
+				board.cube4.setValue(0);
+			} 
+		}
 		
 		if (diff == cube1) {
 			board.cube1.setValue(board.cube3.getValue());
@@ -116,12 +135,8 @@ public class Stone extends Piece implements ITrackPiece {
 		} else if (diff == cube2) {
 			board.cube2.setValue(board.cube4.getValue());
 			board.cube4.setValue(0);
-		} else if (diff == cube1 + cube2) {
-			board.cube1.setValue(board.cube3.getValue());
-			board.cube2.setValue(board.cube4.getValue());
-			board.cube3.setValue(0);
-			board.cube4.setValue(0);
-		} 
+		}
+		
 		if (!target.isEmpty() && targetPiece.isEnemy(this) && targetPiece.size() == 1)
 			return new Capture(square, target);
 		
