@@ -10,9 +10,8 @@ public class Cube implements IRandomGenerator {
 	private int N = 6;
 
 	private int value;
-	
-	public Cube(int a) {
-		value = a;
+	public Cube(int n) {
+		value = n;
 	}
 	
 	public Cube() {
@@ -27,6 +26,10 @@ public class Cube implements IRandomGenerator {
 	@Override
 	public int getValue() {
 		return value;
+	}
+	
+	public void setValue(int value) {
+		this.value = value;
 	}
 	
 	public String toString() {
