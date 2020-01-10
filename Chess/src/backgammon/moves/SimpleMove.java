@@ -1,5 +1,6 @@
 package backgammon.moves;
 
+import backgammon.BackgammonBoard;
 import backgammon.pieces.BackgammonGroup;
 import backgammon.pieces.Stone;
 import game.core.GameOver;
@@ -40,18 +41,21 @@ public class SimpleMove implements ITransferMove {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		doMove(source, target);
 	}
 	
 	@Override
 	public void undoMove() {
-		doMove(target, source);
+		try {
+			doMove(target, source);
+		} catch (GameOver e) { }
 	}
 
 	static
-	public void doMove(Square source, Square target) {
+	public void doMove(Square source, Square target) throws GameOver {
 		BackgammonGroup sourceGroup = (BackgammonGroup) source.getPiece();
+		BackgammonBoard board = (BackgammonBoard) target.getBoard();
 		
 		Stone stone = sourceGroup.pushStone();
 
@@ -67,6 +71,12 @@ public class SimpleMove implements ITransferMove {
 			targetGroup.add(stone);
 		}
 		target.setPiece(targetGroup);
+		
+		if (board.isForBearing(target, target.getPiece().getColor())) {
+			if (targetGroup.size() == 15) {
+				throw new GameOver( GameResult.win(target.getPiece().getColor()) );
+			}
+		}
 	}
 
 	@Override
