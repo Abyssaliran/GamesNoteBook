@@ -43,7 +43,12 @@ public class Capture extends SimpleMove {
 			enemyGroup.add(enemyStone);
 		}
 		square4Enemy.setPiece(enemyGroup);
-		super.doMove();
+		try {
+			super.doMove();
+		} catch (GameOver e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
