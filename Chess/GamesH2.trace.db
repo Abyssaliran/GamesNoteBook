@@ -53,3 +53,6 @@ CREATE TABLE GAMES (
  Result VARCHAR(50) NOT NULL, 
  moves VARCHAR(50) NOT NULL 
 ) [42000-173]
+01-17 13:52:26 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Table "GAMES" not found; SQL statement:
+select DISTINCT(WHITE) from GAMES order by WHITE [42102-173]

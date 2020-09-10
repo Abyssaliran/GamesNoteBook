@@ -223,7 +223,7 @@ public class GamesNotebook {
 		
 		// Добавление вкладок - инструментов.
 		addEditorTab(toolsFolder);
-		addGameDBTab(toolsFolder);
+//		addGameDBTab(toolsFolder);
 		addCompetitionTamerlanTab(toolsFolder);
 		addCompetitionReversiTab(toolsFolder);
 	}
