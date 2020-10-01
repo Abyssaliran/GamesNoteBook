@@ -53,6 +53,8 @@
 ## 12. Прорыв
 + [Правила](https://www.chessprogramming.org/Breakthrough_(Game))
 
+Задорожная
+
 ## 13. Шахматы Фишера
 + [Правила](https://www.chessprogramming.org/Chess960)
 
