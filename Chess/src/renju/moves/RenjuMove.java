@@ -83,7 +83,8 @@ public class RenjuMove implements Move {
 		int hPiece = piece.square.h;
 		
 		for (Dirs[] dir : allDirs) {
-			int lineCount = 0;
+//			int lineCount = 0;
+			int lineCount = 1; // LIKE add
 			
 			for (Dirs d : dir) { // Две стороны одного направления.
 				int v = vPiece;

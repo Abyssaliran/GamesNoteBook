@@ -1,12 +1,16 @@
 package game.ui.listeners;
 
+import javax.swing.JOptionPane;
+
 import game.core.Board;
+import game.core.Game;
 import game.core.GameOver;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 import game.ui.GameBoard;
+import renju.pieces.Stone;
 
 /**
  * Слушатель событий о нажатии кнопок мыши используемых 
@@ -25,6 +29,8 @@ public class PutPieceListener implements IGameListner {
 	 */
 	private final GameBoard boardPanel;
 
+	private Game cur_game;
+	
 	/**
 	 * Создать слушателя событий от нажатий кнопок мыши 
 	 * используемых для постановки новой фигуры на доску.
@@ -36,6 +42,10 @@ public class PutPieceListener implements IGameListner {
 		this.boardPanel = boardPanel;
 	}
 	
+	public PutPieceListener(GameBoard boardPanel, Game game) {
+		this(boardPanel);
+		cur_game = game;
+	}
 	@Override
 	public void mouseUp(Square s, int button) {}
 	
@@ -67,6 +77,13 @@ public class PutPieceListener implements IGameListner {
 			// нарисуют новое состояние доски.
 			board.setBoardChanged();
 			boardPanel.redraw();
+			
+			//Game over prompt LIKE add 2020-10-01
+			int mesg = JOptionPane.showConfirmDialog(null, "You win！！！  "+"\n Do you want to play again ?", "Game Over",JOptionPane.YES_NO_OPTION);
+	        if(mesg == 0) {
+	        	cur_game.initBoardDefault();
+				board.startGame();
+	        }
 			return;
 		}
 		

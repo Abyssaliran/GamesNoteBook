@@ -19,8 +19,9 @@ public class RenjuBoardPanel extends AsiaBoard implements IPieceProvider {
 			super(composite, game.board);
 
 			// Слушатель мыши для постановки новой фигуры на доску.
-			listener = new PutPieceListener(this);
-
+//			listener = new PutPieceListener(this);
+			listener = new PutPieceListener(this, game); //LIKE add
+			
 			// Слушатель мыши для отрисовки подсказки на доске - 
 			// можно ли ставить фигуру на клетку на доски.
 			mouseMoveListener = PutPiecePromptListener.EMPTY;
