@@ -22,42 +22,42 @@ import game.ui.listeners.MovePieceListener;
 public class FisherBoardPanel extends EuropeBoard {
     public static final Map<PieceColor, Map<Class<? extends Piece>, Image>> pieceImages;
 
-	static {
+    static {
         Map<Class<? extends Piece>, Image> whites = new HashMap<>();
         Map<Class<? extends Piece>, Image> blacks = new HashMap<>();
 
-		pieceImages = new HashMap<>();
-		pieceImages.put(PieceColor.WHITE, whites);
-		pieceImages.put(PieceColor.BLACK, blacks);
+        pieceImages = new HashMap<>();
+        pieceImages.put(PieceColor.WHITE, whites);
+        pieceImages.put(PieceColor.BLACK, blacks);
 
-		// Инициализируем карту изображений белых фигур.
-		//
-		whites.put(Pawn.class,   ChessImages.imagePawnWhite);
-		whites.put(Rook.class,   ChessImages.imageRookWhite);
-		whites.put(Knight.class, ChessImages.imageKnightWhite);
-		whites.put(Bishop.class, ChessImages.imageBishopWhite);
-		whites.put(Queen.class,  ChessImages.imageQueenWhite);
-		whites.put(King.class,   ChessImages.imageKingWhite);
-		
-		// Инициализируем карту изображений черных фигур.
-		//
-		blacks.put(Pawn.class,   ChessImages.imagePawnBlack);
-		blacks.put(Rook.class,   ChessImages.imageRookBlack);
-		blacks.put(Knight.class, ChessImages.imageKnightBlack);
-		blacks.put(Bishop.class, ChessImages.imageBishopBlack);
-		blacks.put(Queen.class,  ChessImages.imageQueenBlack);
-		blacks.put(King.class,   ChessImages.imageKingBlack);
-	}
+        // Инициализируем карту изображений белых фигур.
+        //
+        whites.put(Pawn.class,   ChessImages.imagePawnWhite);
+        whites.put(Rook.class,   ChessImages.imageRookWhite);
+        whites.put(Knight.class, ChessImages.imageKnightWhite);
+        whites.put(Bishop.class, ChessImages.imageBishopWhite);
+        whites.put(Queen.class,  ChessImages.imageQueenWhite);
+        whites.put(King.class,   ChessImages.imageKingWhite);
 
-	public FisherBoardPanel(Composite composite, Game game) {
-		super(composite, game.board);
-		
-		listener = new MovePieceListener(this);
-	}
+        // Инициализируем карту изображений черных фигур.
+        //
+        blacks.put(Pawn.class,   ChessImages.imagePawnBlack);
+        blacks.put(Rook.class,   ChessImages.imageRookBlack);
+        blacks.put(Knight.class, ChessImages.imageKnightBlack);
+        blacks.put(Bishop.class, ChessImages.imageBishopBlack);
+        blacks.put(Queen.class,  ChessImages.imageQueenBlack);
+        blacks.put(King.class,   ChessImages.imageKingBlack);
+    }
 
-	public Image getPieceImage(Piece piece, PieceColor color) {
-		return pieceImages
-				.get(color)
-				.get( piece.getClass() );
-	}
+    public FisherBoardPanel(Composite composite, Game game) {
+        super(composite, game.board);
+
+        listener = new MovePieceListener(this);
+    }
+
+    public Image getPieceImage(Piece piece, PieceColor color) {
+        return pieceImages
+                .get(color)
+                .get( piece.getClass() );
+    }
 }

@@ -1,11 +1,14 @@
 package fisher.moves;
 
+import chess.moves.SimpleMove;
 import chess.pieces.Rook;
 import game.core.Board;
 import game.core.Square;
 
+import java.io.Console;
 
-public class Castling extends chess.moves.Castling {
+
+public class Castling extends SimpleMove {
 
 	private Square rookSource;
 	private Square rookTarget;
@@ -37,31 +40,39 @@ public class Castling extends chess.moves.Castling {
 
 	/*
 	 * Переставить короля и ладью.
-	 * Если ладья должна попасть на место короля, то сначала нужно передвинуть короля, а затем ладью.
+	 * Ищем пустую клетку и переставляем ладью через нее потому что может быть ситуация, когда ладье и королю нужно обменяться клетками
 	 */
 	@Override
 	public void doMove() {
-		if (rookTarget == source) {
-			super.doMove();
-			rookSource.movePieceTo(rookTarget);
-		} else {
-			rookSource.movePieceTo(rookTarget);
-			super.doMove();
+		Board board = source.getBoard();
+		for (int i = 0; i < board.nV; i++) {
+			for (int j = 0; j < board.nH; j++) {
+				if (board.getSquare(i, j).isEmpty()) {
+					rookSource.movePieceTo(board.getSquare(i, j));
+					super.doMove();
+					board.getSquare(i, j).movePieceTo(rookTarget);
+					return;
+				}
+			}
 		}
 	}
 
 	/*
 	 * Вернуть короля и ладью в исходной состояние.
-	 * Если ладья переходила на место короля, то для отмены нужно сначала передвинуть ладью, а затем короля.
+	 * Возврат делаем в обратном порядке от прямых действий
 	 */
 	@Override
 	public void undoMove() {
-		if (rookTarget == source) {
-			rookTarget.movePieceTo(rookSource);
-			super.undoMove();
-		} else {
-			super.undoMove();
-			rookTarget.movePieceTo(rookSource);
+		Board board = source.getBoard();
+		for (int i = 0; i < board.nV; i++) {
+			for (int j = 0; j < board.nH; j++) {
+				if (board.getSquare(i, j).isEmpty()) {
+					rookTarget.movePieceTo(board.getSquare(i, j));
+					super.undoMove();
+					board.getSquare(i, j).movePieceTo(rookSource);
+					return;
+				}
+			}
 		}
 	}
 

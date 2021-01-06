@@ -32,15 +32,14 @@ public class King extends chess.pieces.King {
         Board board = square.getBoard();
 
         if (square.isNear(target) && (target.isEmpty() || target.getPiece().getColor() != square.getPiece().getColor())) {
-            ismoved = true;
             return true; //Если идем обычным ходом либо на пустую клетку, либо на клетку с фигурой противника
         }
 
-        if (target.v == 2) {
+        if (target.v == 2 && dh == 0) {
             //Возможно длинная рокировка
             if (!ismoved) { //Короля не двигали
                 if (dv <= -2) {
-                    if (target.isEmpty()) {
+                    if (target.isEmpty() || target.getPiece().getColor() == getColor() && target.getPiece() instanceof Rook) {
                         Piece rook = new Rook();
                         List<Piece> l = getFriends();
                         boolean foundRook = false;
@@ -55,12 +54,11 @@ public class King extends chess.pieces.King {
                         }
                         int rookV = rook.square.v, rookH = rook.square.h;
                         if (rookH == kingH) { // Ладья и король на одном ряду.
-                            for (int i = rookV + 1; i < kingV; i++) {
+                            for (int i = Math.min(rookV, 2) + 1; i < kingV; i++) {
                                 if (!board.isEmpty(i, kingH)) {
                                     return false; //Есть фигуры между королем и ладьей.
                                 }
                             }
-                            ismoved = true;
                             return true;
                         }
                         return false;
@@ -80,11 +78,11 @@ public class King extends chess.pieces.King {
             }
         }
 
-        if (target.v == 6) {
+        if (target.v == 6 && dh == 0) {
             //Возможно короткая рокировка
             if (!ismoved) { //Короля не двигали
                 if (dv >= 2) {
-                    if (target.isEmpty()) {
+                    if (target.isEmpty() || target.getPiece().getColor() == getColor() && target.getPiece() instanceof Rook) {
                         Piece rook = new Rook();
                         List<Piece> l = getFriends();
                         boolean foundRook = false;
@@ -94,17 +92,16 @@ public class King extends chess.pieces.King {
                                 rook = l.get(i);
                             }
                         }
-                        if (!foundRook) { //Нет ладьи слева от короля.
+                        if (!foundRook) { //Нет ладьи справа от короля.
                             return false;
                         }
                         int rookV = rook.square.v, rookH = rook.square.h;
                         if (rookH == kingH) { // Ладья и король на одном ряду.
-                            for (int i = kingV + 1; i < rookV; i++) {
+                            for (int i = kingV + 1; i < Math.max(rookV, 6); i++) {
                                 if (!board.isEmpty(i, kingH)) {
                                     return false; //Есть фигуры между королем и ладьей.
                                 }
                             }
-                            ismoved = true;
                             return true;
                         }
                         return false;
@@ -124,7 +121,7 @@ public class King extends chess.pieces.King {
             }
         }
 
-        if (square.isNear(target)) {
+        if (square.isNear(target) && target.getPiece().getColor() != getColor()) {
             return true;
         }
 
@@ -138,13 +135,16 @@ public class King extends chess.pieces.King {
 
         int dv = Math.abs(target.v - source.v);
         if ((target.v == 2 || target.v == 6) && target.h == source.h) {
+            ismoved = true;
             return new Castling(squares);
         }
 
         if (!target.isEmpty()) {
+            ismoved = true;
             return new Capture(squares);
         }
 
+        ismoved = true;
         return new SimpleMove(squares);
     }
 
