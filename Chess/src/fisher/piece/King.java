@@ -17,7 +17,7 @@ public class King extends chess.pieces.King {
 
     }
 
-    boolean ismoved = false;
+    public boolean ismoved = false;
 
     @Override
     public boolean isCorrectMove(Square... squares) {
@@ -134,17 +134,14 @@ public class King extends chess.pieces.King {
         Square target = squares[1];
 
         int dv = Math.abs(target.v - source.v);
-        if ((target.v == 2 || target.v == 6) && target.h == source.h) {
-            ismoved = true;
+        if ((target.v == 2 || target.v == 6) && target.h == source.h && Math.abs(dv) != 1 && (source.h == 0 || source.h == 7)) {
             return new Castling(squares);
         }
 
         if (!target.isEmpty()) {
-            ismoved = true;
             return new Capture(squares);
         }
 
-        ismoved = true;
         return new SimpleMove(squares);
     }
 

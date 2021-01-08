@@ -6,6 +6,7 @@ import chess.pieces.Knight;
 import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
+import fisher.players.Magnus;
 import game.core.Game;
 import game.core.PieceColor;
 import game.players.IPlayer;
@@ -16,6 +17,7 @@ public class FisherChess extends Game {
 	static {
 		addPlayer(FisherChess.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(FisherChess.class, new Neznaika());
+		addPlayer(FisherChess.class, new Magnus());
 
 		addPieces();
 	}

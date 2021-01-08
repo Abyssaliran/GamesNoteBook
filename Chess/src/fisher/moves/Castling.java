@@ -5,8 +5,6 @@ import chess.pieces.Rook;
 import game.core.Board;
 import game.core.Square;
 
-import java.io.Console;
-
 
 public class Castling extends SimpleMove {
 
