@@ -34,7 +34,7 @@ public class BreakThrough extends Game {
 	}
 
 	/**
-	 * Расстановка фигур шашек в начальную позицию.
+	 * Расстановка фигур пешек в начальную позицию.
 	 */
 	public BreakThrough() {
 		initBoardDefault();
