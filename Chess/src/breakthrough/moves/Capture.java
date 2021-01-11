@@ -1,12 +1,12 @@
 package breakthrough.moves;
 
+import game.core.GameOver;
 import game.core.Piece;
 import game.core.Square;
 
 /**
  * Взятие фигуры.
- * TODO Гаца Павел
- * 
+s * 
  * Правила:
  * https://www.chessprogramming.org/Breakthrough_(Game)
  */
@@ -22,5 +22,18 @@ public class Capture extends SimpleMove {
 	@Override
 	public String toString() {
 		return "" + piece + source + "x" + target;
+	}
+	
+	@Override
+	public void doMove() throws GameOver {
+		captured.remove();
+		super.doMove();
+	}
+
+
+	@Override
+	public void undoMove() {
+		super.undoMove();
+		source.setPiece(captured);
 	}
 }

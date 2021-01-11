@@ -1,5 +1,7 @@
 package breakthrough.moves;
 
+import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Piece;
 import game.core.Square;
 import game.core.moves.ITransferMove;
@@ -23,8 +25,14 @@ public class SimpleMove implements ITransferMove  {
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		piece.moveTo(target);
+		
+		if (piece.isWhite() && target.h == 0)
+			throw new GameOver( GameResult.win(piece) );
+		
+		if (piece.isBlack() && target.h == piece.square.getBoard().nH-1)
+			throw new GameOver( GameResult.win(piece) );
 	}
 
 	@Override

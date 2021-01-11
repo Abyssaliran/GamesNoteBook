@@ -1,5 +1,6 @@
 package breakthrough.pieces;
 
+import breakthrough.moves.Capture;
 import breakthrough.moves.SimpleMove;
 import game.core.Move;
 import game.core.Piece;
@@ -18,12 +19,7 @@ public class Pawn extends Piece {
 	@Override
 	public boolean isCorrectMove(Square... squares) {
 		Square target = squares[0];
-		Piece targetPiece = target.getPiece();
-		
-		if (targetPiece != null) 
-//			if (targetPiece.getColor() == getColor())
-				return false; // На клетки занятые фигурами не ходим.
-		
+
 		boolean isWhite = getColor() == PieceColor.WHITE;
 		int step = isWhite ? -1 : 1;
 
@@ -34,11 +30,21 @@ public class Pawn extends Piece {
 		if (dv > 1) // Слишком сместились в сторону.
 			return false;
 		
+		Piece targetPiece = target.getPiece();
+		
+		if (targetPiece != null) 
+			if (targetPiece.getColor() == getColor())
+				return false; // На клетки занятые своими фигурами не ходим.
+		
 		return dh == step; // Один шаг для пешки этого цвета
 	}
 
 	@Override
 	public Move makeMove(Square... squares) {
+		Square target = squares[1];
+		if (!target.isEmpty())
+			return new Capture(squares);
+		
 		return new SimpleMove(squares);
 	}
 	
