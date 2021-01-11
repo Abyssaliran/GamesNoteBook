@@ -4,6 +4,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import breakthrough.pieces.Pawn;
+import breakthrough.players.Aesculapius;
+import breakthrough.players.Artemis;
+import breakthrough.players.Athene;
+import breakthrough.players.Hephaistos;
 import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -23,6 +27,10 @@ public class BreakThrough extends Game {
 	static {
 		addPlayer(BreakThrough.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(BreakThrough.class, new Neznaika());
+		addPlayer(BreakThrough.class, new Aesculapius());
+		addPlayer(BreakThrough.class, new Artemis());
+		addPlayer(BreakThrough.class, new Athene());
+		addPlayer(BreakThrough.class, new Hephaistos());
 	}
 
 	/**
