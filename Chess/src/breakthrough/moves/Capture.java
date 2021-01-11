@@ -20,20 +20,19 @@ public class Capture extends SimpleMove {
 	}
 	
 	@Override
-	public String toString() {
-		return "" + piece + source + "x" + target;
-	}
-	
-	@Override
 	public void doMove() throws GameOver {
 		captured.remove();
 		super.doMove();
 	}
 
-
 	@Override
 	public void undoMove() {
 		super.undoMove();
-		source.setPiece(captured);
+		target.setPiece(captured);
+	}
+	
+	@Override
+	public String toString() {
+		return "" + piece + source + "x" + target;
 	}
 }
