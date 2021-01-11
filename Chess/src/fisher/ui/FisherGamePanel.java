@@ -2,7 +2,6 @@ package fisher.ui;
 
 import org.eclipse.swt.widgets.Composite;
 
-import chess.ui.ChessBoardPanel;
 import fisher.FisherChess;
 import game.ui.GamePanel;
 
@@ -10,7 +9,6 @@ public class FisherGamePanel extends GamePanel {
 	public FisherGamePanel(Composite parent) {
 		super(parent, new FisherChess());
 		
-		insertSquares( new ChessBoardPanel(this, game) );
+		insertSquares( new FisherBoardPanel(this, game) );
 	}
-
 }
