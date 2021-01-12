@@ -7,8 +7,10 @@ import game.players.IPlayer;
 import game.players.Vinni;
 import renju.pieces.Stone;
 import renju.players.Buratino;
+import renju.players.Carlo;
 import renju.players.Karabas;
 import renju.players.KarabasClever;
+import renju.players.Malvina;
 import renju.players.Nancy;
 
 public class Renju extends Game {
@@ -23,6 +25,8 @@ public class Renju extends Game {
 		Game.addPlayer(Renju.class, new Karabas(pieceProvider));
 		Game.addPlayer(Renju.class, new KarabasClever(pieceProvider));
 		Game.addPlayer(Renju.class, new Nancy(pieceProvider));
+		Game.addPlayer(Renju.class, new Malvina(pieceProvider));
+		Game.addPlayer(Renju.class, new Carlo(pieceProvider));
 	}
 
 	public Renju() {
