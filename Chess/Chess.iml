@@ -20,5 +20,6 @@
     <orderEntry type="library" exported="" name="org.eclipse.core.runtime_3.15.300.v20190508-0543" level="project" />
     <orderEntry type="library" exported="" name="org.eclipse.equinox.common_3.10.400.v20190516-1504" level="project" />
     <orderEntry type="library" name="lib-windows (3)" level="project" />
+    <orderEntry type="library" name="lib-linux" level="project" />
   </component>
 </module>
