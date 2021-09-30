@@ -64,7 +64,7 @@ public class GamesNotebook {
 
 		TabFolder mainFolder = new TabFolder(shell, SWT.BOTTOM);
 		addGames(mainFolder);
-//		addTools(mainFolder);
+		addTools(mainFolder);
 
 		shell.open();
 		while (!shell.isDisposed()) {

@@ -24,6 +24,8 @@ public class FisherChess extends Game {
 
 	static
 	protected  void addPieces() {
+		allPieces.clear();
+		
 		addPiece(PieceColor.WHITE, new Pawn());
 		addPiece(PieceColor.WHITE, new Rook());
 		addPiece(PieceColor.WHITE, new Knight());

@@ -28,6 +28,7 @@ public class Game {
 
 	public Game() {
 		board = new Board();
+		allPieces.clear();
 	}
 
     public Game(Board board) {
@@ -52,7 +53,7 @@ public class Game {
 		players.add(player);
 	}
 
-	private static final
+	protected static final
 	Map<PieceColor, List<Piece>> allPieces = new HashMap<>();
 
 	/**

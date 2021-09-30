@@ -34,13 +34,17 @@ public class ConsoleDBStart {
                             if (path.endsWith(".zip")) {
                                 ZipFile zipFile = new ZipFile(path);
                                 ZipInputStream zin = new ZipInputStream(new FileInputStream(path));
+                                
                                 ZipEntry entry;
-                                while ((entry = zin.getNextEntry()) != null) {
-                                    if (entry.getName().endsWith(".pgn")) {
-                                        PGNLoader.writePGNtoDb(new InputStreamReader(zipFile.getInputStream(entry)));
-                                    }
-                                }
-
+                                while ((entry = zin.getNextEntry()) != null)
+									if (entry.getName().endsWith(".pgn")) {
+										InputStream is = zipFile.getInputStream(entry);
+										InputStreamReader pgn = new InputStreamReader(is);
+										PGNLoader.writePGNtoDb(pgn);
+									}
+                                
+                                zin.close();
+                                zipFile.close();
                             }
                         } catch (IOException | SQLException e) {
                             e.printStackTrace();
