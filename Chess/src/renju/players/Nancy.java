@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 
 import game.core.Board;
 import game.core.Dirs;
-import game.core.Game;
 import game.core.GameOver;
 import game.core.GameResult;
 import game.core.IPieceProvider;
@@ -36,8 +35,7 @@ public class Nancy extends PutPiecePlayer implements IPlayer {
 	
 	private int[] humanPoint;
 	private Board local_board;
-	private PieceColor local_color;
-
+	
 	@Override
 	public String getName() {
 		return "Nancy(очень умнa)";
@@ -150,8 +148,6 @@ public class Nancy extends PutPiecePlayer implements IPlayer {
 	public void doMove(Board board, PieceColor color) throws GameOver {
 		
 		local_board=board;
-		local_color=color;
-		
 		List<Move> correctMoves = getCorrectMoves(board, color);
 
 		if (correctMoves.isEmpty())

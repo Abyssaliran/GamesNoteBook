@@ -16,8 +16,6 @@ import org.eclipse.swt.widgets.Display;
 import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
-import game.core.Square;
-import game.ui.GameBoard;
 import game.ui.GamePanel;
 import game.ui.WoodBoard;
 import game.ui.images.GameImages;

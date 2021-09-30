@@ -25,11 +25,10 @@ public class KarabasClever extends PutPiecePlayer implements IPlayer {
 	private int MAX_MOVES = 20 * 20;
 	final int MAX_WEIGHT_THAT_CAN_BE=90;
 	private int maxWeight;
-	private Move saveMove;
 	final Comparator<? super Move> brain = (m1, m2) -> getMoveWeight(m2) - getMoveWeight(m1);
 	
 	private Board local_board;
-	private PieceColor local_color;
+	 PieceColor local_color;
 
 	@Override
 	public String getName() {
@@ -89,7 +88,7 @@ public class KarabasClever extends PutPiecePlayer implements IPlayer {
 		return Math.max(Math.abs(x1-x2), Math.abs(y1-y2));
 	}
 
-	private boolean checkWillEnemyWin(PieceColor color)
+	boolean checkWillEnemyWin(PieceColor color)
 	{
 		
 		List<Move> correctMoves = getCorrectMoves(local_board, (color==PieceColor.BLACK)?PieceColor.WHITE:PieceColor.BLACK);
@@ -101,7 +100,7 @@ public class KarabasClever extends PutPiecePlayer implements IPlayer {
 			if (moveWeight>moveWeightMax)
 			{
 				moveWeightMax=moveWeight;
-				saveMove=correctMoves.get(i);
+				correctMoves.get(i);
 			}	
 	    }
 		

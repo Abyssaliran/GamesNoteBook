@@ -3,8 +3,6 @@ package backgammon.moves;
 import java.util.ArrayList;
 import java.util.List;
 
-import backgammon.moves.SimpleMove;
-import backgammon.pieces.BackgammonGroup;
 import game.core.GameOver;
 import game.core.Move;
 import game.core.Piece;

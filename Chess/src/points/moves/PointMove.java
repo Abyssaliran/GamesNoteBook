@@ -26,7 +26,8 @@ public class PointMove implements Move {
 			}
 		}
 	} 
-	private void getcount() // печать в консоль маски
+	
+	void getcount() // печать в консоль маски
 	{
 		
 		for (int i=0; i<20; i++)

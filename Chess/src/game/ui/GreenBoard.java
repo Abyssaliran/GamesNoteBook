@@ -6,7 +6,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 
 import game.core.Board;
-import game.ui.GameBoard;
 
 /**
  * Зеленая доска c клетками в рамке.

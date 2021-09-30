@@ -28,7 +28,7 @@ public class Game {
 
 	public Game() {
 		board = new Board();
-		allPieces.clear();
+//		allPieces.clear();
 	}
 
     public Game(Board board) {

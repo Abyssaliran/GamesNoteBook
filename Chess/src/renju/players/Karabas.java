@@ -12,7 +12,6 @@ import game.core.IPieceProvider;
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
-import game.core.Square;
 import game.players.IPlayer;
 import game.players.PutPiecePlayer;
 import renju.moves.RenjuMove;
@@ -27,7 +26,7 @@ public class Karabas extends PutPiecePlayer implements IPlayer {
 	final Comparator<? super Move> brain = (m1, m2) -> getMoveWeight(m2) - getMoveWeight(m1);
 
 	private Board local_board;
-	private PieceColor local_color;
+	PieceColor local_color;
 
 	@Override
 	public String getName() {

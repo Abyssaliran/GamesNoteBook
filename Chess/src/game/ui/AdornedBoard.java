@@ -172,7 +172,7 @@ public class AdornedBoard extends Canvas implements Observer {
 	}
 
 	/**
-	 * Показать на экрне содержимое ящиков с фигурами.
+	 * Показать на экране содержимое ящиков с фигурами.
      */
 	public void updatePieceBoxes() {
 		if (!(boardPanel.board instanceof BoardWithBoxes))
@@ -242,7 +242,7 @@ public class AdornedBoard extends Canvas implements Observer {
 			setVisible(true);
 
             GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
-			data.heightHint = pieceSize + (pieceBox.size() / nV)* pieceSize;
+			data.heightHint = pieceSize + (pieceBox.size() / nV) * pieceSize;
 			data.verticalIndent = 0;
 			data.horizontalIndent = 0;
 			data.verticalSpan = 0;

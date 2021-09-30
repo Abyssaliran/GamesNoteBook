@@ -1,6 +1,5 @@
 package tamerlan.playres;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -11,7 +10,14 @@ import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
 import game.core.moves.ITransferMove;
-import tamerlan.pieces.*;
+import tamerlan.pieces.Bishop;
+import tamerlan.pieces.Giraffe;
+import tamerlan.pieces.King;
+import tamerlan.pieces.Knight;
+import tamerlan.pieces.Queen;
+import tamerlan.pieces.Rook;
+import tamerlan.pieces.Vizir;
+import tamerlan.pieces.WarMachine;
 
 /**
  * Тохтамыш - хан Золотой Орды.

@@ -112,8 +112,8 @@ public class Stone extends Piece implements ITrackPiece {
 		
 		int cube1 = board.cube1.getValue();
 		int cube2 = board.cube2.getValue();
-		int cube3 = board.cube3.getValue();
-		int cube4 = board.cube4.getValue();
+//		int cube3 = board.cube3.getValue();
+//		int cube4 = board.cube4.getValue();
 		
 		PieceColor color = getColor();
 		

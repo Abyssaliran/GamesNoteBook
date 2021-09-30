@@ -6,7 +6,6 @@ import game.core.GameOver;
 import game.core.GameResult;
 import game.core.Move;
 import game.core.Piece;
-import game.core.PieceColor;
 import game.core.Square;
 import renju.pieces.Stone;
 

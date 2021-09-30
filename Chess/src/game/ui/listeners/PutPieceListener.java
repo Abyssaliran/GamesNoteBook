@@ -10,7 +10,6 @@ import game.core.Piece;
 import game.core.PieceColor;
 import game.core.Square;
 import game.ui.GameBoard;
-import renju.pieces.Stone;
 
 /**
  * Слушатель событий о нажатии кнопок мыши используемых 

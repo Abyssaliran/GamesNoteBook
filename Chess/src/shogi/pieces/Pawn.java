@@ -1,10 +1,7 @@
 package shogi.pieces;
 
-import game.core.Move;
 import game.core.PieceColor;
 import game.core.Square;
-import shogi.moves.SimpleMove;
-import shogi.pieces.GeneralGold;
 
 public class Pawn extends ShogiPiece {
 	
