@@ -14,6 +14,14 @@ public class GameImages {
 	public static Image woodMedium;
 	public static Image papiro;
 	
+	public static Image stoneBlack;
+	public static Image stoneBlue;
+	public static Image stoneGreen;
+	public static Image stoneMagenta;
+	public static Image stoneRed;
+	public static Image stoneWhite;
+	public static Image stoneYellow;
+	
 	/**
 	 * Изображения на гранях кубика.
 	 */
@@ -29,6 +37,14 @@ public class GameImages {
 		woodMedium = new Image(display, GameImages.class.getResourceAsStream("wood_medium.png"));
 		
 		papiro     = new Image(display, GameImages.class.getResourceAsStream("papiro.png"));
+
+		stoneBlack   = new Image(display, GameImages.class.getResourceAsStream("stoneBlack.png"));
+		stoneBlue    = new Image(display, GameImages.class.getResourceAsStream("stoneBlue.png"));
+		stoneGreen   = new Image(display, GameImages.class.getResourceAsStream("stoneGreen.png"));
+		stoneMagenta = new Image(display, GameImages.class.getResourceAsStream("stoneMagenta.png"));
+		stoneRed     = new Image(display, GameImages.class.getResourceAsStream("stoneRed.png"));
+		stoneYellow  = new Image(display, GameImages.class.getResourceAsStream("stoneYellow.png"));
+		stoneWhite   = new Image(display, GameImages.class.getResourceAsStream("stoneWhite.png"));
 
 		cubes = new Image[7];
 		cubes[0]   = new Image(display, GameImages.class.getResourceAsStream("cube0.png"));
