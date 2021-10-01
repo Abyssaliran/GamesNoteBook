@@ -18,12 +18,14 @@ import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessGamePanel;
 import chinachess.ui.images.ChinaChessImages;
 import fisher.ui.FisherGamePanel;
+import game.ui.images.GameImages;
 import go.ui.GoGamePanel;
 import go.ui.images.GoImages;
 import halma.ui.HalmaGamePanel;
 import halma.ui.images.HalmaImages;
 import kalah.ui.KalahGamePanel;
 import kalah.ui.images.KalahImages;
+import lines.ui.LinesGamePanel;
 import notebook.ui.images.NotebookImages;
 import points.ui.PointsGamePanel;
 import renju.ui.RenjuGamePanel;
@@ -43,7 +45,8 @@ import vikings.ui.VikingsGamePanel;
 import vikings.ui.images.VikingImages;
 
 /**
- * <b>Блокнот настольных игр.</b></br></br>
+ * <b>Блокнот настольных игр.</b></br>
+ * </br>
  * 
  * Запись и просмотр партии в настольной игре.
  * 
@@ -53,13 +56,13 @@ public class GamesNotebook {
 	public static void main(String[] args) {
 		final Display display = new Display();
 		final Shell shell = new Shell(display);
-		
+
 		shell.setBackgroundMode(SWT.INHERIT_FORCE);
-		
+
 		shell.setSize(1000, 600);
 		shell.setText("Games Notebook");
 		shell.setImage(NotebookImages.iconNotebook);
-		
+
 		shell.setLayout(new FillLayout());
 
 		TabFolder mainFolder = new TabFolder(shell, SWT.BOTTOM);
@@ -71,7 +74,7 @@ public class GamesNotebook {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
-		display.dispose(); //Удалить экземпляр класса после завершения цикла опроса
+		display.dispose(); // Удалить экземпляр класса после завершения цикла опроса
 	}
 
 	private static Image smallIcon(Image image) {
@@ -81,7 +84,7 @@ public class GamesNotebook {
 	// ============
 	// === Игры ===
 	// ============
-	
+
 	private static void addGames(TabFolder mainFolder) {
 		TabFolder gamesFolder = new TabFolder(mainFolder, SWT.TOP);
 		TabItem gamesItem = new TabItem(mainFolder, SWT.NONE);
@@ -89,6 +92,7 @@ public class GamesNotebook {
 		gamesItem.setText("Игры");
 
 		// Добавление вкладок - игр.
+		addLinesTab(gamesFolder);
 		addPointsTab(gamesFolder);
 		addRenjuTab(gamesFolder);
 		addFisherTab(gamesFolder);
@@ -105,52 +109,59 @@ public class GamesNotebook {
 //		addGoTab(gamesFolder);
 		addHalma8x8Tab(gamesFolder);
 	}
-	
+
+	private static void addLinesTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl(new LinesGamePanel(folder));
+		tabItem.setImage(smallIcon(GameImages.stoneRed));
+		tabItem.setText("Линии");
+	}
+
 	private static void addPointsTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new PointsGamePanel(folder) );
+		tabItem.setControl(new PointsGamePanel(folder));
 		tabItem.setImage(smallIcon(GoImages.icoGo));
 		tabItem.setText("Точки");
 	}
 
 	private static void addRenjuTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new RenjuGamePanel(folder) );
+		tabItem.setControl(new RenjuGamePanel(folder));
 		tabItem.setImage(smallIcon(GoImages.icoGo));
 		tabItem.setText("Рендзю");
 	}
 
 	private static void addFisherTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new FisherGamePanel(folder) );
+		tabItem.setControl(new FisherGamePanel(folder));
 		tabItem.setImage(smallIcon(ChessImages.imageKingBlack));
 		tabItem.setText("Фишер");
 	}
 
 	private static void addBreakThroughTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new BreakThroughGamePanel(folder) );
+		tabItem.setControl(new BreakThroughGamePanel(folder));
 		tabItem.setImage(smallIcon(ChessImages.imagePawnBlack));
 		tabItem.setText("Прорыв");
 	}
 
 	private static void addKalahTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new KalahGamePanel(folder) );
+		tabItem.setControl(new KalahGamePanel(folder));
 		tabItem.setImage(smallIcon(KalahImages.icoKalah));
 		tabItem.setText("Калах");
 	}
 
 	private static void addShogiTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new ShogiGamePanel(folder) );
+		tabItem.setControl(new ShogiGamePanel(folder));
 		tabItem.setImage(smallIcon(ShogiImages.icoShogi));
 		tabItem.setText("Сеги");
 	}
 
 	private static void addBackgammonTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new BackgammonGamePanel(folder) );
+		tabItem.setControl(new BackgammonGamePanel(folder));
 		tabItem.setImage(smallIcon(BackgammonImages.iconBackgammon));
 		tabItem.setText("Нарды");
 	}
@@ -164,63 +175,63 @@ public class GamesNotebook {
 
 	private static void addCheckersTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new CheckersGamePanel(folder) );
+		tabItem.setControl(new CheckersGamePanel(folder));
 		tabItem.setImage(smallIcon(CheckersImages.iconCheckers));
 		tabItem.setText("Шашки");
 	}
 
 	private static void addChinaChessTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new ChinaChessGamePanel(folder) );
+		tabItem.setControl(new ChinaChessGamePanel(folder));
 		tabItem.setImage(smallIcon(ChinaChessImages.iconChinaChess));
 		tabItem.setText("Сянци");
 	}
 
 	private static void addChessTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new ChessGamePanel(folder) );
+		tabItem.setControl(new ChessGamePanel(folder));
 		tabItem.setImage(smallIcon(ChessImages.icoChess));
 		tabItem.setText("Шахматы");
 	}
 
 	private static void addVikingTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new VikingsGamePanel(folder, 9) );
+		tabItem.setControl(new VikingsGamePanel(folder, 9));
 		tabItem.setImage(smallIcon(VikingImages.icoVikings9));
 		tabItem.setText("Викинги");
 	}
 
 	private static void addReversiTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new ReversiGamePanel(folder, 0) );
+		tabItem.setControl(new ReversiGamePanel(folder, 0));
 		tabItem.setImage(smallIcon(ReversiImages.icoReversi));
 		tabItem.setText("Реверси");
 	}
 
 	private static void addGoTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new GoGamePanel(folder, 8) );
+		tabItem.setControl(new GoGamePanel(folder, 8));
 		tabItem.setImage(smallIcon(GoImages.icoGo));
 		tabItem.setText("Го");
 	}
 
 	private static void addHalma8x8Tab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new HalmaGamePanel(folder, 8) );
+		tabItem.setControl(new HalmaGamePanel(folder, 8));
 		tabItem.setImage(smallIcon(HalmaImages.icoHalma));
 		tabItem.setText("Халма 8x8");
 	}
-	
+
 	// ===================
 	// === Инструменты ===
 	// ===================
-	
+
 	private static void addTools(TabFolder mainFolder) {
 		TabFolder toolsFolder = new TabFolder(mainFolder, SWT.TOP);
 		TabItem toolsItem = new TabItem(mainFolder, SWT.NONE);
 		toolsItem.setControl(toolsFolder);
 		toolsItem.setText("Инструменты");
-		
+
 		// Добавление вкладок - инструментов.
 		addEditorTab(toolsFolder);
 //		addGameDBTab(toolsFolder);
@@ -239,20 +250,21 @@ public class GamesNotebook {
 
 	private static void addGameDBTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new GameDBPanel(folder) );
+		tabItem.setControl(new GameDBPanel(folder));
 		tabItem.setImage(smallIcon(GameDBImages.icoGameDB));
 		tabItem.setText("База игр");
 	}
+
 	private static void addCompetitionReversiTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new CompetitionPanel(folder, Reversi.class) );
+		tabItem.setControl(new CompetitionPanel(folder, Reversi.class));
 		tabItem.setImage(smallIcon(ReversiImages.icoReversi));
 		tabItem.setText("Турниры");
 	}
 
 	private static void addCompetitionTamerlanTab(TabFolder folder) {
 		TabItem tabItem = new TabItem(folder, SWT.NONE);
-		tabItem.setControl( new CompetitionPanel(folder, TamerlanChess.class) );
+		tabItem.setControl(new CompetitionPanel(folder, TamerlanChess.class));
 		tabItem.setImage(smallIcon(TamerlanChessImages.iconTamerlanChess));
 		tabItem.setText("Турниры");
 	}
