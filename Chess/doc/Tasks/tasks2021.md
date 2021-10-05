@@ -21,12 +21,10 @@
 Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)
 
 7. Татьяна Клименко  
+В китайские шахматы добавлен игрок [Цинь Ши хуанди](https://gitlab.com/java-2021r/gamesnotebook/-/blob/2021-10-05/Chess/src/chinachess/players/QinShiHuang.java#L19)
+(QinShiHuang).
 
-
-
-
-
-7. Мизаушев Адам
+8. Мизаушев Адам
  
 
 

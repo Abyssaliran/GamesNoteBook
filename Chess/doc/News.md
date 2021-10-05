@@ -1,5 +1,10 @@
 # Новости
 
+## 2021-10-05
+
+В китайские шахматы добавлен игрок [Цинь Ши хуанди](https://gitlab.com/java-2021r/gamesnotebook/-/blob/2021-10-05/Chess/src/chinachess/players/QinShiHuang.java#L19)
+(QinShiHuang).
+
 ## 2021-10-03
 
 Дополнен список готовых выполнить задание практикума
