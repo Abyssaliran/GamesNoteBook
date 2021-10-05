@@ -20,7 +20,8 @@
 6. Белякова Ольга 
 Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)
 
-7. Татьяна Клименко
+7. Татьяна Клименко  
+
 
 
 
