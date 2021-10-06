@@ -16,8 +16,7 @@
 5. Белякова Ольга 
 Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)
 
-
-6. Белякова Ольга 
+6. Есенин Егор  
 Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)
 
 7. Татьяна Клименко  
