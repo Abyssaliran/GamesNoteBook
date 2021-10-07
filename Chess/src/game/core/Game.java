@@ -14,7 +14,12 @@ import java.util.Map;
  */
 abstract
 public class Game {
-
+	/**
+	 * Теги со значениями для описания свойств игры.
+	 */
+	public final
+	Map<String, String> tags = new HashMap<>();
+	
 	/**
 	 * Карта для регистрации игроков для каждой из игр.
 	 */
