@@ -22,5 +22,8 @@ public class EuropeBoard extends GameBoard {
 	public void drawSquare(GraphicsContext gc, int v, int h, int squareWidth, int squareHeight) {
 		gc.setStroke(Color.BLACK);
 		gc.strokeRect(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
+		
+		// TODO Зацепин
+		// Отрисовать клетки европейской доски
 	}
 }

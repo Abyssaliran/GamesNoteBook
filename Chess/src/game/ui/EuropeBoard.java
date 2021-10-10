@@ -43,8 +43,5 @@ public abstract class EuropeBoard extends GameBoard {
 
 		gc.setForeground(new Color(null, 0, 0, 0));
 		gc.drawRectangle(v * squareWidth, h * squareHeight, squareWidth, squareHeight);
-		
-		// TODO Зацепин
-		// Отрисовать клетки европейской доски
 	}
 }
