@@ -24,8 +24,8 @@ public class AsiaBoard extends GameBoard {
 
 	@Override
 	public void drawSquare(GraphicsContext gc, int v, int h, int squareWidth, int squareHeight) {
-		// TODO Auto-generated method stub
-
+		// TODO Зацепин
+		// Отрисовать клетки азиатской доски
 	}
-
 }
+
