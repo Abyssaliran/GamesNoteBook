@@ -5,7 +5,7 @@ import game.players.IPlayer;
 import java.util.List;
 
 /**
- * Турнир по круговой системе.
+ * Турнир алгоритмов по швейцарской системе.
  */
 public class SwissTourney extends Competition {
     public SwissTourney(List<IPlayer> players) {
@@ -14,6 +14,6 @@ public class SwissTourney extends Competition {
 
     @Override
     void run() {
-
+        // TODO Юдова Визуализация и организация турнира среди алгоритмов по швейцарской (олимпийской) системе.
     }
 }

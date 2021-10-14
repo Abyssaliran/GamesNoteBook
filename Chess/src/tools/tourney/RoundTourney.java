@@ -5,7 +5,7 @@ import game.players.IPlayer;
 import java.util.List;
 
 /**
- * Турнир по круговой системе.
+ * Турнир алгоритмов по круговой системе.
  */
 public class RoundTourney extends Competition {
     public RoundTourney(List<IPlayer> players) {
@@ -14,6 +14,6 @@ public class RoundTourney extends Competition {
 
     @Override
     void run() {
-
+        // TODO Зимина Визуализация и организация турнира среди алгоритмов по круговой системе.
     }
 }
