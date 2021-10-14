@@ -8,6 +8,7 @@ import game.players.IPlayer;
 import game.players.Vinni;
 import reversi.pieces.Hole;
 import reversi.pieces.Stone;
+import reversi.players.Ia;
 import reversi.players.Owl;
 import reversi.players.Rabbit;
 import reversi.players.Tiger;
@@ -24,9 +25,11 @@ public class Reversi extends Game {
     static {
         Game.addPlayer(Reversi.class, IPlayer.HOMO_SAPIENCE);
         Game.addPlayer(Reversi.class, new Vinni(pieceProvider));
+        Game.addPlayer(Reversi.class, new Ia(pieceProvider));
         Game.addPlayer(Reversi.class, new Owl(pieceProvider));
         Game.addPlayer(Reversi.class, new Tiger(pieceProvider));
         Game.addPlayer(Reversi.class, new Rabbit(pieceProvider));
+
     }
 
     /**
