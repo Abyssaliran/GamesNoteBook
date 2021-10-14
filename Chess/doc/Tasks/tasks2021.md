@@ -15,17 +15,20 @@ https://www.chessgames.com/
 Алгоритм игры в реверси
 
 5. Белякова Ольга  
-Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)
+Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)  
+Ветка **lines**
 
 6. Есенин Егор  
-Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)
+Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)  
+Ветка **lines**
 
 7. Татьяна Клименко  
 В китайские шахматы добавлен игрок [Цинь Ши хуанди](https://gitlab.com/java-2021r/gamesnotebook/-/blob/2021-10-05/Chess/src/chinachess/players/QinShiHuang.java#L19)
 (QinShiHuang).
 
 8. Мизаушев Адам  
-Игра нарды
+Игра нарды  
+Ветка backgammon-0.0.1
 
 9. Маслов Алексей      
 Визуализация партий турнира по круговой системе.
@@ -35,9 +38,11 @@ https://www.chessgames.com/
 
 11. Зимина Ксения     
 Визуализация и организация турнира среди алгоритмов по круговой системе.
+Ветка battles-0.0.1
 
 12. Юдова Екатериной   
 Визуализация и организация турнира среди алгоритмов по швейцарской (олимпийской) системе.
+Ветка battles-0.0.1
 
 13. --    
 Редактор начальных позиций игр
@@ -54,9 +59,9 @@ https://www.chessgames.com/
 17. --   
 Голяков
 
-18. GamesNotebookFX  
-Блокнот игр реализованный с помощью библиотеки JavaFX.  
-Зацепин Юрий
+18. Блокнот игр реализованный с помощью библиотеки JavaFX.  
+Зацепин Юрий 
+Ветка GameJavaFX
 
 19. --  
 Коротков
