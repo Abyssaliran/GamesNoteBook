@@ -29,6 +29,7 @@ public class Capture extends SimpleMove {
 
 	@Override
 	public void doMove() {
+		// TODO Мизаушев. Реализовать алгоритм захвата и возвращения фигур
 		BackgammonGroup enemyGroup;
 		BackgammonBoard board = (BackgammonBoard) source.getBoard();
 		Square square4Enemy = board.getBar4Piece(enemy);
