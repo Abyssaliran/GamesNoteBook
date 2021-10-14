@@ -12,9 +12,10 @@ https://www.chessgames.com/
 Корнюхина Софья
 
 4. Лобанова Ангелина  
-Алгоритм игры в реверси
+[Алгоритм игры в реверси](https://gitlab.com/java-2021r/gamesnotebook/-/blob/Ia-player-0.0.1/Chess/src/reversi/players/Ia.java)  
+Ветка Ia-player-0.0.1
 
-5. Белякова Ольга  
+5.Белякова Ольга  
 Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)
 
 6. Есенин Егор  
