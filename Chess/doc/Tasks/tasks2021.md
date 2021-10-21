@@ -8,21 +8,22 @@ https://www.chessgames.com/
 2. --  
 Ниничук Марина  
 
-3. --  
+3. Редактор начальных позиций игр  
 Корнюхина Софья
 
 4. Лобанова Ангелина  
 [Алгоритм игры в реверси](https://gitlab.com/java-2021r/gamesnotebook/-/blob/Ia-player-0.0.1/Chess/src/reversi/players/Ia.java)  
 Ветка Ia-player-0.0.1
 
-5.Белякова Ольга  
+5. Белякова Ольга  
 Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)
 
 6. Есенин Егор  
 Игра [**Lines**](https://gitlab.com/java-2021r/gamesnotebook/-/tree/2021-10-01/Chess/src/lines)
 
 7. Татьяна Клименко  
-В китайские шахматы добавлен игрок [Цинь Ши хуанди](https://gitlab.com/java-2021r/gamesnotebook/-/blob/2021-10-05/Chess/src/chinachess/players/QinShiHuang.java#L19)
+В китайские шахматы добавлен игрок 
+[Цинь Ши хуанди](https://gitlab.com/java-2021r/gamesnotebook/-/blob/2021-10-05/Chess/src/chinachess/players/QinShiHuang.java#L19)
 (QinShiHuang).
 
 8. Мизаушев Адам  
@@ -41,7 +42,7 @@ https://www.chessgames.com/
 Визуализация и организация турнира среди алгоритмов по швейцарской (олимпийской) системе.
 
 13. --    
-Редактор начальных позиций игр
+
 
 14. --    
 Написать программу - шахматный задачник.
@@ -53,7 +54,7 @@ https://www.chessgames.com/
 Федосеев Максим
 
 17. --   
-Голяков
+Голяков Кирилл
 
 18. GamesNotebookFX  
 Блокнот игр реализованный с помощью библиотеки JavaFX.  
