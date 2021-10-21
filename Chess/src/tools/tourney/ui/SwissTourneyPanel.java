@@ -1,4 +1,4 @@
-package toools.tourney.ui;
+package tools.tourney.ui;
 
 import game.players.IPlayer;
 import tools.tourney.SwissTourney;

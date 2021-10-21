@@ -1,4 +1,4 @@
-package toools.tourney.ui;
+package tools.tourney.ui;
 
 import game.core.Game;
 import game.players.IPlayer;

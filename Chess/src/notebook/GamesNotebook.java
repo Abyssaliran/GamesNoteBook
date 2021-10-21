@@ -40,7 +40,7 @@ import tamerlan.ui.images.TamerlanChessImages;
 import tools.db.ui.GameDBPanel;
 import tools.db.ui.images.GameDBImages;
 import tools.editor.PositionEditor;
-import toools.tourney.ui.CompetitionPanel;
+import tools.tourney.ui.CompetitionPanel;
 import vikings.ui.VikingsGamePanel;
 import vikings.ui.images.VikingImages;
 
