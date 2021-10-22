@@ -1,5 +1,6 @@
 package notebook;
 
+import linesofaction.ui.LinesOfActionPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -92,6 +93,7 @@ public class GamesNotebook {
 		gamesItem.setText("Игры");
 
 		// Добавление вкладок - игр.
+		addLinesOfActionTab(gamesFolder);
 		addLinesTab(gamesFolder);
 		addPointsTab(gamesFolder);
 		addRenjuTab(gamesFolder);
@@ -108,6 +110,13 @@ public class GamesNotebook {
 		addReversiTab(gamesFolder);
 //		addGoTab(gamesFolder);
 		addHalma8x8Tab(gamesFolder);
+	}
+
+	private static void addLinesOfActionTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl(new LinesOfActionPanel(folder));
+		tabItem.setImage(smallIcon(GameImages.stoneYellow));
+		tabItem.setText("Линии действия");
 	}
 
 	private static void addLinesTab(TabFolder folder) {
