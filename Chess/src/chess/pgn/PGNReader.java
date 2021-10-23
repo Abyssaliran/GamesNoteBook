@@ -1,7 +1,5 @@
 package chess.pgn;
 
-import static game.core.GamesConfig.pngRoot;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,7 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chess.Chess;
+import game.core.Board;
 import game.core.Move;
+
+import static game.core.GamesConfig.pgnRoot;
 
 /**
  * Класс для чтения игр из текстового файла в стандартной шахматной нотации
@@ -21,12 +22,12 @@ import game.core.Move;
  * 
  * https://docs.oracle.com/javase/7/docs/api/java/io/StreamTokenizer.html
  */
-public class PNGReader {
+public class PGNReader {
 	static PrintStream out = System.out;
 
 	public static void main(String[] args) {
 		try {
-			read(pngRoot + "/Carlsen.pgn");
+			read(pgnRoot + "/Carlsen.pgn");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -123,10 +124,13 @@ public class PNGReader {
 	}
 
 	private static Move getChessMove(Chess chess, String moveText) {
-		out.print(" " + moveText);
 
 		// TODO распознать ход по тексту, проверить его корректность
 		// и вернуть его как результат функции.
+		Board board = chess.board;
+
+		out.print(" " + moveText);
+
 		return null;
 	}
 

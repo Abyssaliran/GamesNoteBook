@@ -4,7 +4,7 @@ import java.io.File;
 
 public class GamesConfig {
 	public static String projectRoot;
-	public static String pngRoot;
+	public static String pgnRoot;
 
 	static {
 		File f = new File(".");
@@ -12,8 +12,9 @@ public class GamesConfig {
 		projectRoot = f.getAbsolutePath();
 		System.out.println("Project root: " + projectRoot);
 
-		pngRoot = projectRoot.replace(".", "png");
-		System.out.println("PGN root: " + pngRoot);
+		pgnRoot = projectRoot.replace(".", "pgn");
+
+		System.out.println("PGN root: " + pgnRoot);
 		System.out.println();
 	}
 
