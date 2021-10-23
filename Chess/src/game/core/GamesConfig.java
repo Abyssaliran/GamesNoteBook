@@ -1,6 +1,7 @@
 package game.core;
 
 import java.io.File;
+import java.io.IOException;
 
 public class GamesConfig {
 	public static String projectRoot;
@@ -9,13 +10,20 @@ public class GamesConfig {
 	static {
 		File f = new File(".");
 
-		projectRoot = f.getAbsolutePath();
+		try {
+			projectRoot = f.getCanonicalPath();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (!projectRoot.endsWith("Chess"))
+			projectRoot += "/Chess";
+
 		System.out.println("Project root: " + projectRoot);
 
-		pgnRoot = projectRoot.replace(".", "pgn");
+		pgnRoot = projectRoot + "/pgn"; // .replace(".", "pgn");
 
 		System.out.println("PGN root: " + pgnRoot);
 		System.out.println();
 	}
-
 }
