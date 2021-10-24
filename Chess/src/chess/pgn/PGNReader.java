@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chess.Chess;
+import chess.moves.SimpleMove;
 import game.core.Board;
 import game.core.Move;
+import game.core.PieceColor;
 
 import static game.core.GamesConfig.pgnRoot;
 
@@ -124,13 +126,44 @@ public class PGNReader {
 	}
 
 	private static Move getChessMove(Chess chess, String moveText) {
-
 		// TODO распознать ход по тексту, проверить его корректность
 		// и вернуть его как результат функции.
 		Board board = chess.board;
 
 		out.print(" " + moveText);
+		char piece = moveText.charAt(0);
+		switch (piece) {
+			case 'K': // Король.
+			case 'Q': // Король.
+			case 'B': // Король.
+			case 'N': // Король.
+			case 'R': // Король.
+			case 'O': // Король - рокировка.
+			default:  // Пешка
+				return doPawnMove(chess, moveText);
+		}
 
+	}
+
+	private static Move doPawnMove(Chess chess, String moveText) {
+		char vSource = 'a';
+		Board board = chess.board;
+
+		int len = moveText.length();
+
+		switch (len) {
+			case 2: // цель (e4) или взятие (cd)
+				PieceColor color = chess.board.getMoveColor();
+				int sv = 0;
+				int sh = 0;
+				int tv = 0;
+				int th = 0;
+				if (Character.isDigit(moveText.charAt(1)))
+					// Это простой ход пешкой
+					return null;
+
+			default:
+		}
 		return null;
 	}
 
