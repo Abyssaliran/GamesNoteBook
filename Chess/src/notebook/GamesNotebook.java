@@ -1,5 +1,6 @@
 package notebook;
 
+import clobber.ui.ClobberPanel;
 import linesofaction.ui.LinesOfActionPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -93,6 +94,7 @@ public class GamesNotebook {
 		gamesItem.setText("Игры");
 
 		// Добавление вкладок - игр.
+		addClobberTab(gamesFolder);
 		addLinesOfActionTab(gamesFolder);
 		addLinesTab(gamesFolder);
 		addPointsTab(gamesFolder);
@@ -110,6 +112,13 @@ public class GamesNotebook {
 		addReversiTab(gamesFolder);
 //		addGoTab(gamesFolder);
 		addHalma8x8Tab(gamesFolder);
+	}
+
+	private static void addClobberTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl(new ClobberPanel(folder));
+		tabItem.setImage(smallIcon(GameImages.stoneGreen));
+		tabItem.setText("Clobber");
 	}
 
 	private static void addLinesOfActionTab(TabFolder folder) {
