@@ -8,6 +8,7 @@ import game.core.Square;
 public class Stone extends Piece {
     @Override
     public boolean isCorrectMove(Square... squares) {
+        // TODO Романовская Юлия
         return false;
     }
 

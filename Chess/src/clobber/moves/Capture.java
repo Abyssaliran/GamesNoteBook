@@ -27,12 +27,12 @@ public class Capture implements ITransferMove {
 
     @Override
     public void doMove() throws GameOver {
-        // TODO
+        // TODO Романовская Юлия
     }
 
     @Override
     public void undoMove() {
-        // TODO
+        // TODO Романовская Юлия
     }
 
     @Override
