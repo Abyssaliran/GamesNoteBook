@@ -29,7 +29,8 @@ public class Turtle extends PutPiecePlayer {
 	}
 
 	private int getMoveWeight(Move m2) {
-		// TODO Auto-generated method stub
+		//  TODO Синёв  Олег
+		// Реализовать алгоритм выбора лучшего хода
 		return 0;
 	}
 
