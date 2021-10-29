@@ -1,6 +1,7 @@
 package notebook;
 
 import clobber.ui.ClobberPanel;
+import crazyhouse.ui.CrazyHousePanel;
 import linesofaction.ui.LinesOfActionPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -94,6 +95,7 @@ public class GamesNotebook {
 		gamesItem.setText("Игры");
 
 		// Добавление вкладок - игр.
+		addCrazyHouseTab(gamesFolder);
 		addClobberTab(gamesFolder);
 		addLinesOfActionTab(gamesFolder);
 		addLinesTab(gamesFolder);
@@ -112,6 +114,13 @@ public class GamesNotebook {
 		addReversiTab(gamesFolder);
 //		addGoTab(gamesFolder);
 		addHalma8x8Tab(gamesFolder);
+	}
+
+	private static void addCrazyHouseTab(TabFolder folder) {
+		TabItem tabItem = new TabItem(folder, SWT.NONE);
+		tabItem.setControl(new CrazyHousePanel(folder));
+		tabItem.setImage(smallIcon(ChessImages.imageQueenBlack));
+		tabItem.setText("CrazyHouse");		
 	}
 
 	private static void addClobberTab(TabFolder folder) {
