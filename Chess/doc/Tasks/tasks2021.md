@@ -26,7 +26,7 @@ https://www.chessgames.com/
 [Цинь Ши хуанди](https://gitlab.com/java-2021r/gamesnotebook/-/blob/2021-10-05/Chess/src/chinachess/players/QinShiHuang.java#L19)
 (QinShiHuang).
 
-8. Мизаушев Адам  
+8. Мизаушев Адам   
 Игра нарды
 
 9. Маслов Алексей      
