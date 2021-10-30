@@ -70,7 +70,7 @@ public class Chess extends Game {
 		new Rook(board.getSquare(0, 7), PieceColor.WHITE);
 		new Rook(board.getSquare(7, 7), PieceColor.WHITE);
 
-		// Расставляем ладьи.
+		// Расставляем коней.
 		new Knight(board.getSquare(1, 0), PieceColor.BLACK);
 		new Knight(board.getSquare(6, 0), PieceColor.BLACK);
 		new Knight(board.getSquare(1, 7), PieceColor.WHITE);

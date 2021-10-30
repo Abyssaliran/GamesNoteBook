@@ -15,7 +15,7 @@ import game.core.Board;
  */
 abstract
 public class WoodBoard extends GameBoard {
-	private static final Color LINE_COLOR = new Color(null, 0,   0, 0);
+	protected static final Color LINE_COLOR = new Color(null, 0,   0, 0);
 
 	public WoodBoard(Composite composite, Board board, Image wood) {
 		super(composite, board);
