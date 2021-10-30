@@ -46,6 +46,8 @@ import tools.editor.PositionEditor;
 import tools.tourney.ui.CompetitionPanel;
 import vikings.ui.VikingsGamePanel;
 import vikings.ui.images.VikingImages;
+import viruswars.ui.ViruswarsPanel;
+import viruswars.ui.images.ViruswarsImages;
 
 /**
  * <b>Блокнот настольных игр.</b></br>
@@ -95,6 +97,7 @@ public class GamesNotebook {
         gamesItem.setText("Игры");
 
         // Добавление вкладок - игр.
+        addViruswarsTab(gamesFolder);
         addCamelotTab(gamesFolder);
         addCrazyHouseTab(gamesFolder);
         addClobberTab(gamesFolder);
@@ -117,7 +120,14 @@ public class GamesNotebook {
         addHalma8x8Tab(gamesFolder);
     }
 
-    private static void addCamelotTab(TabFolder folder) {
+    private static void addViruswarsTab(TabFolder folder) {
+        TabItem tabItem = new TabItem(folder, SWT.NONE);
+        tabItem.setControl(new ViruswarsPanel(folder));
+        tabItem.setImage(smallIcon(ViruswarsImages.imageVirusRed));
+        tabItem.setText("Viruswars");		
+	}
+
+	private static void addCamelotTab(TabFolder folder) {
         TabItem tabItem = new TabItem(folder, SWT.NONE);
         tabItem.setControl(new CamelotPanel(folder));
         tabItem.setImage(smallIcon(ChessImages.imageQueenBlack));
