@@ -65,7 +65,7 @@ GamesNotebookFX.
 Бирюлин Андрей  
 IntelliJ Idea.
 
-20. --  
+20. Реализация игры Viruswars      
 Шнейдер Я.В,  
 Басов-Тищенко А.Ю.  
 
