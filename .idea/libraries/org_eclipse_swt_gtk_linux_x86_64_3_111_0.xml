@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="org.eclipse.swt.gtk.linux.x86_64-3.111.0">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/Chess/libs/org.eclipse.swt.gtk.linux.x86_64-3.111.0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
