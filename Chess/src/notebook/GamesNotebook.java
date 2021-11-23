@@ -99,7 +99,7 @@ public class GamesNotebook {
         gamesItem.setText("Игры");
 
         // Добавление вкладок - игр.
-        addCoffeeTab(gamesFolder);
+//        addCoffeeTab(gamesFolder);
         addViruswarsTab(gamesFolder);
         addCamelotTab(gamesFolder);
         addCrazyHouseTab(gamesFolder);
