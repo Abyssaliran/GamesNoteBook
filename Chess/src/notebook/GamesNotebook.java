@@ -11,6 +11,8 @@ import chess.ui.images.ChessImages;
 import chinachess.ui.ChinaChessGamePanel;
 import chinachess.ui.images.ChinaChessImages;
 import clobber.ui.ClobberPanel;
+import coffee.ui.CoffeeGamePanel;
+import coffee.ui.images.CoffeeImages;
 import crazyhouse.ui.CrazyHousePanel;
 import fisher.ui.FisherGamePanel;
 import game.ui.images.GameImages;
@@ -97,6 +99,7 @@ public class GamesNotebook {
         gamesItem.setText("Игры");
 
         // Добавление вкладок - игр.
+        addCoffeeTab(gamesFolder);
         addViruswarsTab(gamesFolder);
         addCamelotTab(gamesFolder);
         addCrazyHouseTab(gamesFolder);
@@ -120,14 +123,21 @@ public class GamesNotebook {
         addHalma8x8Tab(gamesFolder);
     }
 
+    private static void addCoffeeTab(TabFolder folder) {
+        TabItem tabItem = new TabItem(folder, SWT.NONE);
+        tabItem.setControl(new CoffeeGamePanel(folder));
+        tabItem.setImage(smallIcon(CoffeeImages.imageBeanBlackHorizontal));
+        tabItem.setText("Coffee");
+    }
+
     private static void addViruswarsTab(TabFolder folder) {
         TabItem tabItem = new TabItem(folder, SWT.NONE);
         tabItem.setControl(new ViruswarsPanel(folder));
         tabItem.setImage(smallIcon(ViruswarsImages.imageVirusRed));
-        tabItem.setText("Viruswars");		
-	}
+        tabItem.setText("Viruswars");
+    }
 
-	private static void addCamelotTab(TabFolder folder) {
+    private static void addCamelotTab(TabFolder folder) {
         TabItem tabItem = new TabItem(folder, SWT.NONE);
         tabItem.setControl(new CamelotPanel(folder));
         tabItem.setImage(smallIcon(ChessImages.imageQueenBlack));
