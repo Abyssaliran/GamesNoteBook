@@ -42,7 +42,11 @@ public class Turtle extends PutPiecePlayer {
 				continue; // пустая клетка.
 			if (s.getPiece().getColor() != piece.getColor())
 				continue; // На клетке фигура другого цвета.
-			if (s.isNear(square)) k++;
+			if (s.isHorizontal(square)) k++; // проверяем свои фигуры по горизонтали
+				//continue;
+			if (s.isDiagonal(square)) k++; // проверяем свои фигуры по диагонали
+			if (s.isVertical(square)) k++; // проверяем свои фигуры по вертикали
+			if (s.isNear(square)) k++; // проверяем ближайший ход
 		}
 		return k;
 	}
