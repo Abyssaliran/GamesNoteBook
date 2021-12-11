@@ -6,13 +6,9 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import game.core.Board;
-import game.core.GameOver;
-import game.core.GameResult;
-import game.core.IPieceProvider;
-import game.core.Move;
-import game.core.PieceColor;
+import game.core.*;
 import game.players.PutPiecePlayer;
+import renju.moves.RenjuMove;
 import renju.pieces.Stone;
 
 /**
@@ -28,9 +24,27 @@ public class Turtle extends PutPiecePlayer {
 		super(pieceProvider);
 	}
 
-	private int getMoveWeight(Move m2) {
-		// TODO Auto-generated method stub
-		return 0;
+	private int getMoveWeight(Move m) {
+		RenjuMove move = (RenjuMove) m;
+
+		Piece piece = move.getPiece();
+		Square square = move.getSquare();
+
+		return getNearFriendsCount(piece, square);
+	}
+
+	private int getNearFriendsCount(Piece piece, Square square) {
+		List<Square> allSquares = square.getBoard().getSquares();
+
+		int k = 0;
+		for (Square s : allSquares) {
+			if (s.isEmpty())
+				continue; // пустая клетка.
+			if (s.getPiece().getColor() != piece.getColor())
+				continue; // На клетке фигура другого цвета.
+			if (s.isNear(square)) k++;
+		}
+		return k;
 	}
 
 	@Override
@@ -52,12 +66,8 @@ public class Turtle extends PutPiecePlayer {
 
 		Collections.shuffle(correctMoves);
 
-		// Буратино выбирает лучший ход.
 		correctMoves.sort(brain);
 		Move bestMove;
-		// if (maxWeight<MAX_WEIGHT_THAT_CAN_BE&&checkWillEnemyWin(color))
-		// bestMove=saveMove;
-		// else
 		bestMove = correctMoves.get(0);
 
 		try {
@@ -68,15 +78,6 @@ public class Turtle extends PutPiecePlayer {
 			// и результат игры.
 			board.history.addMove(bestMove);
 			board.history.setResult(e.result);
-
-			// Game over prompt LIKE add 2020-10-01
-			int mesg = JOptionPane.showConfirmDialog(null, "Nancy win！！！  " + "\n Do you want to play again ?",
-					"Game Over", JOptionPane.YES_NO_OPTION);
-			if (mesg == 0) {
-				board.reset(15, 15);
-				new Stone(board.getSquare(15 / 2, 15 / 2), PieceColor.BLACK);
-				board.startGame();
-			}
 
 			// Просим обозревателей доски показать
 			// положение на доске, сделанный ход и
