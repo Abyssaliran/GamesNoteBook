@@ -3,7 +3,12 @@ package clobber;
 import game.core.Game;
 import game.players.IPlayer;
 import game.players.Neznaika;
-
+import game.core.Board;
+import game.core.Game;
+import game.core.PieceColor;
+import checkers.pieces.Man;
+import chess.pieces.Pawn;
+import clobber.pieces.Stone;
 /**
  * TODO Романовская Юлия
  * Правила игры:
@@ -24,8 +29,21 @@ public class Clobber extends Game {
 
     @Override
     public void initBoardDefault() {
-        super.initBoard(8, 8);
-
-        // TODO расставить фигуры
-    }
+        super.initBoard(5, 6);
+	    int n = 5;
+	    int begin = 0;
+	    for (int j = 5; j >= 0; j--) {
+	    	for (int i = begin; i < 5; i += 2) { 
+	    		new Stone(board.getSquare(i, j), PieceColor.BLACK);
+	    		new Stone(board.getSquare(i, n - j), PieceColor.WHITE);
+	    	}
+	    	if (begin > 0) {
+	    		begin = 0;
+	    	} else begin = 1;
+	    		
+	    	
+	    }
+   
+		
+	}
 }
