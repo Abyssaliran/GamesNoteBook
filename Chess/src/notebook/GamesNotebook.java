@@ -39,6 +39,8 @@ import reversi.ui.ReversiGamePanel;
 import reversi.ui.images.ReversiImages;
 import shogi.ui.ShogiGamePanel;
 import shogi.ui.images.ShogiImages;
+import snakegame.ui.SnakeBoard;
+import snakegame.ui.SnakeImages;
 import tamerlan.TamerlanChess;
 import tamerlan.ui.TamerlanChessGamePanel;
 import tamerlan.ui.images.TamerlanChessImages;
@@ -81,7 +83,7 @@ public class GamesNotebook {
             if (!display.readAndDispatch())
                 display.sleep();
         }
-        display.dispose(); // Удалить экземпляр класса после завершения цикла опроса
+        System.exit(0);
     }
 
     private static Image smallIcon(Image image) {
@@ -100,6 +102,7 @@ public class GamesNotebook {
 
         // Добавление вкладок - игр.
 //        addCoffeeTab(gamesFolder);
+        addSnakeTab(gamesFolder);
         addViruswarsTab(gamesFolder);
         addCamelotTab(gamesFolder);
         addCrazyHouseTab(gamesFolder);
@@ -121,6 +124,13 @@ public class GamesNotebook {
         addReversiTab(gamesFolder);
 //		addGoTab(gamesFolder);
         addHalma8x8Tab(gamesFolder);
+    }
+
+    private static void addSnakeTab(TabFolder folder) {
+        TabItem tabItem = new TabItem(folder, SWT.NONE);
+        tabItem.setControl(new SnakeBoard(folder));
+        tabItem.setImage(smallIcon(SnakeImages.iconSnakeNotebook));
+        tabItem.setText("Змейка");
     }
 
     private static void addCoffeeTab(TabFolder folder) {
