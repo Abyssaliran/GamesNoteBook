@@ -20,5 +20,6 @@
     <orderEntry type="library" name="org.eclipse.equinox.common_3.15.0.v20210518-0604" level="project" />
     <orderEntry type="library" name="org.eclipse.jface_3.23.0.v20210723-1324" level="project" />
     <orderEntry type="library" name="org.eclipse.ui.workbench_3.123.0.v20210817-0704" level="project" />
+    <orderEntry type="library" name="lib-windows (4)" level="project" />
   </component>
 </module>
