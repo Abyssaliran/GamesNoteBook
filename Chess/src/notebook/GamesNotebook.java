@@ -83,7 +83,7 @@ public class GamesNotebook {
             if (!display.readAndDispatch())
                 display.sleep();
         }
-        System.exit(0);
+        display.dispose(); // Удалить экземпляр класса после завершения цикла опроса
     }
 
     private static Image smallIcon(Image image) {
