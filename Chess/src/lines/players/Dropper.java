@@ -26,14 +26,13 @@ public class Dropper extends Vinni {
 
 	@Override
 	public String getAuthorName() {
-		return "Белякова";
+		return "????";
 	}
 
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
 		super.doMove(board, color);
 		
-		// TODO Белякова
 		// Алгоритм должен отбирать из всех допустимых ходов ходы StoneDrop.
 	}
 }

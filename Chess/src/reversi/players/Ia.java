@@ -10,7 +10,6 @@ import java.util.Comparator;
 
 /**
  * Ослик Иа - игрок в реверси:<br>
- * @author Екатерина Козак
  */
 public class Ia extends ReversiPlayer {
 	final Comparator<? super Move> brain
@@ -23,7 +22,7 @@ public class Ia extends ReversiPlayer {
 
 	@Override
 	public String getAuthorName() {
-		return "Лобанова Ангелина";
+		return "???";
 	}
 
 	/**
@@ -87,7 +86,6 @@ public class Ia extends ReversiPlayer {
 	 * @return
 	 */
 	public boolean isSquareX(Square target) {
-		// TODO Лобанова Ангелина
 		// http://othello.gomel.by/stepanov/x-pole/
 		return false;
 	}
@@ -117,7 +115,6 @@ public class Ia extends ReversiPlayer {
 	 * @return
 	 */
 	public boolean isBigCross(Square target) {
-		// TODO Лобанова Ангелина
 		// http://othello.gomel.by/stepanov/bolwoy-krest/
 		return false;
 	}

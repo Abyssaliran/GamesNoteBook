@@ -19,14 +19,13 @@ public class Collector extends Neznaika {
 
 	@Override
 	public String getAuthorName() {
-		return "Есенин";
+		return "???";
 	}
 
 	@Override
 	public void doMove(Board board, PieceColor color) throws GameOver {
 		super.doMove(board, color);
 		
-		// TODO Есенин
 		// Алгоритм должен отбирать из всех допустимых ходов ходы StoneMove.
 		// Затем он сортирует оставшиеся ходы в зависимости от рейтинга хода
 		// и делает лучший ход.

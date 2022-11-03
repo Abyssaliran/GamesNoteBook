@@ -1,5 +1,8 @@
 package snakegame.ui;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -7,17 +10,14 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+
 import snakegame.pieces.Apple;
 import snakegame.pieces.Board;
 import snakegame.pieces.Directions;
 import snakegame.pieces.Snake;
-
-import java.util.Observable;
-import java.util.Observer;
 
 public class SnakeBoard extends Canvas implements PaintListener, KeyListener, Observer {
     protected Board board;

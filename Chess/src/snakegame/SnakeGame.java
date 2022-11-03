@@ -1,9 +1,8 @@
 package snakegame;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
-import snakegame.pieces.Board;
-import snakegame.pieces.Snake;
 import snakegame.ui.SnakeBoard;
 import snakegame.ui.SnakeImages;
 
