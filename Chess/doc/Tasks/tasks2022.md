@@ -8,7 +8,7 @@
 2. --  
 Игра Viruswars      
 
-3. --  
+3. Макаров    
 Игра CrazyHouse    
 
 4. --  
