@@ -15,7 +15,7 @@ public class Hephaistos extends BreakThroughPlayer {
 
 	@Override
 	public String getAuthorName() {
-		return "Каныбек";
+		return "???";
 	}
 
 	protected int getWeight(Move m2) {

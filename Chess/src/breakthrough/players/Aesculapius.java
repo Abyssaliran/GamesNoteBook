@@ -15,7 +15,7 @@ public class Aesculapius extends BreakThroughPlayer {
 
 	@Override
 	public String getAuthorName() {
-		return "Тимур Антипин";
+		return "???";
 	}
 
 	protected int getWeight(Move m2) {

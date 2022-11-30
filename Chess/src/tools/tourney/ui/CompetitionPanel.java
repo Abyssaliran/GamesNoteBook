@@ -1,5 +1,6 @@
 package tools.tourney.ui;
 
+import chinachess.ChinaChess;
 import game.core.Game;
 import game.players.IPlayer;
 import tools.tourney.Match;
@@ -29,7 +30,7 @@ public class CompetitionPanel extends Composite {
 
         TabFolder folder = new TabFolder(this, SWT.TOP);
 
-        roundPanel = new RoundTourneyPanel(folder, new RoundTourney(players));
+        roundPanel = new RoundTourneyPanel(folder, new RoundTourney(ChinaChess.class));
         swissPanel = new SwissTourneyPanel(folder, new SwissTourney(players));
         matchPanel = new MatchPanel(folder, new Match(players, 10));
 

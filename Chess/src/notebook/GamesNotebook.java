@@ -77,6 +77,7 @@ public class GamesNotebook {
         TabFolder mainFolder = new TabFolder(shell, SWT.BOTTOM);
         addGames(mainFolder);
         addTools(mainFolder);
+        mainFolder.setSelection(1);
 
         shell.open();
         while (!shell.isDisposed()) {
@@ -298,10 +299,10 @@ public class GamesNotebook {
         toolsItem.setText("Инструменты");
 
         // Добавление вкладок - инструментов.
-        addEditorTab(toolsFolder);
-//		addGameDBTab(toolsFolder);
         addCompetitionTamerlanTab(toolsFolder);
         addCompetitionReversiTab(toolsFolder);
+        addEditorTab(toolsFolder);
+//		addGameDBTab(toolsFolder);
     }
 
     private static void addEditorTab(TabFolder folder) {
