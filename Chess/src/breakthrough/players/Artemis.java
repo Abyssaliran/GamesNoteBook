@@ -16,7 +16,7 @@ public class Artemis extends BreakThroughPlayer {
 
 	@Override
 	public String getAuthorName() {
-		return "Саитова";
+		return "????";
 	}
 
 	protected int getWeight(Move m2) {
