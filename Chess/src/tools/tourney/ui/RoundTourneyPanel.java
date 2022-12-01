@@ -4,17 +4,18 @@ import chinachess.ui.ChinaChessBoardPanel;
 import game.core.Game;
 import game.core.GameResult;
 import game.players.IPlayer;
+import game.ui.AdornedBoard;
 import game.ui.MovesJornal;
 import game.ui.images.GameImages;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.*;
 import tools.tourney.RoundTourney;
 
 import static java.awt.Label.CENTER;
@@ -32,16 +33,20 @@ class RoundTourneyPanel extends Composite {
     private static final Color COLOR_BLUE = new Color(null, 0, 0, 255);
     private static final Color COLOR_GREEN = new Color(null, 0, 100, 0);
 
+    private static final Color COLOR_SELECT = new Color(null, 255, 215, 0);
+
     private final RoundTourney tournay;
     private static final int CELL_HEIGHT = 25;
     private static final int CELL_WIDTH = CELL_HEIGHT * 2;
-    private final Game currentGame;
 
     GamesTable gamesTable;
 
     private Composite westPanel;
     private Composite centerPanel;
     private Composite eastPanel;
+
+    static private Game currentGame;
+    static private Label currentGameCell;
 
     RoundTourneyPanel(Composite parent, RoundTourney tourney) {
         super(parent, SWT.BORDER);
@@ -60,6 +65,7 @@ class RoundTourneyPanel extends Composite {
         GridData data = new GridData(SWT.FILL, SWT.TOP, false, true);
 
         RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
+        rowLayout.center = true;
         westPanel = new Composite(this, SWT.BORDER);
         westPanel.setLayout(rowLayout);
         westPanel.setLayoutData(data);
@@ -68,6 +74,7 @@ class RoundTourneyPanel extends Composite {
         gamesTable = new GamesTable(westPanel, tourney);
 
         Button start = new Button(westPanel, SWT.PUSH | SWT.CENTER);
+        start.setAlignment(SWT.CENTER);
         start.setText("Старт");
         start.addSelectionListener(widgetSelectedAdapter(e ->
                 System.out.println("Старт")
@@ -79,7 +86,10 @@ class RoundTourneyPanel extends Composite {
         data = new GridData(SWT.FILL, SWT.FILL, true, true);
         data.widthHint = 600;
 
-        centerPanel = new ChinaChessBoardPanel(this, currentGame);
+        centerPanel = new Composite(this, SWT.BORDER);
+        centerPanel.setLayout(new FillLayout());
+        centerPanel.setLayoutData(data);
+        centerPanel.setBackground(COLOR_GREEN);
         centerPanel.setLayoutData(data);
 
         //
@@ -88,11 +98,77 @@ class RoundTourneyPanel extends Composite {
         data = new GridData(SWT.FILL, SWT.FILL, false, true);
         data.widthHint = 350;
 
-        eastPanel = new MovesJornal(this, currentGame.board.history);
+        eastPanel = new Composite(this, SWT.BORDER);
+        eastPanel.setLayout(new FillLayout());
+        eastPanel.setLayoutData(data);
+        eastPanel.setBackground(COLOR_GREEN);
+        eastPanel.setLayoutData(data);
+        eastPanel.setBackgroundImage(GameImages.woodDark);
+
+        initBoardMovesPanels();
+    }
+
+    public void clear(Composite c) {
+        Control[] children = c.getChildren();
+        for (int i = children.length - 1; i >= 0; i--)
+            children[i].dispose();
+    }
+
+    private void initBoardMovesPanels() {
+        clear(centerPanel);
+        clear(eastPanel);
+
+        GridData data;
+
+        data = new GridData(SWT.FILL, SWT.FILL, false, true);
+        data.widthHint = 350;
+        centerPanel.setLayoutData(data);
+
+        data = new GridData(SWT.FILL, SWT.FILL, true, true);
+        data.widthHint = 600;
         eastPanel.setLayoutData(data);
 
+        AdornedBoard adorned = new AdornedBoard(centerPanel);
+        ChinaChessBoardPanel boardPanel = new ChinaChessBoardPanel(centerPanel, currentGame);
+        adorned.insertSquares(boardPanel);
+
+        new MovesJornal(eastPanel, currentGame.board.history);
+
         currentGame.board.setBoardChanged();
-        pack();
+
+        centerPanel.pack(true);
+        eastPanel.pack(true);
+    }
+
+    private void gameSelected(Game game) {
+        clear(centerPanel);
+        clear(eastPanel);
+        game.board.deleteObservers();
+
+        GridData data;
+
+        data = new GridData(SWT.FILL, SWT.FILL, false, true);
+        data.widthHint = 350;
+        centerPanel.setLayoutData(data);
+
+        data = new GridData(SWT.FILL, SWT.FILL, true, true);
+        data.widthHint = 600;
+        eastPanel.setLayoutData(data);
+
+        AdornedBoard adorned = new AdornedBoard(centerPanel);
+
+        ChinaChessBoardPanel boardPanel = new ChinaChessBoardPanel(centerPanel, currentGame);
+        adorned.insertSquares(boardPanel);
+
+        MovesJornal jornal = new MovesJornal(eastPanel, game.board.history);
+        currentGame.board.setBoardChanged();
+
+        centerPanel.layout();
+        centerPanel.pack(true);
+        eastPanel.layout();
+        eastPanel.pack(true);
+        layout();
+        pack(true);
     }
 
     /**
@@ -122,6 +198,8 @@ class RoundTourneyPanel extends Composite {
         private final RoundTourney tourney;
         private final int row;
         private final int col;
+        private final Game whiteGame;
+        private final Game blackGame;
         private Label whiteGameCell;
         private Label blackGameCell;
 
@@ -131,6 +209,11 @@ class RoundTourneyPanel extends Composite {
             this.tourney = tourney;
             this.row = row;
             this.col = col;
+
+            whiteGame = tourney.get(row, col);
+            blackGame = tourney.get(col, row);
+            GameResult whiteResult = getResult(whiteGame);
+            GameResult blackResult = getResult(blackGame);
 
             setForeground(COLOR_BLACK);
             setBackground(COLOR_WHITE);
@@ -144,20 +227,55 @@ class RoundTourneyPanel extends Composite {
             gridData.heightHint = CELL_HEIGHT;
             setLayoutData(gridData);
 
-            Game whiteGame = tourney.get(row, col);
-            Game blackGame = tourney.get(col, row);
-            GameResult whiteResult = getResult(whiteGame);
-            GameResult blackResult = getResult(blackGame);
-
             whiteGameCell = new Label(this, SWT.CENTER);
             whiteGameCell.setForeground(resultColor(whiteResult, true));
             whiteGameCell.setText(resultText(whiteResult, true));
             whiteGameCell.setToolTipText(tooltipText(whiteGame));
+            whiteGameCell.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseDown(MouseEvent e) {
+                    if (currentGameCell != null) {
+                        currentGameCell.setBackground(COLOR_WHITE);
+                        currentGameCell.update();
+                        currentGameCell.redraw();
+                    }
+                    whiteGameCell.setBackground(COLOR_SELECT);
+                    whiteGameCell.update();
+
+                    currentGameCell = whiteGameCell;
+                    currentGame = tourney.get(row, col);
+//                    currentGame.board.setBoardChanged();
+                    System.out.format(" Event white: %s %n", whiteGameCell.getToolTipText());
+                    RoundTourneyPanel.this.gameSelected(currentGame);
+                }
+            });
 
             blackGameCell = new Label(this, SWT.CENTER);
             blackGameCell.setForeground(resultColor(blackResult, false));
             blackGameCell.setText(resultText(blackResult, false));
             blackGameCell.setToolTipText(tooltipText(blackGame));
+            blackGameCell.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseDown(MouseEvent e) {
+                    if (currentGameCell != null) {
+                        currentGameCell.setBackground(COLOR_WHITE);
+                        currentGameCell.update();
+                        currentGameCell.redraw();
+                    }
+                    blackGameCell.setBackground(COLOR_SELECT);
+                    blackGameCell.update();
+
+                    currentGameCell = blackGameCell;
+                    currentGame = tourney.get(col, row);
+                    System.out.format(" Event black: %s %n", blackGameCell.getToolTipText());
+                    RoundTourneyPanel.this.gameSelected(currentGame);
+                }
+            });
+
+            if (whiteGame == currentGame) {
+                currentGameCell = whiteGameCell;
+                whiteGameCell.setBackground(COLOR_SELECT);
+            }
         }
     }
 

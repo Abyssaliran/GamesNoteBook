@@ -73,24 +73,25 @@ public class GamePanel extends Composite {
 	/**
 	 * Вставить в панель игры доску с клетками.
 	 * 
-	 * @param gameBoard
-	 *            - вставляемая доска с клетками.
+	 * @param gameBoard вставляемая доска с клетками.
 	 */
-	public void insertSquares(GameBoard gameBoard) {
+	public void insertSquares(GameBoard gameBoard, boolean hasBoxes) {
 		this.gameBoard = gameBoard;
-		adorned.insertSquares(gameBoard);
+		adorned.insertSquares(gameBoard, hasBoxes);
 		
 		jornal = new MovesJornal(this, gameBoard.board.history);
 		jornal.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 	}
-	
+
+	public void insertSquares(GameBoard gameBoard) {
+		insertSquares(gameBoard, false);
+	}
+
 	/**
 	 * Изменить размеры доски.
 	 * 
-	 * @param nV
-	 *            - количество вертикалей.
-	 * @param nH
-	 *            - количество горизонталей.
+	 * @param nV количество вертикалей.
+	 * @param nH количество горизонталей.
 	 */
 	public void resizeBoard(int nV, int nH) {
 		// Новые размеры доски и расстановка фигур.

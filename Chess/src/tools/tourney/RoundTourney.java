@@ -3,6 +3,7 @@ package tools.tourney;
 import game.core.Game;
 import game.players.IPlayer;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -54,6 +55,9 @@ public class RoundTourney extends Competition {
 
         Comparator<Integer> comp = (a, b) -> (int) (scores[b] - scores[a]);
         sorted.sort(comp);
+
+        System.out.println("scores = " + Arrays.toString(scores));
+        System.out.println("sorted = " + sorted);
     }
 
     /**
@@ -78,22 +82,31 @@ public class RoundTourney extends Competition {
     }
 
     /**
-     * Сколько очков у игрока в строке с номеров [row]
+     * Сколько очков у игрока в строке с номером [row]
      */
     private double playerScore(int row) {
         double score = 0.0;
+
+        // Подсчет партий выигранных белыми.
+        // В строке таблицы с номером row партии
+        // игрока с номером row которые он играл белыми.
         for (int col = 0; col < players.size(); col++)
-            switch (getResult(table[row][col])) {
+            switch (getResult(get(row, col))) {
                 case WHITE_WIN:
-                    score++;
+                    score++; // Выигрыш белыми.
+                    break;
                 case DRAWN:
                     score += 0.5;
                 default:
             }
+        // Подсчет партий выигранных черными.
+        // В КОЛОНКЕ таблицы с номером row партии
+        // игрока с номером row которые он играл черными.
         for (int col = 0; col < players.size(); col++)
-            switch (getResult(table[col][row])) {
-                case WHITE_WIN:
-                    score++;
+            switch (getResult(get(col, row))) {
+                case BLACK_WIN:
+                    score++; // Выигрыш черными.
+                    break;
                 case DRAWN:
                     score += 0.5;
                 default:

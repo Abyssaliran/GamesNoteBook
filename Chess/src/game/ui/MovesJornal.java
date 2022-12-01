@@ -59,12 +59,12 @@ public class MovesJornal extends Composite implements Observer {
         public MovesPanel(Composite parent) {
             super(parent, SWT.TRANSPARENT);
         }
+    }
 
-        public void clear() {
-            Control[] children = getChildren();
-            for (int i = children.length - 1; i >= 0; i--)
-                children[i].dispose();
-        }
+    public void clear(Composite c) {
+        Control[] children = c.getChildren();
+        for (int i = children.length - 1; i >= 0; i--)
+            children[i].dispose();
     }
 
     /**
@@ -218,7 +218,7 @@ public class MovesJornal extends Composite implements Observer {
         List<Move> moves = history.getMoves();
 
         if (nChildren > moves.size()) {
-            movesPanel.clear();
+            clear(movesPanel);
             nChildren = 0;
         }
 

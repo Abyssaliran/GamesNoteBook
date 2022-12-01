@@ -68,7 +68,7 @@ public class GamesNotebook {
 
         shell.setBackgroundMode(SWT.INHERIT_FORCE);
 
-        shell.setSize(1000, 600);
+        shell.setSize(1200, 600);
         shell.setText("Games Notebook");
         shell.setImage(NotebookImages.iconNotebook);
 
@@ -301,7 +301,7 @@ public class GamesNotebook {
         // Добавление вкладок - инструментов.
         addCompetitionTamerlanTab(toolsFolder);
         addCompetitionReversiTab(toolsFolder);
-        addEditorTab(toolsFolder);
+//        addEditorTab(toolsFolder);
 //		addGameDBTab(toolsFolder);
     }
 
