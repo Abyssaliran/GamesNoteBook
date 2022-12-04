@@ -100,7 +100,7 @@ class RoundTourneyPanel extends Composite {
 		// Центральная панель
 		//
 		GridData centerData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		centerData.widthHint = 550;
+		centerData.widthHint = 580;
 		centerPanel.setLayout(new FillLayout());
 		centerPanel.setLayoutData(centerData);
 
@@ -119,7 +119,9 @@ class RoundTourneyPanel extends Composite {
 
 		currentGame.board.setBoardChanged();
 
-		pack(true);
+		centerPanel.pack(true);		
+		eastPanel.pack(true);
+		layout();
 	}
 
 	/**
@@ -195,8 +197,6 @@ class RoundTourneyPanel extends Composite {
 
 					currentGameCell = whiteGameCell;
 					currentGame = tourney.get(row, col);
-//                    currentGame.board.setBoardChanged();
-					System.out.format(" Event white: %s %n", whiteGameCell.getToolTipText());
 					RoundTourneyPanel.this.gameSelected(currentGame);
 				}
 			});
@@ -218,7 +218,6 @@ class RoundTourneyPanel extends Composite {
 
 					currentGameCell = blackGameCell;
 					currentGame = tourney.get(col, row);
-					System.out.format(" Event black: %s %n", blackGameCell.getToolTipText());
 					RoundTourneyPanel.this.gameSelected(currentGame);
 				}
 			});
