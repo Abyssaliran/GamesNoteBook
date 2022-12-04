@@ -1,10 +1,11 @@
 package game.ui;
 
-import game.core.Board;
-import game.core.History;
-import game.core.Move;
-import game.players.IPlayer;
-import game.ui.images.GameImages;
+import static java.lang.String.format;
+
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
@@ -20,17 +21,18 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-
-import static java.lang.String.format;
+import game.core.Board;
+import game.core.History;
+import game.core.Move;
+import game.players.IPlayer;
+import game.ui.images.GameImages;
 
 /**
  * Журнал для хранения истории ходов игры.
  *
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
+@SuppressWarnings("deprecation")
 public class MovesJornal extends Composite implements Observer {
     private static final Font font = new Font(Display.getCurrent(), "mono", 10, SWT.BOLD);
     private static final Cursor hand = new Cursor(Display.getCurrent(), SWT.CURSOR_HAND);
@@ -38,8 +40,6 @@ public class MovesJornal extends Composite implements Observer {
     private static final Color SELECT_COLOR = new Color(Display.getCurrent(), 217, 173, 124);
     private static final Color HEADER_COLOR = new Color(Display.getCurrent(), 217, 173, 124);
     private static final Color BLACK_COLOR = new Color(Display.getCurrent(), 0, 0, 0);
-    private static final Color PAPER_COLOR = new Color(Display.getCurrent(), 255, 210, 0);
-
     /**
      * История игры - последовательность ходов.
      */
