@@ -39,24 +39,21 @@ public class RoundTourney extends Competition {
 
 	@Override
 	public void run() {
-		for (int row = 0; row < players.size(); row++)
-			for (int col = 0; col < players.size(); col++) {
-				if (row != col) {
-					Game instance;
-					try {
-						instance = gameClass.getDeclaredConstructor().newInstance();
-					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-						throw new RuntimeException(e);
+		try {
+			for (int row = 0; row < players.size(); row++)
+				for (int col = 0; col < players.size(); col++)
+					if (row != col) {
+						Game instance = gameClass.getDeclaredConstructor().newInstance();
+						table[row][col] = play(instance, players.get(row), players.get(col));
 					}
-					table[row][col] = play(instance, players.get(row), players.get(col));
-				}
-			}
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			throw new RuntimeException(e);
+		}
 		for (int row = 0; row < players.size(); row++)
 			scores[row] = playerScore(row);
 
-		Comparator<Integer> comp = (a, b) -> (int) (scores[b] - scores[a]);
-		sorted.sort(comp);
+		sorted.sort((a, b) -> (int) (scores[b] - scores[a]));
 	}
 
 	/**

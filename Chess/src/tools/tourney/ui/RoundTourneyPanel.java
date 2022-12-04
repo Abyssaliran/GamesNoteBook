@@ -104,9 +104,8 @@ class RoundTourneyPanel extends Composite {
 		centerPanel.setLayout(new FillLayout());
 		centerPanel.setLayoutData(centerData);
 
-		ChinaChessBoardPanel boardPanel = new ChinaChessBoardPanel(centerPanel, currentGame);
 		AdornedBoard adorned = new AdornedBoard(centerPanel);
-		adorned.insertSquares(boardPanel);
+		adorned.insertSquares(new ChinaChessBoardPanel(centerPanel, currentGame));
 
 		//
 		// Правая панель
@@ -119,7 +118,7 @@ class RoundTourneyPanel extends Composite {
 
 		currentGame.board.setBoardChanged();
 
-		centerPanel.pack(true);		
+		centerPanel.pack(true);
 		eastPanel.pack(true);
 		layout();
 	}
