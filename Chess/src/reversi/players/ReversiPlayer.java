@@ -1,5 +1,8 @@
 package reversi.players;
 
+import static game.core.GameResult.DRAWN;
+import static game.core.GameResult.win;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -63,32 +66,18 @@ public class ReversiPlayer extends PutPiecePlayer {
 		List<Piece> enemies = board.getPieces(enemyColor);
 		
 		if (enemies.isEmpty()) {
-			// Врагов уже нет. Мы выиграли.
-			// Сохраняем в истории игры последний сделанный ход 
-			// и результат игры.
-			board.history.setResult(GameResult.win(color));
-			
-			// Просим обозревателей доски показать 
-			// положение на доске, сделанный ход и 
-			// результат игры.
-			board.setBoardChanged();
-			
-			throw new GameOver( GameResult.win(color) );
+            // Окружать некого. Пропускаем ход.
+            if (board.history.getLastMove() instanceof PassMove)
+                stopGame(board, new PassMove()); // У обоих игроков нет корретных ходов.
+            
+            continueGame(board, new PassMove()); // Передаем ход противнику.
+            return;
 		}
 		
 		List<Move> correctMoves = getCorrectMoves(board, color);
-	
+		
 		if (correctMoves.isEmpty()){
-			// Пропускаем ход.
-			Move bestMove = new PassMove();
-			
-			// Сохраняем ход в истории игры.
-			board.history.addMove(bestMove );
-	
-			// Просим обозревателей доски показать 
-			// положение на доске, сделанный ход и 
-			// результат игры.
-			board.setBoardChanged();
+            continueGame(board, new PassMove()); // Передаем ход противнику.
 			return;
 		}
 		
@@ -97,40 +86,52 @@ public class ReversiPlayer extends PutPiecePlayer {
 		correctMoves.sort( getComparator() );
 		Move bestMove = correctMoves.get(0);
 		
+        if (bestMove instanceof PassMove && board.history.getLastMove() instanceof PassMove)
+            stopGame(board, bestMove); // У обоих игроков нет корректных ходов.
+	
 		try { bestMove.doMove(); } 
 		catch (GameOver e) {
-			// Сохраняем в истории игры последний сделанный ход 
-			// и результат игры.
-			board.history.addMove(bestMove);
 			board.history.setResult(e.result);
-			
-			// Просим обозревателей доски показать 
-			// положение на доске, сделанный ход и 
-			// результат игры.
-			board.setBoardChanged();
-			
-			throw new GameOver(GameResult.DRAWN);
+			stopGame(board, bestMove);
 		}
 		
-		// Сохраняем ход в истории игры.
-		board.history.addMove(bestMove);
-	
-		// Просим обозревателей доски показать 
-		// положение на доске, сделанный ход и 
-		// результат игры.
-		board.setBoardChanged();
-	
-		// Для отладки ограничим количество ходов в игре.
-		// После этого результат игры ничья.
-		if (board.history.getMoves().size() > 80) {
-			// Сохраняем в истории игры последний сделанный ход 
-			// и результат игры.
-			board.history.setResult(GameResult.DRAWN);
-			
-			// Сообщаем что игра закончилась ничьей.
-			throw new GameOver(GameResult.DRAWN);
-		}
+		continueGame(board, bestMove);
 	}
+	
+    private void continueGame(Board board, Move bestMove) throws GameOver {
+        board.history.addMove(bestMove);
+
+        // Просим обозревателей доски показать
+        // положение на доске, сделанный ход и
+        // результат игры.
+        board.setBoardChanged();
+
+        // Для отладки ограничим количество ходов в игре.
+        // После этого результат игры ничья.
+        // Сохраняем в истории игры последний сделанный ход
+        // и результат игры.
+        if (board.history.getMoves().size() > 200)
+            stopGame(board, bestMove);
+    }
+    
+    private void stopGame(Board board, Move lastMove) throws GameOver {
+        board.history.addMove(lastMove);
+
+        int blacks = board.getPieces(PieceColor.BLACK).size();
+        int whites = board.getPieces(PieceColor.WHITE).size();
+
+       GameResult result = blacks > whites ? win(PieceColor.BLACK) : ( blacks < whites ? win(PieceColor.WHITE) : DRAWN);
+            
+        board.history.setResult(result);
+
+        // Просим обозревателей доски показать
+        // положение на доске, сделанный ход и
+        // результат игры.
+        board.setBoardChanged();
+
+        throw new GameOver(result);
+    }
+
 
 	abstract public Comparator<? super Move> getComparator();
 }

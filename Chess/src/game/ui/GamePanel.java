@@ -1,5 +1,8 @@
 package game.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
@@ -66,9 +69,11 @@ public class GamePanel extends Composite {
 		adorned.setLayoutData(data);
 	}
 
-	public GamePanel(Composite parent, Color color) {
-		super(parent, SWT.TRANSPARENT);
-	}
+//	public GamePanel(Composite parent, Color color) {
+//		super(parent, SWT.TRANSPARENT);
+//	}
+
+	public static Map<Class<? extends Game>, Class<? extends GameBoard>> gamePanelMap = new HashMap<>();
 
 	/**
 	 * Вставить в панель игры доску с клетками.
@@ -81,6 +86,8 @@ public class GamePanel extends Composite {
 		
 		jornal = new MovesJornal(this, gameBoard.board.history);
 		jornal.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		
+		gamePanelMap.put(game.getClass(), gameBoard.getClass());
 	}
 
 	public void insertSquares(GameBoard gameBoard) {

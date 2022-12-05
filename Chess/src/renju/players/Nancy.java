@@ -175,12 +175,12 @@ public class Nancy extends PutPiecePlayer implements IPlayer {
 			board.history.setResult(e.result);
 			
 			//Game over prompt LIKE add 2020-10-01
-			int mesg = JOptionPane.showConfirmDialog(null, "Nancy win！！！  "+"\n Do you want to play again ?", "Game Over",JOptionPane.YES_NO_OPTION);
-	        if(mesg == 0) {
-	        	board.reset(15, 15);
-	        	new Stone(board.getSquare(15/2, 15/2), PieceColor.BLACK);
-				board.startGame();
-	        }
+//			int mesg = JOptionPane.showConfirmDialog(null, "Nancy win！！！  "+"\n Do you want to play again ?", "Game Over",JOptionPane.YES_NO_OPTION);
+//	        if(mesg == 0) {
+//	        	board.reset(15, 15);
+//	        	new Stone(board.getSquare(15/2, 15/2), PieceColor.BLACK);
+//				board.startGame();
+//	        }
 			
 			// Просим обозревателей доски показать
 			// положение на доске, сделанный ход и

@@ -41,6 +41,15 @@ public class Halma extends Game {
 		board.setBlackPlayer( new Neznaika() );
 	}	
 	
+	public Halma() {
+		int size = allowableBoardSize[0];
+		super.initBoard(size, size);
+		initializeParticularBoard(size);
+
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+	}
+	
 	/**
 	 * Выдать счет для игрока играющего фигурами заданного цвета.
 	 * 

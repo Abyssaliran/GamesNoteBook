@@ -31,6 +31,8 @@ public class Vikings extends Game {
 	
 	private int center;
 
+	public Vikings() { this(9); }
+	
 	/**
 	 * Создание доски заданного размера
 	 * и расстановка фигур для этого размера доски.

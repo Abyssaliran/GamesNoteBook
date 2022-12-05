@@ -1,13 +1,18 @@
 package tools.tourney.ui;
 
 import static java.awt.Label.CENTER;
+import static java.lang.System.out;
+import static java.util.stream.Collectors.toSet;
 import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
 import static tools.tourney.Competition.getResult;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -18,11 +23,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 
+import breakthrough.BreakThrough;
+import breakthrough.ui.BreakThroughBoardPanel;
 import chinachess.ChinaChess;
 import chinachess.ui.ChinaChessBoardPanel;
 import game.core.Game;
@@ -30,8 +38,11 @@ import game.core.GameResult;
 import game.players.IPlayer;
 import game.ui.AdornedBoard;
 import game.ui.GameBoard;
+import game.ui.GamePanel;
 import game.ui.MovesJornal;
 import game.ui.images.GameImages;
+import renju.Renju;
+import renju.ui.RenjuBoardPanel;
 import reversi.Reversi;
 import reversi.ui.ReversiBoardPanel;
 import tools.tourney.RoundTourney;
@@ -49,11 +60,11 @@ class RoundTourneyPanel extends Composite {
 
 	private static final Color COLOR_SELECT = new Color(null, 255, 215, 0);
 
-	private final RoundTourney tournay;
+	private RoundTourney tournay;
 	private static final int CELL_HEIGHT = 25;
 	private static final int CELL_WIDTH = CELL_HEIGHT * 2;
 
-	GamesTable gamesTable;
+	private GamesTable gamesTable;
 
 	private Composite westPanel;
 	private Composite centerPanel;
@@ -64,27 +75,71 @@ class RoundTourneyPanel extends Composite {
 	static private Game currentGame;
 	static private Label currentGameCell;
 
-	static private Class<? extends Game> currentGameKind;
-	static Class<? extends GameBoard> currentGamePanelKind;
+	private static Class<? extends Game> currentGameKind;
+	private static Class<? extends GameBoard> currentGamePanelKind;
+	private static List<Class<? extends Game>> allGames;
 
 	static {
+//		map = GamePanel.gamePanelMap;
 		map.put(ChinaChess.class, ChinaChessBoardPanel.class);
 		map.put(Reversi.class, ReversiBoardPanel.class);
-		currentGameKind = Reversi.class;
+		map.put(BreakThrough.class, BreakThroughBoardPanel.class);
+		map.put(Renju.class, RenjuBoardPanel.class);
+		
+		GamePanel.gamePanelMap.forEach((game, panel) -> {
+			String gameName = game.getSimpleName();
+			String panelName = panel.getSimpleName();
+			Set<String> players = Game.allPlayers.get(game)
+					.stream()
+					.map(IPlayer::getName)
+					.collect(toSet());
+			out.format("%s, %s = %s%n", gameName, panelName, players);
+		});
+		allGames = map.entrySet()
+				.stream()
+				.map(entry -> entry.getKey())
+				.filter(gameKind -> Game.allPlayers.get(gameKind).size() >= 3)
+				.collect(Collectors.toList());
+		
+		currentGameKind = map.entrySet()
+				.stream()
+				.map(entry -> entry.getKey())
+				.filter(gameKind -> Game.allPlayers.get(gameKind).size() >= 3)
+				.peek(gameKind -> out.format("game = %s %n", gameKind.getSimpleName()))
+				.filter(gameKind -> gameKind.getSimpleName().startsWith("China"))
+				.findAny()
+				.get();
+//		currentGameKind = Vikings.class; // !
+//		currentGameKind = FisherChess.class; // ? 
+//		currentGameKind = Chess.class; // ? 
+//		currentGameKind = Halma.class; // ! 
+//		currentGameKind = TamerlanChess.class; // ! 
+
 		currentGamePanelKind = map.get(currentGameKind);
 	}
 
 	RoundTourneyPanel(Composite parent) {
 		super(parent, SWT.BORDER);
-
-		this.tournay = new RoundTourney(currentGameKind);
-		this.tournay.run();
-		currentGame = tournay.get(0, 1);
-
+		
 		setBackgroundImage(GameImages.woodDark);
 		Layout layout = new GridLayout(3, false);
 		setLayout(layout);
 
+		westPanel = new Composite(this, SWT.BORDER);
+		centerPanel = new Composite(this, SWT.BORDER);
+		eastPanel = new Composite(this, SWT.BORDER);
+
+		initPanel(currentGameKind);
+	}
+
+	private void initPanel(Class<? extends Game> gameKind) {
+		currentGameKind = gameKind;
+		currentGamePanelKind = map.get(gameKind);
+
+		this.tournay = new RoundTourney(gameKind);
+		this.tournay.run();
+		currentGame = tournay.get(0, 1);
+		
 		//
 		// Левая панель
 		//
@@ -92,21 +147,43 @@ class RoundTourneyPanel extends Composite {
 
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
 		rowLayout.center = true;
-		westPanel = new Composite(this, SWT.BORDER);
 		westPanel.setLayout(rowLayout);
 		westPanel.setLayoutData(data);
 		westPanel.setBackground(COLOR_GREEN);
+
+		Combo combo = new Combo (westPanel, SWT.READ_ONLY);
+		combo.setBackground(COLOR_WHITE);
+		allGames.forEach(g -> combo.add(g.getSimpleName()));
+		combo.addSelectionListener(widgetSelectedAdapter(e -> {
+			int k = combo.getSelectionIndex();
+			Class<? extends Game> gk = RoundTourneyPanel.allGames.get(k);
+//			out.format("%d.%s%n", k, gk);
+			selectGameKind(gk);
+		}));
+		combo.setText(combo.getItem(RoundTourneyPanel.allGames.indexOf(currentGameKind)));
 
 		gamesTable = new GamesTable(westPanel, tournay);
 
 		Button start = new Button(westPanel, SWT.PUSH | SWT.CENTER);
 		start.setAlignment(SWT.CENTER);
 		start.setText("Старт");
-		start.addSelectionListener(widgetSelectedAdapter(e -> System.out.println("Старт")));
+		start.addSelectionListener(widgetSelectedAdapter(e -> out.println("Старт")));
 
-		centerPanel = new Composite(this, SWT.BORDER);
-		eastPanel = new Composite(this, SWT.BORDER);
+		gameSelected(currentGame);
+		westPanel.pack(true);
+		layout();
+	}
 
+	private void selectGameKind(Class<? extends Game> gameKind) {
+		currentGameKind = gameKind;
+		currentGamePanelKind = map.get(gameKind);
+
+		tournay = new RoundTourney(gameKind);
+		tournay.run();
+		currentGame = tournay.get(0, 1);
+		
+		gamesTable.initPanel(tournay);
+		
 		gameSelected(currentGame);
 	}
 
@@ -118,6 +195,8 @@ class RoundTourneyPanel extends Composite {
 
 	@SuppressWarnings("deprecation")
 	private void gameSelected(Game game) {
+		currentGame = game;
+		
 		clear(centerPanel);
 		clear(eastPanel);
 		game.board.deleteObservers();
@@ -131,7 +210,7 @@ class RoundTourneyPanel extends Composite {
 		centerPanel.setLayoutData(centerData);
 
 		AdornedBoard adorned = new AdornedBoard(centerPanel);
-		GameBoard boardPanel = getGamePanel();
+		GameBoard boardPanel = getGamePanel(currentGameKind, game);
 		adorned.insertSquares(boardPanel);
 
 		//
@@ -150,31 +229,14 @@ class RoundTourneyPanel extends Composite {
 		layout();
 	}
 
-	private GameBoard getGamePanel() {
+	private GameBoard getGamePanel(Class<? extends Game> gameKind, Game game) {
 		GameBoard boardPanel = null;
 		try {
-			Class<? extends GameBoard> panelClass = map.get(currentGameKind);
+			Class<? extends GameBoard> panelClass = map.get(gameKind);
 			Constructor<?> cons = panelClass.getConstructor(Composite.class, Game.class);
-			boardPanel = (GameBoard) cons.newInstance(centerPanel, currentGame);
-
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} // (centerPanel, currentGame);
-		catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
+			boardPanel = (GameBoard) cons.newInstance(centerPanel, game);
+		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException
+				| IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 		return boardPanel;
@@ -204,9 +266,6 @@ class RoundTourneyPanel extends Composite {
 	 * Ячейка для отображения двух игр для каждого игрока: белыми и черными.
 	 */
 	class GameCell extends Composite {
-		private final RoundTourney tourney;
-		private final int row;
-		private final int col;
 		private final Game whiteGame;
 		private final Game blackGame;
 		private Label whiteGameCell;
@@ -214,10 +273,6 @@ class RoundTourneyPanel extends Composite {
 
 		GameCell(Composite parent, RoundTourney tourney, int row, int col) {
 			super(parent, SWT.BORDER);
-
-			this.tourney = tourney;
-			this.row = row;
-			this.col = col;
 
 			whiteGame = tourney.get(row, col);
 			blackGame = tourney.get(col, row);
@@ -321,61 +376,67 @@ class RoundTourneyPanel extends Composite {
 		GamesTable(Composite parent, RoundTourney tourney) {
 			super(parent, SWT.NONE);
 
-			int nPlayers = tourney.size();
+			initPanel(tourney);
+		}
 
+		private void initPanel(RoundTourney tourney) {
+			clear(this);
+			int nPlayers = tourney.size();
+			
 			GridLayout layout = new GridLayout(1 + nPlayers + 1, false);
 			layout.horizontalSpacing = 0;
 			layout.verticalSpacing = 0;
 			setLayout(layout);
-
+			
 			// Верхний левый угол таблицы.
 			new Label(this, SWT.NONE);
-
+			
 			// Номера колонок - номера оппонентов игрока.
 			for (int k = 0; k < nPlayers; k++) {
 				IPlayer player = tourney.get(k);
-
+				
 				Label playerNumber = new Label(this, SWT.CENTER);
 				playerNumber.setAlignment(CENTER);
 				playerNumber.setForeground(COLOR_WHITE);
 				playerNumber.setText("" + (1 + k));
 				playerNumber.setToolTipText(player.getName());
 			}
-
+			
 			// Колонка для отображения очков набранных игроком.
 			Label playersScore = new Label(this, SWT.CENTER);
 			playersScore.setForeground(COLOR_WHITE);
 			playersScore.setText("Очки");
-
+			
 			// Строки таблицы с результатами игры
 			// для игрока записанного в начале строки.
 			for (int row = 0; row < nPlayers; row++) {
 				IPlayer player = tourney.get(row);
-
+				
 				// Номер игрока в таблице и имя игрока.
 				String txt = String.format("%2d. %s ", 1 + row, player.getName());
-
+				
 				Label name = new Label(this, SWT.LEFT);
 				name.setForeground(COLOR_WHITE);
 				name.setText(txt);
 				name.setToolTipText("Автор алгоритма: " + player.getAuthorName());
-
+				
 				// Результаты игры этого игрока белыми и черными
 				// с каждым из игроков в этой таблице.
 				for (int col = 0; col < nPlayers; col++) {
 					IPlayer opponent = tourney.get(col);
 					boolean isDiagonal = (player == opponent);
-
+					
 					if (isDiagonal)
 						new EmptyCell(this);
 					else
 						new GameCell(this, tourney, row, col);
 				}
-
+				
 				// Количество очков набранных игроком.
 				new ResultCell(this, tourney, row);
 			}
 		}
+
 	}
 
 	static private String resultText(GameResult gemRes, boolean whitePlay) {

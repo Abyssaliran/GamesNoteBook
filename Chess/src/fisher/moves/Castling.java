@@ -43,12 +43,13 @@ public class Castling extends SimpleMove {
 	@Override
 	public void doMove() {
 		Board board = source.getBoard();
-		for (int i = 0; i < board.nV; i++) {
-			for (int j = 0; j < board.nH; j++) {
-				if (board.getSquare(i, j).isEmpty()) {
-					rookSource.movePieceTo(board.getSquare(i, j));
+		for (int i = 0; i < board.nV-1; i++) {
+			for (int j = 0; j < board.nH-1; j++) {
+				Square square = board.getSquare(i, j);
+				if (square.isEmpty()) {
+					rookSource.movePieceTo(square);
 					super.doMove();
-					board.getSquare(i, j).movePieceTo(rookTarget);
+					square.movePieceTo(rookTarget);
 					return;
 				}
 			}

@@ -11,11 +11,10 @@ import renju.players.Carlo;
 import renju.players.Karabas;
 import renju.players.KarabasClever;
 import renju.players.Malvina;
-import renju.players.Nancy;
 import renju.players.Turtle;
 
 public class Renju extends Game {
-	private static final int BOARD_SIZE = 15;
+	private static final int BOARD_SIZE = 10;
 	
 	private static final IPieceProvider pieceProvider = (square, color) -> new Stone(square, color);
 
@@ -25,7 +24,6 @@ public class Renju extends Game {
 		Game.addPlayer(Renju.class, new Buratino(pieceProvider));
 		Game.addPlayer(Renju.class, new Karabas(pieceProvider));
 		Game.addPlayer(Renju.class, new KarabasClever(pieceProvider));
-		Game.addPlayer(Renju.class, new Nancy(pieceProvider));
 		Game.addPlayer(Renju.class, new Malvina(pieceProvider));
 		Game.addPlayer(Renju.class, new Carlo(pieceProvider));
 		Game.addPlayer(Renju.class, new Turtle(pieceProvider));
