@@ -13,7 +13,6 @@ import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
 import chess.ui.images.ChessImages;
-import game.core.Board;
 import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;

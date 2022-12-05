@@ -1,12 +1,9 @@
 package coffee.ui;
 
+import org.eclipse.swt.widgets.Composite;
+
 import coffee.Coffee;
 import game.ui.GamePanel;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.TabFolder;
-import renju.Renju;
-import renju.ui.RenjuBoardPanel;
 
 public class CoffeeGamePanel extends GamePanel {
 

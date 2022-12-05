@@ -21,6 +21,7 @@ import game.ui.GameControlPanel;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
+@SuppressWarnings("deprecation")
 public class CubesPanel extends Canvas implements Observer {
 	private static final Color COLOR_FRAME = new Color(null, 0, 0, 255);
 

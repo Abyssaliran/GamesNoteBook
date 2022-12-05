@@ -1,12 +1,14 @@
 package tools.tourney.ui;
 
-import chinachess.ui.ChinaChessBoardPanel;
-import game.core.Game;
-import game.core.GameResult;
-import game.players.IPlayer;
-import game.ui.AdornedBoard;
-import game.ui.MovesJornal;
-import game.ui.images.GameImages;
+import static java.awt.Label.CENTER;
+import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
+import static tools.tourney.Competition.getResult;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -15,12 +17,24 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.*;
-import tools.tourney.RoundTourney;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Layout;
 
-import static java.awt.Label.CENTER;
-import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
-import static tools.tourney.Competition.getResult;
+import chinachess.ChinaChess;
+import chinachess.ui.ChinaChessBoardPanel;
+import game.core.Game;
+import game.core.GameResult;
+import game.players.IPlayer;
+import game.ui.AdornedBoard;
+import game.ui.GameBoard;
+import game.ui.MovesJornal;
+import game.ui.images.GameImages;
+import reversi.Reversi;
+import reversi.ui.ReversiBoardPanel;
+import tools.tourney.RoundTourney;
 
 /**
  * Панель турнира для игры по круговой системе.
@@ -45,15 +59,27 @@ class RoundTourneyPanel extends Composite {
 	private Composite centerPanel;
 	private Composite eastPanel;
 
+	static private Map<Class<? extends Game>, Class<? extends GameBoard>> map = new HashMap<>();
+
 	static private Game currentGame;
 	static private Label currentGameCell;
 
-	RoundTourneyPanel(Composite parent, RoundTourney tourney) {
+	static private Class<? extends Game> currentGameKind;
+	static Class<? extends GameBoard> currentGamePanelKind;
+
+	static {
+		map.put(ChinaChess.class, ChinaChessBoardPanel.class);
+		map.put(Reversi.class, ReversiBoardPanel.class);
+		currentGameKind = Reversi.class;
+		currentGamePanelKind = map.get(currentGameKind);
+	}
+
+	RoundTourneyPanel(Composite parent) {
 		super(parent, SWT.BORDER);
 
-		this.tournay = tourney;
-		tourney.run();
-		currentGame = tourney.get(0, 1);
+		this.tournay = new RoundTourney(currentGameKind);
+		this.tournay.run();
+		currentGame = tournay.get(0, 1);
 
 		setBackgroundImage(GameImages.woodDark);
 		Layout layout = new GridLayout(3, false);
@@ -71,7 +97,7 @@ class RoundTourneyPanel extends Composite {
 		westPanel.setLayoutData(data);
 		westPanel.setBackground(COLOR_GREEN);
 
-		gamesTable = new GamesTable(westPanel, tourney);
+		gamesTable = new GamesTable(westPanel, tournay);
 
 		Button start = new Button(westPanel, SWT.PUSH | SWT.CENTER);
 		start.setAlignment(SWT.CENTER);
@@ -105,7 +131,8 @@ class RoundTourneyPanel extends Composite {
 		centerPanel.setLayoutData(centerData);
 
 		AdornedBoard adorned = new AdornedBoard(centerPanel);
-		adorned.insertSquares(new ChinaChessBoardPanel(centerPanel, currentGame));
+		GameBoard boardPanel = getGamePanel();
+		adorned.insertSquares(boardPanel);
 
 		//
 		// Правая панель
@@ -121,6 +148,36 @@ class RoundTourneyPanel extends Composite {
 		centerPanel.pack(true);
 		eastPanel.pack(true);
 		layout();
+	}
+
+	private GameBoard getGamePanel() {
+		GameBoard boardPanel = null;
+		try {
+			Class<? extends GameBoard> panelClass = map.get(currentGameKind);
+			Constructor<?> cons = panelClass.getConstructor(Composite.class, Game.class);
+			boardPanel = (GameBoard) cons.newInstance(centerPanel, currentGame);
+
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // (centerPanel, currentGame);
+		catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return boardPanel;
 	}
 
 	/**
@@ -161,7 +218,7 @@ class RoundTourneyPanel extends Composite {
 			this.tourney = tourney;
 			this.row = row;
 			this.col = col;
-			
+
 			whiteGame = tourney.get(row, col);
 			blackGame = tourney.get(col, row);
 

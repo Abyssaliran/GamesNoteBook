@@ -37,9 +37,10 @@ public class Reversi extends Game {
      *
      * @param nHoles - количество случайно расположенных отверстий.
      */
-    public Reversi(int nHoles) {
+    public Reversi() {
         initBoardDefault();
-
+        int nHoles = 0;
+        
         board.setWhitePlayer(IPlayer.HOMO_SAPIENCE);
         board.setBlackPlayer(new Vinni(pieceProvider));
 

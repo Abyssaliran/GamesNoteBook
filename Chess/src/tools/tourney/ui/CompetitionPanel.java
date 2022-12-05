@@ -1,11 +1,7 @@
 package tools.tourney.ui;
 
-import chinachess.ChinaChess;
-import game.core.Game;
-import game.players.IPlayer;
-import tools.tourney.Match;
-import tools.tourney.RoundTourney;
-import tools.tourney.SwissTourney;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -13,8 +9,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import game.core.Game;
+import game.players.IPlayer;
+import tools.tourney.Match;
+import tools.tourney.SwissTourney;
 
 /**
  * Панель для проведения соревнований.
@@ -30,7 +28,7 @@ public class CompetitionPanel extends Composite {
 
         TabFolder folder = new TabFolder(this, SWT.TOP);
 
-        roundPanel = new RoundTourneyPanel(folder, new RoundTourney(ChinaChess.class));
+        roundPanel = new RoundTourneyPanel(folder);
         swissPanel = new SwissTourneyPanel(folder, new SwissTourney(players));
         matchPanel = new MatchPanel(folder, new Match(players, 10));
 

@@ -2,7 +2,6 @@ package coffee.ui.images;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import reversi.ui.images.ReversiImages;
 
 public class CoffeeImages {
     public static Image imageBeanWhiteVertical;

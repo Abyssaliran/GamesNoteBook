@@ -2,6 +2,7 @@ package snakegame.pieces;
 
 import java.util.Observable;
 
+@SuppressWarnings("deprecation")
 public class Board extends Observable {
     private final int X;
     private final int Y;

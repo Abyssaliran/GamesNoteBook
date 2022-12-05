@@ -8,7 +8,8 @@ import snakegame.ui.SnakeImages;
 
 
 public class SnakeGame {
-    public static void main(String[] args) {
+    @SuppressWarnings("unused")
+	public static void main(String[] args) {
         final Display display = new Display();
         SnakeImages.load(display);
 

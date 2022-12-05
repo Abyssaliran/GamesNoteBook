@@ -41,6 +41,7 @@ import game.ui.listeners.MovePiecePromptListener;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
+@SuppressWarnings("deprecation")
 abstract
 public class GameBoard extends Canvas 
 	implements PaintListener, MouseListener, MouseMoveListener, Observer  

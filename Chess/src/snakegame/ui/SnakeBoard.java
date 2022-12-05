@@ -19,6 +19,7 @@ import snakegame.pieces.Board;
 import snakegame.pieces.Directions;
 import snakegame.pieces.Snake;
 
+@SuppressWarnings("deprecation")
 public class SnakeBoard extends Canvas implements PaintListener, KeyListener, Observer {
     protected Board board;
     protected Snake snake;

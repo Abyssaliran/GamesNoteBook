@@ -1,5 +1,13 @@
 package notebook;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+
 import backgammon.ui.BackgammonGamePanel;
 import backgammon.ui.images.BackgammonImages;
 import breakthrough.ui.BreakThroughGamePanel;
@@ -25,13 +33,6 @@ import kalah.ui.images.KalahImages;
 import lines.ui.LinesGamePanel;
 import linesofaction.ui.LinesOfActionPanel;
 import notebook.ui.images.NotebookImages;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import points.ui.PointsGamePanel;
 import renju.ui.RenjuGamePanel;
 import reversi.Reversi;
@@ -46,7 +47,6 @@ import tamerlan.ui.TamerlanChessGamePanel;
 import tamerlan.ui.images.TamerlanChessImages;
 import tools.db.ui.GameDBPanel;
 import tools.db.ui.images.GameDBImages;
-import tools.editor.PositionEditor;
 import tools.tourney.ui.CompetitionPanel;
 import vikings.ui.VikingsGamePanel;
 import vikings.ui.images.VikingImages;
@@ -134,7 +134,8 @@ public class GamesNotebook {
         tabItem.setText("Змейка");
     }
 
-    private static void addCoffeeTab(TabFolder folder) {
+    @SuppressWarnings("unused")
+	private static void addCoffeeTab(TabFolder folder) {
         TabItem tabItem = new TabItem(folder, SWT.NONE);
         tabItem.setControl(new CoffeeGamePanel(folder));
         tabItem.setImage(smallIcon(CoffeeImages.imageBeanBlackHorizontal));
@@ -274,7 +275,8 @@ public class GamesNotebook {
         tabItem.setText("Реверси");
     }
 
-    private static void addGoTab(TabFolder folder) {
+    @SuppressWarnings("unused")
+	private static void addGoTab(TabFolder folder) {
         TabItem tabItem = new TabItem(folder, SWT.NONE);
         tabItem.setControl(new GoGamePanel(folder, 8));
         tabItem.setImage(smallIcon(GoImages.icoGo));
@@ -305,16 +307,8 @@ public class GamesNotebook {
 //		addGameDBTab(toolsFolder);
     }
 
-    private static void addEditorTab(TabFolder folder) {
-        ChessGamePanel panel = new ChessGamePanel(folder);
-        TabItem tabItem = new TabItem(folder, SWT.NONE);
-        tabItem.setControl(panel);
-        tabItem.setText("Редактор");
-
-        new PositionEditor(panel);
-    }
-
-    private static void addGameDBTab(TabFolder folder) {
+    @SuppressWarnings("unused")
+	private static void addGameDBTab(TabFolder folder) {
         TabItem tabItem = new TabItem(folder, SWT.NONE);
         tabItem.setControl(new GameDBPanel(folder));
         tabItem.setImage(smallIcon(GameDBImages.icoGameDB));

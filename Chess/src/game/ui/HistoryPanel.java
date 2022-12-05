@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Label;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  *
  */
+@SuppressWarnings("deprecation")
 public class HistoryPanel extends Canvas 
 	implements Observer
 {

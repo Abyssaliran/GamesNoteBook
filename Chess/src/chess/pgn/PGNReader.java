@@ -1,5 +1,7 @@
 package chess.pgn;
 
+import static game.core.GamesConfig.pgnRoot;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,12 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chess.Chess;
-import chess.moves.SimpleMove;
 import game.core.Board;
 import game.core.Move;
 import game.core.PieceColor;
-
-import static game.core.GamesConfig.pgnRoot;
 
 /**
  * Класс для чтения игр из текстового файла в стандартной шахматной нотации
@@ -125,6 +124,7 @@ public class PGNReader {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static Move getChessMove(Chess chess, String moveText) {
 		// TODO распознать ход по тексту, проверить его корректность
 		// и вернуть его как результат функции.
@@ -145,6 +145,7 @@ public class PGNReader {
 
 	}
 
+	@SuppressWarnings("unused")
 	private static Move doPawnMove(Chess chess, String moveText) {
 		char vSource = 'a';
 		Board board = chess.board;
@@ -167,6 +168,7 @@ public class PGNReader {
 		return null;
 	}
 
+	@SuppressWarnings("unused")
 	private static boolean isGameResult(StreamTokenizer streamTokenizer) throws IOException {
 		int currentToken = streamTokenizer.nextToken();
 

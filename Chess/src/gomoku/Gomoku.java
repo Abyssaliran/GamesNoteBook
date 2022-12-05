@@ -3,7 +3,6 @@ package gomoku;
 import game.core.Game;
 import game.core.IPieceProvider;
 import game.core.PieceColor;
-import game.core.Square;
 import game.players.IPlayer;
 import game.players.Vinni;
 import gomoku.pieces.Stone;

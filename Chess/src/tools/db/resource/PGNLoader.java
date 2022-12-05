@@ -26,10 +26,7 @@ public class PGNLoader {
 
     final private static String TABLE_NAME = "GAMES";
 
-    private File pgnFile;
-
     PGNLoader(File pgnFile) {
-        this.pgnFile = pgnFile;
     }
 
     public static void createTable() throws SQLException, FileNotFoundException {

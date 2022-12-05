@@ -1,11 +1,15 @@
 package gomoku.pieces;
 
-import game.core.*;
-import game.core.moves.PassMove;
-import gomoku.moves.GomokuMove;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import game.core.Board;
+import game.core.Dirs;
+import game.core.Move;
+import game.core.Piece;
+import game.core.PieceColor;
+import game.core.Square;
+import gomoku.moves.GomokuMove;
 
 public class Stone extends Piece {
 

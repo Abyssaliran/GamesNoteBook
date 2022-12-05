@@ -4,12 +4,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import game.core.*;
+import game.core.Board;
+import game.core.GameOver;
+import game.core.GameResult;
+import game.core.IPieceProvider;
+import game.core.Move;
+import game.core.Piece;
+import game.core.PieceColor;
+import game.core.Square;
 import game.players.PutPiecePlayer;
 import renju.moves.RenjuMove;
-import renju.pieces.Stone;
 
 /**
  * Реализовать алгоритм игры в рендзю (крестики - нолики).

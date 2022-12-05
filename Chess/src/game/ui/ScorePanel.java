@@ -21,6 +21,7 @@ import game.core.PieceColor;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
+@SuppressWarnings("deprecation")
 public class ScorePanel extends Canvas implements Observer {
 	private static final int MIN_W = 300;
 	

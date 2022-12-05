@@ -1,14 +1,10 @@
 package clobber;
 
-import game.core.Game;
-import game.players.IPlayer;
-import game.players.Neznaika;
-import game.core.Board;
+import clobber.pieces.Stone;
 import game.core.Game;
 import game.core.PieceColor;
-import checkers.pieces.Man;
-import chess.pieces.Pawn;
-import clobber.pieces.Stone;
+import game.players.IPlayer;
+import game.players.Neznaika;
 /**
  * TODO Романовская Юлия
  * Правила игры:

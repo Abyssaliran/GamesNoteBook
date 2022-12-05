@@ -15,6 +15,7 @@ import game.players.Neznaika;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
+@SuppressWarnings("deprecation")
 public class Board extends Observable {
 	/**
 	 * Количество вертикалей на доске.
