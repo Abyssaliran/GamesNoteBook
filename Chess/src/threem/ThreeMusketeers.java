@@ -10,6 +10,11 @@ import game.players.Neznaika;
 import threem.pieces.Enemy;
 import threem.pieces.Musketeer;
 
+/**
+ * 
+ * TODO Petrova реализовать правиля игры Три Мушкетера
+ * https://wiki5.ru/wiki/Three_Musketeers_(game)
+ */
 public class ThreeMusketeers extends Game {
 	static {
 		addPlayer(ThreeMusketeers.class, IPlayer.HOMO_SAPIENCE);
