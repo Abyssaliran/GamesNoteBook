@@ -3,8 +3,6 @@ package tools.tourney;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.rangeClosed;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Comparator;
 import java.util.List;
 
 import game.core.Game;
@@ -18,14 +16,8 @@ public class RoundTourney extends Competition {
 
 	{
 		for (int row = 0; row < players.size(); row++)
-			for (int col = 0; col < players.size(); col++) {
-				try {
-					table[row][col] = gameClass.getDeclaredConstructor().newInstance();
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-					throw new RuntimeException(e);
-				}
-			}
+			for (int col = 0; col < players.size(); col++)
+				table[row][col] = newGame(gameClass);
 	}
 
 	private final double[] scores;
@@ -39,17 +31,12 @@ public class RoundTourney extends Competition {
 
 	@Override
 	public void run() {
-		try {
-			for (int row = 0; row < players.size(); row++)
-				for (int col = 0; col < players.size(); col++)
-					if (row != col) {
-						Game instance = gameClass.getDeclaredConstructor().newInstance();
-						table[row][col] = play(instance, players.get(row), players.get(col));
-					}
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			throw new RuntimeException(e);
-		}
+		for (int row = 0; row < players.size(); row++)
+			for (int col = 0; col < players.size(); col++)
+				if (row != col) {
+					Game instance = newGame(gameClass);  
+					table[row][col] = play(instance, players.get(row), players.get(col));
+				}
 		for (int row = 0; row < players.size(); row++)
 			scores[row] = playerScore(row);
 

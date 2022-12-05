@@ -161,11 +161,9 @@ class RoundTourneyPanel extends Composite {
 			this.tourney = tourney;
 			this.row = row;
 			this.col = col;
-
+			
 			whiteGame = tourney.get(row, col);
 			blackGame = tourney.get(col, row);
-			GameResult whiteResult = getResult(whiteGame);
-			GameResult blackResult = getResult(blackGame);
 
 			setForeground(COLOR_BLACK);
 			setBackground(COLOR_WHITE);
@@ -178,6 +176,9 @@ class RoundTourneyPanel extends Composite {
 			gridData.widthHint = CELL_WIDTH;
 			gridData.heightHint = CELL_HEIGHT;
 			setLayoutData(gridData);
+
+			GameResult whiteResult = getResult(whiteGame);
+			GameResult blackResult = getResult(blackGame);
 
 			whiteGameCell = new Label(this, SWT.CENTER);
 			whiteGameCell.setForeground(resultColor(whiteResult, true));
@@ -193,6 +194,7 @@ class RoundTourneyPanel extends Composite {
 					}
 					whiteGameCell.setBackground(COLOR_SELECT);
 					whiteGameCell.update();
+					whiteGameCell.redraw();
 
 					currentGameCell = whiteGameCell;
 					currentGame = tourney.get(row, col);
@@ -214,6 +216,7 @@ class RoundTourneyPanel extends Composite {
 					}
 					blackGameCell.setBackground(COLOR_SELECT);
 					blackGameCell.update();
+					blackGameCell.redraw();
 
 					currentGameCell = blackGameCell;
 					currentGame = tourney.get(col, row);
