@@ -45,6 +45,8 @@ import snakegame.ui.SnakeImages;
 import tamerlan.TamerlanChess;
 import tamerlan.ui.TamerlanChessGamePanel;
 import tamerlan.ui.images.TamerlanChessImages;
+import threem.ui.ThreeMusketeersGamePanel;
+import threem.ui.images.ThreeMusketeersImages;
 import tools.db.ui.GameDBPanel;
 import tools.db.ui.images.GameDBImages;
 import tools.tourney.ui.CompetitionPanel;
@@ -103,6 +105,7 @@ public class GamesNotebook {
 
         // Добавление вкладок - игр.
 //        addCoffeeTab(gamesFolder);
+        addThreeMusketeers(gamesFolder);
         addSnakeTab(gamesFolder);
         addViruswarsTab(gamesFolder);
         addCamelotTab(gamesFolder);
@@ -127,7 +130,14 @@ public class GamesNotebook {
         addHalma8x8Tab(gamesFolder);
     }
 
-    private static void addSnakeTab(TabFolder folder) {
+    private static void addThreeMusketeers(TabFolder folder) {
+        TabItem tabItem = new TabItem(folder, SWT.NONE);
+        tabItem.setControl(new ThreeMusketeersGamePanel(folder));
+        tabItem.setImage(smallIcon(ThreeMusketeersImages.icoThree));
+        tabItem.setText("Три мушкетера");
+	}
+
+	private static void addSnakeTab(TabFolder folder) {
         TabItem tabItem = new TabItem(folder, SWT.NONE);
         tabItem.setControl(new SnakeBoard(folder));
         tabItem.setImage(smallIcon(SnakeImages.iconSnakeNotebook));
