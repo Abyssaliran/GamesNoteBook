@@ -86,15 +86,15 @@ class RoundTourneyPanel extends Composite {
 		map.put(BreakThrough.class, BreakThroughBoardPanel.class);
 		map.put(Renju.class, RenjuBoardPanel.class);
 		
-		GamePanel.gamePanelMap.forEach((game, panel) -> {
-			String gameName = game.getSimpleName();
-			String panelName = panel.getSimpleName();
-			Set<String> players = Game.allPlayers.get(game)
-					.stream()
-					.map(IPlayer::getName)
-					.collect(toSet());
-			out.format("%s, %s = %s%n", gameName, panelName, players);
-		});
+//		GamePanel.gamePanelMap.forEach((game, panel) -> {
+//			String gameName = game.getSimpleName();
+//			String panelName = panel.getSimpleName();
+//			Set<String> players = Game.allPlayers.get(game)
+//					.stream()
+//					.map(IPlayer::getName)
+//					.collect(toSet());
+//			out.format("%s, %s = %s%n", gameName, panelName, players);
+//		});
 		allGames = map.entrySet()
 				.stream()
 				.map(entry -> entry.getKey())
@@ -105,7 +105,7 @@ class RoundTourneyPanel extends Composite {
 				.stream()
 				.map(entry -> entry.getKey())
 				.filter(gameKind -> Game.allPlayers.get(gameKind).size() >= 3)
-				.peek(gameKind -> out.format("game = %s %n", gameKind.getSimpleName()))
+//				.peek(gameKind -> out.format("game = %s %n", gameKind.getSimpleName()))
 				.filter(gameKind -> gameKind.getSimpleName().startsWith("China"))
 				.findAny()
 				.get();

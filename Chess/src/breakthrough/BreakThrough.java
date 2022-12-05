@@ -8,6 +8,7 @@ import breakthrough.players.Aesculapius;
 import breakthrough.players.Artemis;
 import breakthrough.players.Athene;
 import breakthrough.players.Hephaistos;
+import breakthrough.players.Poseidon;
 import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -31,6 +32,7 @@ public class BreakThrough extends Game {
 		addPlayer(BreakThrough.class, new Artemis());
 		addPlayer(BreakThrough.class, new Athene());
 		addPlayer(BreakThrough.class, new Hephaistos());
+		addPlayer(BreakThrough.class, new Poseidon());
 	}
 
 	/**
