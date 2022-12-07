@@ -34,18 +34,16 @@ public class ChinaChessPiece extends Piece {
 	 * Находится ли клетка <b>square</b> внутри крепости для фигур цвета
 	 * <b>color</b>?
 	 * 
-	 * @param color
-	 *            - цвет крепости.
-	 * @param square
-	 *            - проверяемая клетка.
+	 * @param color цвет крепости.
+	 * @param square проверяемая клетка.
 	 * @return внутри крепости или нет.
 	 */
-	protected boolean inCastle(PieceColor color, Square square) {
+	public boolean inCastle(PieceColor color, Square square) {
 		int minV = 3;
 		int maxV = minV + 2;
 		
-		int minH = (color == PieceColor.BLACK ? 0 : 6);
-		int maxH = (color == PieceColor.BLACK ? 2 : 8);
+		int minH = (color == PieceColor.BLACK ? 0 : 7);
+		int maxH = (color == PieceColor.BLACK ? 2 : 9);
 
 		return (minV <= square.v) && (square.v <= maxV)
 				                  &&

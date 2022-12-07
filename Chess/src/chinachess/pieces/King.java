@@ -1,5 +1,7 @@
 package chinachess.pieces;
 
+import static java.lang.Math.abs;
+
 import java.util.Optional;
 
 import chinachess.moves.Capture;
@@ -16,7 +18,6 @@ import game.core.Square;
  * @author <a href="mailto:y.o.dmitriv@gmail.com">Dmitriv Y.</a>
  */
 public class King extends ChinaChessPiece{
-
 	public King(Square square, PieceColor color) {
 		super(square, color);
 	}
@@ -63,13 +64,14 @@ public class King extends ChinaChessPiece{
 		if (!inCastle(color, target))
 			return false;
 		
-		int dv = Math.abs(target.v - source.v);
-		int dh = Math.abs(target.h - source.h);
+		int dv = abs(target.v - source.v);
+		int dh = abs(target.h - source.h);
 				
 		// Допустимы только ходы на одну клетку
 		// по вертикали и горизонтали.
-		return ((dh == 1) && (dv == 0)) ||
-				((dh == 0) && (dv == 1));
+		return ((dh == 1) && (dv == 0)) 
+				          ||
+			   ((dh == 0) && (dv == 1));
 	}
 
 	@Override

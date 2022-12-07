@@ -20,7 +20,7 @@ public class Guardian extends ChinaChessPiece {
 
 	@Override
 	public boolean isCorrectMove(Square... squares) {
-		// Пока используем только умалчиваемую проверку
+		// Используем умалчиваемую проверку
 		// выполняемую в базовом классе.
 		if (!super.isCorrectMove(squares))
 			return false;
