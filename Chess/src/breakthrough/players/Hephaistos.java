@@ -26,10 +26,15 @@ public class Hephaistos extends BreakThroughPlayer {
 		// Игра "от обороны"
 		int firstLine = (i.isBlack() ? 0 : 4); // первая линия
 		int secondLine = (i.isBlack() ? 1 : 3); // вторая линия
+		int winLine = (i.isBlack() ? 3 : 1); // предпоследняя линия
+		if (i.square.h == winLine) {
+			return 3; // ура! выиграли!
+		}
 		if (i.square.h == firstLine) {
 			if (m2 instanceof Capture) { // бить фигурами первой линии - высший приоритет
 				return 2;
-			} else
+			}
+			else
 				return -1; // ходить фигурами первой линии - наименьший приоритет
 		}
 		if (i.square.h == secondLine && m2 instanceof Capture) {
