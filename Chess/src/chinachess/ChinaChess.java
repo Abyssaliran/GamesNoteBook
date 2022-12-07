@@ -8,8 +8,11 @@ import chinachess.pieces.Knight;
 import chinachess.pieces.Pawn;
 import chinachess.pieces.Rook;
 import chinachess.players.Confucious;
+import chinachess.players.Laozi;
 import chinachess.players.QinShiHuang;
 import chinachess.players.SunTzu;
+import chinachess.players.ZhangDaoling;
+import chinachess.players.ZhangLu;
 import game.core.Board;
 import game.core.Game;
 import game.core.PieceColor;
@@ -31,12 +34,15 @@ public class ChinaChess extends Game {
 		addPlayer(ChinaChess.class, new SunTzu());
 		addPlayer(ChinaChess.class, new Confucious());
 		addPlayer(ChinaChess.class, new QinShiHuang());
+		addPlayer(ChinaChess.class, new Laozi());
+		addPlayer(ChinaChess.class, new ZhangLu());
+		addPlayer(ChinaChess.class, new ZhangDaoling());
 	}
 
 	public ChinaChess() {
 		initBoardDefault();
 
-//		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
 		board.setWhitePlayer( new Neznaika() );
 		board.setBlackPlayer( new QinShiHuang() );
 	}

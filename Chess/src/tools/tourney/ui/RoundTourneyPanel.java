@@ -2,7 +2,6 @@ package tools.tourney.ui;
 
 import static java.awt.Label.CENTER;
 import static java.lang.System.out;
-import static java.util.stream.Collectors.toSet;
 import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
 import static tools.tourney.Competition.getResult;
 
@@ -11,7 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.swt.SWT;
@@ -38,7 +36,6 @@ import game.core.GameResult;
 import game.players.IPlayer;
 import game.ui.AdornedBoard;
 import game.ui.GameBoard;
-import game.ui.GamePanel;
 import game.ui.MovesJornal;
 import game.ui.images.GameImages;
 import renju.Renju;
@@ -151,13 +148,12 @@ class RoundTourneyPanel extends Composite {
 		westPanel.setLayoutData(data);
 		westPanel.setBackground(COLOR_GREEN);
 
-		Combo combo = new Combo (westPanel, SWT.READ_ONLY);
+		Combo combo = new Combo (westPanel, SWT.READ_ONLY | SWT.CENTER);
 		combo.setBackground(COLOR_WHITE);
 		allGames.forEach(g -> combo.add(g.getSimpleName()));
 		combo.addSelectionListener(widgetSelectedAdapter(e -> {
 			int k = combo.getSelectionIndex();
 			Class<? extends Game> gk = RoundTourneyPanel.allGames.get(k);
-//			out.format("%d.%s%n", k, gk);
 			selectGameKind(gk);
 		}));
 		combo.setText(combo.getItem(RoundTourneyPanel.allGames.indexOf(currentGameKind)));
@@ -167,7 +163,23 @@ class RoundTourneyPanel extends Composite {
 		Button start = new Button(westPanel, SWT.PUSH | SWT.CENTER);
 		start.setAlignment(SWT.CENTER);
 		start.setText("Старт");
-		start.addSelectionListener(widgetSelectedAdapter(e -> out.println("Старт")));
+		start.addSelectionListener(widgetSelectedAdapter(e -> {
+			startTourney();
+		}));
+
+		gameSelected(currentGame);
+		westPanel.pack(true);
+		layout();
+	}
+
+	private void startTourney() {
+		this.tournay = new RoundTourney(currentGameKind);
+		this.tournay.run();
+		currentGame = tournay.get(0, 1);
+
+		gamesTable.initPanel(tournay);
+		gamesTable.pack(true);
+		gamesTable.layout();
 
 		gameSelected(currentGame);
 		westPanel.pack(true);
@@ -379,7 +391,7 @@ class RoundTourneyPanel extends Composite {
 			initPanel(tourney);
 		}
 
-		private void initPanel(RoundTourney tourney) {
+		public void initPanel(RoundTourney tourney) {
 			clear(this);
 			int nPlayers = tourney.size();
 			

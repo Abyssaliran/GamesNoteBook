@@ -105,6 +105,7 @@ public class GamesNotebook {
 
         // Добавление вкладок - игр.
 //        addCoffeeTab(gamesFolder);
+        addChinaChessTab(gamesFolder);
         addThreeMusketeers(gamesFolder);
         addSnakeTab(gamesFolder);
         addViruswarsTab(gamesFolder);
@@ -122,7 +123,6 @@ public class GamesNotebook {
         addBackgammonTab(gamesFolder);
         addChessTab(gamesFolder);
         addCheckersTab(gamesFolder);
-        addChinaChessTab(gamesFolder);
         addVikingTab(gamesFolder);
         addTamerlanChessTab(gamesFolder);
         addReversiTab(gamesFolder);

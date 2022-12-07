@@ -1,11 +1,11 @@
 package chinachess.players;
 
-import java.security.Guard;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import chinachess.pieces.Bishop;
+import chinachess.pieces.Guardian;
 import chinachess.pieces.Gun;
 import chinachess.pieces.King;
 import chinachess.pieces.Knight;
@@ -135,7 +135,7 @@ public class ChinaChessPlayer extends MovePiecePlayer {
 	 */
 	protected int getWeight(Piece p) {
 		if (p instanceof King)   return 1000;
-		if (p instanceof Guard)  return  900;
+		if (p instanceof Guardian)  return  900;
 		if (p instanceof Gun)    return  800;
 		if (p instanceof Rook)   return  700;
 		if (p instanceof Bishop) return  600;
