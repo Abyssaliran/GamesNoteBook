@@ -1,6 +1,8 @@
 package breakthrough.players;
 
+import breakthrough.moves.Capture;
 import game.core.Move;
+import game.core.Piece;
 
 /**
  * TODO Пришлецов Дмитрий
@@ -20,7 +22,19 @@ public class Hephaistos extends BreakThroughPlayer {
 	}
 
 	protected int getWeight(Move m2) {
-		// TODO  
+		Piece i = m2.getPiece();
+		// Игра "от обороны"
+		int firstLine = (i.isBlack() ? 0 : 4); // первая линия
+		int secondLine = (i.isBlack() ? 1 : 3); // вторая линия
+		if (i.square.h == firstLine) {
+			if (m2 instanceof Capture) { // бить фигурами первой линии - высший приоритет
+				return 2;
+			} else
+				return -1; // ходить фигурами первой линии - наименьший приоритет
+		}
+		if (i.square.h == secondLine && m2 instanceof Capture) {
+			return 1; // бить фигурами второй линии - средний приоритет
+		}
 		return 0;
 	}
 }
