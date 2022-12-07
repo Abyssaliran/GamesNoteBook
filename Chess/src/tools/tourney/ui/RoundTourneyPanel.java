@@ -1,7 +1,7 @@
 package tools.tourney.ui;
 
 import static java.awt.Label.CENTER;
-import static java.lang.System.out;
+import static java.lang.String.format;
 import static org.eclipse.swt.events.SelectionListener.widgetSelectedAdapter;
 import static tools.tourney.Competition.getResult;
 
@@ -102,7 +102,6 @@ class RoundTourneyPanel extends Composite {
 				.stream()
 				.map(entry -> entry.getKey())
 				.filter(gameKind -> Game.allPlayers.get(gameKind).size() >= 3)
-//				.peek(gameKind -> out.format("game = %s %n", gameKind.getSimpleName()))
 				.filter(gameKind -> gameKind.getSimpleName().startsWith("China"))
 				.findAny()
 				.get();
@@ -425,7 +424,7 @@ class RoundTourneyPanel extends Composite {
 				IPlayer player = tourney.get(row);
 				
 				// Номер игрока в таблице и имя игрока.
-				String txt = String.format("%2d. %s ", 1 + row, player.getName());
+				String txt = format("%2d. %s ", 1 + row, player.getName());
 				
 				Label name = new Label(this, SWT.LEFT);
 				name.setForeground(COLOR_WHITE);
@@ -486,6 +485,6 @@ class RoundTourneyPanel extends Composite {
 		String players = whitePlayer.getName() + " - " + blackPlayer.getName();
 		String authors = whitePlayer.getAuthorName() + " - " + blackPlayer.getAuthorName();
 
-		return String.format("%s %s (%s)", players, getResult(game), authors);
+		return format("%s %s (%s)", players, getResult(game), authors);
 	}
 }
