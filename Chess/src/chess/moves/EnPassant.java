@@ -1,5 +1,6 @@
 package chess.moves;
 
+import game.core.GameOver;
 import game.core.Square;
 
 /**
@@ -20,7 +21,7 @@ public class EnPassant extends Capture implements ICapture {
 
 	@Override
 	//Сделать ход
-	public void doMove() {
+	public void doMove() throws GameOver {
 		super.doMove();
 	}
 

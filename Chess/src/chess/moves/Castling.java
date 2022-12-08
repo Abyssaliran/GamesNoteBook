@@ -1,6 +1,7 @@
 package chess.moves;
 
 import game.core.Board;
+import game.core.GameOver;
 import game.core.Square;
 
 /**
@@ -35,7 +36,7 @@ public class Castling extends SimpleMove {
 	 * Переставить короля и ладью.
 	 */
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		rookSource.movePieceTo(rookTarget);
 		super.doMove();
 	}

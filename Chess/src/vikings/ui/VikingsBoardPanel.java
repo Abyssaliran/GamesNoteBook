@@ -20,7 +20,7 @@ import vikings.ui.images.VikingImages;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-class VikingsBoardPanel extends GreenBoard {
+public class VikingsBoardPanel extends GreenBoard {
 	private static final Color COLOR = new Color(null, 0,   255, 0);
 
 	static {

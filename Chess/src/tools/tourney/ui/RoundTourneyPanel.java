@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import chess.Chess;
+import chess.ui.ChessBoardPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -43,6 +45,8 @@ import renju.ui.RenjuBoardPanel;
 import reversi.Reversi;
 import reversi.ui.ReversiBoardPanel;
 import tools.tourney.RoundTourney;
+import vikings.Vikings;
+import vikings.ui.VikingsBoardPanel;
 
 /**
  * Панель турнира для игры по круговой системе.
@@ -82,7 +86,9 @@ class RoundTourneyPanel extends Composite {
 		map.put(Reversi.class, ReversiBoardPanel.class);
 		map.put(BreakThrough.class, BreakThroughBoardPanel.class);
 		map.put(Renju.class, RenjuBoardPanel.class);
-		
+		map.put(Vikings.class, VikingsBoardPanel.class);
+		map.put(Chess.class, ChessBoardPanel.class);
+
 //		GamePanel.gamePanelMap.forEach((game, panel) -> {
 //			String gameName = game.getSimpleName();
 //			String panelName = panel.getSimpleName();
@@ -92,21 +98,18 @@ class RoundTourneyPanel extends Composite {
 //					.collect(toSet());
 //			out.format("%s, %s = %s%n", gameName, panelName, players);
 //		});
-		allGames = map.entrySet()
+		allGames = map.keySet()
 				.stream()
-				.map(entry -> entry.getKey())
 				.filter(gameKind -> Game.allPlayers.get(gameKind).size() >= 3)
 				.collect(Collectors.toList());
 		
-		currentGameKind = map.entrySet()
+		currentGameKind = map.keySet()
 				.stream()
-				.map(entry -> entry.getKey())
 				.filter(gameKind -> Game.allPlayers.get(gameKind).size() >= 3)
 				.filter(gameKind -> gameKind.getSimpleName().startsWith("China"))
 				.findAny()
 				.get();
-//		currentGameKind = Vikings.class; // !
-//		currentGameKind = FisherChess.class; // ? 
+//		currentGameKind = FisherChess.class; // ?
 //		currentGameKind = Chess.class; // ? 
 //		currentGameKind = Halma.class; // ! 
 //		currentGameKind = TamerlanChess.class; // ! 

@@ -3,6 +3,9 @@ package chess.moves;
 import java.util.Collections;
 import java.util.List;
 
+import chess.pieces.King;
+import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Piece;
 import game.core.Square;
 import game.core.moves.ICaptureMove;
@@ -59,9 +62,12 @@ public class Capture extends SimpleMove
 	}
 
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		capturedPiece.remove();
 		super.doMove();
+
+		if (capturedPiece instanceof King)
+			throw new GameOver(GameResult.lost(capturedPiece));
 	}
 
 

@@ -6,6 +6,9 @@ import chess.pieces.Knight;
 import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
+import chess.players.Doctor;
+import chess.players.Painter;
+import chess.players.Poet;
 import game.core.Game;
 import game.core.PieceColor;
 import game.players.IPlayer;
@@ -21,6 +24,9 @@ public class Chess extends Game {
 	static {
 		addPlayer(Chess.class, IPlayer.HOMO_SAPIENCE);
 		addPlayer(Chess.class, new Neznaika());
+		addPlayer(Chess.class, new Poet());
+		addPlayer(Chess.class, new Doctor());
+		addPlayer(Chess.class, new Painter());
 
 		addPieces();
 	}

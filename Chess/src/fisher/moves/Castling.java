@@ -3,6 +3,7 @@ package fisher.moves;
 import chess.moves.SimpleMove;
 import chess.pieces.Rook;
 import game.core.Board;
+import game.core.GameOver;
 import game.core.Square;
 
 
@@ -41,7 +42,7 @@ public class Castling extends SimpleMove {
 	 * Ищем пустую клетку и переставляем ладью через нее потому что может быть ситуация, когда ладье и королю нужно обменяться клетками
 	 */
 	@Override
-	public void doMove() {
+	public void doMove() throws GameOver {
 		Board board = source.getBoard();
 		for (int i = 0; i < board.nV-1; i++) {
 			for (int j = 0; j < board.nH-1; j++) {
