@@ -25,7 +25,7 @@ public class Bayezid extends TamerlanChessPlayer {
 
 	@Override
 	public String getAuthorName() {
-		return "Романов В.Ю.";
+		return "???";
 	}
 
 	@Override
@@ -44,33 +44,6 @@ public class Bayezid extends TamerlanChessPlayer {
 	 * @return оценка хода.
 	 */
 	private int getMoveWeight(Move move) {
-		ITransferMove transfer = (ITransferMove) move;
-		
-		Square source = transfer.getSource();
-		Square target = transfer.getTarget();
-		Piece thePiece = source.getPiece();
-
-		if (move instanceof ICaptureMove) {
-			// Ход - взятие фигуры врага.
-			ICaptureMove capture = (ICaptureMove) move;
-			
-			Square capturedSquare = capture.getCaptured().get(0);
-			Piece  capturedPiece  = capturedSquare.getPiece();
-			
-			// У захвата короля врага наивысший приоритет.
-			if (capturedPiece instanceof King)
-				return 1000;
-			
-			// Пока берем любую фигуру.
-			return 999;
-		}
-		
-		// Из всех ходов без взятия фигуры врага лучший ход
-		// который максимально приближает к королю врага.
-		King enemyKing = getEnemyKing(thePiece);
-		int stepWeight = MAX_DISTANCE - distance(target, enemyKing.square);
-		
-		return stepWeight; 
-//		return getSquareWeight(target);
+		return 0;
 	}
 }

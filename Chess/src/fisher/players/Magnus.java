@@ -8,10 +8,8 @@ import game.players.MovePiecePlayer;
 import java.util.Collections;
 import java.util.List;
 
-
 public class Magnus extends MovePiecePlayer {
-
-    public class myPair {
+    public static class myPair {
         Move move;
         Integer integer;
 
@@ -32,47 +30,65 @@ public class Magnus extends MovePiecePlayer {
     }
 
     @Override
-    public void doMove (Board board, PieceColor color) throws GameOver {
-        Move m = minmax(board, 5, -10000000, 10000000, color, true).move;
-        try{m.doMove();}
-        catch (GameOver e) {
+    public void doMove(Board board, PieceColor color) throws GameOver {
+        Move m = minMax(board, 5, -10000000, 10000000, color, true).move;
+        try {
+            m.doMove();
+        } catch (GameOver e) {
             board.history.addMove(m);
             board.history.setResult(e.result);
             board.setBoardChanged();
+
             throw new GameOver(e.result);
         }
         board.history.addMove(m);
         board.setBoardChanged();
+
+        // Для отладки ограничим количество ходов в игре.
+        // После этого результат игры ничья.
+        if (board.history.getMoves().size() > 50) {
+            // Сохраняем в истории игры последний сделанный ход
+            // и результат игры.
+            board.history.setResult(GameResult.DRAWN);
+
+            // Сообщаем что игра закончилась ничьей.
+            throw new GameOver(GameResult.DRAWN);
+        }
     }
 
-    public myPair minmax (Board board, int depth, int alpha, int beta, PieceColor color, boolean maximizing) {
+    public myPair minMax(Board board, int depth, int alpha, int beta, PieceColor color, boolean maximizing) throws GameOver {
         if (depth == 0) {
             return new myPair(null, score(board, color));
         }
         int res;
         Move resMove = null;
+
         if (maximizing) {
             res = -10000000;
+
             List<Move> moves = getCorrectMoves(board, color);
             Collections.shuffle(moves);
-            for (Move m: moves) {
+
+            for (Move m : moves) {
                 boolean isGameOver = false;
-                try{m.doMove();}
-                catch (GameOver e) {
+
+                try {
+                    m.doMove();
+                } catch (GameOver e) {
                     isGameOver = true;
                     System.out.println("Caught a Game Over");
+                    throw new GameOver(e.result);
                 }
                 myPair tmp;
-                if (color == PieceColor.BLACK) {
-                    tmp = minmax(board, depth - 1, -beta, -alpha, PieceColor.WHITE, false);
-                } else {
-                    tmp = minmax(board, depth - 1, -beta, -alpha, PieceColor.BLACK, false);
-                }
+                if (color == PieceColor.BLACK)
+                    tmp = minMax(board, depth - 1, -beta, -alpha, PieceColor.WHITE, false);
+                else tmp = minMax(board, depth - 1, -beta, -alpha, PieceColor.BLACK, false);
+
                 int eval = -tmp.integer;
                 m.undoMove();
-                if (isGameOver) {
-                    break;
-                }
+
+                if (isGameOver) break;
+
                 if (eval > res) {
                     resMove = m;
                     res = eval;
@@ -86,16 +102,18 @@ public class Magnus extends MovePiecePlayer {
             res = 10000000;
             List<Move> moves = getCorrectMoves(board, color);
             Collections.shuffle(moves);
-            for (Move m: moves) {
-                try{m.doMove();}
-                catch (GameOver e) {
+            for (Move m : moves) {
+                try {
+                    m.doMove();
+                } catch (GameOver e) {
                     System.out.println("Caught a Game Over");
+                    throw new GameOver(e.result);
                 }
                 myPair tmp;
                 if (color == PieceColor.BLACK) {
-                    tmp = minmax(board, depth - 1, -beta, -alpha, PieceColor.WHITE, true);
+                    tmp = minMax(board, depth - 1, -beta, -alpha, PieceColor.WHITE, true);
                 } else {
-                    tmp = minmax(board, depth - 1, -beta, -alpha, PieceColor.BLACK, true);
+                    tmp = minMax(board, depth - 1, -beta, -alpha, PieceColor.BLACK, true);
                 }
                 int eval = tmp.integer;
                 m.undoMove();
@@ -115,7 +133,7 @@ public class Magnus extends MovePiecePlayer {
     public int score(Board board, PieceColor color) {
         int res = 0;
         int[] values = {100, 305, 333, 563, 950, 100000};
-        for (Piece p: board.getAllPieces()) {
+        for (Piece p : board.getAllPieces()) {
             int score;
             if (p instanceof Pawn) {
                 score = values[0];
