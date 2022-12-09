@@ -29,20 +29,6 @@ public class Hermes extends BreakThroughPlayer {
 
 	@Override
 	protected int getWeight(Move m) {
-		SimpleMove move = (SimpleMove) m;
-
-		// Ход с захватом вражеских фигур лучше.
-		if (move instanceof Capture)
-			return 100;
-
-		Piece piece = move.getPiece();
-		Board board = piece.square.getBoard();
-		Square target = move.getTarget();
-
-		// Расстояние до последней горизонтали (цели).
-		int dh = abs(board.nH - 1 - target.h);
-		int distance = piece.isBlack() ? dh : -dh; 
-
-		return -distance; // Чем меньше расстояние до цели тем лучше ход.
+		return 0;
 	}
 }
