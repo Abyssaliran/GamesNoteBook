@@ -35,8 +35,9 @@ public class Pawn extends Piece {
 		if (targetPiece != null)
 			if (targetPiece.getColor() == getColor())
 				return false; // На клетки занятые своими фигурами не ходим.
-			else if (dv==0) // Прямо кушать нельзя. Правила игры такие
-				return false;
+			else
+				if (dv == 0)
+					return false; // Прямо брать пешку нельзя
 
 		return dh == step; // Один шаг для пешки этого цвета
 	}
