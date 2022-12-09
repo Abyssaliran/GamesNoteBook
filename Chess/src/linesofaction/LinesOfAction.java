@@ -3,7 +3,15 @@ package linesofaction;
 import game.core.Game;
 import game.players.IPlayer;
 import game.players.Neznaika;
+import linesofaction.pieces.Stone;
 
+import static game.core.PieceColor.BLACK;
+import static game.core.PieceColor.WHITE;
+
+/**
+ * TODO Грибов Артем - реализовать игру
+ * <a href="https://www.iggamecenter.com/ru/rules/loa">Линии действия</a>
+ */
 public class LinesOfAction extends Game {
     static {
         addPlayer(LinesOfAction.class, IPlayer.HOMO_SAPIENCE);
@@ -21,6 +29,13 @@ public class LinesOfAction extends Game {
     public void initBoardDefault() {
         super.initBoard(8, 8);
 
-        // TODO расставить фигуры
+        for (int v = 1; v < 7; v++) {
+            new Stone(board.getSquare(v, 0), BLACK);
+            new Stone(board.getSquare(v, 7), BLACK);
+        }
+        for (int h = 1; h < 7; h++) {
+            new Stone(board.getSquare(0, h), WHITE);
+            new Stone(board.getSquare(7, h), WHITE);
+        }
     }
 }
