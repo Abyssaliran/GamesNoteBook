@@ -1,6 +1,10 @@
 package breakthrough.players;
 
-import game.core.Move;
+import game.core.*;
+import breakthrough.moves.*;
+import game.core.moves.ITransferMove;
+
+import java.util.List;
 
 /**
  * <a href=
@@ -15,11 +19,40 @@ public class Aesculapius extends BreakThroughPlayer {
 
 	@Override
 	public String getAuthorName() {
-		return "???";
+		return "Тимур Антипин";
 	}
 
-	protected int getWeight(Move m2) {
-		// TODO  
-		return 0;
+	protected int getWeight(Move m) {
+		int weight = 0;
+		ITransferMove transfer = (ITransferMove) m;
+		Square source = transfer.getSource();
+		Board board = source.getBoard();
+		/*chem blizhe vrazheskaya figura, tem vazhnee ee skushat BEGIN*/
+		int minH = m.getPiece().getColor() == PieceColor.WHITE ? 0 : 5;
+		List<Move> correctMoves = getCorrectMoves(board, m.getPiece().getColor());
+		for(Move mm : correctMoves){
+			if(mm instanceof Capture){
+				if(
+						(m.getPiece().getColor() == PieceColor.WHITE
+						&& ((Capture) mm).getSource().h > minH)
+						||
+						(m.getPiece().getColor() != PieceColor.WHITE
+						&& ((Capture) mm).getSource().h < minH)
+				) minH = ((Capture) mm).getSource().h;
+			}
+		}
+		if(
+				minH == ((ITransferMove)m).getSource().h
+				&& m instanceof Capture
+		){
+			weight+=1;
+		}
+		/*chem blizhe vrazheskaya figura, tem vazhnee ee skushat END*/
+
+		//esli bidem kushat, to davayte kushat
+		if(m instanceof Capture){
+			weight+=1;
+		}
+		return weight;
 	}
 }
