@@ -1,13 +1,6 @@
 package breakthrough.players;
 
-import breakthrough.moves.Capture;
-import breakthrough.moves.SimpleMove;
-import game.core.Board;
 import game.core.Move;
-import game.core.Piece;
-import game.core.Square;
-
-import static java.lang.Math.abs;
 
 /**
  * TODO Король Д.С. - реализовать алгоритм
@@ -17,18 +10,18 @@ import static java.lang.Math.abs;
  */
 public class Hermes extends BreakThroughPlayer {
 
-	@Override
-	public String getName() {
-		return "Гермес";
-	}
+    @Override
+    public String getName() {
+        return "Гермес";
+    }
 
-	@Override
-	public String getAuthorName() {
-		return "Король Д.С.";
-	}
+    @Override
+    public String getAuthorName() {
+        return "Король Д.С.";
+    }
 
-	@Override
-	protected int getWeight(Move m) {
-		return 0;
-	}
+    @Override
+    protected int getWeight(Move m) {
+        return 0;
+    }
 }
