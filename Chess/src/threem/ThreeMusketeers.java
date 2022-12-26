@@ -26,6 +26,8 @@ public class ThreeMusketeers extends Game {
         
         board.setWhitePlayer(IPlayer.HOMO_SAPIENCE);
         board.setBlackPlayer(new Neznaika());
+
+        board.changeMoveColor();
     }
     
     @Override
