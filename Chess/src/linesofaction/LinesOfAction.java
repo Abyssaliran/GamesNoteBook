@@ -9,7 +9,6 @@ import static game.core.PieceColor.BLACK;
 import static game.core.PieceColor.WHITE;
 
 /**
- * TODO Грибов Артем - реализовать игру
  * <a href="https://www.iggamecenter.com/ru/rules/loa">Линии действия</a>
  */
 public class LinesOfAction extends Game {
