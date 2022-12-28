@@ -34,6 +34,8 @@ import lines.ui.LinesGamePanel;
 import linesofaction.ui.LinesOfActionPanel;
 import notebook.ui.images.NotebookImages;
 import points.ui.PointsGamePanel;
+import rabbit.ui.RabbitGamePanel;
+import rabbit.ui.images.RabbitImages;
 import renju.ui.RenjuGamePanel;
 import reversi.Reversi;
 import reversi.ui.ReversiGamePanel;
@@ -105,6 +107,7 @@ public class GamesNotebook {
 
         // Добавление вкладок - игр.
 //        addCoffeeTab(gamesFolder);
+        addRabbitTab(gamesFolder);
         addChinaChessTab(gamesFolder);
         addThreeMusketeers(gamesFolder);
         addSnakeTab(gamesFolder);
@@ -128,6 +131,13 @@ public class GamesNotebook {
         addReversiTab(gamesFolder);
 //		addGoTab(gamesFolder);
         addHalma8x8Tab(gamesFolder);
+    }
+
+    private static void addRabbitTab(TabFolder folder) {
+        TabItem tabItem = new TabItem(folder, SWT.NONE);
+        tabItem.setControl(new RabbitGamePanel(folder));
+        tabItem.setImage(smallIcon(RabbitImages.icoRabbit));
+        tabItem.setText("Волки и заяц");
     }
 
     private static void addThreeMusketeers(TabFolder folder) {
