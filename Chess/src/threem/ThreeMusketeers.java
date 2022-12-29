@@ -11,9 +11,9 @@ import threem.pieces.Enemy;
 import threem.pieces.Musketeer;
 
 /**
- * 
- * TODO Petrova реализовать правиля игры Три Мушкетера
- * https://wiki5.ru/wiki/Three_Musketeers_(game)
+ *
+ * TODO Petrova реализовать правиля игры
+ * <a href="https://wiki5.ru/wiki/Three_Musketeers_(game)">Три Мушкетера</a>
  */
 public class ThreeMusketeers extends Game {
 	static {
