@@ -9,7 +9,7 @@ public class CrazyHousePanel extends GamePanel {
 	public CrazyHousePanel(Composite parent) {
 		super(parent, new CrazyHouse());
 
-		insertSquares(new CrazyHouseBoardPanel(this, game));
+		insertSquares(new CrazyHouseBoardPanel(this, game), true);
 		
 		// показываем на экране содержимое ящиком с фигурами
 		adorned.updatePieceBoxes();
