@@ -10,6 +10,11 @@ import game.players.Neznaika;
 import threem.pieces.Enemy;
 import threem.pieces.Musketeer;
 
+/**
+ *
+ * TODO Petrova реализовать правиля игры
+ * <a href="https://wiki5.ru/wiki/Three_Musketeers_(game)">Три Мушкетера</a>
+ */
 public class ThreeMusketeers extends Game {
 	static {
 		addPlayer(ThreeMusketeers.class, IPlayer.HOMO_SAPIENCE);
@@ -21,6 +26,8 @@ public class ThreeMusketeers extends Game {
         
         board.setWhitePlayer(IPlayer.HOMO_SAPIENCE);
         board.setBlackPlayer(new Neznaika());
+
+        board.changeMoveColor();
     }
     
     @Override
