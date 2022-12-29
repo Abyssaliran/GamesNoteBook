@@ -6,18 +6,18 @@ import java.util.Map;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-import chess.pieces.Bishop;
-import chess.pieces.King;
-import chess.pieces.Knight;
-import chess.pieces.Pawn;
-import chess.pieces.Queen;
-import chess.pieces.Rook;
 import chess.ui.images.ChessImages;
+import crazyhouse.pieces.Bishop;
+import crazyhouse.pieces.King;
+import crazyhouse.pieces.Knight;
+import crazyhouse.pieces.Pawn;
+import crazyhouse.pieces.Queen;
+import crazyhouse.pieces.Rook;
 import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
-import game.ui.listeners.MovePieceListener;
+import crazyhouse.ui.listeners.MovePieceListener;
 
 public class CrazyHouseBoardPanel extends EuropeBoard {
 	   private static final Map<PieceColor, Map<Class<? extends Piece>, Image>> pieceImages;

@@ -1,13 +1,5 @@
 package notebook;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
-
 import backgammon.ui.BackgammonGamePanel;
 import backgammon.ui.images.BackgammonImages;
 import breakthrough.ui.BreakThroughGamePanel;
@@ -33,6 +25,13 @@ import kalah.ui.images.KalahImages;
 import lines.ui.LinesGamePanel;
 import linesofaction.ui.LinesOfActionPanel;
 import notebook.ui.images.NotebookImages;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import points.ui.PointsGamePanel;
 import rabbit.ui.RabbitGamePanel;
 import rabbit.ui.images.RabbitImages;
@@ -51,6 +50,7 @@ import threem.ui.ThreeMusketeersGamePanel;
 import threem.ui.images.ThreeMusketeersImages;
 import tools.db.ui.GameDBPanel;
 import tools.db.ui.images.GameDBImages;
+import tools.editor.PositionEditor;
 import tools.tourney.ui.CompetitionPanel;
 import vikings.ui.VikingsGamePanel;
 import vikings.ui.images.VikingImages;
@@ -72,7 +72,7 @@ public class GamesNotebook {
 
         shell.setBackgroundMode(SWT.INHERIT_FORCE);
 
-        shell.setSize(1200, 600);
+        shell.setSize(1000, 600);
         shell.setText("Games Notebook");
         shell.setImage(NotebookImages.iconNotebook);
 
@@ -81,7 +81,6 @@ public class GamesNotebook {
         TabFolder mainFolder = new TabFolder(shell, SWT.BOTTOM);
         addGames(mainFolder);
         addTools(mainFolder);
-        mainFolder.setSelection(1);
 
         shell.open();
         while (!shell.isDisposed()) {
@@ -321,10 +320,10 @@ public class GamesNotebook {
         toolsItem.setText("Инструменты");
 
         // Добавление вкладок - инструментов.
-        addCompetitionTamerlanTab(toolsFolder);
-        addCompetitionReversiTab(toolsFolder);
 //        addEditorTab(toolsFolder);
 //		addGameDBTab(toolsFolder);
+        addCompetitionTamerlanTab(toolsFolder);
+        addCompetitionReversiTab(toolsFolder);
     }
 
     @SuppressWarnings("unused")

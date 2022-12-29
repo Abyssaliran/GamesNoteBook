@@ -26,7 +26,7 @@ public class Square {
 	/**
 	 * Фигура которая, возможно, стоит на клетке.
 	 */
-	Piece piece;
+	public Piece piece;
 	
 	/**
 	 * Создать клетку на доске.

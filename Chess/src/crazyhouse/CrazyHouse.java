@@ -1,16 +1,21 @@
 package crazyhouse;
 
-import chess.pieces.Bishop;
-import chess.pieces.King;
-import chess.pieces.Knight;
-import chess.pieces.Pawn;
-import chess.pieces.Queen;
-import chess.pieces.Rook;
+import crazyhouse.pieces.Bishop;
+import crazyhouse.pieces.King;
+import crazyhouse.pieces.Knight;
+import crazyhouse.pieces.Pawn;
+import crazyhouse.pieces.Queen;
+import crazyhouse.pieces.Rook;
+import game.core.BoardWithBoxes;
 import game.core.Game;
 import game.core.PieceColor;
 import game.players.IPlayer;
 import game.players.Neznaika;
 
+/**
+ * TODO Макаров, Идрисов - <a href="https://ru.wikipedia.org/wiki/Crazyhouse">CrazyHouse</a>
+ *  с одним игроком каждого цвета.
+ */
 public class CrazyHouse extends Game {
 	static {
 		addPlayer(CrazyHouse.class, IPlayer.HOMO_SAPIENCE);
@@ -18,9 +23,20 @@ public class CrazyHouse extends Game {
 
 		addPieces();
 	}
+	
+	/**
+	 * Расстановка шахматных фигур в начальную позицию.
+	 */
+	public CrazyHouse() {
+		// используем доску, содержащую два ящика для фигур
+		super(new BoardWithBoxes());
+		initBoardDefault();
+		
+		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
+		board.setBlackPlayer( new Neznaika() );
+	}
 
-	static
-	protected  void addPieces() {
+	static protected  void addPieces() {
 		allPieces.clear();
 		
 		addPiece(PieceColor.WHITE, new Pawn());
@@ -36,16 +52,6 @@ public class CrazyHouse extends Game {
 		addPiece(PieceColor.BLACK, new Bishop());
 		addPiece(PieceColor.BLACK, new Queen());
 		addPiece(PieceColor.BLACK, new King());
-	}
-
-	/**
-	 * Расстановка шахматных фигур в начальную позицию.
-	 */
-	public CrazyHouse() {
-		initBoardDefault();
-		
-		board.setWhitePlayer( IPlayer.HOMO_SAPIENCE );
-		board.setBlackPlayer( new Neznaika() );
 	}
 
 	@Override
@@ -64,7 +70,7 @@ public class CrazyHouse extends Game {
 		new Rook(board.getSquare(0, 7), PieceColor.WHITE);
 		new Rook(board.getSquare(7, 7), PieceColor.WHITE);
 
-		// Расставляем ладьи.
+		// Расставляем королей.
 		new Knight(board.getSquare(1, 0), PieceColor.BLACK);
 		new Knight(board.getSquare(6, 0), PieceColor.BLACK);
 		new Knight(board.getSquare(1, 7), PieceColor.WHITE);
