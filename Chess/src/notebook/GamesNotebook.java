@@ -112,7 +112,7 @@ public class GamesNotebook {
         addSnakeTab(gamesFolder);
         addViruswarsTab(gamesFolder);
         addCamelotTab(gamesFolder);
-//        addCrazyHouseTab(gamesFolder);
+        addCrazyHouseTab(gamesFolder);
         addClobberTab(gamesFolder);
         addLinesOfActionTab(gamesFolder);
         addLinesTab(gamesFolder);

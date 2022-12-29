@@ -23,7 +23,6 @@ import java.util.Observer;
  *
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-@SuppressWarnings("deprecation")
 public class AdornedBoard extends Canvas implements Observer {
     private static final Font fontSmall = new Font(Display.getCurrent(), "mono", 10, SWT.BOLD);
     private static final Font fontLarge = new Font(Display.getCurrent(), "mono", 12, SWT.BOLD);
