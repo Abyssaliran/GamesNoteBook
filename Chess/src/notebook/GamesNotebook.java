@@ -104,7 +104,6 @@ public class GamesNotebook {
         gamesItem.setText("Игры");
 
         // Добавление вкладок - игр.
-//        addCoffeeTab(gamesFolder);
         addRabbitTab(gamesFolder);
         addChinaChessTab(gamesFolder);
         addThreeMusketeers(gamesFolder);
@@ -127,7 +126,6 @@ public class GamesNotebook {
         addVikingTab(gamesFolder);
         addTamerlanChessTab(gamesFolder);
         addReversiTab(gamesFolder);
-//		addGoTab(gamesFolder);
         addHalma8x8Tab(gamesFolder);
     }
 
