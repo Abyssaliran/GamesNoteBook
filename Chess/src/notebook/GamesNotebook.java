@@ -58,7 +58,7 @@ import viruswars.ui.images.ViruswarsImages;
 
 /**
  * <b>Блокнот настольных игр.</b></br>
- * </br>
+ * </br> 
  * <p>
  * Запись и просмотр партии в настольной игре.
  *
