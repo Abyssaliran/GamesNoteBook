@@ -32,7 +32,12 @@ public class William extends VikingsPlayer {
 	public String getAuthorName() {
 		return "Заблоцкий";
 	}
-
+	
+	@Override
+	public boolean isWhitePlayer() {
+		return false;
+	}
+	
 	/**
 	 * Задать вес для хода.
 	 * 

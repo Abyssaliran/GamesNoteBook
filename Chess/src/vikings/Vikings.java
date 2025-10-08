@@ -9,8 +9,13 @@ import game.players.IPlayer;
 import game.players.Neznaika;
 import vikings.pieces.Cyning;
 import vikings.pieces.Viking;
+import vikings.players.Arthur;
+import vikings.players.Eiriksson;
+import vikings.players.Galahad;
 import vikings.players.Haraldr;
+import vikings.players.Lancelot;
 import vikings.players.Rurik;
+import vikings.players.Sigfrid;
 import vikings.players.William;
 
 /**
@@ -27,6 +32,11 @@ public class Vikings extends Game {
 		addPlayer(Vikings.class, new Rurik());
 		addPlayer(Vikings.class, new Haraldr());
 		addPlayer(Vikings.class, new William());
+		addPlayer(Vikings.class, new Arthur());
+		addPlayer(Vikings.class, new Lancelot());
+		addPlayer(Vikings.class, new Galahad());
+		addPlayer(Vikings.class, new Eiriksson());
+		addPlayer(Vikings.class, new Sigfrid());
 	}
 	
 	private int center;

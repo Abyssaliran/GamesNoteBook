@@ -36,6 +36,11 @@ public class Haraldr extends VikingsPlayer {
 	public String getAuthorName() {
 		return "Меркулов";
 	}
+	
+	@Override
+	public boolean isWhitePlayer() {
+		return false;
+	}
 
 	/**
 	 * Задать вес для хода.

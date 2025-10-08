@@ -34,6 +34,11 @@ public class Rurik extends VikingsPlayer {
 		return "Романов В.Ю.";
 	}
 	
+	@Override
+	public boolean isWhitePlayer() {
+		return false;
+	}
+	
 	/**
 	 * Задать вес для хода.
 	 * @param move - ход
