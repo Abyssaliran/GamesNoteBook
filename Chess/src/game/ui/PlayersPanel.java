@@ -1,6 +1,7 @@
 package game.ui;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -17,6 +18,7 @@ import org.eclipse.swt.widgets.List;
 
 import game.core.Board;
 import game.core.Game;
+import game.core.PieceColor;
 import game.players.IPlayer;
 
 /**
@@ -75,13 +77,13 @@ public class PlayersPanel extends Composite {
 		group.setLayoutData(groupData);
 	
 		// Список для выбора игроков черными фигурами.
-		List bList = getPlayersList(bPlayerNumber, "Черные", BLACK_COLOR);
+		List bList = getPlayersList(bPlayerNumber, "Черные", BLACK_COLOR, IPlayer::isBlackPlayer);
 		bList.addListener(SWT.Selection, event -> 
 			board.setBlackPlayer( getSelectedPlayer(event) )
 		);
 
 		// Список для выбора игроков белыми фигурами.
-		List wList = getPlayersList(wPlayerNumber, "Белые", WHITE_COLOR);
+		List wList = getPlayersList(wPlayerNumber, "Белые", WHITE_COLOR, IPlayer::isWhitePlayer);
 		wList.addListener(SWT.Selection, event ->  
 			board.setWhitePlayer( getSelectedPlayer(event) )
 		);
@@ -123,7 +125,7 @@ public class PlayersPanel extends Composite {
 	 * 
 	 * @return управляющий элемент - список игроков.
 	 */
-	private List getPlayersList(int playerNumber, String titleText, Color titleColor) 
+	private List getPlayersList(int playerNumber, String titleText, Color titleColor, Predicate<IPlayer> filter) 
 	{
 		GridData titleData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		
@@ -135,8 +137,10 @@ public class PlayersPanel extends Composite {
 
 		GridData listData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		
+//		Predicate<IPlayer> filter = p -> titleColor == PieceColor.WHITE ? p.isWhitePlayer() : p.isBlackPlayer();
+		
 		List list = new List(group, SWT.BORDER | SWT.SINGLE);
-		players.forEach(p -> list.add( p.getName() ));
+		players.stream().filter(filter).forEach(p -> list.add( p.getName() ));
 
 		list.setForeground(BORDER_COLOR);
 		list.setBackground(LIST_COLOR);
