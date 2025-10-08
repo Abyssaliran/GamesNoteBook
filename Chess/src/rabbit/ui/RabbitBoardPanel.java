@@ -4,6 +4,8 @@ import game.core.Game;
 import game.core.Piece;
 import game.core.PieceColor;
 import game.ui.EuropeBoard;
+import game.ui.listeners.MovePieceListener;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import rabbit.ui.images.RabbitImages;
@@ -11,6 +13,8 @@ import rabbit.ui.images.RabbitImages;
 public class RabbitBoardPanel extends EuropeBoard {
     public RabbitBoardPanel(Composite composite, Game game) {
         super(composite, game.board);
+		
+		listener = new MovePieceListener(this);
     }
 
     @Override

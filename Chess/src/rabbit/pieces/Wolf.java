@@ -1,5 +1,7 @@
 package rabbit.pieces;
 
+import static java.lang.Math.abs;
+
 import game.core.Move;
 import game.core.Piece;
 import game.core.PieceColor;
@@ -7,22 +9,30 @@ import game.core.Square;
 import rabbit.moves.SimpleMove;
 
 public class Wolf extends Piece {
-    public Wolf(Square square, PieceColor color) {
-        super(square, color);
-    }
+	public Wolf(Square square, PieceColor color) {
+		super(square, color);
+	}
 
-    @Override
-    public boolean isCorrectMove(Square... squares) {
-        return true;
-    }
+	@Override
+	public boolean isCorrectMove(Square... squares) {
+		Square target = squares[0];
 
-    @Override
-    public Move makeMove(Square... squares) {
-        return new SimpleMove(squares);
-    }
+		if (!target.isEmpty())
+			return false;
 
-    @Override
-    public String toString() {
-        return "W";
-    }
+		int dh = target.h - square.h;
+		int dv = abs(target.v - square.v);
+
+		return dh == 1 && dv == 1;
+	}
+
+	@Override
+	public Move makeMove(Square... squares) {
+		return new SimpleMove(squares);
+	}
+
+	@Override
+	public String toString() {
+		return "W";
+	}
 }

@@ -1,9 +1,8 @@
 package rabbit.ui;
 
-import game.ui.GamePanel;
-import lines.Lines;
-import lines.ui.LinesBoardPanel;
 import org.eclipse.swt.widgets.Composite;
+
+import game.ui.GamePanel;
 import rabbit.RabbitWolfs;
 
 public class RabbitGamePanel extends GamePanel {

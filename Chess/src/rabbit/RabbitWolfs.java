@@ -21,7 +21,6 @@ public class RabbitWolfs extends Game {
         Game.addPlayer(RabbitWolfs.class, new Neznaika());
         Game.addPlayer(RabbitWolfs.class, new WolfPlayer());
         Game.addPlayer(RabbitWolfs.class, new RabbitPlayer());
-
     }
 
     public RabbitWolfs() {
@@ -42,5 +41,4 @@ public class RabbitWolfs extends Game {
         new Wolf(board.getSquare(5, 0), PieceColor.BLACK);
         new Wolf(board.getSquare(7, 0), PieceColor.BLACK);
     }
-
 }

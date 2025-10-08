@@ -17,4 +17,9 @@ public class WolfPlayer extends WolfRabbitPlayer {
     int getWeight(Move m2) {
         return 0;
     }
+    
+	/**
+	 * @return может ли играть белыми фигурами.
+	 */
+	public boolean isWhitePlayer() { return false; }
 }
