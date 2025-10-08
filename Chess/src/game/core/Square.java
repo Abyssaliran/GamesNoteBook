@@ -1,5 +1,8 @@
 package game.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Клетка на доске для настольных игр.
  * 
@@ -271,5 +274,18 @@ public class Square {
 		int dh = s.h - h;
 		
 		return dv + dh;
+	}
+
+	/**
+	 * @return ближайшие не пустые клетки.
+	 */
+	public List<Square> near()  {
+		List<Square> nearSquares = new ArrayList<>();
+		
+		for (Dirs d : Dirs.DIAGONAL)
+			if (hasNext(d))
+				nearSquares.add(next(d));
+		
+		return nearSquares;
 	}
 }
