@@ -1,14 +1,22 @@
 package rabbit.players;
 
-import game.core.*;
-import game.players.MovePiecePlayer;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Image;
+
+import game.core.Board;
+import game.core.GameOver;
+import game.core.GameResult;
+import game.core.Move;
+import game.core.PieceColor;
+import game.players.MovePiecePlayer;
+
 public abstract class WolfRabbitPlayer extends MovePiecePlayer {
     private static final int maxMoves = 180;
+    
+    public Image image;
 
     @Override
     public void doMove(Board board, PieceColor color) throws GameOver {

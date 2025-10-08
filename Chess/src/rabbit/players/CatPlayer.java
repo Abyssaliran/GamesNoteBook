@@ -3,13 +3,13 @@ package rabbit.players;
 import game.core.Move;
 import rabbit.ui.images.WolfRabbitImages;
 
-public class RabbitPlayer extends WolfRabbitPlayer {
-
-	{ image = WolfRabbitImages.rabbitImage; }
-
-	@Override
+public class CatPlayer extends WolfRabbitPlayer {
+	
+	{ image = WolfRabbitImages.catImage; }
+	
+    @Override
     public String getName() {
-        return "Заяц";
+        return "Кот";
     }
 
     @Override
@@ -18,10 +18,10 @@ public class RabbitPlayer extends WolfRabbitPlayer {
     }
 
     @Override
-    int getWeight(Move m) {
+    int getWeight(Move m2) {
         return 0;
     }
     
     @Override
-	public boolean isBlackPlayer() { return false; }
+	public boolean isWhitePlayer() { return false; }
 }

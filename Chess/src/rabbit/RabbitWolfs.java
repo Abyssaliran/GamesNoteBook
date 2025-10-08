@@ -6,8 +6,10 @@ import game.players.IPlayer;
 import game.players.Neznaika;
 import rabbit.pieces.Rabbit;
 import rabbit.pieces.Wolf;
+import rabbit.players.MousePlayer;
 import rabbit.players.RabbitPlayer;
 import rabbit.players.WolfPlayer;
+import rabbit.players.CatPlayer;
 
 /**
  * https://www.iggamecenter.com/info/ru/foxh.html
@@ -21,6 +23,8 @@ public class RabbitWolfs extends Game {
         Game.addPlayer(RabbitWolfs.class, new Neznaika());
         Game.addPlayer(RabbitWolfs.class, new WolfPlayer());
         Game.addPlayer(RabbitWolfs.class, new RabbitPlayer());
+        Game.addPlayer(RabbitWolfs.class, new CatPlayer());
+        Game.addPlayer(RabbitWolfs.class, new MousePlayer());
     }
 
     public RabbitWolfs() {

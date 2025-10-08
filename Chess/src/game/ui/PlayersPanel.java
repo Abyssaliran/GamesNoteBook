@@ -18,9 +18,8 @@ import org.eclipse.swt.widgets.List;
 
 import game.core.Board;
 import game.core.Game;
-import game.core.PieceColor;
 import game.players.IPlayer;
-
+			
 /**
  * Панель выбора игроков для игры.
  * 
@@ -79,13 +78,13 @@ public class PlayersPanel extends Composite {
 		// Список для выбора игроков черными фигурами.
 		List bList = getPlayersList(bPlayerNumber, "Черные", BLACK_COLOR, IPlayer::isBlackPlayer);
 		bList.addListener(SWT.Selection, event -> 
-			board.setBlackPlayer( getSelectedPlayer(event) )
+			board.setBlackPlayer( getSelectedPlayer(event, IPlayer::isBlackPlayer) )
 		);
 
 		// Список для выбора игроков белыми фигурами.
 		List wList = getPlayersList(wPlayerNumber, "Белые", WHITE_COLOR, IPlayer::isWhitePlayer);
 		wList.addListener(SWT.Selection, event ->  
-			board.setWhitePlayer( getSelectedPlayer(event) )
+			board.setWhitePlayer( getSelectedPlayer(event, IPlayer::isWhitePlayer) )
 		);
 		
 		// Кнопка запуска игры.
@@ -108,10 +107,10 @@ public class PlayersPanel extends Composite {
 	 *            - событие выбора в списке.
 	 * @return выбраный из списка игрок.
 	 */
-	private IPlayer getSelectedPlayer(Event e) {
+	private IPlayer getSelectedPlayer(Event e, Predicate<IPlayer> filter) {
 		List list = (List) e.widget;
 		int selection = list.getSelectionIndices()[0];
-		return players.get(selection);
+		return players.stream().filter(filter).toList().get(selection);
 	}
 
 	/**

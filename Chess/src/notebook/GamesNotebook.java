@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import points.ui.PointsGamePanel;
 import rabbit.ui.RabbitGamePanel;
-import rabbit.ui.images.RabbitImages;
+import rabbit.ui.images.WolfRabbitImages;
 import renju.ui.RenjuGamePanel;
 import reversi.Reversi;
 import reversi.ui.ReversiGamePanel;
@@ -132,7 +132,7 @@ public class GamesNotebook {
     private static void addRabbitTab(TabFolder folder) {
         TabItem tabItem = new TabItem(folder, SWT.NONE);
         tabItem.setControl(new RabbitGamePanel(folder));
-        tabItem.setImage(smallIcon(RabbitImages.icoRabbit));
+        tabItem.setImage(smallIcon(WolfRabbitImages.icoRabbit));
         tabItem.setText("Волки и заяц");
     }
 
