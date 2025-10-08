@@ -99,7 +99,7 @@ public class Capture extends SimpleMove implements ICaptureMove {
 		return source.getPiece().getEnemies()
 		  .stream()
 		  .filter(p -> isCaptured(p, source, target))
-		  .collect( Collectors.toList() );
+		  .toList();
 	}
 	
 	/**
@@ -140,7 +140,7 @@ public class Capture extends SimpleMove implements ICaptureMove {
 
 		// Есть ли окружение фигуры с 2-х сторон по вертикали?
 		return isCaptureSide(piece, source, target, Dirs.UP) &&
-				isCaptureSide(piece, source, target, Dirs.DOWN);
+			   isCaptureSide(piece, source, target, Dirs.DOWN);
 	}
 
 	/**

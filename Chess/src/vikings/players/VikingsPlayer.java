@@ -20,145 +20,148 @@ import vikings.pieces.VikingsPiece;
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
-abstract 
-public class VikingsPlayer extends MovePiecePlayer {
+abstract public class VikingsPlayer extends MovePiecePlayer {
+	final Comparator<? super Move> brain = (m1, m2) -> getWeight(m2) - getWeight(m1);
 
 	VikingsPlayer() {
 	}
 
-	@Override
-	public void doMove(Board board, PieceColor color) throws GameOver {
-			List<Move> correctMoves = getCorrectMoves(board, color);
-			
-			if (correctMoves.isEmpty())
-				return;
-	
-			Collections.shuffle(correctMoves);
-			
-			correctMoves.sort( getComparator() );
-			Move bestMove = correctMoves.get(0);
-			
-			try { bestMove.doMove(); } 
-			catch (GameOver e) {
-				// Сохраняем в истории игры последний сделанный ход 
-				// и результат игры.
-				board.history.addMove(bestMove);
-				board.history.setResult(e.result);
-				
-				// Просим обозревателей доски показать 
-				// положение на доске, сделанный ход и 
-				// результат игры.
-				board.setBoardChanged();
-				
-				// Распространяем инфрмацию об окончании игры.
-				throw new GameOver(e.result);
-			}
-			
-			// Сохраняем ход в истории игры.
-			board.history.addMove(bestMove);
-	
-			// Просим обозревателей доски показать 
-			// положение на доске, сделанный ход и 
-			// результат игры.
-			board.setBoardChanged();
-		
-			// Для отладки ограничим количество ходов в игре.
-			// После этого результат игры ничья.
-		int maxMoves = 180;
-		if (board.history.getMoves().size() > maxMoves) {
-				// Сохраняем в истории игры последний сделанный ход 
-				// и результат игры.
-				board.history.setResult(GameResult.DRAWN);
-				
-				// Сообщаем что игра закончилась ничьей.
-				throw new GameOver(GameResult.DRAWN);
-			}
-		}
-
 	/**
 	 * Алгоритм выбора лучшего хода реализуется в клессах - потомках.
+	 * 
 	 * @return получить алгоритм сравнеия
 	 */
-	abstract protected Comparator<? super Move> getComparator();
+	protected Comparator<? super Move> getComparator() {
+		return brain;
+	}
+
+	@Override
+	public void doMove(Board board, PieceColor color) throws GameOver {
+		List<Move> correctMoves = getCorrectMoves(board, color);
+
+		if (correctMoves.isEmpty())
+			return;
+
+		Collections.shuffle(correctMoves);
+
+		correctMoves.sort(getComparator());
+		Move bestMove = correctMoves.get(0);
+
+		try {
+			bestMove.doMove();
+		} catch (GameOver e) {
+			// Сохраняем в истории игры последний сделанный ход
+			// и результат игры.
+			board.history.addMove(bestMove);
+			board.history.setResult(e.result);
+
+			// Просим обозревателей доски показать
+			// положение на доске, сделанный ход и
+			// результат игры.
+			board.setBoardChanged();
+
+			// Распространяем инфрмацию об окончании игры.
+			throw new GameOver(e.result);
+		}
+
+		// Сохраняем ход в истории игры.
+		board.history.addMove(bestMove);
+
+		// Просим обозревателей доски показать
+		// положение на доске, сделанный ход и
+		// результат игры.
+		board.setBoardChanged();
+
+		// Для отладки ограничим количество ходов в игре.
+		// После этого результат игры ничья.
+		int maxMoves = 180;
+		if (board.history.getMoves().size() > maxMoves) {
+			// Сохраняем в истории игры последний сделанный ход
+			// и результат игры.
+			board.history.setResult(GameResult.DRAWN);
+
+			// Сообщаем что игра закончилась ничьей.
+			throw new GameOver(GameResult.DRAWN);
+		}
+	}
+
 
 	/**
 	 * Есть ли среди захваченых фигур белый король?
 	 * 
-	 * @param capture
-	 *            - ход-захват фигур.
+	 * @param capture - ход-захват фигур.
 	 * @return захвачен ли белый король
 	 */
 	protected boolean isKingCapture(Capture capture) {
-		return capture.getCapturedPieces()
-				.stream()
-				.anyMatch(p -> p instanceof Cyning);
+		return capture.getCapturedPieces().stream().anyMatch(p -> p instanceof Cyning);
 	}
 
 	/**
-	 * Перекрывает ли ход черной фигурой на клетку <b>target</b> 
-	 * ход королем в одну из клеток выхода.
+	 * Перекрывает ли ход черной фигурой на клетку <b>target</b> ход королем в одну
+	 * из клеток выхода.
 	 * 
-	 * @param target
-	 *            - куда идет черная фигура
-	 * @param kingSquare
-	 *            - где стоит белый король.
+	 * @param target     - куда идет черная фигура
+	 * @param kingSquare - где стоит белый король.
 	 * @return есть перекрытие или нет.
 	 */
 	protected boolean isOverlapMove(Square target, Square kingSquare) {
 		Board board = target.getBoard();
-		
-		boolean isHorizontalOverlap = VikingsPiece.getExits(board)
-			.stream()
-			
-			// Между выходом и королем пустая горизонталь.
-			.filter(exit -> exit.isEmptyHorizontal(kingSquare))
-			
-			// Между выходом и новой клеткой фигуры пустая горизонталь.
-			.filter(exit -> exit.isEmptyHorizontal(target))
-			
-			// Между новой клеткой фигуры и королем пустая горизонталь.
-			.anyMatch(exit -> exit.isEmptyHorizontal(target));
-		
-		boolean isVerticalOverlap = VikingsPiece.getExits(board)
-				.stream()
-				
+
+		boolean isHorizontalOverlap = VikingsPiece.getExits(board).stream()
+
+				// Между выходом и королем пустая горизонталь.
+				.filter(exit -> exit.isEmptyHorizontal(kingSquare))
+
+				// Между выходом и новой клеткой фигуры пустая горизонталь.
+				.filter(exit -> exit.isEmptyHorizontal(target))
+
+				// Между новой клеткой фигуры и королем пустая горизонталь.
+				.anyMatch(exit -> exit.isEmptyHorizontal(target));
+
+		boolean isVerticalOverlap = VikingsPiece.getExits(board).stream()
+
 				// Между выходом и королем пустая горизонталь.
 				.filter(exit -> exit.isEmptyVertical(kingSquare))
-				
+
 				// Между выходом и новой клеткой фигуры пустая горизонталь.
 				.filter(exit -> exit.isEmptyVertical(target))
-				
+
 				// Между новой клеткой фигуры и королем пустая горизонталь.
 				.anyMatch(exit -> exit.isEmptyVertical(target));
-			
+
 		return isHorizontalOverlap || isVerticalOverlap;
 	}
 
 	/**
 	 * Найти ближайшую для заданной клетки клетку-выход.
 	 * 
-	 * @param square
-	 *            - заданная клетка.
-	 * @param exits
-	 *            - клетки-выходы.
+	 * @param square - заданная клетка.
+	 * @param exits  - клетки-выходы.
 	 * @return ближайшая клетка выход.
 	 */
 	protected Square getNearstExit(Square square, List<Square> exits) {
-		return exits
-		.stream()
-		.min(Comparator.comparingInt(s -> s.distance(square)))
-		.get();
+		return exits.stream().min(Comparator.comparingInt(s -> s.distance(square))).get();
 	}
 
 	/**
 	 * @return Преследуем короля, как основную фигуру для захвата
 	 */
 	protected Cyning getKing(Board board) {
-		return board.getPieces(PieceColor.WHITE)
-			.stream()
-			.filter(p -> p instanceof Cyning)
-			.map(p -> (Cyning) p)
-			.findAny()
-			.get();
+		return board.getPieces(PieceColor.WHITE).stream().filter(p -> p instanceof Cyning).map(p -> (Cyning) p)
+				.findAny().get();
 	}
+
+	/**
+	 * Задать вес для хода.
+	 * 
+	 * @param move - ход
+	 * @return оценка хода.
+	 */
+	public abstract int getWeight(Move move);
+
+	@Override
+	public String toString() {
+		return getName();
+	}
+
 }

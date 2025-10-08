@@ -41,10 +41,7 @@ public class Cyning extends VikingsPiece {
 		
 		Square target = squares[0];
 		
-		if (square.isEmptyVertical(target))
-			return true;
-
-		return square.isEmptyHorizontal(target);
+		return square.isEmptyVertical(target) ? true : square.isEmptyHorizontal(target);
 	}
 	
 	@Override

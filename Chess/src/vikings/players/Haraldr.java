@@ -1,6 +1,5 @@
 package vikings.players;
 
-import java.util.Comparator;
 import java.util.List;
 
 import game.core.Board;
@@ -19,8 +18,6 @@ import vikings.pieces.VikingsPiece;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Haraldr extends VikingsPlayer {
-	final Comparator<? super Move> brain = (m1, m2) -> getWeight(m2) - getWeight(m1);
-
 	@Override
 	public String getName() {
 		return "Харальд III";
@@ -30,7 +27,8 @@ public class Haraldr extends VikingsPlayer {
 	public String getInfo() {
 		return "Норвегия.\n"
 				+ "В 1031 году вместе с отрядом прибыл в Киев, где поступил на службу к Ярославу Мудрому.\n"
-				+ "С гибелью Харальда прекратился трёхвековой период вооружённой экспансии\n "
+				+ "В битве при Стамфорд-Бридже 25 сентября 1066 года Харальд был убит.\n"
+				+ "С гибелью Харальда прекратился трёхвековой период вооружённой экспансии\n"
 				+ "скандинавских правителей — эпоха викингов.";
 	}
 
@@ -39,22 +37,14 @@ public class Haraldr extends VikingsPlayer {
 		return "Меркулов";
 	}
 
-	protected Comparator<? super Move> getComparator() {
-		return brain;
-	}
-
-	@Override
-	public String toString() {
-		return getName();
-	}
-
 	/**
 	 * Задать вес для хода.
 	 * 
 	 * @param move - ход
 	 * @return оценка хода.
 	 */
-	private int getWeight(Move move) {
+	@Override
+	public int getWeight(Move move) {
 		ITransferMove transfer = (ITransferMove) move;
 
 		Square source = transfer.getSource();
@@ -174,7 +164,6 @@ public class Haraldr extends VikingsPlayer {
 	 * @return
 	 */
 	private boolean isAttackMove(Piece piece, Square target) {
-		// TODO Заблоцкий
 		// 1. Наша фигура становится рядом с фигурой противника.
 		// 2. Есть другая наша фигура, которая следующим ходом
 		// может встать с другой стороны вражеской фигуры.

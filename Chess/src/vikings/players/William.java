@@ -1,6 +1,5 @@
 package vikings.players;
 
-import java.util.Comparator;
 import java.util.List;
 
 import game.core.Board;
@@ -19,9 +18,6 @@ import vikings.pieces.VikingsPiece;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class William extends VikingsPlayer {
-	final Comparator<? super Move> brain 
-		= (m1, m2) -> getWeight(m2) - getWeight(m1);
-
 	@Override
 	public String getName() {
 		return "Вильгельм I";
@@ -37,16 +33,6 @@ public class William extends VikingsPlayer {
 		return "Заблоцкий";
 	}
 
-	@Override
-	public String toString() {
-		return getName();
-	}
-	
-	@Override
-	protected Comparator<? super Move> getComparator() {
-		return brain;
-	}
-
 	/**
 	 * Задать вес для хода.
 	 * 
@@ -54,7 +40,8 @@ public class William extends VikingsPlayer {
 	 *            - ход
 	 * @return оценка хода.
 	 */
-	private int getWeight(Move move) {
+	@Override
+	public int getWeight(Move move) {
 		ITransferMove transfer = (ITransferMove) move;
 
 		Square source = transfer.getSource();

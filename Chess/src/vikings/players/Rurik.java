@@ -19,9 +19,6 @@ import vikings.pieces.VikingsPiece;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Rurik extends VikingsPlayer {
-	final Comparator<? super Move> brain 
-		= (m1, m2) -> getWeight(m2) - getWeight(m1);
-
 	@Override
 	public String getName() {
 		return "Рюрик";
@@ -29,23 +26,12 @@ public class Rurik extends VikingsPlayer {
 	
 	@Override
 	public String getInfo() {
-		return "Князь в Новгороде с 862 года.\n"
-				+ "Родоначальник царской династии Рюриковичей (862-1598)";
+		return "Князь в Новгороде с 862 года.\nРодоначальник царской династии Рюриковичей (862-1598)";
 	}
 
 	@Override
 	public String getAuthorName() {
 		return "Романов В.Ю.";
-	}
-
-	@Override
-	public String toString() {
-		return getName();
-	}
-
-	@Override
-	protected Comparator<? super Move> getComparator() {
-		return brain;
 	}
 	
 	/**
@@ -53,7 +39,7 @@ public class Rurik extends VikingsPlayer {
 	 * @param move - ход
 	 * @return оценка хода.
 	 */
-	private int getWeight(Move move) {
+	public int getWeight(Move move) {
 		ITransferMove transfer = (ITransferMove) move;
 		
 		Square source = transfer.getSource();
@@ -68,7 +54,7 @@ public class Rurik extends VikingsPlayer {
 			// Ход - взятие фигур врага.
 			Capture capture = (Capture) move;
 			
-			// Есть ли среди захваченых фигур белвй король?
+			// Есть ли среди захваченых фигур белый король?
 			List<Piece> captured = capture.getCapturedPieces();
 			boolean isKingCapture = captured.stream().anyMatch(p -> p instanceof Cyning);
 			

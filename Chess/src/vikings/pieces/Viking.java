@@ -27,7 +27,7 @@ public class Viking extends VikingsPiece {
 		Square target = squares[0];
 		
 		// Викинг не может пойти на трон.
-		if (isExit(target)) 
+		if (isTron(target)) 
 			return false;
 		
 		// Викинг не может пойти на клетку выхода.
