@@ -205,7 +205,11 @@ public class MovesJornal extends Composite implements Observer {
 
         String aWhite = whitePlayer.getAuthorName();
         String aBlack = blackPlayer.getAuthorName();
-        String tooltip = format("%s против %s", aWhite, aBlack);
+        String tooltip = format("%s против %s %n%s: %s %n%s: %s", 
+        		aWhite, aBlack, 
+        		white, whitePlayer.getInfo(),
+        		black, blackPlayer.getInfo()
+        		);
 
         headerPanel.setText(names);
         headerPanel.setToolTipText(tooltip);

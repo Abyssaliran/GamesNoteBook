@@ -24,7 +24,13 @@ public class Rurik extends VikingsPlayer {
 
 	@Override
 	public String getName() {
-		return "Рюрик (Новгород)";
+		return "Рюрик";
+	}
+	
+	@Override
+	public String getInfo() {
+		return "Князь в Новгороде с 862 года.\n"
+				+ "Родоначальник царской династии Рюриковичей (862-1598)";
 	}
 
 	@Override

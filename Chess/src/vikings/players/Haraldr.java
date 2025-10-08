@@ -19,12 +19,19 @@ import vikings.pieces.VikingsPiece;
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class Haraldr extends VikingsPlayer {
-	final Comparator<? super Move> brain 
-		= (m1, m2) -> getWeight(m2) - getWeight(m1);
+	final Comparator<? super Move> brain = (m1, m2) -> getWeight(m2) - getWeight(m1);
 
 	@Override
 	public String getName() {
-		return "Харальд III (Норвегия)";
+		return "Харальд III";
+	}
+
+	@Override
+	public String getInfo() {
+		return "Норвегия.\n"
+				+ "В 1031 году вместе с отрядом прибыл в Киев, где поступил на службу к Ярославу Мудрому.\n"
+				+ "С гибелью Харальда прекратился трёхвековой период вооружённой экспансии\n "
+				+ "скандинавских правителей — эпоха викингов.";
 	}
 
 	@Override
@@ -44,8 +51,7 @@ public class Haraldr extends VikingsPlayer {
 	/**
 	 * Задать вес для хода.
 	 * 
-	 * @param move
-	 *            - ход
+	 * @param move - ход
 	 * @return оценка хода.
 	 */
 	private int getWeight(Move move) {
@@ -53,7 +59,7 @@ public class Haraldr extends VikingsPlayer {
 
 		Square source = transfer.getSource();
 		Square target = transfer.getTarget();
-		
+
 		Piece piece = source.getPiece();
 		Board board = source.getBoard();
 
@@ -71,10 +77,10 @@ public class Haraldr extends VikingsPlayer {
 		// -----------------------------
 		if (piece.isBlack()) {
 			// Ход - захват фигур врага.
-			if (isCaptureMove && isKingCapture((Capture) move))  
+			if (isCaptureMove && isKingCapture((Capture) move))
 				// Захват белого короля получает наибольший приоритет.
 				return 1000;
-			
+
 			// ---------------------------------------------------------
 			// --- Если короля захватить нельзя перекроем ему выход. ---
 			// ---------------------------------------------------------
@@ -99,18 +105,18 @@ public class Haraldr extends VikingsPlayer {
 			// ---------------------------------------------
 			// Определим расстояние до короля.
 			int distance2King = target.distance(kingSquare);
-			
+
 			// Чем меньше расстояние до короля, тем лучше ход.
 			int moveWeight = maxDistance - distance2King;
-			
+
 			// Поиск клетки - ближайшего выхода для короля.
 			Square nearstExit = getNearstExit(kingSquare, exits);
-			
+
 			// Если фигура встанет между королем и его ближайшим выходом,
 			// то ход этой фигурой еще лучше.
 			if (nearstExit.distance(target) < nearstExit.distance(kingSquare))
 				moveWeight++;
-			
+
 			return moveWeight;
 		}
 		// ----------------------------
@@ -123,11 +129,11 @@ public class Haraldr extends VikingsPlayer {
 			if (piece instanceof Cyning) {
 				// Поиск ближайшего выхода.
 				Square nearsExit = getNearstExit(target, exits);
-	
-				// Ход королем к ближайшему выходу 
+
+				// Ход королем к ближайшему выходу
 				// получает наибольший приоритет.
 				int minDistance = nearsExit.distance(target);
-	
+
 				if (minDistance == 0)
 					return 1000; // Выход короля - наибольший приоритет.
 
@@ -135,24 +141,26 @@ public class Haraldr extends VikingsPlayer {
 				if (!isCaptureMove)
 					return maxDistance - minDistance;
 			}
-	
+
 			// ----------------------------------------
 			// --- Ход белой фигуры - захват врага. ---
 			// ----------------------------------------
 			if (isCaptureMove) {
 				// Ход - захват фигур врага.
 				Capture capture = (Capture) move;
-	
-				// Приоритет у хода с бОльшим количеством 
+
+				// Приоритет у хода с бОльшим количеством
 				// захваченных фигур врага.
 				return 10 + capture.getCapturedPieces().size();
 			}
-	
+
 			// ------------------------------------------------------
 			// --- Простой ход белого викинга - поддержка короля. ---
 			// ------------------------------------------------------
-			if (isSafeMove(piece, target))   return 2;
-			if (isAttackMove(piece, target)) return 1;
+			if (isSafeMove(piece, target))
+				return 2;
+			if (isAttackMove(piece, target))
+				return 1;
 
 			return -1; // Мы теряем фигуру и не нападаем на вражескую.
 		}
@@ -161,35 +169,31 @@ public class Haraldr extends VikingsPlayer {
 	/**
 	 * Это атакующий ход.
 	 * 
-	 * @param piece
-	 *            - какая фигура идет.
-	 * @param target
-	 *            - куда фигура идет.
+	 * @param piece  - какая фигура идет.
+	 * @param target - куда фигура идет.
 	 * @return
 	 */
 	private boolean isAttackMove(Piece piece, Square target) {
 		// TODO Заблоцкий
 		// 1. Наша фигура становится рядом с фигурой противника.
-		// 2. Есть другая наша фигура, которая следующим ходом 
-		//    может встать с другой стороны вражеской фигуры.
+		// 2. Есть другая наша фигура, которая следующим ходом
+		// может встать с другой стороны вражеской фигуры.
 		return false;
 	}
 
 	/**
 	 * Не приведет ли ход фигурой на поле target к потере фигур.
 	 * 
-	 * @param piece
-	 *            - какая фигура идет.
-	 * @param target
-	 *            - куда фигура идет.
+	 * @param piece  - какая фигура идет.
+	 * @param target - куда фигура идет.
 	 * @return
 	 */
 	private boolean isSafeMove(Piece piece, Square target) {
 		// TODO Меркулов.
 		// Мы не подставляем свою фигуру.
 		// 1. Фигура становится рядом с фигурой противника.
-		// 2. Нет вражеской фигуры, которая следующим ходом 
-		//    может встать с другой стороны нашей фигуры.
+		// 2. Нет вражеской фигуры, которая следующим ходом
+		// может встать с другой стороны нашей фигуры.
 		return true;
 	}
 }

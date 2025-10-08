@@ -3,6 +3,8 @@ package game.players;
 import java.util.Collections;
 import java.util.List;
 
+import javax.lang.model.element.NestingKind;
+
 import game.core.Board;
 import game.core.GameOver;
 import game.core.GameResult;
@@ -28,6 +30,11 @@ public class Neznaika extends MovePiecePlayer {
 	@Override
 	public String getName() {
 		return "Незнайка";
+	}
+	
+	@Override
+	public String getInfo() {
+		return "Живет в цветочном городе";
 	}
 
 	@Override

@@ -24,7 +24,12 @@ public class William extends VikingsPlayer {
 
 	@Override
 	public String getName() {
-		return "Вильгельм I (Нормандия)";
+		return "Вильгельм I";
+	}
+	
+	@Override
+	public String getInfo() {
+		return "Нормандия. Завоевал Англию в 1066 году";
 	}
 
 	@Override

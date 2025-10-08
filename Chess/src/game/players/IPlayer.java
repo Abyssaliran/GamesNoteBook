@@ -6,7 +6,7 @@ import game.core.PieceColor;
 import game.core.GameResult;
 
 /**
- * Интерфейс для игроков (программ и человека).
+ * Интерфейс для игроков (алгоритмов и человека).
  * 
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
@@ -69,4 +69,9 @@ public interface IPlayer {
 	 * @return может ли играть черными фигурами.
 	 */
 	default boolean isBlackPlayer() { return true; }
+	
+	/**
+	 * @return может ли играть черными фигурами.
+	 */
+	default String getInfo() { return ""; }
 }
