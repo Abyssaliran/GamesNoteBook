@@ -13,22 +13,20 @@ import rabbit.players.WolfRabbitPlayer;
 import rabbit.ui.images.WolfRabbitImages;
 
 public class RabbitBoardPanel extends EuropeBoard {
-	public RabbitBoardPanel(Composite composite, Game game) {
-		super(composite, game.board);
+    public RabbitBoardPanel(Composite composite, Game game) {
+        super(composite, game.board);
 
-		listener = new MovePieceListener(this);
-	}
+        listener = new MovePieceListener(this);
+    }
 
-	@Override
-	public Image getPieceImage(Piece piece, PieceColor color) {
-		IPlayer player = color == PieceColor.WHITE ? board.getWhitePlayer() : board.getBlackPlayer();
+    @Override
+    public Image getPieceImage(Piece piece, PieceColor color) {
+        IPlayer player = color == PieceColor.WHITE ? board.getWhitePlayer() : board.getBlackPlayer();
 
-		if (player instanceof WolfRabbitPlayer) {
-			WolfRabbitPlayer rwPlayer = (WolfRabbitPlayer) player;
+        Image image = player.getImage();
+        if (image != null)
+            return image;
 
-			return rwPlayer.image;
-		}
-		
-		return color == PieceColor.WHITE ? WolfRabbitImages.rabbitImage : WolfRabbitImages.wolfImage;
-	}
+        return color == PieceColor.WHITE ? WolfRabbitImages.rabbitImage : WolfRabbitImages.wolfImage;
+    }
 }

@@ -1,5 +1,6 @@
 package halma.ui;
 
+import game.players.IPlayer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -19,54 +20,62 @@ import halma.ui.images.HalmaImages;
 
 /**
  * Панель для игры в уголки.
- * 
+ *
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 public class HalmaGamePanel extends GamePanel {
 
-	public HalmaGamePanel(Composite parent, int boardSize) {
-		super(parent, new Halma(boardSize));
-		
-		insertSquares( new HalmaBoardPanel(this, game) );
-		
-		// 
-		// Возможен выбор размера доски.
-		//
-		GridData data = new GridData(SWT.FILL, SWT.TOP, false, true);
-		data.widthHint = 100;
-		
-		int[][] sizes = { {8,8}, {10,10}, {16,16} };
-		BoardSizePanel bsp = new BoardSizePanel(control, this, sizes);
-		bsp.setLayoutData(data);
-		
-		data = new GridData(SWT.FILL, SWT.BOTTOM, false, true);
-		data.widthHint = 100;
+    public HalmaGamePanel(Composite parent, int boardSize) {
+        super(parent, new Halma(boardSize));
 
-		ScorePanel sp = new ScorePanel(control, game);
-		sp.setLayoutData(data);
-	}
+        insertSquares(new HalmaBoardPanel(this, game));
+
+        //
+        // Возможен выбор размера доски.
+        //
+        GridData data = new GridData(SWT.FILL, SWT.TOP, false, true);
+        data.widthHint = 100;
+
+        int[][] sizes = {{8, 8}, {10, 10}, {16, 16}};
+        BoardSizePanel bsp = new BoardSizePanel(control, this, sizes);
+        bsp.setLayoutData(data);
+
+        data = new GridData(SWT.FILL, SWT.BOTTOM, false, true);
+        data.widthHint = 100;
+
+        ScorePanel sp = new ScorePanel(control, game);
+        sp.setLayoutData(data);
+    }
 }
 
 /**
  * Доска для игры <a href=
  * "https://ru.wikipedia.org/wiki/https://ru.wikipedia.org/wiki/%D0%A5%D0%B0%D0%BB%D0%BC%D0%B0">
- * Халма</a> 
- *  
+ * Халма</a>
+ *
  * @author <a href="mailto:vladimir.romanov@gmail.com">Romanov V.Y.</a>
  */
 class HalmaBoardPanel extends AsiaBoard {
-	public HalmaBoardPanel(Composite parent, Game game) {
-		super(parent, game.board);
-		
-		listener = new MovePieceListener(this);
-		
-		setPromptColor( new Color(null, 0, 100, 0) );
-	}
+    public HalmaBoardPanel(Composite parent, Game game) {
+        super(parent, game.board);
 
-	@Override
-	public Image getPieceImage(Piece piece, PieceColor color) {
-		return color == PieceColor.WHITE 
-				? HalmaImages.imageStoneWhite
-				: HalmaImages.imageStoneBlack;	
-	}
+        listener = new MovePieceListener(this);
+
+        setPromptColor(new Color(null, 0, 100, 0));
+    }
+
+    @Override
+    public Image getPieceImage(Piece piece, PieceColor color) {
+        IPlayer player = color == PieceColor.WHITE
+                ? board.getWhitePlayer()
+                : board.getBlackPlayer();
+
+        Image image = player.getImage();
+        if (image != null)
+            return image;
+
+        return color == PieceColor.WHITE
+                ? HalmaImages.imageStoneWhite
+                : HalmaImages.imageStoneBlack;
+    }
 }

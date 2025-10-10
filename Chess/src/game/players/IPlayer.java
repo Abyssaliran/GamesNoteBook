@@ -4,6 +4,7 @@ import game.core.Board;
 import game.core.GameOver;
 import game.core.PieceColor;
 import game.core.GameResult;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * Интерфейс для игроков (алгоритмов и человека).
@@ -74,4 +75,9 @@ public interface IPlayer {
 	 * @return может ли играть черными фигурами.
 	 */
 	default String getInfo() { return ""; }
+
+	/**
+	 * @return изображение игрока.
+	 */
+	default Image getImage() { return null; };
 }

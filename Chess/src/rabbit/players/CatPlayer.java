@@ -1,12 +1,10 @@
 package rabbit.players;
 
 import game.core.Move;
+import org.eclipse.swt.graphics.Image;
 import rabbit.ui.images.WolfRabbitImages;
 
 public class CatPlayer extends WolfRabbitPlayer {
-	
-	{ image = WolfRabbitImages.catImage; }
-	
     @Override
     public String getName() {
         return "Кот";
@@ -14,14 +12,21 @@ public class CatPlayer extends WolfRabbitPlayer {
 
     @Override
     public String getAuthorName() {
-        return "";
+        return "?";
     }
 
     @Override
-    int getWeight(Move m2) {
+    public Image getImage() {
+        return WolfRabbitImages.catImage;
+    }
+
+    @Override
+    public boolean isWhitePlayer() {
+        return false;
+    }
+
+    @Override
+    int getWeight(Move m) {
         return 0;
     }
-    
-    @Override
-	public boolean isWhitePlayer() { return false; }
 }

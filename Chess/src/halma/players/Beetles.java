@@ -9,6 +9,8 @@ import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.ITransferMove;
 import halma.Halma;
+import halma.ui.images.HalmaImages;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * Beetles - алгоритм "Жуки".
@@ -30,6 +32,9 @@ public class Beetles extends HalmaPlayer {
 	public String toString() {
 		return getName();
 	}
+
+	@Override
+	public Image getImage() { return HalmaImages.imageZuk; }
 
 	@Override
 	public List<Move> getCorrectMoves(Board board, PieceColor color) {

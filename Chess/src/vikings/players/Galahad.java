@@ -17,7 +17,7 @@ public class Galahad extends VikingsPlayer {
 
 	@Override
 	public String getAuthorName() {
-		return "";
+		return "?";
 	}
 	
 	@Override

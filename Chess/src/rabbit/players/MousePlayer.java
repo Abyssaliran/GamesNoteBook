@@ -2,11 +2,13 @@ package rabbit.players;
 
 import game.core.Move;
 import game.core.moves.ITransferMove;
+import org.eclipse.swt.graphics.Image;
 import rabbit.ui.images.WolfRabbitImages;
 
 public class MousePlayer extends WolfRabbitPlayer {
 	
-	{ image = WolfRabbitImages.mouseImage; }
+	@Override
+    public Image getImage() { return WolfRabbitImages.mouseImage; }
 
     @Override
     public String getName() {
@@ -15,7 +17,7 @@ public class MousePlayer extends WolfRabbitPlayer {
 
     @Override
     public String getAuthorName() {
-        return "";
+        return "?";
     }
 
     @Override

@@ -15,7 +15,7 @@ public class Lancelot extends VikingsPlayer {
 
 	@Override
 	public String getAuthorName() {
-		return "";
+		return "?";
 	}
 	
 	@Override

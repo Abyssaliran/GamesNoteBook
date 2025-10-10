@@ -15,8 +15,10 @@ public class HalmaImages {
 
 	public static Image imageStoneBlack;
 	public static Image imageStoneWhite;
-	
-	static {
+    public static Image imageAnt;
+    public static Image imageZuk;
+
+    static {
 		load( Display.getCurrent() );
 	}
 
@@ -25,5 +27,8 @@ public class HalmaImages {
 
 		imageStoneBlack  = new Image(display, HalmaImages.class.getResourceAsStream("bStone.png"));
 		imageStoneWhite  = new Image(display, HalmaImages.class.getResourceAsStream("wStone.png"));
+
+		imageAnt = new Image(display, HalmaImages.class.getResourceAsStream("ant.png"));
+		imageZuk = new Image(display, HalmaImages.class.getResourceAsStream("zuk.png"));
 	}
 }

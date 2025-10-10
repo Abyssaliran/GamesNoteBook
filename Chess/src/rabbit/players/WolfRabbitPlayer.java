@@ -15,8 +15,6 @@ import game.players.MovePiecePlayer;
 
 public abstract class WolfRabbitPlayer extends MovePiecePlayer {
     private static final int maxMoves = 180;
-    
-    public Image image;
 
     @Override
     public void doMove(Board board, PieceColor color) throws GameOver {
@@ -66,15 +64,8 @@ public abstract class WolfRabbitPlayer extends MovePiecePlayer {
         }
     }
 
-    private final Comparator<? super Move> brain = (m1, m2) -> getWeight(m2) - getWeight(m1);
+    private final Comparator<? super Move> brain =
+            (m1, m2) -> getWeight(m2) - getWeight(m1);
 
-    abstract int getWeight(Move m2);
-
-    /**
-     * Алгоритм сравнения ходов для выбора лучшего хода
-     * будет реализован в классах - потомках.
-     *
-     * @return - алгоритм сравнения ходов.
-     */
-//    abstract Comparator<? super Move> getComparator();
+    abstract int getWeight(Move m);
 }

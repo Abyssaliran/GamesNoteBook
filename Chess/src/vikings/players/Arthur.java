@@ -28,7 +28,7 @@ public class Arthur extends VikingsPlayer {
 
 	@Override
 	public String getAuthorName() {
-		return "";
+		return "?";
 	}
 	
 	@Override

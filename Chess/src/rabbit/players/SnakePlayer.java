@@ -1,12 +1,10 @@
 package rabbit.players;
 
 import game.core.Move;
+import org.eclipse.swt.graphics.Image;
 import rabbit.ui.images.WolfRabbitImages;
 
 public class SnakePlayer extends WolfRabbitPlayer {
-	
-	{ image = WolfRabbitImages.snakeImage; }
-	
     @Override
     public String getName() {
         return "Змея";
@@ -14,14 +12,20 @@ public class SnakePlayer extends WolfRabbitPlayer {
 
     @Override
     public String getAuthorName() {
-        return "";
+        return "?";
     }
 
     @Override
-    int getWeight(Move m2) {
+	public boolean isWhitePlayer() { return false; }
+
+    @Override
+    public Image getImage() {
+        return WolfRabbitImages.snakeImage;
+    }
+
+    @Override
+    int getWeight(Move m) {
         return 0;
     }
-    
-    @Override
-	public boolean isWhitePlayer() { return false; }
+
 }

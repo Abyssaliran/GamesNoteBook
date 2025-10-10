@@ -1,12 +1,10 @@
 package rabbit.players;
 
 import game.core.Move;
+import org.eclipse.swt.graphics.Image;
 import rabbit.ui.images.WolfRabbitImages;
 
 public class FrogPlayer extends WolfRabbitPlayer {
-	
-	{ image = WolfRabbitImages.frogImage; }
-	
     @Override
     public String getName() {
         return "Лягушка";
@@ -14,14 +12,19 @@ public class FrogPlayer extends WolfRabbitPlayer {
 
     @Override
     public String getAuthorName() {
-        return "";
+        return "?";
     }
 
     @Override
-    int getWeight(Move m2) {
-        return 0;
+    public Image getImage() {
+        return WolfRabbitImages.frogImage;
     }
-    
+
     @Override
 	public boolean isBlackPlayer() { return false; }
+
+    @Override
+    int getWeight(Move m) {
+        return 0;
+    }
 }
