@@ -20,16 +20,15 @@ public class MousePlayer extends WolfRabbitPlayer {
         return "?";
     }
 
+    /**
+     * @return может ли играть черными фигурами.
+     */
+    public boolean isBlackPlayer() { return false; }
+
     @Override
     int getWeight(Move m) {
     	ITransferMove transfer = (ITransferMove) m;
     	
         return 8 - transfer.getTarget().h;
     }
-    
-	
-	/**
-	 * @return может ли играть черными фигурами.
-	 */
-	public boolean isBlackPlayer() { return false; }
 }

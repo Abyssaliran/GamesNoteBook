@@ -27,5 +27,4 @@ public class SnakePlayer extends WolfRabbitPlayer {
     int getWeight(Move m) {
         return 0;
     }
-
 }
