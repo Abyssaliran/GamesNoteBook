@@ -2,7 +2,19 @@
 
 ## Игры
 
+<span style="color:red;font-weight:bold;">
+Для магистров
+</span>
+
+1. ...
+
+2. ...
+
 ## Алгоритмы (игроки для игр)  
+
+<span style="color:red;font-weight:bold;">
+Для студентов программы РКТ и Второго высшего образования
+</span>
 
 1. **Алгоритм игры Заяц и волки**  
 <https://www.iggamecenter.com/info/ru/foxh.html>  
