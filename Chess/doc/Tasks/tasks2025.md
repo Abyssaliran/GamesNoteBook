@@ -10,6 +10,8 @@
 
 2. ...
 
+...
+
 ## Алгоритмы (игроки для игр)  
 
 <span style="color:red;font-weight:bold;">
