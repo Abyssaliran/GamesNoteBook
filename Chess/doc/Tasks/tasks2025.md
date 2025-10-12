@@ -6,7 +6,8 @@
 Для магистров
 </span>
 
-1.  [Arkhimed](./2025/Arkhimed/Arkhimed.md) ?
+1.  [Arkhimed](./2025/Arkhimed/Arkhimed.md)  
+   Ван Хуаньхуань и Чжоу Кэюй
 2.  [Attract](./2025/Attract/Attract.md) ? 
 3.  [Basketball](./2025/Basketball/Basketball.md) ? 
 4.  [CASTLE](./2025/CASTLE/CASTLE.md) ? 
