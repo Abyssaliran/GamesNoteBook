@@ -6,9 +6,13 @@
 Для магистров
 </span>
 
-1. ...
-
-2. ...
+1.  [Arkhimed](./2025/Arkhimed/Arkhimed.md) ?
+2.  [Attract](./2025/Attract/Attract.md) ? 
+3.  [Basketball](./2025/Basketball/Basketball.md) ? 
+4.  [CASTLE](./2025/CASTLE/CASTLE.md) ? 
+5.  [EUCLID](./2025/EUCLID/EUCLID.md) ? 
+6.  [FISSION](./2025/FISSION/FISSION.md) ? 
+7.  [ITHAKA](./2025/ITHAKA/ITHAKA.md) ?
 
 ...
 
