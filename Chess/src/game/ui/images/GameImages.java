@@ -22,6 +22,9 @@ public class GameImages {
 	public static Image stoneWhite;
 	public static Image stoneYellow;
 	
+	public static Image stoneW;
+	public static Image stoneB;
+
 	/**
 	 * Изображения на гранях кубика.
 	 */
@@ -45,6 +48,9 @@ public class GameImages {
 		stoneRed     = new Image(display, GameImages.class.getResourceAsStream("stoneRed.png"));
 		stoneYellow  = new Image(display, GameImages.class.getResourceAsStream("stoneYellow.png"));
 		stoneWhite   = new Image(display, GameImages.class.getResourceAsStream("stoneWhite.png"));
+
+		stoneW   = new Image(display, GameImages.class.getResourceAsStream("wStone.png"));
+		stoneB   = new Image(display, GameImages.class.getResourceAsStream("bStone.png"));
 
 		cubes = new Image[7];
 		cubes[0]   = new Image(display, GameImages.class.getResourceAsStream("cube0.png"));
