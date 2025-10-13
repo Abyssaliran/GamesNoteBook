@@ -9,7 +9,7 @@ import rabbit.pieces.Wolf;
 import rabbit.players.*;
 
 /**
- * https://www.iggamecenter.com/info/ru/foxh.html
+ * <a href="https://www.iggamecenter.com/info/ru/foxh.html">Правила</a>
  */
 public class RabbitWolfs extends Game {
     private static final int BOARD_SIZE = 8;
