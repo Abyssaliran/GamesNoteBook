@@ -16,6 +16,9 @@ public class WolfRabbitImages {
 	public static Image snakeImage;
 	public static Image frogImage;
 
+    public static Image foxImage;
+    public static Image hedgehogImage;
+
     static {
         Device display = Display.getDefault();
         
@@ -29,5 +32,8 @@ public class WolfRabbitImages {
         
         snakeImage = new Image(display, WolfRabbitImages.class.getResourceAsStream("snake.png"));
         frogImage = new Image(display, WolfRabbitImages.class.getResourceAsStream("frog.png"));
-     }
+
+        foxImage = new Image(display, WolfRabbitImages.class.getResourceAsStream("fox.png"));
+        hedgehogImage = new Image(display, WolfRabbitImages.class.getResourceAsStream("hedgehog.png"));
+    }
 }

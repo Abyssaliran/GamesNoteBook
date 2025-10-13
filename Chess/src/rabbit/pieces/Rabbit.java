@@ -33,6 +33,6 @@ public class Rabbit extends Piece {
 
 	@Override
 	public String toString() {
-		return "R";
+		return "";
 	}
 }

@@ -33,6 +33,6 @@ public class Wolf extends Piece {
 
 	@Override
 	public String toString() {
-		return "W";
+		return "";
 	}
 }
