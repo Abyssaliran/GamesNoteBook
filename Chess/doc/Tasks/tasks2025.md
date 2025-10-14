@@ -8,7 +8,8 @@
 
 1.  [Arkhimed](./2025/Arkhimed/Arkhimed.md)  
    Ван Хуаньхуань и Чжоу Кэюй
-2.  [Attract](./2025/Attract/Attract.md) ? 
+2.  [Attract](./2025/Attract/Attract.md)  
+    Фань Чжаньхун и Юй Сыцзэ 
 3.  [Basketball](./2025/Basketball/Basketball.md) ? 
 4.  [CASTLE](./2025/CASTLE/CASTLE.md) ? 
 5.  [EUCLID](./2025/EUCLID/EUCLID.md) ? 
