@@ -1,5 +1,7 @@
 package notebook;
 
+import attract.ui.AttractGamePanel;
+import attract.ui.images.AttractImages;
 import backgammon.ui.BackgammonGamePanel;
 import backgammon.ui.images.BackgammonImages;
 import breakthrough.ui.BreakThroughGamePanel;
@@ -104,6 +106,7 @@ public class GamesNotebook {
         gamesItem.setText("Игры");
 
         // Добавление вкладок - игр.
+        addAttractTab(gamesFolder);
         addRabbitTab(gamesFolder);
         addChinaChessTab(gamesFolder);
         addThreeMusketeers(gamesFolder);
@@ -127,6 +130,13 @@ public class GamesNotebook {
         addTamerlanChessTab(gamesFolder);
         addReversiTab(gamesFolder);
         addHalma8x8Tab(gamesFolder);
+    }
+
+    private static void addAttractTab(TabFolder folder) {
+        TabItem tabItem = new TabItem(folder, SWT.NONE);
+        tabItem.setControl(new AttractGamePanel(folder));
+        tabItem.setImage(smallIcon(AttractImages.icoAttract));
+        tabItem.setText("Притяжение");
     }
 
     private static void addRabbitTab(TabFolder folder) {
