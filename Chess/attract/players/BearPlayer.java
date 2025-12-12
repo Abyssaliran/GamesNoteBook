@@ -512,9 +512,23 @@ public class BearPlayer extends AttractPlayer {
     // ==========================================
 
     /**
-     * 评估移动的价值 - 使用多种启发式策略
-     * Evaluate move value - using multiple heuristic strategies
-     * Оценка ценности хода - использование нескольких эвристических стратегий
+     * 评估移动的价值 - 基于新的胜负逻辑
+     * Evaluate move value - based on new win/lose logic
+     * Оценка ценности хода - на основе новой логики победы/поражения
+     *
+     * 核心规则 / Core rules / Основные правила:
+     * - 遍历棋盘上除去最外圈的所有格子
+     *   Iterate all squares except the outermost ring
+     *   Перебираем все клетки кроме внешнего кольца
+     * - 如果某格子的4个对角位置全是白棋 → whiteScore + 1
+     *   If all 4 diagonal positions are white → whiteScore + 1
+     *   Если все 4 диагональные позиции белые → whiteScore + 1
+     * - 如果某格子的4个对角位置全是黑棋 → blackScore + 1
+     *   If all 4 diagonal positions are black → blackScore + 1
+     *   Если все 4 диагональные позиции черные → blackScore + 1
+     * - whiteScore > blackScore → 白胜
+     *   whiteScore > blackScore → White wins
+     *   whiteScore > blackScore → Белые побеждают
      *
      * @param move - 要评估的移动 / move to evaluate / ход для оценки
      * @return 评估分数 / evaluation score / оценочный балл
@@ -532,30 +546,268 @@ public class BearPlayer extends AttractPlayer {
         Square target = putMove.getTarget();
         Board board = target.getBoard();
 
-        // 策略1: 中心控制 - 中心位置价值更高
-        // Strategy 1: Center control - center positions are more valuable
-        // Стратегия 1: Контроль центра - центральные позиции ценнее
+        // BearPlayer是白方
+        // BearPlayer is white
+        // BearPlayer играет белыми
+        PieceColor myColor = PieceColor.WHITE;
+        PieceColor opponentColor = PieceColor.BLACK;
+
+        // 策略1: 评估当前局面的分数差（最重要）
+        // Strategy 1: Evaluate current score difference (most important)
+        // Стратегия 1: Оценка разницы в счёте (самое важное)
+        score += evaluateScoreDifference(board, myColor, opponentColor);
+
+        // 策略2: 评估该位置对形成包围阵型的贡献
+        // Strategy 2: Evaluate contribution to forming surrounding patterns
+        // Стратегия 2: Оценка вклада в формирование окружающих комбинаций
+        score += evaluateSurroundingContribution(target, board, myColor);
+
+        // 策略3: 评估阻止对手形成包围阵型的价值
+        // Strategy 3: Evaluate value of blocking opponent's surrounding patterns
+        // Стратегия 3: Оценка ценности блокирования окружающих комбинаций противника
+        score += evaluateBlockingValue(target, board, opponentColor);
+
+        // 策略4: 中心控制 - 中心位置更容易形成包围阵型
+        // Strategy 4: Center control - center positions are easier to form surrounding patterns
+        // Стратегия 4: Контроль центра - центральные позиции легче формируют окружающие комбинации
         score += evaluateCenterControl(target, board);
 
-        // 策略2: 对角线包围潜力 - 评估形成获胜阵型的可能性
-        // Strategy 2: Diagonal surrounding potential - evaluate winning pattern potential
-        // Стратегия 2: Потенциал диагонального окружения - оценка потенциала выигрышной комбинации
-        score += evaluateDiagonalPotential(target, board);
-
-        // 策略3: 吸引效果评估 - 评估吸引后的局面
-        // Strategy 3: Attraction effect evaluation - evaluate position after attraction
-        // Стратегия 3: Оценка эффекта притяжения - оценка позиции после притяжения
-        score += evaluateAttractionEffect(target, board);
-
-        // 策略4: 防守价值 - 阻止对手形成获胜阵型
-        // Strategy 4: Defensive value - prevent opponent from forming winning patterns
-        // Стратегия 4: Защитная ценность - предотвращение выигрышных комбинаций противника
-        score += evaluateDefensiveValue(target, board, move);
-
-        // 策略5: 边角惩罚 - 边角位置价值较低
-        // Strategy 5: Corner penalty - corner positions are less valuable
-        // Стратегия 5: Штраф за углы - угловые позиции менее ценны
+        // 策略5: 边角惩罚 - 边角位置难以参与包围阵型
+        // Strategy 5: Corner penalty - corner positions are hard to participate in surrounding patterns
+        // Стратегия 5: Штраф за углы - угловые позиции трудно участвуют в окружающих комбинациях
         score += evaluateCornerPenalty(target, board);
+
+        return score;
+    }
+
+    /**
+     * 评估当前局面的分数差
+     * Evaluate current score difference
+     * Оценка разницы в счёте текущей позиции
+     *
+     * @param board         - 棋盘 / board / доска
+     * @param myColor       - 己方颜色 / my color / мой цвет
+     * @param opponentColor - 对手颜色 / opponent color / цвет противника
+     * @return 分数差评估 / score difference evaluation / оценка разницы в счёте
+     */
+    private int evaluateScoreDifference(Board board, PieceColor myColor, PieceColor opponentColor) {
+        int myScore = countSurroundingPatterns(board, myColor);
+        int opponentScore = countSurroundingPatterns(board, opponentColor);
+
+        // 分数差越大越好，使用较大的权重
+        // Larger score difference is better, use larger weight
+        // Большая разница в счёте лучше, используем больший вес
+        return (myScore - opponentScore) * 100;
+    }
+
+    /**
+     * 计算某一方的包围阵型数量
+     * Count surrounding patterns for a given color
+     * Подсчитываем количество окружающих комбинаций для заданного цвета
+     *
+     * @param board - 棋盘 / board / доска
+     * @param color - 颜色 / color / цвет
+     * @return 包围阵型数量 / number of surrounding patterns / количество окружающих комбинаций
+     */
+    private int countSurroundingPatterns(Board board, PieceColor color) {
+        int count = 0;
+        int nV = board.nV;
+        int nH = board.nH;
+
+        // 遍历所有非边缘格子（边缘格子没有完整的4个对角线邻居）
+        // Iterate all non-edge squares (edge squares don't have all 4 diagonal neighbors)
+        // Перебираем все не-крайние клетки (крайние не имеют всех 4 диагональных соседей)
+        for (int v = 1; v < nV - 1; v++) {
+            for (int h = 1; h < nH - 1; h++) {
+                if (isDiagonalSurrounding(board, v, h, color)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    /**
+     * 检查某个格子的4个对角线邻居是否全是指定颜色
+     * Check if all 4 diagonal neighbors of a square are of specified color
+     * Проверяем, все ли 4 диагональных соседа клетки заданного цвета
+     *
+     * @param board - 棋盘 / board / доска
+     * @param v     - 垂直坐标 / vertical coordinate / вертикальная координата
+     * @param h     - 水平坐标 / horizontal coordinate / горизонтальная координата
+     * @param color - 检查的颜色 / color to check / цвет для проверки
+     * @return 是否全是指定颜色 / whether all are specified color / все ли заданного цвета
+     */
+    private boolean isDiagonalSurrounding(Board board, int v, int h, PieceColor color) {
+        int[][] diagonals = {
+                {v - 1, h - 1},  // 左上 / top-left / верхний-левый
+                {v + 1, h - 1},  // 右上 / top-right / верхний-правый
+                {v - 1, h + 1},  // 左下 / bottom-left / нижний-левый
+                {v + 1, h + 1}   // 右下 / bottom-right / нижний-правый
+        };
+
+        for (int[] pos : diagonals) {
+            int dv = pos[0];
+            int dh = pos[1];
+
+            if (!board.onBoard(dv, dh)) {
+                return false;
+            }
+
+            Square neighbor = board.getSquare(dv, dh);
+
+            if (neighbor.isEmpty()) {
+                return false;
+            }
+
+            if (neighbor.getPiece().getColor() != color) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 评估该位置对形成包围阵型的贡献
+     * Evaluate contribution to forming surrounding patterns
+     * Оценка вклада в формирование окружающих комбинаций
+     *
+     * @param target  - 目标格子 / target square / целевая клетка
+     * @param board   - 棋盘 / board / доска
+     * @param myColor - 己方颜色 / my color / мой цвет
+     * @return 贡献分数 / contribution score / балл вклада
+     */
+    private int evaluateSurroundingContribution(Square target, Board board, PieceColor myColor) {
+        int score = 0;
+
+        // 检查该位置作为对角线邻居能参与多少个潜在的包围阵型
+        // Check how many potential surrounding patterns this position can participate in as diagonal neighbor
+        // Проверяем, в скольких потенциальных окружающих комбинациях может участвовать эта позиция
+        int[][] directions = {{-1, -1}, {1, -1}, {-1, 1}, {1, 1}};
+
+        for (int[] dir : directions) {
+            // 检查以(target.v + dir[0], target.h + dir[1])为中心的格子
+            // Check the square centered at (target.v + dir[0], target.h + dir[1])
+            // Проверяем клетку с центром в (target.v + dir[0], target.h + dir[1])
+            int centerV = target.v + dir[0];
+            int centerH = target.h + dir[1];
+
+            // 确保中心格在有效范围内（非边缘）
+            // Ensure center is in valid range (not edge)
+            // Убеждаемся, что центр в допустимом диапазоне (не край)
+            if (centerV >= 1 && centerV < board.nV - 1 &&
+                    centerH >= 1 && centerH < board.nH - 1) {
+
+                // 计算该中心格的4个对角线邻居中有多少个是己方棋子
+                // Count how many of the 4 diagonal neighbors of this center are my pieces
+                // Считаем, сколько из 4 диагональных соседей центра — мои фигуры
+                int myPieceCount = 0;
+                int emptyCount = 0;
+
+                for (int[] checkDir : directions) {
+                    int checkV = centerV + checkDir[0];
+                    int checkH = centerH + checkDir[1];
+
+                    if (board.onBoard(checkV, checkH)) {
+                        Square sq = board.getSquare(checkV, checkH);
+                        if (sq.isEmpty()) {
+                            // 如果是目标位置，算作己方棋子（因为我们要在这里下棋）
+                            // If it's target position, count as my piece (we're placing there)
+                            // Если это целевая позиция, считаем своей фигурой (мы ставим туда)
+                            if (checkV == target.v && checkH == target.h) {
+                                myPieceCount++;
+                            } else {
+                                emptyCount++;
+                            }
+                        } else if (sq.getPiece().getColor() == myColor) {
+                            myPieceCount++;
+                        }
+                    }
+                }
+
+                // 根据己方棋子数量给分
+                // Score based on number of my pieces
+                // Оцениваем на основе количества моих фигур
+                if (myPieceCount == 4) {
+                    // 形成完整的包围阵型！极高分
+                    // Form complete surrounding pattern! Very high score
+                    // Формируем полную окружающую комбинацию! Очень высокий балл
+                    score += 500;
+                } else if (myPieceCount == 3 && emptyCount == 1) {
+                    // 差一步形成包围阵型
+                    // One step away from forming surrounding pattern
+                    // Один шаг до формирования окружающей комбинации
+                    score += 80;
+                } else if (myPieceCount == 2) {
+                    score += 20;
+                } else if (myPieceCount == 1) {
+                    score += 5;
+                }
+            }
+        }
+
+        return score;
+    }
+
+    /**
+     * 评估阻止对手形成包围阵型的价值
+     * Evaluate value of blocking opponent's surrounding patterns
+     * Оценка ценности блокирования окружающих комбинаций противника
+     *
+     * @param target        - 目标格子 / target square / целевая клетка
+     * @param board         - 棋盘 / board / доска
+     * @param opponentColor - 对手颜色 / opponent color / цвет противника
+     * @return 阻止价值分数 / blocking value score / балл ценности блокирования
+     */
+    private int evaluateBlockingValue(Square target, Board board, PieceColor opponentColor) {
+        int score = 0;
+
+        // 检查在该位置下棋能否阻止对手形成包围阵型
+        // Check if placing at this position can block opponent's surrounding pattern
+        // Проверяем, может ли размещение на этой позиции заблокировать окружающую комбинацию противника
+        int[][] directions = {{-1, -1}, {1, -1}, {-1, 1}, {1, 1}};
+
+        for (int[] dir : directions) {
+            int centerV = target.v + dir[0];
+            int centerH = target.h + dir[1];
+
+            if (centerV >= 1 && centerV < board.nV - 1 &&
+                    centerH >= 1 && centerH < board.nH - 1) {
+
+                int opponentPieceCount = 0;
+                boolean targetIsOneOfDiagonals = false;
+
+                for (int[] checkDir : directions) {
+                    int checkV = centerV + checkDir[0];
+                    int checkH = centerH + checkDir[1];
+
+                    if (board.onBoard(checkV, checkH)) {
+                        if (checkV == target.v && checkH == target.h) {
+                            targetIsOneOfDiagonals = true;
+                        } else {
+                            Square sq = board.getSquare(checkV, checkH);
+                            if (!sq.isEmpty() && sq.getPiece().getColor() == opponentColor) {
+                                opponentPieceCount++;
+                            }
+                        }
+                    }
+                }
+
+                // 如果对手有3个棋子，而目标位置是第4个对角线位置
+                // If opponent has 3 pieces and target is the 4th diagonal position
+                // Если у противника 3 фигуры, а целевая позиция — 4-я диагональная
+                if (opponentPieceCount == 3 && targetIsOneOfDiagonals) {
+                    // 阻止对手形成包围阵型！高分
+                    // Block opponent from forming surrounding pattern! High score
+                    // Блокируем формирование окружающей комбинации противника! Высокий балл
+                    score += 200;
+                } else if (opponentPieceCount == 2 && targetIsOneOfDiagonals) {
+                    score += 30;
+                }
+            }
+        }
 
         return score;
     }
@@ -578,146 +830,10 @@ public class BearPlayer extends AttractPlayer {
         // Вычисляем манхэттенское расстояние до центра
         int distanceToCenter = Math.abs(target.v - centerV) + Math.abs(target.h - centerH);
 
-        // 距离中心越近，分数越高
-        // Closer to center = higher score
-        // Чем ближе к центру, тем выше балл
-        return (board.nV - distanceToCenter) * 5;
-    }
-
-    /**
-     * 评估对角线包围潜力
-     * Evaluate diagonal surrounding potential
-     * Оценка потенциала диагонального окружения
-     *
-     * @param target - 目标格子 / target square / целевая клетка
-     * @param board  - 棋盘 / board / доска
-     * @return 对角线潜力分数 / diagonal potential score / балл диагонального потенциала
-     */
-    private int evaluateDiagonalPotential(Square target, Board board) {
-        int score = 0;
-        PieceColor myColor = PieceColor.WHITE; // BearPlayer默认白方 / default white / по умолчанию белые
-
-        // 检查该位置作为对角线邻居的价值
-        // Check value of this position as a diagonal neighbor
-        // Проверяем ценность позиции как диагонального соседа
-        int[][] diagonals = {
-                {-1, -1}, {1, -1}, {-1, 1}, {1, 1}
-        };
-
-        for (int[] delta : diagonals) {
-            int checkV = target.v + delta[0];
-            int checkH = target.h + delta[1];
-
-            if (board.onBoard(checkV, checkH)) {
-                Square diagonalSquare = board.getSquare(checkV, checkH);
-
-                // 如果对角线位置有己方棋子，增加分数
-                // If diagonal position has our piece, increase score
-                // Если на диагонали наша фигура, увеличиваем балл
-                if (!diagonalSquare.isEmpty() &&
-                        diagonalSquare.getPiece().getColor() == myColor) {
-                    score += 15;
-                }
-            }
-        }
-
-        return score;
-    }
-
-    /**
-     * 评估吸引效果
-     * Evaluate attraction effect
-     * Оценка эффекта притяжения
-     *
-     * @param target - 目标格子 / target square / целевая клетка
-     * @param board  - 棋盘 / board / доска
-     * @return 吸引效果分数 / attraction effect score / балл эффекта притяжения
-     */
-    private int evaluateAttractionEffect(Square target, Board board) {
-        int score = 0;
-        int targetV = target.v;
-        int targetH = target.h;
-
-        // 统计四个方向上的棋子数量
-        // Count pieces in four directions
-        // Подсчитываем фигуры в четырех направлениях
-        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
-        for (int[] dir : directions) {
-            int pieceCount = 0;
-            int v = targetV + dir[0];
-            int h = targetH + dir[1];
-
-            while (board.onBoard(v, h)) {
-                Square sq = board.getSquare(v, h);
-                if (!sq.isEmpty()) {
-                    pieceCount++;
-                }
-                v += dir[0];
-                h += dir[1];
-            }
-
-            // 能吸引更多棋子的位置更有价值
-            // Positions that attract more pieces are more valuable
-            // Позиции, притягивающие больше фигур, ценнее
-            score += pieceCount * 8;
-        }
-
-        return score;
-    }
-
-    /**
-     * 评估防守价值 - 阻止对手形成获胜阵型
-     * Evaluate defensive value - prevent opponent from forming winning patterns
-     * Оценка защитной ценности - предотвращение выигрышных комбинаций противника
-     *
-     * @param target - 目标格子 / target square / целевая клетка
-     * @param board  - 棋盘 / board / доска
-     * @param move   - 移动 / move / ход
-     * @return 防守分数 / defensive score / защитный балл
-     */
-    private int evaluateDefensiveValue(Square target, Board board, Move move) {
-        int score = 0;
-        PieceColor opponentColor = PieceColor.BLACK;
-
-        // 检查放置后是否能阻止对手的对角线包围
-        // Check if placement can block opponent's diagonal surrounding
-        // Проверяем, может ли размещение блокировать диагональное окружение противника
-        int[][] offsets = {{-1, -1}, {1, -1}, {-1, 1}, {1, 1}};
-
-        for (int[] offset : offsets) {
-            int checkV = target.v + offset[0];
-            int checkH = target.h + offset[1];
-
-            if (board.onBoard(checkV, checkH)) {
-                // 检查是否能打断对手的对角线链
-                // Check if we can break opponent's diagonal chain
-                // Проверяем, можем ли мы прервать диагональную цепь противника
-                int opponentDiagonals = 0;
-                for (int[] innerOffset : offsets) {
-                    int innerV = checkV + innerOffset[0];
-                    int innerH = checkH + innerOffset[1];
-
-                    if (board.onBoard(innerV, innerH)) {
-                        Square sq = board.getSquare(innerV, innerH);
-                        if (!sq.isEmpty() && sq.getPiece().getColor() == opponentColor) {
-                            opponentDiagonals++;
-                        }
-                    }
-                }
-
-                // 如果对手已经有3个对角线邻居，阻止第4个很重要
-                // If opponent has 3 diagonal neighbors, blocking the 4th is important
-                // Если у противника уже 3 диагональных соседа, важно заблокировать 4-го
-                if (opponentDiagonals >= 3) {
-                    score += 50;
-                } else if (opponentDiagonals >= 2) {
-                    score += 20;
-                }
-            }
-        }
-
-        return score;
+        // 距离中心越近，分数越高（中心位置更容易参与包围阵型）
+        // Closer to center = higher score (center positions easier to participate in surrounding patterns)
+        // Чем ближе к центру, тем выше балл (центральные позиции легче участвуют в окружающих комбинациях)
+        return (board.nV - distanceToCenter) * 3;
     }
 
     /**
@@ -732,22 +848,22 @@ public class BearPlayer extends AttractPlayer {
     private int evaluateCornerPenalty(Square target, Board board) {
         int penalty = 0;
 
-        // 边缘位置惩罚
-        // Edge position penalty
-        // Штраф за крайние позиции
+        // 边缘位置惩罚（边缘位置难以参与包围阵型）
+        // Edge position penalty (edge positions are hard to participate in surrounding patterns)
+        // Штраф за крайние позиции (крайние позиции трудно участвуют в окружающих комбинациях)
         if (target.v == 0 || target.v == board.nV - 1) {
-            penalty -= 10;
+            penalty -= 15;
         }
         if (target.h == 0 || target.h == board.nH - 1) {
-            penalty -= 10;
+            penalty -= 15;
         }
 
-        // 角落位置额外惩罚
-        // Additional corner penalty
-        // Дополнительный штраф за углы
+        // 角落位置额外惩罚（角落只能参与1个包围阵型）
+        // Additional corner penalty (corners can only participate in 1 surrounding pattern)
+        // Дополнительный штраф за углы (углы могут участвовать только в 1 окружающей комбинации)
         if ((target.v == 0 || target.v == board.nV - 1) &&
                 (target.h == 0 || target.h == board.nH - 1)) {
-            penalty -= 15;
+            penalty -= 20;
         }
 
         return penalty;
