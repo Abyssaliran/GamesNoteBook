@@ -7,6 +7,7 @@ import game.players.IPlayer;
 import game.ui.AsiaBoard;
 import game.ui.listeners.PutPieceListener;
 import org.eclipse.swt.graphics.Image;
+import game.ui.images.GameImages;
 
 import static game.core.PieceColor.WHITE;
 
@@ -31,9 +32,6 @@ public class AttractBoardPanel extends AsiaBoard implements IPieceProvider {
         if (image != null)
             return image;
 
-        // 白色棋子使用熊图标，黑色棋子使用熊猫图标
-        // White pieces use bear icon, black pieces use panda icon.
-        // Белые фигуры используют иконку медведя, черные — иконку панды.
-        return color == WHITE ? AttractImages.bearImage : AttractImages.pandaImage;
+        return color == WHITE ? GameImages.stoneW : GameImages.stoneB;
     }
 }
