@@ -2,6 +2,7 @@ package attract.players;
 
 import attract.ui.images.AttractImages;
 import game.core.*;
+import game.core.moves.IPutMove;
 import org.eclipse.swt.graphics.Image;
 
 import java.util.*;
@@ -520,7 +521,15 @@ public class BearPlayer extends AttractPlayer {
      */
     private int evaluateMove(Move move) {
         int score = 0;
-        Square target = move.getTarget();
+
+        // 将Move转换为IPutMove以获取目标格子
+        // Cast Move to IPutMove to get target square
+        // Преобразуем Move в IPutMove для получения целевой клетки
+        if (!(move instanceof IPutMove)) {
+            return 0;
+        }
+        IPutMove putMove = (IPutMove) move;
+        Square target = putMove.getTarget();
         Board board = target.getBoard();
 
         // 策略1: 中心控制 - 中心位置价值更高
