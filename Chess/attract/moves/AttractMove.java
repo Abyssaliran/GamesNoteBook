@@ -292,11 +292,14 @@ public class AttractMove implements IPutMove {
     private void checkGameOver() throws GameOver {
         Board board = target.getBoard();
 
-        // 计算双方的得分
-        // Calculate scores for both sides
-        // Вычисляем очки для обеих сторон
-        int whiteScore = countSurroundedSquares(board, PieceColor.WHITE);
-        int blackScore = countSurroundedSquares(board, PieceColor.BLACK);
+        // 获取双方的得分位置列表
+        // Get scoring position lists for both sides
+        // Получаем списки позиций очков для обеих сторон
+        List<String> whitePositions = getSurroundedSquarePositions(board, PieceColor.WHITE);
+        List<String> blackPositions = getSurroundedSquarePositions(board, PieceColor.BLACK);
+
+        int whiteScore = whitePositions.size();
+        int blackScore = blackPositions.size();
 
         // 判断胜负
         // Determine winner
@@ -305,14 +308,14 @@ public class AttractMove implements IPutMove {
             // 白方获胜
             // White wins
             // Белые побеждают
-            String message = "White wins!\nScore: White " + whiteScore + " - Black " + blackScore;
+            String message = buildWinMessage("White", whiteScore, blackScore, whitePositions, blackPositions);
             showGameOverDialog(message);
             throw new GameOver(GameResult.WHITE_WIN);
         } else if (blackScore > whiteScore) {
             // 黑方获胜
             // Black wins
             // Черные побеждают
-            String message = "Black wins!\nScore: White " + whiteScore + " - Black " + blackScore;
+            String message = buildWinMessage("Black", whiteScore, blackScore, whitePositions, blackPositions);
             showGameOverDialog(message);
             throw new GameOver(GameResult.BLACK_WIN);
         }
@@ -320,6 +323,85 @@ public class AttractMove implements IPutMove {
         // 分数相等，游戏继续（不处理）
         // Scores are equal, game continues (no action)
         // Счёт равный, игра продолжается (без действий)
+    }
+
+    /**
+     * 构建获胜消息，包含具体得分位置
+     * Build win message with specific scoring positions
+     * Формирование сообщения о победе с конкретными позициями очков
+     *
+     * @param winner         - 获胜方 / winner / победитель
+     * @param whiteScore     - 白方得分 / white score / очки белых
+     * @param blackScore     - 黑方得分 / black score / очки черных
+     * @param whitePositions - 白方得分位置 / white scoring positions / позиции очков белых
+     * @param blackPositions - 黑方得分位置 / black scoring positions / позиции очков черных
+     * @return 格式化的消息 / formatted message / форматированное сообщение
+     */
+    private String buildWinMessage(String winner, int whiteScore, int blackScore,
+                                   List<String> whitePositions, List<String> blackPositions) {
+        StringBuilder sb = new StringBuilder();
+
+        // 标题
+        // Title
+        // Заголовок
+        sb.append(winner).append(" wins!\n\n");
+
+        // 总分
+        // Total score
+        // Общий счёт
+        sb.append("Score: White ").append(whiteScore).append(" - Black ").append(blackScore).append("\n\n");
+
+        // 白方得分位置
+        // White scoring positions
+        // Позиции очков белых
+        if (!whitePositions.isEmpty()) {
+            sb.append("White surrounds at: ");
+            sb.append(String.join(", ", whitePositions));
+            sb.append("\n");
+        }
+
+        // 黑方得分位置
+        // Black scoring positions
+        // Позиции очков черных
+        if (!blackPositions.isEmpty()) {
+            sb.append("Black surrounds at: ");
+            sb.append(String.join(", ", blackPositions));
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * 获取被某一方包围的格子位置列表
+     * Get list of positions surrounded by a given color
+     * Получение списка позиций, окруженных заданным цветом
+     *
+     * @param board - 棋盘 / the board / доска
+     * @param color - 包围方的颜色 / color of surrounding pieces / цвет окружающих фигур
+     * @return 被包围的格子位置列表 / list of surrounded positions / список окруженных позиций
+     */
+    private List<String> getSurroundedSquarePositions(Board board, PieceColor color) {
+        List<String> positions = new ArrayList<>();
+        int nV = board.nV;
+        int nH = board.nH;
+
+        // 遍历所有非边缘格子
+        // Iterate all non-edge squares
+        // Перебираем все не-крайние клетки
+        for (int v = 1; v < nV - 1; v++) {
+            for (int h = 1; h < nH - 1; h++) {
+                if (isDiagonalSurrounding(board, v, h, color)) {
+                    // 使用棋盘坐标表示法（列用字母a-h，行用数字1-8）
+                    // Use chess coordinate notation (columns a-h, rows 1-8)
+                    // Используем шахматную нотацию (столбцы a-h, ряды 1-8)
+                    char col = (char) ('a' + v);
+                    int row = h + 1;
+                    positions.add("" + col + row);
+                }
+            }
+        }
+
+        return positions;
     }
 
     /**
@@ -336,25 +418,7 @@ public class AttractMove implements IPutMove {
      * @return 被包围的格子数量（得分）/ number of surrounded squares (score) / количество окруженных клеток (очки)
      */
     private int countSurroundedSquares(Board board, PieceColor color) {
-        int count = 0;
-        int nV = board.nV;
-        int nH = board.nH;
-
-        // 遍历所有非边缘格子（边缘格子没有完整的4个对角线邻居）
-        // Iterate all non-edge squares (edge squares don't have all 4 diagonal neighbors)
-        // Перебираем все не-крайние клетки (крайние не имеют всех 4 диагональных соседей)
-        for (int v = 1; v < nV - 1; v++) {
-            for (int h = 1; h < nH - 1; h++) {
-                // 检查该格子的4个对角是否全是指定颜色的棋子
-                // Check if all 4 diagonals of this square are pieces of specified color
-                // Проверяем, все ли 4 диагонали этой клетки заняты фигурами заданного цвета
-                if (isDiagonalSurrounding(board, v, h, color)) {
-                    count++;
-                }
-            }
-        }
-
-        return count;
+        return getSurroundedSquarePositions(board, color).size();
     }
 
     /**
