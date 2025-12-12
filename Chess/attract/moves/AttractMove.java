@@ -102,9 +102,9 @@ public class AttractMove implements IPutMove {
      * @param dh      - 水平搜索方向 / horizontal search direction / направление поиска по горизонтали
      */
     private void processLineAttract(Board board, int targetV, int targetH, int dv, int dh) {
-        // 收集这条线上的所有棋子
-        // Collect all pieces on this line.
-        // Собираем все фигуры на этой линии.
+        // 收集这条线上的所有棋子（按照距离目标从近到远的顺序）
+        // Collect all pieces on this line (ordered from closest to farthest from target).
+        // Собираем все фигуры на этой линии (в порядке от ближайшей к цели до самой дальней).
         ArrayList<Piece> piecesOnLine = new ArrayList<>();
         ArrayList<Square> squaresOnLine = new ArrayList<>();
 
@@ -121,12 +121,49 @@ public class AttractMove implements IPutMove {
             h += dh;
         }
 
-        // 从最靠近目标的棋子开始处理（吸引效果）
-        // Process from the piece closest to target (attraction effect).
-        // Обрабатываем с фигуры, ближайшей к цели (эффект притяжения).
-        // 每个棋子向目标方向移动一格，如果目标位置为空
-        // Each piece moves one square toward target if the destination is empty.
-        // Каждая фигура двигается на одну клетку к цели, если место назначения пустое.
+        // 如果没有棋子，直接返回
+        // If no pieces, return directly.
+        // Если нет фигур, сразу возвращаемся.
+        if (piecesOnLine.isEmpty()) {
+            return;
+        }
+
+        // 找到第一个空位（紧挨着目标的位置）
+        // Find the first empty position (right next to target).
+        // Находим первую пустую позицию (рядом с целью).
+        int firstEmptyV = targetV + dv;
+        int firstEmptyH = targetH + dh;
+
+        // 检查紧挨目标的位置是否为空
+        // Check if the position next to target is empty.
+        // Проверяем, пуста ли позиция рядом с целью.
+        if (!board.onBoard(firstEmptyV, firstEmptyH)) {
+            return;
+        }
+
+        Square firstSquare = board.getSquare(firstEmptyV, firstEmptyH);
+
+        // 如果紧挨目标的位置已经有棋子，说明不能进行吸引
+        // If the position next to target already has a piece, attraction cannot happen.
+        // Если позиция рядом с целью уже занята фигурой, притяжение невозможно.
+        if (!firstSquare.isEmpty()) {
+            // 所有棋子都紧挨着，无法移动
+            // All pieces are adjacent, cannot move.
+            // Все фигуры рядом, двигаться некуда.
+            return;
+        }
+
+        // 从最靠近目标的棋子开始处理（吸引效果，链式移动）
+        // Process from the piece closest to target (attraction effect, chain movement).
+        // Обрабатываем с фигуры, ближайшей к цели (эффект притяжения, цепное движение).
+        //
+        // 关键逻辑：每个棋子都向目标移动一格
+        // Key logic: Each piece moves one square toward target.
+        // Ключевая логика: Каждая фигура перемещается на одну клетку к цели.
+        //
+        // 由于我们按顺序执行移动，前一个棋子移走后会腾出空位给下一个棋子
+        // Since we execute moves in order, the previous piece vacates a position for the next one.
+        // Поскольку мы выполняем ходы по порядку, предыдущая фигура освобождает место для следующей.
 
         for (int i = 0; i < piecesOnLine.size(); i++) {
             Piece p = piecesOnLine.get(i);
@@ -141,10 +178,41 @@ public class AttractMove implements IPutMove {
             if (board.onBoard(destV, destH)) {
                 Square dest = board.getSquare(destV, destH);
 
-                // 检查目标位置是否为空（不是target本身，也不是其他棋子）
-                // Check if destination is empty (not target itself, not other pieces).
-                // Проверяем, пусто ли место назначения (не сама цель, не другие фигуры).
-                if (dest.isEmpty() && !dest.equals(target)) {
+                // 检查目标位置：
+                // 1. 不是target本身（那里已经放置了新棋子）
+                // 2. 是空的，或者是前一个棋子的位置（在doMove时会先移走）
+                // Check destination:
+                // 1. Not the target itself (new piece is placed there).
+                // 2. Is empty, or is the previous piece's position (will be vacated during doMove).
+                // Проверяем место назначения:
+                // 1. Не сама цель (там уже размещена новая фигура).
+                // 2. Пусто, или это позиция предыдущей фигуры (освободится при doMove).
+
+                if (dest.equals(target)) {
+                    // 目标位置是放置新棋子的位置，不能移动到那里
+                    // Destination is where new piece is placed, cannot move there.
+                    // Место назначения — где размещается новая фигура, туда нельзя.
+                    continue;
+                }
+
+                // 检查目标位置是空的，或者是链条中前一个棋子的原位置
+                // Check if destination is empty or is the previous piece's original position in the chain.
+                // Проверяем, пусто ли место или это исходная позиция предыдущей фигуры в цепочке.
+                boolean canMove = dest.isEmpty();
+
+                // 如果目标位置不为空，检查是否是前一个被吸引棋子的位置
+                // If destination is not empty, check if it's the previous attracted piece's position.
+                // Если место не пусто, проверяем, не позиция ли это предыдущей притягиваемой фигуры.
+                if (!canMove && i > 0) {
+                    // 检查dest是否是前一个棋子的source（即squaresOnLine.get(i-1)）
+                    // Check if dest is the previous piece's source (i.e., squaresOnLine.get(i-1)).
+                    // Проверяем, является ли dest исходной позицией предыдущей фигуры.
+                    if (dest.equals(squaresOnLine.get(i - 1))) {
+                        canMove = true;
+                    }
+                }
+
+                if (canMove) {
                     SimpleMove move = new SimpleMove(p, source, dest);
                     attractMoves.add(move);
                 }
