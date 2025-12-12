@@ -63,16 +63,16 @@ public class Attract extends Game {
      * Initialize default board
      * Инициализация доски по умолчанию
      *
-     * 注意：如果棋盘已存在，使用当前棋盘尺寸；否则使用构造时指定的尺寸
-     * Note: If board exists, use current board size; otherwise use size specified in constructor
-     * Примечание: Если доска существует, используем текущий размер; иначе используем размер из конструктора
+     * 注意：如果棋盘已存在且尺寸有效，使用当前棋盘尺寸；否则使用构造时指定的尺寸
+     * Note: If board exists and has valid size, use current board size; otherwise use size specified in constructor
+     * Примечание: Если доска существует и имеет допустимый размер, используем текущий размер; иначе используем размер из конструктора
      */
     @Override
     public void initBoardDefault() {
-        // 如果棋盘已经存在，使用当前棋盘的尺寸（支持resizeBoard后的Start按钮）
-        // If board already exists, use current board size (support Start button after resizeBoard)
-        // Если доска уже существует, используем текущий размер (поддержка кнопки Старт после resizeBoard)
-        int size = (board != null) ? board.nV : boardSize;
+        // 如果棋盘已经存在且尺寸有效，使用当前棋盘的尺寸（支持resizeBoard后的Start按钮）
+        // If board already exists and has valid size, use current board size (support Start button after resizeBoard)
+        // Если доска уже существует и имеет допустимый размер, используем текущий размер (поддержка кнопки Старт после resizeBoard)
+        int size = (board != null && board.nV > 0) ? board.nV : boardSize;
         super.initBoard(size, size);
     }
 }
