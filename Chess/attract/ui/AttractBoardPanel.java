@@ -31,6 +31,9 @@ public class AttractBoardPanel extends AsiaBoard implements IPieceProvider {
         if (image != null)
             return image;
 
-        return color == WHITE ? AttractImages.pandaImage : AttractImages.bearImage;
+        // 白色棋子使用熊图标，黑色棋子使用熊猫图标
+        // White pieces use bear icon, black pieces use panda icon.
+        // Белые фигуры используют иконку медведя, черные — иконку панды.
+        return color == WHITE ? AttractImages.bearImage : AttractImages.pandaImage;
     }
 }
