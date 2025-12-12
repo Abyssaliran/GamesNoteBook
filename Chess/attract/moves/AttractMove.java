@@ -3,12 +3,20 @@ package attract.moves;
 import attract.pieces.AttracPiece;
 import game.core.Board;
 import game.core.GameOver;
+import game.core.GameResult;
 import game.core.Piece;
+import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.IPutMove;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * 吸引棋的移动类，实现"吸引"机制
@@ -231,9 +239,9 @@ public class AttractMove implements IPutMove {
     }
 
     /**
-     * 执行移动：先放置棋子，再执行所有吸引移动
-     * Execute move: first place the piece, then execute all attract moves.
-     * Выполняем ход: сначала размещаем фигуру, затем выполняем все ходы притяжения.
+     * 执行移动：先放置棋子，再执行所有吸引移动，最后检查胜负
+     * Execute move: first place the piece, then execute all attract moves, finally check win/lose.
+     * Выполняем ход: сначала размещаем фигуру, затем выполняем все ходы притяжения, наконец проверяем победу/поражение.
      */
     @Override
     public void doMove() throws GameOver {
@@ -248,6 +256,176 @@ public class AttractMove implements IPutMove {
         for (SimpleMove move : attractMoves) {
             move.doMove();
         }
+
+        // 检查游戏是否结束
+        // Check if the game is over.
+        // Проверяем, закончилась ли игра.
+        checkGameOver();
+    }
+
+    /**
+     * 检查游戏是否结束，并计算胜负
+     * Check if the game is over and determine the winner.
+     * Проверяем, закончилась ли игра, и определяем победителя.
+     *
+     * 规则：如果某个格子的所有对角线相邻位置（共4个）都有对手的棋子，
+     *       则形成包围的一方获得一分。拥有更多此类获胜阵型的玩家获胜。
+     * Rule: If all 4 diagonal neighbors of a square have opponent's pieces,
+     *       the player forming the surrounding scores one point.
+     *       The player with more such winning patterns wins.
+     * Правило: Если все 4 диагональных соседа клетки заняты фигурами противника,
+     *          игрок, создавший окружение, получает очко.
+     *          Побеждает игрок с большим количеством таких выигрышных комбинаций.
+     */
+    private void checkGameOver() throws GameOver {
+        Board board = target.getBoard();
+        List<Square> emptySquares = board.getEmptySquares();
+
+        // 只有当棋盘满了才判定胜负
+        // Only determine winner when board is full.
+        // Определяем победителя только когда доска заполнена.
+        if (!emptySquares.isEmpty()) {
+            return;
+        }
+
+        // 统计双方的获胜阵型数量
+        // Count winning patterns for both sides.
+        // Подсчитываем количество выигрышных комбинаций для обеих сторон.
+        int whiteScore = countWinningPatterns(board, PieceColor.WHITE);
+        int blackScore = countWinningPatterns(board, PieceColor.BLACK);
+
+        // 显示获胜弹窗
+        // Show winning dialog.
+        // Показываем диалог победы.
+        GameResult result;
+        String winnerMessage;
+
+        if (whiteScore > blackScore) {
+            result = GameResult.WHITE_WIN;
+            winnerMessage = "White wins!\nScore: White " + whiteScore + " - Black " + blackScore;
+        } else if (blackScore > whiteScore) {
+            result = GameResult.BLACK_WIN;
+            winnerMessage = "Black wins!\nScore: White " + whiteScore + " - Black " + blackScore;
+        } else {
+            result = GameResult.DRAWN;
+            winnerMessage = "Draw!\nScore: White " + whiteScore + " - Black " + blackScore;
+        }
+
+        // 显示结果弹窗
+        // Show result dialog.
+        // Показываем диалог результата.
+        showGameOverDialog(winnerMessage);
+
+        throw new GameOver(result);
+    }
+
+    /**
+     * 统计某一方的获胜阵型数量
+     * Count winning patterns for a given color.
+     * Подсчитываем количество выигрышных комбинаций для заданного цвета.
+     *
+     * 获胜阵型：某个格子的4个对角线邻居全部是该颜色的棋子
+     * Winning pattern: All 4 diagonal neighbors of a square are pieces of this color.
+     * Выигрышная комбинация: Все 4 диагональных соседа клетки — фигуры этого цвета.
+     *
+     * @param board - 棋盘 / the board / доска
+     * @param color - 要统计的颜色 / color to count / цвет для подсчета
+     * @return 获胜阵型数量 / number of winning patterns / количество выигрышных комбинаций
+     */
+    private int countWinningPatterns(Board board, PieceColor color) {
+        int count = 0;
+        int nV = board.nV;
+        int nH = board.nH;
+
+        // 遍历所有非边缘格子（因为边缘格子没有完整的4个对角线邻居）
+        // Iterate all non-edge squares (edge squares don't have all 4 diagonal neighbors).
+        // Перебираем все не-крайние клетки (крайние не имеют всех 4 диагональных соседей).
+        for (int v = 1; v < nV - 1; v++) {
+            for (int h = 1; h < nH - 1; h++) {
+                if (isDiagonalSurrounding(board, v, h, color)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    /**
+     * 检查某个格子是否被指定颜色的棋子对角线包围
+     * Check if a square is diagonally surrounded by pieces of the specified color.
+     * Проверяем, окружена ли клетка по диагонали фигурами заданного цвета.
+     *
+     * @param board - 棋盘 / the board / доска
+     * @param v     - 格子的垂直坐标 / vertical coordinate of the square / вертикальная координата клетки
+     * @param h     - 格子的水平坐标 / horizontal coordinate of the square / горизонтальная координата клетки
+     * @param color - 检查的颜色 / color to check / цвет для проверки
+     * @return 是否被包围 / whether surrounded / окружена ли
+     */
+    private boolean isDiagonalSurrounding(Board board, int v, int h, PieceColor color) {
+        // 检查4个对角线邻居: 左上、右上、左下、右下
+        // Check 4 diagonal neighbors: top-left, top-right, bottom-left, bottom-right.
+        // Проверяем 4 диагональных соседа: верхний-левый, верхний-правый, нижний-левый, нижний-правый.
+        int[][] diagonals = {
+            {v - 1, h - 1},  // 左上 / top-left / верхний-левый
+            {v + 1, h - 1},  // 右上 / top-right / верхний-правый
+            {v - 1, h + 1},  // 左下 / bottom-left / нижний-левый
+            {v + 1, h + 1}   // 右下 / bottom-right / нижний-правый
+        };
+
+        for (int[] pos : diagonals) {
+            int dv = pos[0];
+            int dh = pos[1];
+
+            // 检查是否在棋盘内
+            // Check if on board.
+            // Проверяем, находится ли на доске.
+            if (!board.onBoard(dv, dh)) {
+                return false;
+            }
+
+            Square neighbor = board.getSquare(dv, dh);
+
+            // 检查是否有棋子
+            // Check if there is a piece.
+            // Проверяем, есть ли фигура.
+            if (neighbor.isEmpty()) {
+                return false;
+            }
+
+            // 检查棋子颜色是否匹配
+            // Check if piece color matches.
+            // Проверяем, совпадает ли цвет фигуры.
+            if (neighbor.getPiece().getColor() != color) {
+                return false;
+            }
+        }
+
+        // 所有4个对角线邻居都是指定颜色的棋子
+        // All 4 diagonal neighbors are pieces of the specified color.
+        // Все 4 диагональных соседа — фигуры заданного цвета.
+        return true;
+    }
+
+    /**
+     * 显示游戏结束弹窗
+     * Show game over dialog.
+     * Показываем диалог окончания игры.
+     *
+     * @param message - 显示的消息 / message to display / сообщение для отображения
+     */
+    private void showGameOverDialog(String message) {
+        Display display = Display.getCurrent();
+        if (display == null) {
+            return;
+        }
+
+        Shell shell = new Shell(display);
+        MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
+        messageBox.setText("Game Over");
+        messageBox.setMessage(message);
+        messageBox.open();
+        shell.dispose();
     }
 
     /**
