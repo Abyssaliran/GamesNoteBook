@@ -273,34 +273,30 @@ public class AttractMove implements IPutMove {
      *    Iterate all squares except the outermost ring (edge squares don't have all 4 diagonal neighbors)
      *    Перебираем все клетки кроме внешнего кольца (крайние клетки не имеют всех 4 диагональных соседей)
      *
-     * 2. 对于每个中心格(v,h)，检查其左上、右上、左下、右下四个对角位置
-     *    For each center square (v,h), check its 4 diagonal positions: top-left, top-right, bottom-left, bottom-right
-     *    Для каждой центральной клетки (v,h) проверяем 4 диагональные позиции
+     * 2. 对于每个中心格(v,h)，检查该格子的4个对角位置是否全是对方棋子
+     *    For each center square (v,h), check if all 4 diagonal positions are opponent's pieces
+     *    Для каждой центральной клетки (v,h) проверяем, все ли 4 диагональные позиции заняты фигурами противника
      *
-     * 3. 如果4个位置全是白棋 → whiteScore + 1
-     *    If all 4 positions are white pieces → whiteScore + 1
-     *    Если все 4 позиции — белые фигуры → whiteScore + 1
+     * 3. 如果某个格子被白棋包围（4个对角全是白棋），白方得1分
+     *    If a square is surrounded by white pieces (all 4 diagonals are white), white scores 1 point
+     *    Если клетка окружена белыми (все 4 диагонали белые), белые получают 1 очко
      *
-     * 4. 如果4个位置全是黑棋 → blackScore + 1
-     *    If all 4 positions are black pieces → blackScore + 1
-     *    Если все 4 позиции — черные фигуры → blackScore + 1
+     * 4. 如果某个格子被黑棋包围（4个对角全是黑棋），黑方得1分
+     *    If a square is surrounded by black pieces (all 4 diagonals are black), black scores 1 point
+     *    Если клетка окружена черными (все 4 диагонали черные), черные получают 1 очко
      *
-     * 5. 中心格是谁的棋子或是否为空不影响计分
-     *    The center square's piece (or if empty) doesn't affect scoring
-     *    Фигура в центральной клетке (или её отсутствие) не влияет на подсчёт
-     *
-     * 6. whiteScore > blackScore → 白胜；blackScore > whiteScore → 黑胜；相等 → 游戏继续
+     * 5. whiteScore > blackScore → 白胜；blackScore > whiteScore → 黑胜；相等 → 游戏继续
      *    whiteScore > blackScore → White wins; blackScore > whiteScore → Black wins; equal → game continues
      *    whiteScore > blackScore → Белые побеждают; blackScore > whiteScore → Черные побеждают; равны → игра продолжается
      */
     private void checkGameOver() throws GameOver {
         Board board = target.getBoard();
 
-        // 计算双方的得分（包围阵型数量）
-        // Calculate scores for both sides (number of surrounding patterns)
-        // Вычисляем очки для обеих сторон (количество окружающих комбинаций)
-        int whiteScore = countSurroundingPatterns(board, PieceColor.WHITE);
-        int blackScore = countSurroundingPatterns(board, PieceColor.BLACK);
+        // 计算双方的得分
+        // Calculate scores for both sides
+        // Вычисляем очки для обеих сторон
+        int whiteScore = countSurroundedSquares(board, PieceColor.WHITE);
+        int blackScore = countSurroundedSquares(board, PieceColor.BLACK);
 
         // 判断胜负
         // Determine winner
@@ -327,19 +323,19 @@ public class AttractMove implements IPutMove {
     }
 
     /**
-     * 计算某一方的包围阵型数量
-     * Count surrounding patterns for a given color.
-     * Подсчитываем количество окружающих комбинаций для заданного цвета.
+     * 计算被某一方包围的格子数量（该方得分）
+     * Count squares surrounded by a given color (that color's score)
+     * Подсчитываем клетки, окруженные заданным цветом (очки этого цвета)
      *
-     * 包围阵型：某个格子的4个对角线邻居全部是该颜色的棋子（中心格可以是任意状态）
-     * Surrounding pattern: All 4 diagonal neighbors of a square are pieces of this color (center can be any state)
-     * Окружающая комбинация: Все 4 диагональных соседа клетки — фигуры этого цвета (центр может быть в любом состоянии)
+     * 规则：如果某个格子的4个对角位置全是该颜色的棋子，则该颜色得1分
+     * Rule: If all 4 diagonal positions of a square are pieces of this color, this color scores 1 point
+     * Правило: Если все 4 диагональные позиции клетки заняты фигурами этого цвета, этот цвет получает 1 очко
      *
      * @param board - 棋盘 / the board / доска
-     * @param color - 要统计的颜色 / color to count / цвет для подсчета
-     * @return 包围阵型数量 / number of surrounding patterns / количество окружающих комбинаций
+     * @param color - 包围方的颜色 / color of surrounding pieces / цвет окружающих фигур
+     * @return 被包围的格子数量（得分）/ number of surrounded squares (score) / количество окруженных клеток (очки)
      */
-    private int countSurroundingPatterns(Board board, PieceColor color) {
+    private int countSurroundedSquares(Board board, PieceColor color) {
         int count = 0;
         int nV = board.nV;
         int nH = board.nH;
@@ -349,41 +345,9 @@ public class AttractMove implements IPutMove {
         // Перебираем все не-крайние клетки (крайние не имеют всех 4 диагональных соседей)
         for (int v = 1; v < nV - 1; v++) {
             for (int h = 1; h < nH - 1; h++) {
-                // 检查4个对角线是否都是指定颜色的棋子（不管中心格是什么）
-                // Check if all 4 diagonals are pieces of specified color (regardless of center)
-                // Проверяем, все ли 4 диагонали заняты фигурами заданного цвета (независимо от центра)
-                if (isDiagonalSurrounding(board, v, h, color)) {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    /**
-     * 统计某一方的获胜阵型数量
-     * Count winning patterns for a given color.
-     * Подсчитываем количество выигрышных комбинаций для заданного цвета.
-     *
-     * 获胜阵型：某个格子的4个对角线邻居全部是该颜色的棋子
-     * Winning pattern: All 4 diagonal neighbors of a square are pieces of this color.
-     * Выигрышная комбинация: Все 4 диагональных соседа клетки — фигуры этого цвета.
-     *
-     * @param board - 棋盘 / the board / доска
-     * @param color - 要统计的颜色 / color to count / цвет для подсчета
-     * @return 获胜阵型数量 / number of winning patterns / количество выигрышных комбинаций
-     */
-    private int countWinningPatterns(Board board, PieceColor color) {
-        int count = 0;
-        int nV = board.nV;
-        int nH = board.nH;
-
-        // 遍历所有非边缘格子（因为边缘格子没有完整的4个对角线邻居）
-        // Iterate all non-edge squares (edge squares don't have all 4 diagonal neighbors).
-        // Перебираем все не-крайние клетки (крайние не имеют всех 4 диагональных соседей).
-        for (int v = 1; v < nV - 1; v++) {
-            for (int h = 1; h < nH - 1; h++) {
+                // 检查该格子的4个对角是否全是指定颜色的棋子
+                // Check if all 4 diagonals of this square are pieces of specified color
+                // Проверяем, все ли 4 диагонали этой клетки заняты фигурами заданного цвета
                 if (isDiagonalSurrounding(board, v, h, color)) {
                     count++;
                 }
