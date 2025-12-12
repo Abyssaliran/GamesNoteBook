@@ -438,11 +438,15 @@ public class AttractMove implements IPutMove {
                 // Check if all 4 diagonal neighbors of this piece are opponent's pieces
                 // Проверяем, все ли 4 диагональных соседа этой фигуры — фигуры противника
                 if (isDiagonalSurroundedByOpponent(board, v, h, opponentColor)) {
-                    // 使用棋盘坐标表示法（列用字母a-h，行用数字1-8）
-                    // Use chess coordinate notation (columns a-h, rows 1-8)
-                    // Используем шахматную нотацию (столбцы a-h, ряды 1-8)
+                    // 使用棋盘坐标表示法（列用字母a-h/a-p，行用数字1-8/1-16）
+                    // Use chess coordinate notation (columns a-h/a-p, rows 1-8/1-16)
+                    // Используем шахматную нотацию (столбцы a-h/a-p, ряды 1-8/1-16)
+                    //
+                    // 注意：棋盘显示是从下往上数行号（底部是1，顶部是8/16）
+                    // Note: Board displays row numbers from bottom to top (bottom is 1, top is 8/16)
+                    // Примечание: Доска отображает номера рядов снизу вверх (низ — 1, верх — 8/16)
                     char col = (char) ('a' + v);
-                    int row = h + 1;
+                    int row = nH - h;  // 转换为显示坐标 / convert to display coordinate / преобразуем в отображаемую координату
                     positions.add("" + col + row);
                 }
             }
