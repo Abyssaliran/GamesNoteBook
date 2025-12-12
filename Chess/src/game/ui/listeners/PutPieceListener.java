@@ -77,12 +77,9 @@ public class PutPieceListener implements IGameListner {
 			board.setBoardChanged();
 			boardPanel.redraw();
 			
-			//Game over prompt LIKE add 2020-10-01
-			int mesg = JOptionPane.showConfirmDialog(null, "You win！！！  "+"\n Do you want to play again ?", "Game Over",JOptionPane.YES_NO_OPTION);
-	        if(mesg == 0) {
-	        	cur_game.initBoardDefault();
-				board.startGame();
-	        }
+			// 游戏结束，不再弹出继续游戏的提示框
+			// Game over, no longer show "play again" prompt
+			// Игра окончена, больше не показываем запрос "играть снова"
 			return;
 		}
 		
