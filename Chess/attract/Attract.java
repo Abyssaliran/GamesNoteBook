@@ -8,25 +8,58 @@ import game.core.IPieceProvider;
 import game.players.IPlayer;
 import game.players.Vinni;
 
+/**
+ * 吸引棋游戏类
+ * Attract game class
+ * Класс игры Притяжение
+ *
+ * 支持多种棋盘尺寸：8x8（标准）和16x16（大棋盘）
+ * Supports multiple board sizes: 8x8 (standard) and 16x16 (large board)
+ * Поддерживает различные размеры доски: 8x8 (стандартный) и 16x16 (большая доска)
+ */
 public class Attract extends Game {
     private static final IPieceProvider pieceProvider = AttracPiece::new;
 
+    /**
+     * 当前棋盘尺寸
+     * Current board size
+     * Текущий размер доски
+     */
+    private int boardSize;
+
     static {
-		Game.addPlayer(Attract.class, IPlayer.HOMO_SAPIENCE);
-		Game.addPlayer(Attract.class, new Vinni(pieceProvider));
-		Game.addPlayer(Attract.class, new BearPlayer(pieceProvider));
-		Game.addPlayer(Attract.class, new PandaPlayer(pieceProvider));
+        Game.addPlayer(Attract.class, IPlayer.HOMO_SAPIENCE);
+        Game.addPlayer(Attract.class, new Vinni(pieceProvider));
+        Game.addPlayer(Attract.class, new BearPlayer(pieceProvider));
+        Game.addPlayer(Attract.class, new PandaPlayer(pieceProvider));
     }
 
+    /**
+     * 默认构造函数，使用8x8棋盘
+     * Default constructor, uses 8x8 board
+     * Конструктор по умолчанию, использует доску 8x8
+     */
     public Attract() {
+        this(8);
+    }
+
+    /**
+     * 带棋盘尺寸参数的构造函数
+     * Constructor with board size parameter
+     * Конструктор с параметром размера доски
+     *
+     * @param boardSize - 棋盘尺寸 / board size / размер доски
+     */
+    public Attract(int boardSize) {
+        this.boardSize = boardSize;
         initBoardDefault();
 
-		board.setWhitePlayer(IPlayer.HOMO_SAPIENCE);
+        board.setWhitePlayer(IPlayer.HOMO_SAPIENCE);
         board.setBlackPlayer(new Vinni(pieceProvider));
     }
 
     @Override
     public void initBoardDefault() {
-        super.initBoard(8, 8);
+        super.initBoard(boardSize, boardSize);
     }
 }

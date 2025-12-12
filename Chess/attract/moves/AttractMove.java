@@ -9,11 +9,6 @@ import game.core.PieceColor;
 import game.core.Square;
 import game.core.moves.IPutMove;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -308,67 +303,17 @@ public class AttractMove implements IPutMove {
             // 白方获胜
             // White wins
             // Белые побеждают
-            String message = buildWinMessage("White", whiteScore, blackScore, whitePositions, blackPositions);
-            showGameOverDialog(message);
             throw new GameOver(GameResult.WHITE_WIN);
         } else if (blackScore > whiteScore) {
             // 黑方获胜
             // Black wins
             // Черные побеждают
-            String message = buildWinMessage("Black", whiteScore, blackScore, whitePositions, blackPositions);
-            showGameOverDialog(message);
             throw new GameOver(GameResult.BLACK_WIN);
         }
 
         // 分数相等，游戏继续（不处理）
         // Scores are equal, game continues (no action)
         // Счёт равный, игра продолжается (без действий)
-    }
-
-    /**
-     * 构建获胜消息，包含具体得分位置
-     * Build win message with specific scoring positions
-     * Формирование сообщения о победе с конкретными позициями очков
-     *
-     * @param winner         - 获胜方 / winner / победитель
-     * @param whiteScore     - 白方得分 / white score / очки белых
-     * @param blackScore     - 黑方得分 / black score / очки черных
-     * @param whitePositions - 白方获胜棋子位置 / white winning piece positions / позиции выигрышных белых фигур
-     * @param blackPositions - 黑方获胜棋子位置 / black winning piece positions / позиции выигрышных черных фигур
-     * @return 格式化的消息 / formatted message / форматированное сообщение
-     */
-    private String buildWinMessage(String winner, int whiteScore, int blackScore,
-                                   List<String> whitePositions, List<String> blackPositions) {
-        StringBuilder sb = new StringBuilder();
-
-        // 标题
-        // Title
-        // Заголовок
-        sb.append(winner).append(" wins!\n\n");
-
-        // 总分
-        // Total score
-        // Общий счёт
-        sb.append("Score: White ").append(whiteScore).append(" - Black ").append(blackScore).append("\n\n");
-
-        // 白方获胜棋子位置
-        // White winning piece positions
-        // Позиции выигрышных белых фигур
-        if (!whitePositions.isEmpty()) {
-            sb.append("White winning pieces at: ");
-            sb.append(String.join(", ", whitePositions));
-            sb.append("\n");
-        }
-
-        // 黑方获胜棋子位置
-        // Black winning piece positions
-        // Позиции выигрышных черных фигур
-        if (!blackPositions.isEmpty()) {
-            sb.append("Black winning pieces at: ");
-            sb.append(String.join(", ", blackPositions));
-        }
-
-        return sb.toString();
     }
 
     /**
@@ -484,27 +429,6 @@ public class AttractMove implements IPutMove {
         // All 4 diagonal neighbors are opponent's pieces
         // Все 4 диагональных соседа — фигуры противника
         return true;
-    }
-
-    /**
-     * 显示游戏结束弹窗
-     * Show game over dialog.
-     * Показываем диалог окончания игры.
-     *
-     * @param message - 显示的消息 / message to display / сообщение для отображения
-     */
-    private void showGameOverDialog(String message) {
-        Display display = Display.getCurrent();
-        if (display == null) {
-            return;
-        }
-
-        Shell shell = new Shell(display);
-        MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
-        messageBox.setText("Game Over");
-        messageBox.setMessage(message);
-        messageBox.open();
-        shell.dispose();
     }
 
     /**
