@@ -268,55 +268,103 @@ public class AttractMove implements IPutMove {
      * Check if the game is over and determine the winner.
      * Проверяем, закончилась ли игра, и определяем победителя.
      *
-     * 规则：如果某个格子的所有对角线相邻位置（共4个）都有对手的棋子，
-     *       则形成包围的一方获得一分。拥有更多此类获胜阵型的玩家获胜。
-     * Rule: If all 4 diagonal neighbors of a square have opponent's pieces,
-     *       the player forming the surrounding scores one point.
-     *       The player with more such winning patterns wins.
-     * Правило: Если все 4 диагональных соседа клетки заняты фигурами противника,
-     *          игрок, создавший окружение, получает очко.
-     *          Побеждает игрок с большим количеством таких выигрышных комбинаций.
+     * 规则：每下一个棋就检查是否有己方棋子被对手的4个对角线邻居包围。
+     *       如果某个格子的所有4个对角线位置都有对手的棋子，则对手获胜。
+     * Rule: Check after each move if any of our pieces is surrounded by opponent's 4 diagonal neighbors.
+     *       If all 4 diagonal positions of a square have opponent's pieces, the opponent wins.
+     * Правило: После каждого хода проверяем, окружена ли какая-либо наша фигура 4 диагональными соседями противника.
+     *          Если все 4 диагональных позиции клетки заняты фигурами противника, противник побеждает.
      */
     private void checkGameOver() throws GameOver {
         Board board = target.getBoard();
+
+        // 获取当前下棋方的颜色（刚刚下的棋的颜色）
+        // Get the color of the current player (the piece just placed)
+        // Получаем цвет текущего игрока (только что поставленной фигуры)
+        PieceColor currentColor = piece.getColor();
+
+        // 对手的颜色
+        // Opponent's color
+        // Цвет противника
+        PieceColor opponentColor = (currentColor == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
+
+        // 检查是否有对手的棋子被当前玩家的4个对角线邻居包围
+        // Check if any opponent's piece is surrounded by current player's 4 diagonal neighbors
+        // Проверяем, окружена ли какая-либо фигура противника 4 диагональными соседями текущего игрока
+        if (checkAnySurrounded(board, currentColor)) {
+            // 当前玩家成功包围了对手的一个棋子，当前玩家获胜
+            // Current player successfully surrounded an opponent's piece, current player wins
+            // Текущий игрок успешно окружил фигуру противника, текущий игрок побеждает
+            GameResult result = (currentColor == PieceColor.WHITE) ? GameResult.WHITE_WIN : GameResult.BLACK_WIN;
+            String winnerName = (currentColor == PieceColor.WHITE) ? "White" : "Black";
+            showGameOverDialog(winnerName + " wins by surrounding!");
+            throw new GameOver(result);
+        }
+
+        // 检查是否有当前玩家的棋子被对手的4个对角线邻居包围
+        // Check if any current player's piece is surrounded by opponent's 4 diagonal neighbors
+        // Проверяем, окружена ли какая-либо фигура текущего игрока 4 диагональными соседями противника
+        if (checkAnySurrounded(board, opponentColor)) {
+            // 对手成功包围了当前玩家的一个棋子，对手获胜
+            // Opponent successfully surrounded a current player's piece, opponent wins
+            // Противник успешно окружил фигуру текущего игрока, противник побеждает
+            GameResult result = (opponentColor == PieceColor.WHITE) ? GameResult.WHITE_WIN : GameResult.BLACK_WIN;
+            String winnerName = (opponentColor == PieceColor.WHITE) ? "White" : "Black";
+            showGameOverDialog(winnerName + " wins by surrounding!");
+            throw new GameOver(result);
+        }
+
+        // 检查棋盘是否已满（平局）
+        // Check if board is full (draw)
+        // Проверяем, заполнена ли доска (ничья)
         List<Square> emptySquares = board.getEmptySquares();
-
-        // 只有当棋盘满了才判定胜负
-        // Only determine winner when board is full.
-        // Определяем победителя только когда доска заполнена.
-        if (!emptySquares.isEmpty()) {
-            return;
+        if (emptySquares.isEmpty()) {
+            showGameOverDialog("Draw! Board is full.");
+            throw new GameOver(GameResult.DRAWN);
         }
+    }
 
-        // 统计双方的获胜阵型数量
-        // Count winning patterns for both sides.
-        // Подсчитываем количество выигрышных комбинаций для обеих сторон.
-        int whiteScore = countWinningPatterns(board, PieceColor.WHITE);
-        int blackScore = countWinningPatterns(board, PieceColor.BLACK);
+    /**
+     * 检查是否有任何棋子被指定颜色的棋子用4个对角线邻居包围
+     * Check if any piece is surrounded by 4 diagonal neighbors of the specified color
+     * Проверяем, окружена ли какая-либо фигура 4 диагональными соседями заданного цвета
+     *
+     * @param board          - 棋盘 / the board / доска
+     * @param surroundingColor - 包围方的颜色 / color of surrounding pieces / цвет окружающих фигур
+     * @return 是否存在被包围的棋子 / whether any piece is surrounded / есть ли окруженная фигура
+     */
+    private boolean checkAnySurrounded(Board board, PieceColor surroundingColor) {
+        int nV = board.nV;
+        int nH = board.nH;
 
-        // 显示获胜弹窗
-        // Show winning dialog.
-        // Показываем диалог победы.
-        GameResult result;
-        String winnerMessage;
+        // 遍历所有非边缘格子（边缘格子没有完整的4个对角线邻居）
+        // Iterate all non-edge squares (edge squares don't have all 4 diagonal neighbors)
+        // Перебираем все не-крайние клетки (крайние не имеют всех 4 диагональных соседей)
+        for (int v = 1; v < nV - 1; v++) {
+            for (int h = 1; h < nH - 1; h++) {
+                Square centerSquare = board.getSquare(v, h);
 
-        if (whiteScore > blackScore) {
-            result = GameResult.WHITE_WIN;
-            winnerMessage = "White wins!\nScore: White " + whiteScore + " - Black " + blackScore;
-        } else if (blackScore > whiteScore) {
-            result = GameResult.BLACK_WIN;
-            winnerMessage = "Black wins!\nScore: White " + whiteScore + " - Black " + blackScore;
-        } else {
-            result = GameResult.DRAWN;
-            winnerMessage = "Draw!\nScore: White " + whiteScore + " - Black " + blackScore;
+                // 检查中心格子是否有棋子（被包围的棋子）
+                // Check if center square has a piece (the surrounded piece)
+                // Проверяем, есть ли фигура в центральной клетке (окружаемая фигура)
+                if (!centerSquare.isEmpty()) {
+                    Piece centerPiece = centerSquare.getPiece();
+
+                    // 被包围的棋子必须是对手的颜色
+                    // The surrounded piece must be opponent's color
+                    // Окружаемая фигура должна быть цвета противника
+                    if (centerPiece.getColor() != surroundingColor) {
+                        // 检查4个对角线是否都是surroundingColor的棋子
+                        // Check if all 4 diagonals are pieces of surroundingColor
+                        // Проверяем, все ли 4 диагонали заняты фигурами surroundingColor
+                        if (isDiagonalSurrounding(board, v, h, surroundingColor)) {
+                            return true;
+                        }
+                    }
+                }
+            }
         }
-
-        // 显示结果弹窗
-        // Show result dialog.
-        // Показываем диалог результата.
-        showGameOverDialog(winnerMessage);
-
-        throw new GameOver(result);
+        return false;
     }
 
     /**
