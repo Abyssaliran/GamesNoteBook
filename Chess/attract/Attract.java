@@ -58,8 +58,21 @@ public class Attract extends Game {
         board.setBlackPlayer(new Vinni(pieceProvider));
     }
 
+    /**
+     * 初始化默认棋盘
+     * Initialize default board
+     * Инициализация доски по умолчанию
+     *
+     * 注意：如果棋盘已存在，使用当前棋盘尺寸；否则使用构造时指定的尺寸
+     * Note: If board exists, use current board size; otherwise use size specified in constructor
+     * Примечание: Если доска существует, используем текущий размер; иначе используем размер из конструктора
+     */
     @Override
     public void initBoardDefault() {
-        super.initBoard(boardSize, boardSize);
+        // 如果棋盘已经存在，使用当前棋盘的尺寸（支持resizeBoard后的Start按钮）
+        // If board already exists, use current board size (support Start button after resizeBoard)
+        // Если доска уже существует, используем текущий размер (поддержка кнопки Старт после resizeBoard)
+        int size = (board != null) ? board.nV : boardSize;
+        super.initBoard(size, size);
     }
 }
