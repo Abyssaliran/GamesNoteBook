@@ -1,10 +1,10 @@
 package attract.ui;
 
 import attract.pieces.AttracPiece;
+import attract.ui.images.AttractImages;
 import game.core.*;
 import game.players.IPlayer;
 import game.ui.AsiaBoard;
-import game.ui.images.GameImages;
 import game.ui.listeners.PutPieceListener;
 import org.eclipse.swt.graphics.Image;
 
@@ -31,6 +31,6 @@ public class AttractBoardPanel extends AsiaBoard implements IPieceProvider {
         if (image != null)
             return image;
 
-        return color == WHITE ? GameImages.stoneW : GameImages.stoneB;
+        return color == WHITE ? AttractImages.pandaImage : AttractImages.bearImage;
     }
 }
