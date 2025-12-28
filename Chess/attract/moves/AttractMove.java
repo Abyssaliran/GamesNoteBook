@@ -269,21 +269,21 @@ public class AttractMove implements IPutMove {
      * Проверяем, закончилась ли игра, и определяем победителя.
      *
      * 核心规则 / Core rules / Основные правила:
-     * 1. 遍历棋盘上除去最外圈的所有格子（边缘格子没有完整的4个对角邻居）
-     *    Iterate all squares except the outermost ring (edge squares don't have all 4 diagonal neighbors)
-     *    Перебираем все клетки кроме внешнего кольца (крайние клетки не имеют всех 4 диагональных соседей)
+     * 1. 遍历棋盘上所有有棋子的格子
+     *    Iterate all squares that have pieces on them
+     *    Перебираем все клетки, на которых есть фигуры
      *
-     * 2. 对于每个中心格(v,h)，检查该格子的4个对角位置是否全是对方棋子
-     *    For each center square (v,h), check if all 4 diagonal positions are opponent's pieces
-     *    Для каждой центральной клетки (v,h) проверяем, все ли 4 диагональные позиции заняты фигурами противника
+     * 2. 对于每个有棋子的格子，检查该棋子的4个对角邻居是否全是对方棋子
+     *    For each piece, check if all 4 diagonal neighbors are opponent's pieces
+     *    Для каждой фигуры проверяем, все ли 4 диагональных соседа — фигуры противника
      *
-     * 3. 如果某个格子被白棋包围（4个对角全是白棋），白方得1分
-     *    If a square is surrounded by white pieces (all 4 diagonals are white), white scores 1 point
-     *    Если клетка окружена белыми (все 4 диагонали белые), белые получают 1 очко
+     * 3. 如果白棋的4个对角全是黑棋，白方得1分（白棋形成"获胜棋子"）
+     *    If a white piece has all 4 diagonals as black pieces, white scores 1 point (white piece is a "winning piece")
+     *    Если у белой фигуры все 4 диагонали заняты черными, белые получают 1 очко (белая "выигрышная фигура")
      *
-     * 4. 如果某个格子被黑棋包围（4个对角全是黑棋），黑方得1分
-     *    If a square is surrounded by black pieces (all 4 diagonals are black), black scores 1 point
-     *    Если клетка окружена черными (все 4 диагонали черные), черные получают 1 очко
+     * 4. 如果黑棋的4个对角全是白棋，黑方得1分（黑棋形成"获胜棋子"）
+     *    If a black piece has all 4 diagonals as white pieces, black scores 1 point (black piece is a "winning piece")
+     *    Если у черной фигуры все 4 диагонали заняты белыми, черные получают 1 очко (черная "выигрышная фигура")
      *
      * 5. whiteScore > blackScore → 白胜；blackScore > whiteScore → 黑胜；相等 → 游戏继续
      *    whiteScore > blackScore → White wins; blackScore > whiteScore → Black wins; equal → game continues
@@ -292,11 +292,11 @@ public class AttractMove implements IPutMove {
     private void checkGameOver() throws GameOver {
         Board board = target.getBoard();
 
-        // 获取双方的得分位置列表
-        // Get scoring position lists for both sides
-        // Получаем списки позиций очков для обеих сторон
-        List<String> whitePositions = getSurroundedSquarePositions(board, PieceColor.WHITE);
-        List<String> blackPositions = getSurroundedSquarePositions(board, PieceColor.BLACK);
+        // 获取双方的获胜棋子位置列表
+        // Get winning piece position lists for both sides
+        // Получаем списки позиций выигрышных фигур для обеих сторон
+        List<String> whitePositions = getWinningPiecePositions(board, PieceColor.WHITE);
+        List<String> blackPositions = getWinningPiecePositions(board, PieceColor.BLACK);
 
         int whiteScore = whitePositions.size();
         int blackScore = blackPositions.size();
@@ -333,8 +333,8 @@ public class AttractMove implements IPutMove {
      * @param winner         - 获胜方 / winner / победитель
      * @param whiteScore     - 白方得分 / white score / очки белых
      * @param blackScore     - 黑方得分 / black score / очки черных
-     * @param whitePositions - 白方得分位置 / white scoring positions / позиции очков белых
-     * @param blackPositions - 黑方得分位置 / black scoring positions / позиции очков черных
+     * @param whitePositions - 白方获胜棋子位置 / white winning piece positions / позиции выигрышных белых фигур
+     * @param blackPositions - 黑方获胜棋子位置 / black winning piece positions / позиции выигрышных черных фигур
      * @return 格式化的消息 / formatted message / форматированное сообщение
      */
     private String buildWinMessage(String winner, int whiteScore, int blackScore,
@@ -351,20 +351,20 @@ public class AttractMove implements IPutMove {
         // Общий счёт
         sb.append("Score: White ").append(whiteScore).append(" - Black ").append(blackScore).append("\n\n");
 
-        // 白方得分位置
-        // White scoring positions
-        // Позиции очков белых
+        // 白方获胜棋子位置
+        // White winning piece positions
+        // Позиции выигрышных белых фигур
         if (!whitePositions.isEmpty()) {
-            sb.append("White surrounds at: ");
+            sb.append("White winning pieces at: ");
             sb.append(String.join(", ", whitePositions));
             sb.append("\n");
         }
 
-        // 黑方得分位置
-        // Black scoring positions
-        // Позиции очков черных
+        // 黑方获胜棋子位置
+        // Black winning piece positions
+        // Позиции выигрышных черных фигур
         if (!blackPositions.isEmpty()) {
-            sb.append("Black surrounds at: ");
+            sb.append("Black winning pieces at: ");
             sb.append(String.join(", ", blackPositions));
         }
 
@@ -372,25 +372,51 @@ public class AttractMove implements IPutMove {
     }
 
     /**
-     * 获取被某一方包围的格子位置列表
-     * Get list of positions surrounded by a given color
-     * Получение списка позиций, окруженных заданным цветом
+     * 获取某一方的获胜棋子位置列表
+     * Get list of winning piece positions for a given color
+     * Получение списка позиций выигрышных фигур для заданного цвета
+     *
+     * 获胜棋子定义：一个棋子的4个对角邻居全是对方棋子
+     * Winning piece definition: A piece whose all 4 diagonal neighbors are opponent's pieces
+     * Определение выигрышной фигуры: фигура, у которой все 4 диагональных соседа — фигуры противника
      *
      * @param board - 棋盘 / the board / доска
-     * @param color - 包围方的颜色 / color of surrounding pieces / цвет окружающих фигур
-     * @return 被包围的格子位置列表 / list of surrounded positions / список окруженных позиций
+     * @param color - 要检查的棋子颜色 / color of pieces to check / цвет проверяемых фигур
+     * @return 获胜棋子位置列表 / list of winning piece positions / список позиций выигрышных фигур
      */
-    private List<String> getSurroundedSquarePositions(Board board, PieceColor color) {
+    private List<String> getWinningPiecePositions(Board board, PieceColor color) {
         List<String> positions = new ArrayList<>();
         int nV = board.nV;
         int nH = board.nH;
 
-        // 遍历所有非边缘格子
-        // Iterate all non-edge squares
-        // Перебираем все не-крайние клетки
+        // 获取对方颜色
+        // Get opponent color
+        // Получаем цвет противника
+        PieceColor opponentColor = (color == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
+
+        // 遍历所有非边缘格子（边缘格子的棋子不可能有完整的4个对角邻居）
+        // Iterate all non-edge squares (pieces on edge can't have all 4 diagonal neighbors)
+        // Перебираем все не-крайние клетки (фигуры на краю не могут иметь все 4 диагональных соседа)
         for (int v = 1; v < nV - 1; v++) {
             for (int h = 1; h < nH - 1; h++) {
-                if (isDiagonalSurrounding(board, v, h, color)) {
+                Square square = board.getSquare(v, h);
+
+                // 检查该格子是否有指定颜色的棋子
+                // Check if this square has a piece of the specified color
+                // Проверяем, есть ли на этой клетке фигура указанного цвета
+                if (square.isEmpty()) {
+                    continue;
+                }
+
+                Piece piece = square.getPiece();
+                if (piece.getColor() != color) {
+                    continue;
+                }
+
+                // 检查该棋子的4个对角邻居是否全是对方棋子
+                // Check if all 4 diagonal neighbors of this piece are opponent's pieces
+                // Проверяем, все ли 4 диагональных соседа этой фигуры — фигуры противника
+                if (isDiagonalSurroundedByOpponent(board, v, h, opponentColor)) {
                     // 使用棋盘坐标表示法（列用字母a-h，行用数字1-8）
                     // Use chess coordinate notation (columns a-h, rows 1-8)
                     // Используем шахматную нотацию (столбцы a-h, ряды 1-8)
@@ -405,37 +431,20 @@ public class AttractMove implements IPutMove {
     }
 
     /**
-     * 计算被某一方包围的格子数量（该方得分）
-     * Count squares surrounded by a given color (that color's score)
-     * Подсчитываем клетки, окруженные заданным цветом (очки этого цвета)
+     * 检查某个格子的棋子是否被对方棋子对角线包围（4个对角邻居全是对方棋子）
+     * Check if a piece at given position is diagonally surrounded by opponent's pieces
+     * Проверяем, окружена ли фигура на данной позиции по диагонали фигурами противника
      *
-     * 规则：如果某个格子的4个对角位置全是该颜色的棋子，则该颜色得1分
-     * Rule: If all 4 diagonal positions of a square are pieces of this color, this color scores 1 point
-     * Правило: Если все 4 диагональные позиции клетки заняты фигурами этого цвета, этот цвет получает 1 очко
-     *
-     * @param board - 棋盘 / the board / доска
-     * @param color - 包围方的颜色 / color of surrounding pieces / цвет окружающих фигур
-     * @return 被包围的格子数量（得分）/ number of surrounded squares (score) / количество окруженных клеток (очки)
+     * @param board         - 棋盘 / the board / доска
+     * @param v             - 格子的垂直坐标 / vertical coordinate / вертикальная координата
+     * @param h             - 格子的水平坐标 / horizontal coordinate / горизонтальная координата
+     * @param opponentColor - 对方颜色 / opponent's color / цвет противника
+     * @return 是否被对方包围 / whether surrounded by opponent / окружена ли противником
      */
-    private int countSurroundedSquares(Board board, PieceColor color) {
-        return getSurroundedSquarePositions(board, color).size();
-    }
-
-    /**
-     * 检查某个格子是否被指定颜色的棋子对角线包围
-     * Check if a square is diagonally surrounded by pieces of the specified color.
-     * Проверяем, окружена ли клетка по диагонали фигурами заданного цвета.
-     *
-     * @param board - 棋盘 / the board / доска
-     * @param v     - 格子的垂直坐标 / vertical coordinate of the square / вертикальная координата клетки
-     * @param h     - 格子的水平坐标 / horizontal coordinate of the square / горизонтальная координата клетки
-     * @param color - 检查的颜色 / color to check / цвет для проверки
-     * @return 是否被包围 / whether surrounded / окружена ли
-     */
-    private boolean isDiagonalSurrounding(Board board, int v, int h, PieceColor color) {
+    private boolean isDiagonalSurroundedByOpponent(Board board, int v, int h, PieceColor opponentColor) {
         // 检查4个对角线邻居: 左上、右上、左下、右下
-        // Check 4 diagonal neighbors: top-left, top-right, bottom-left, bottom-right.
-        // Проверяем 4 диагональных соседа: верхний-левый, верхний-правый, нижний-левый, нижний-правый.
+        // Check 4 diagonal neighbors: top-left, top-right, bottom-left, bottom-right
+        // Проверяем 4 диагональных соседа: верхний-левый, верхний-правый, нижний-левый, нижний-правый
         int[][] diagonals = {
             {v - 1, h - 1},  // 左上 / top-left / верхний-левый
             {v + 1, h - 1},  // 右上 / top-right / верхний-правый
@@ -448,8 +457,8 @@ public class AttractMove implements IPutMove {
             int dh = pos[1];
 
             // 检查是否在棋盘内
-            // Check if on board.
-            // Проверяем, находится ли на доске.
+            // Check if on board
+            // Проверяем, находится ли на доске
             if (!board.onBoard(dv, dh)) {
                 return false;
             }
@@ -457,23 +466,23 @@ public class AttractMove implements IPutMove {
             Square neighbor = board.getSquare(dv, dh);
 
             // 检查是否有棋子
-            // Check if there is a piece.
-            // Проверяем, есть ли фигура.
+            // Check if there is a piece
+            // Проверяем, есть ли фигура
             if (neighbor.isEmpty()) {
                 return false;
             }
 
-            // 检查棋子颜色是否匹配
-            // Check if piece color matches.
-            // Проверяем, совпадает ли цвет фигуры.
-            if (neighbor.getPiece().getColor() != color) {
+            // 检查棋子颜色是否是对方颜色
+            // Check if piece color is opponent's color
+            // Проверяем, является ли цвет фигуры цветом противника
+            if (neighbor.getPiece().getColor() != opponentColor) {
                 return false;
             }
         }
 
-        // 所有4个对角线邻居都是指定颜色的棋子
-        // All 4 diagonal neighbors are pieces of the specified color.
-        // Все 4 диагональных соседа — фигуры заданного цвета.
+        // 所有4个对角线邻居都是对方棋子
+        // All 4 diagonal neighbors are opponent's pieces
+        // Все 4 диагональных соседа — фигуры противника
         return true;
     }
 
