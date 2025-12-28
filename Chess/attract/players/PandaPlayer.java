@@ -60,9 +60,9 @@ public class PandaPlayer extends AttractPlayer {
      * Calculate move weight - evaluate move quality using Minimax strategy
      * Вычисление веса хода - оценка качества хода с помощью стратегии Минимакс
      *
-     * 获胜规则：遍历每个非边缘格子，如果该格子的4个对角都是对方棋子，则对方得1分
-     * Winning rule: For each non-edge square, if all 4 diagonals are opponent's pieces, opponent scores 1 point
-     * Правило победы: Для каждой не-крайней клетки, если все 4 диагонали — фигуры противника, противник получает 1 очко
+     * 获胜规则：一个棋子的4个对角邻居全是对方棋子时，该棋子为"获胜棋子"，拥有者得1分
+     * Winning rule: A piece whose all 4 diagonal neighbors are opponent's pieces is a "winning piece", owner scores 1 point
+     * Правило победы: Фигура, у которой все 4 диагональных соседа — фигуры противника, является "выигрышной", владелец получает 1 очко
      *
      * @param move - 要评估的移动 / move to evaluate / ход для оценки
      * @return 移动权重 / move weight / вес хода
@@ -88,15 +88,15 @@ public class PandaPlayer extends AttractPlayer {
         PieceColor myColor = PieceColor.BLACK;
         PieceColor opponentColor = PieceColor.WHITE;
 
-        // 策略1: 最大化己方得分
-        // Strategy 1: Maximize my score
-        // Стратегия 1: Максимизация своих очков
-        score += evaluateOffensiveScore(target, board, myColor);
+        // 策略1: 让己方棋子被对方包围形成"获胜棋子"
+        // Strategy 1: Make my pieces surrounded by opponent to form "winning pieces"
+        // Стратегия 1: Сделать свои фигуры окружёнными противником для формирования "выигрышных фигур"
+        score += evaluateWinningPieceScore(target, board, myColor, opponentColor);
 
-        // 策略2: 最小化对手得分（防守）
-        // Strategy 2: Minimize opponent's score (defense)
-        // Стратегия 2: Минимизация очков противника (защита)
-        score += evaluateDefensiveScore(target, board, opponentColor);
+        // 策略2: 避免包围对方棋子（不让对方形成获胜棋子）
+        // Strategy 2: Avoid surrounding opponent's pieces (prevent opponent from forming winning pieces)
+        // Стратегия 2: Избегать окружения фигур противника (не давать противнику формировать выигрышные фигуры)
+        score += evaluateBlockingScore(target, board, myColor, opponentColor);
 
         // 策略3: 位置策略
         // Strategy 3: Position strategy
@@ -107,62 +107,91 @@ public class PandaPlayer extends AttractPlayer {
     }
 
     /**
-     * 评估进攻得分 - 形成包围阵型
-     * Evaluate offensive score - forming surrounding patterns
-     * Оценка атакующих очков - формирование окружающих комбинаций
+     * 评估己方棋子形成"获胜棋子"的得分
+     * Evaluate score for my pieces becoming "winning pieces"
+     * Оценка очков за формирование "выигрышных фигур"
      *
-     * @param target  - 目标格子 / target square / целевая клетка
-     * @param board   - 棋盘 / board / доска
-     * @param myColor - 己方颜色 / my color / мой цвет
+     * 规则：如果己方棋子的4个对角邻居全是对方棋子，该棋子成为"获胜棋子"，己方得1分
+     * Rule: If all 4 diagonal neighbors of my piece are opponent's pieces, it becomes a "winning piece", I score 1 point
+     * Правило: Если все 4 диагональных соседа моей фигуры — фигуры противника, она становится "выигрышной", я получаю 1 очко
+     *
+     * @param target        - 目标格子 / target square / целевая клетка
+     * @param board         - 棋盘 / board / доска
+     * @param myColor       - 己方颜色 / my color / мой цвет
+     * @param opponentColor - 对方颜色 / opponent color / цвет противника
      * @return 进攻得分 / offensive score / атакующие очки
      */
-    private int evaluateOffensiveScore(Square target, Board board, PieceColor myColor) {
+    private int evaluateWinningPieceScore(Square target, Board board, PieceColor myColor, PieceColor opponentColor) {
         int score = 0;
         int[][] directions = {{-1, -1}, {1, -1}, {-1, 1}, {1, 1}};
 
-        // 检查该位置能参与哪些包围阵型
-        // Check which surrounding patterns this position can participate in
-        // Проверяем, в каких окружающих комбинациях может участвовать эта позиция
-        for (int[] dir : directions) {
-            int centerV = target.v + dir[0];
-            int centerH = target.h + dir[1];
+        // 检查现有己方棋子能否因这一步而被对方完全包围（形成获胜棋子）
+        // Check if existing my pieces can be fully surrounded by opponent due to this move
+        // Проверяем, могут ли мои существующие фигуры быть полностью окружены противником благодаря этому ходу
+        for (int v = 1; v < board.nV - 1; v++) {
+            for (int h = 1; h < board.nH - 1; h++) {
+                Square sq = board.getSquare(v, h);
+                // 只检查己方棋子
+                // Only check my pieces
+                // Проверяем только свои фигуры
+                if (!sq.isEmpty() && sq.getPiece().getColor() == myColor) {
+                    int opponentCount = 0;
+                    boolean targetIsNeighbor = false;
 
-            if (centerV >= 1 && centerV < board.nV - 1 &&
-                    centerH >= 1 && centerH < board.nH - 1) {
+                    // 检查4个对角邻居
+                    // Check 4 diagonal neighbors
+                    // Проверяем 4 диагональных соседа
+                    for (int[] dir : directions) {
+                        int checkV = v + dir[0];
+                        int checkH = h + dir[1];
 
-                int myPieceCount = 0;
-                int emptyCount = 0;
-
-                for (int[] checkDir : directions) {
-                    int checkV = centerV + checkDir[0];
-                    int checkH = centerH + checkDir[1];
-
-                    if (board.onBoard(checkV, checkH)) {
-                        if (checkV == target.v && checkH == target.h) {
-                            myPieceCount++;
-                        } else {
-                            Square sq = board.getSquare(checkV, checkH);
-                            if (sq.isEmpty()) {
-                                emptyCount++;
-                            } else if (sq.getPiece().getColor() == myColor) {
-                                myPieceCount++;
+                        if (board.onBoard(checkV, checkH)) {
+                            if (checkV == target.v && checkH == target.h) {
+                                // 目标位置将放置己方棋子，不是对方棋子
+                                // Target position will have my piece, not opponent's
+                                // Целевая позиция будет занята моей фигурой, не противника
+                                targetIsNeighbor = true;
+                            } else {
+                                Square neighbor = board.getSquare(checkV, checkH);
+                                if (!neighbor.isEmpty() && neighbor.getPiece().getColor() == opponentColor) {
+                                    opponentCount++;
+                                }
                             }
                         }
                     }
-                }
 
-                // 根据己方棋子数量给分（Minimax思想：最大化己方优势）
-                // Score based on my piece count (Minimax: maximize own advantage)
-                // Оцениваем на основе количества своих фигур (Минимакс: максимизация своего преимущества)
-                if (myPieceCount == 4) {
-                    score += 2000;  // 完成包围 / complete surrounding / завершение окружения
-                } else if (myPieceCount == 3 && emptyCount == 1) {
-                    score += 200;   // 差一步 / one step away / один шаг
-                } else if (myPieceCount == 3) {
-                    score += 150;
-                } else if (myPieceCount == 2) {
-                    score += 30;
+                    // 如果4个对角都是对方棋子，形成获胜棋子
+                    // If all 4 diagonals are opponent's pieces, forming winning piece
+                    // Если все 4 диагонали — фигуры противника, формируется выигрышная фигура
+                    if (opponentCount == 4) {
+                        score += 2000;  // 该己方棋子已经是获胜棋子
+                    } else if (opponentCount == 3 && !targetIsNeighbor) {
+                        score += 200;   // 差一步成为获胜棋子
+                    }
                 }
+            }
+        }
+
+        // 如果这步棋放置后，该棋子本身能被对方包围
+        // If after placing this piece, it can be surrounded by opponent
+        // Если после размещения этой фигуры она может быть окружена противником
+        if (target.v >= 1 && target.v < board.nV - 1 &&
+                target.h >= 1 && target.h < board.nH - 1) {
+            int opponentCount = 0;
+            for (int[] dir : directions) {
+                int checkV = target.v + dir[0];
+                int checkH = target.h + dir[1];
+                if (board.onBoard(checkV, checkH)) {
+                    Square neighbor = board.getSquare(checkV, checkH);
+                    if (!neighbor.isEmpty() && neighbor.getPiece().getColor() == opponentColor) {
+                        opponentCount++;
+                    }
+                }
+            }
+            if (opponentCount == 4) {
+                score += 2500;  // 直接形成获胜棋子！
+            } else if (opponentCount == 3) {
+                score += 150;   // 潜在获胜棋子
             }
         }
 
@@ -170,52 +199,65 @@ public class PandaPlayer extends AttractPlayer {
     }
 
     /**
-     * 评估防守得分 - 阻止对手形成包围阵型
-     * Evaluate defensive score - block opponent from forming surrounding patterns
-     * Оценка защитных очков - блокирование окружающих комбинаций противника
+     * 评估阻止对方形成"获胜棋子"的得分
+     * Evaluate score for blocking opponent's "winning pieces"
+     * Оценка очков за блокирование "выигрышных фигур" противника
+     *
+     * 规则：如果对方棋子的4个对角邻居全是己方棋子，则对方形成获胜棋子，需要避免
+     * Rule: If all 4 diagonal neighbors of opponent's piece are my pieces, opponent forms winning piece, need to avoid
+     * Правило: Если все 4 диагональных соседа фигуры противника — мои фигуры, противник формирует выигрышную фигуру, нужно избегать
      *
      * @param target        - 目标格子 / target square / целевая клетка
      * @param board         - 棋盘 / board / доска
-     * @param opponentColor - 对手颜色 / opponent color / цвет противника
+     * @param myColor       - 己方颜色 / my color / мой цвет
+     * @param opponentColor - 对方颜色 / opponent color / цвет противника
      * @return 防守得分 / defensive score / защитные очки
      */
-    private int evaluateDefensiveScore(Square target, Board board, PieceColor opponentColor) {
+    private int evaluateBlockingScore(Square target, Board board, PieceColor myColor, PieceColor opponentColor) {
         int score = 0;
         int[][] directions = {{-1, -1}, {1, -1}, {-1, 1}, {1, 1}};
 
-        for (int[] dir : directions) {
-            int centerV = target.v + dir[0];
-            int centerH = target.h + dir[1];
+        // 检查对方棋子是否会因这步棋而被己方完全包围（形成对方获胜棋子）
+        // Check if opponent's pieces will be fully surrounded by my pieces due to this move
+        // Проверяем, будут ли фигуры противника полностью окружены моими фигурами благодаря этому ходу
+        for (int v = 1; v < board.nV - 1; v++) {
+            for (int h = 1; h < board.nH - 1; h++) {
+                Square sq = board.getSquare(v, h);
+                // 只检查对方棋子
+                // Only check opponent's pieces
+                // Проверяем только фигуры противника
+                if (!sq.isEmpty() && sq.getPiece().getColor() == opponentColor) {
+                    int myPieceCount = 0;
+                    boolean targetIsNeighbor = false;
 
-            if (centerV >= 1 && centerV < board.nV - 1 &&
-                    centerH >= 1 && centerH < board.nH - 1) {
+                    for (int[] dir : directions) {
+                        int checkV = v + dir[0];
+                        int checkH = h + dir[1];
 
-                int opponentPieceCount = 0;
-                boolean targetIsOneOfDiagonals = false;
-
-                for (int[] checkDir : directions) {
-                    int checkV = centerV + checkDir[0];
-                    int checkH = centerH + checkDir[1];
-
-                    if (board.onBoard(checkV, checkH)) {
-                        if (checkV == target.v && checkH == target.h) {
-                            targetIsOneOfDiagonals = true;
-                        } else {
-                            Square sq = board.getSquare(checkV, checkH);
-                            if (!sq.isEmpty() && sq.getPiece().getColor() == opponentColor) {
-                                opponentPieceCount++;
+                        if (board.onBoard(checkV, checkH)) {
+                            if (checkV == target.v && checkH == target.h) {
+                                // 目标位置将放置己方棋子
+                                // Target position will have my piece
+                                // Целевая позиция будет занята моей фигурой
+                                targetIsNeighbor = true;
+                                myPieceCount++;
+                            } else {
+                                Square neighbor = board.getSquare(checkV, checkH);
+                                if (!neighbor.isEmpty() && neighbor.getPiece().getColor() == myColor) {
+                                    myPieceCount++;
+                                }
                             }
                         }
                     }
-                }
 
-                // Minimax思想：最小化对手优势（阻止对手得分）
-                // Minimax: minimize opponent's advantage (block opponent's scoring)
-                // Минимакс: минимизация преимущества противника (блокирование очков противника)
-                if (opponentPieceCount == 3 && targetIsOneOfDiagonals) {
-                    score += 800;   // 阻止对手完成包围 / block opponent's completion / блокирование завершения
-                } else if (opponentPieceCount == 2 && targetIsOneOfDiagonals) {
-                    score += 50;
+                    // 如果这步棋会让对方棋子被己方完全包围，对方得分，扣分！
+                    // If this move will make opponent's piece fully surrounded by my pieces, opponent scores, penalty!
+                    // Если этот ход сделает фигуру противника полностью окружённой моими фигурами, противник получит очко, штраф!
+                    if (myPieceCount == 4 && targetIsNeighbor) {
+                        score -= 1000;  // 不应该让对方形成获胜棋子
+                    } else if (myPieceCount == 3 && targetIsNeighbor) {
+                        score -= 80;    // 危险的位置
+                    }
                 }
             }
         }
